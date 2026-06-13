@@ -1,0 +1,57 @@
+{
+	"type": "entity",
+	"entries": [
+		{
+			"id": "egypt_scarab",
+			"name_key": "enemy.scarab.name",
+			"role": "enemy",
+			"pantheon": "egypt",
+			"max_health": 5,
+			"move_speed": 132,
+			"contact_damage": 1,
+			"radius": 10,
+			"ai": "chase",
+			"gold": 1,
+			"color": "#2e2a22"
+		},
+		{
+			"id": "egypt_shabti",
+			"name_key": "enemy.shabti.name",
+			"role": "enemy",
+			"pantheon": "egypt",
+			"max_health": 16,
+			"move_speed": 60,
+			"contact_damage": 1,
+			"radius": 14,
+			"ai": "chase",
+			"gold": 3,
+			"color": "#c9b27a"
+		},
+		{
+			"id": "egypt_mummy",
+			"name_key": "enemy.mummy.name",
+			"role": "enemy",
+			"pantheon": "egypt",
+			"max_health": 28,
+			"move_speed": 46,
+			"contact_damage": 1,
+			"radius": 16,
+			"ai": "chase",
+			"gold": 4,
+			"color": "#d8cdb0"
+		},
+		{
+			"id": "egypt_apophis",
+			"name_key": "boss.apophis.name",
+			"role": "boss",
+			"pantheon": "egypt",
+			"max_health": 185,
+			"move_speed": 50,
+			"contact_damage": 2,
+			"radius": 36,
+			"ai": "chase",
+			"gold": 40,
+			"color": "#2f6b3a"
+		}
+	]
+}

@@ -140,8 +140,10 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   carry over, +50% heal on descent), which unlocks **cross-pantheon hybrid
   synergies** (`content/cross/synergies.json`, evaluated over ALL synergies so
   tag combos fire across pantheons). Cultural note: Bali is a living tradition —
-  see the `_note` in `content/bali/biome.json`.
-  Remaining pantheons: Egypt, Japan, Norse, Aztec.
+  see the `_note` in `content/bali/biome.json`. 3rd pantheon **Egypt** (the
+  Duat) added — ties into the soul-judgment theme; Set↔Horus/Osiris rivalries;
+  cross synergies bridge Egypt↔Greece↔Bali. Runs now span up to 3 realms.
+  Remaining pantheons: Japan, Norse, Aztec.
 - Phases 4–5: not started. See the project brief.
 
 ### Progression aggregation (Phase 2)

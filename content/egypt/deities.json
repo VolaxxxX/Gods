@@ -1,0 +1,59 @@
+{
+	"type": "deity",
+	"entries": [
+		{
+			"id": "egypt_ra",
+			"name_key": "deity.ra.name",
+			"pantheon": "egypt",
+			"color": "#f2c14a",
+			"identity_key": "deity.ra.identity",
+			"blessing_ids": ["egypt_ra_solar"],
+			"rivals": []
+		},
+		{
+			"id": "egypt_osiris",
+			"name_key": "deity.osiris.name",
+			"pantheon": "egypt",
+			"color": "#3fae6a",
+			"identity_key": "deity.osiris.identity",
+			"blessing_ids": ["egypt_osiris_life"],
+			"rivals": ["egypt_set"]
+		},
+		{
+			"id": "egypt_anubis",
+			"name_key": "deity.anubis.name",
+			"pantheon": "egypt",
+			"color": "#9aa0a8",
+			"identity_key": "deity.anubis.identity",
+			"blessing_ids": ["egypt_anubis_judgment"],
+			"rivals": []
+		},
+		{
+			"id": "egypt_horus",
+			"name_key": "deity.horus.name",
+			"pantheon": "egypt",
+			"color": "#5fa8d4",
+			"identity_key": "deity.horus.identity",
+			"blessing_ids": ["egypt_horus_strike"],
+			"rivals": ["egypt_set"]
+		},
+		{
+			"id": "egypt_set",
+			"name_key": "deity.set.name",
+			"pantheon": "egypt",
+			"color": "#b24a2a",
+			"identity_key": "deity.set.identity",
+			"blessing_ids": ["egypt_set_chaos"],
+			"rivals": ["egypt_horus", "egypt_osiris"]
+		},
+		{
+			"id": "egypt_sekhmet",
+			"name_key": "deity.sekhmet.name",
+			"pantheon": "egypt",
+			"color": "#d4694a",
+			"identity_key": "deity.sekhmet.identity",
+			"blessing_ids": ["egypt_sekhmet_fury"],
+			"rivals": []
+		}
+	]
+}

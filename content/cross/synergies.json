@@ -17,6 +17,22 @@
 			"pantheon": "",
 			"requires_tags": ["bronze", "kris"],
 			"grants": {"damage_add": 2.0, "crit_chance_add": 0.05}
+		},
+		{
+			"id": "cross_hunter_kings",
+			"name_key": "synergy.hunter_kings.name",
+			"desc_key": "synergy.hunter_kings.desc",
+			"pantheon": "",
+			"requires_tags": ["precision", "artemis"],
+			"grants": {"crit_chance_add": 0.1, "fire_rate_mult": 1.1}
+		},
+		{
+			"id": "cross_eternal_rite",
+			"name_key": "synergy.eternal_rite.name",
+			"desc_key": "synergy.eternal_rite.desc",
+			"pantheon": "",
+			"requires_tags": ["ankh", "offering"],
+			"grants": {"max_health_add": 3.0}
 		}
 	]
 }

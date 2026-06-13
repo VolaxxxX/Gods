@@ -1,0 +1,13 @@
+{
+	"type": "synergy",
+	"entries": [
+		{
+			"id": "egypt_pharaohs_wrath",
+			"name_key": "synergy.pharaohs_wrath.name",
+			"desc_key": "synergy.pharaohs_wrath.desc",
+			"pantheon": "egypt",
+			"requires_tags": ["crit", "power"],
+			"grants": {"crit_mult_add": 1.0, "damage_add": 1.0}
+		}
+	]
+}
