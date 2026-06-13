@@ -22,24 +22,7 @@ func _ready() -> void:
 	if not RunManager.active:
 		RunManager.start_run(RNG.get_seed() if RNG.get_seed() != 0 else randi(), "greece")
 
-	biome = GameData.get_biome(RunManager.biome_id)
-	if biome == null:
-		push_error("RunScene: unknown biome '%s'" % RunManager.biome_id)
-		return
-
-	graph = FloorGenerator.new().generate(biome)
-	current_pos = graph.start_pos
-
-	# Resume: restore cleared rooms and start at the saved room (floor is
-	# regenerated deterministically from the seed, so coordinates still map).
-	if RunManager.resuming:
-		for c in RunManager.resume_cleared:
-			if c.size() >= 2:
-				_cleared[Vector2i(int(c[0]), int(c[1]))] = true
-		if graph.has(RunManager.resume_room_coords):
-			current_pos = RunManager.resume_room_coords
-		RunManager.resuming = false
-
+	# One-time scene objects (persist across biomes within a run).
 	pool = ProjectilePool.new()
 	add_child(pool)
 
@@ -61,6 +44,32 @@ func _ready() -> void:
 	ui_layer.layer = 5
 	add_child(ui_layer)
 	ui_layer.add_child(TouchControls.new())
+
+	_setup_biome(RunManager.resuming)
+
+## (Re)build the floor for the current biome and enter its start room. Called on
+## run start, on resume, and each time the player descends into a new realm.
+func _setup_biome(from_resume: bool) -> void:
+	biome = GameData.get_biome(RunManager.biome_id)
+	if biome == null:
+		push_error("RunScene: unknown biome '%s'" % RunManager.biome_id)
+		return
+
+	_cleared.clear()
+	if pool != null:
+		pool.deactivate_all()
+	graph = FloorGenerator.new().generate(biome)
+	current_pos = graph.start_pos
+
+	# Resume: restore cleared rooms and start at the saved room (floor is
+	# regenerated deterministically from the seed, so coordinates still map).
+	if from_resume:
+		for c in RunManager.resume_cleared:
+			if c.size() >= 2:
+				_cleared[Vector2i(int(c[0]), int(c[1]))] = true
+		if graph.has(RunManager.resume_room_coords):
+			current_pos = RunManager.resume_room_coords
+		RunManager.resuming = false
 
 	_enter_room(current_pos, "")
 
@@ -135,7 +144,31 @@ func _on_room_cleared(pos: Vector2i, type: String) -> void:
 	_cleared[pos] = true
 	Events.emit_signal("room_cleared", current_room)
 	if type == "boss" and not _ended:
+		_complete_biome()
+
+## Boss down: either the run is won (final realm) or the player branches into the
+## next underworld, carrying everything and healing for the descent.
+func _complete_biome() -> void:
+	if RunManager.is_final_biome():
 		_end_run(true)
+		return
+	var opts: Array = []
+	for id in RunManager.realms_remaining():
+		var b := GameData.get_biome(id)
+		if b != null:
+			opts.append(b)
+	if opts.is_empty():
+		_end_run(true)
+		return
+	var ui := RealmChoice.new()
+	ui.setup(opts)
+	ui.chosen.connect(_on_realm_chosen)
+	add_child(ui)
+
+func _on_realm_chosen(next_biome: String) -> void:
+	player.health.heal(player.health.max_health * 0.5)  # reward for the descent
+	RunManager.advance_to_biome(next_biome)
+	_setup_biome(false)
 
 func _on_entity_died(entity) -> void:
 	if entity == player and not _ended:

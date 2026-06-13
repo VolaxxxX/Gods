@@ -1,0 +1,22 @@
+{
+	"_comment": "Cross-pantheon (pantheon: \"\") hybrid synergies — the heart of syncretism. Only reachable in multi-biome runs where items from different pantheons coexist.",
+	"type": "synergy",
+	"entries": [
+		{
+			"id": "cross_pilgrim_soul",
+			"name_key": "synergy.pilgrim_soul.name",
+			"desc_key": "synergy.pilgrim_soul.desc",
+			"pantheon": "",
+			"requires_tags": ["hermes", "offering"],
+			"grants": {"move_speed_mult": 1.12, "max_health_add": 1.0}
+		},
+		{
+			"id": "cross_twin_blades",
+			"name_key": "synergy.twin_blades.name",
+			"desc_key": "synergy.twin_blades.desc",
+			"pantheon": "",
+			"requires_tags": ["bronze", "kris"],
+			"grants": {"damage_add": 2.0, "crit_chance_add": 0.05}
+		}
+	]
+}

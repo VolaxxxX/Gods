@@ -9,6 +9,7 @@
 	"ui.seed": "Seed (blank = random)",
 	"ui.choose_blessing": "An altar hums. Choose a boon:",
 	"ui.rival_warning": "⚠ Angers a rival god — you will be cursed",
+	"ui.choose_realm": "The boss falls. Descend into the next underworld:",
 
 	"hub.title": "The Threshold",
 	"hub.runs": "Souls guided: {n}",
@@ -124,6 +125,11 @@
 
 	"synergy.tri_hita_karana.name": "Tri Hita Karana",
 	"synergy.tri_hita_karana.desc": "Damage + life items: harmony grants HP and power.",
+
+	"synergy.pilgrim_soul.name": "Pilgrim Soul",
+	"synergy.pilgrim_soul.desc": "Hermes' speed + a Balinese offering: swift and hardy.",
+	"synergy.twin_blades.name": "Twin Blades of Two Worlds",
+	"synergy.twin_blades.desc": "Bronze shot + sacred kris: more damage and crit.",
 
 	"room.combat": "Combat",
 	"room.reward": "Reward",

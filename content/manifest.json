@@ -15,6 +15,7 @@
 		"res://content/bali/deities.json",
 		"res://content/bali/blessings.json",
 		"res://content/bali/synergies.json",
+		"res://content/cross/synergies.json",
 		"res://content/meta/upgrades.json"
 	]
 }

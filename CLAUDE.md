@@ -132,13 +132,16 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   **syncretism rivalries** (mixing rival deities' boons applies a curse modifier,
   warned in the altar UI), **seed-entry UI**, and **run resume to the exact room**
   (snapshot stores current room + cleared set; floor regenerated from seed).
-  Remaining: cross-pantheon hybrid synergies (needs multi-biome runs).
+  **Phase 2 complete.**
 - **Phase 3 — Content expansion:** **STARTED.** 2nd pantheon **Bali/Indonesia**
   added as a self-contained module (biome, 3 enemies + Rangda boss, deities,
-  blessings, items, synergy, rooms). Hub now has a **realm selector** to choose
-  which pantheon to descend into (groundwork for non-linear branches).
-  Cultural note: Bali is a living tradition — see the `_note` in
-  `content/bali/biome.json`. Remaining pantheons: Egypt, Japan, Norse, Aztec.
+  blessings, items, synergy, rooms). Hub has a **realm selector**; **multi-biome
+  runs** chain realms after each boss (non-linear branches, items/blessings/HP
+  carry over, +50% heal on descent), which unlocks **cross-pantheon hybrid
+  synergies** (`content/cross/synergies.json`, evaluated over ALL synergies so
+  tag combos fire across pantheons). Cultural note: Bali is a living tradition —
+  see the `_note` in `content/bali/biome.json`.
+  Remaining pantheons: Egypt, Japan, Norse, Aztec.
 - Phases 4–5: not started. See the project brief.
 
 ### Progression aggregation (Phase 2)

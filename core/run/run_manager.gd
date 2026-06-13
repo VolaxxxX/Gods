@@ -8,6 +8,8 @@ var seed_value: int = 0
 var biome_id: String = "greece"
 var floor_index: int = 0
 var current_room_index: int = 0
+# Multi-biome runs: realms descended so far this run (non-linear branching).
+var visited_biomes: Array[String] = []
 
 # Carried player state (greybox baseline; expands with items/blessings later).
 var player_max_health: float = 6.0
@@ -41,6 +43,7 @@ func start_run(p_seed: int, p_biome: String = "greece") -> void:
 	gold = 0
 	enemies_killed = 0
 	rooms_cleared_count = 0
+	visited_biomes.clear()
 	owned_items.clear()
 	chosen_blessings.clear()
 	curses.clear()
@@ -85,6 +88,31 @@ func on_enemy_killed(gold_drop: int) -> void:
 	add_style("aggressive", 1)
 	if gold_drop > 0:
 		add_gold(gold_drop)
+
+# --- Multi-biome runs (non-linear branches) ---
+## How many realms a single run spans (capped so runs stay 15–30 min).
+func max_biomes() -> int:
+	return mini(3, GameData.biomes.size())
+
+## Realm ids not yet descended this run (branch options after a boss).
+func realms_remaining() -> Array:
+	var out: Array = []
+	for id in GameData.biomes.keys():
+		if id != biome_id and not (id in visited_biomes):
+			out.append(id)
+	return out
+
+## True if clearing the current biome ends the whole run (final realm).
+func is_final_biome() -> bool:
+	return visited_biomes.size() + 1 >= max_biomes() or realms_remaining().is_empty()
+
+## Record the current biome as cleared and descend into the next one. The run
+## scene regenerates the floor; items/blessings/health/gold all carry over.
+func advance_to_biome(next_biome: String) -> void:
+	if not (biome_id in visited_biomes):
+		visited_biomes.append(biome_id)
+	biome_id = next_biome
+	Events.emit_signal("biome_changed", next_biome)
 
 func add_style(kind: String, amount: int = 1) -> void:
 	if style.has(kind):
@@ -177,7 +205,9 @@ func active_synergy_ids() -> Array:
 	return _synergy_result()["active"]
 
 func _synergy_result() -> Dictionary:
-	return SynergyEngine.resolve(owned_items, GameData.items, GameData.synergies_for(biome_id))
+	# Evaluate ALL synergies, not just the current biome's: items persist across
+	# biomes in multi-realm runs, so tag-based synergies fire cross-pantheon.
+	return SynergyEngine.resolve(owned_items, GameData.items, GameData.synergies.values())
 
 # --- Serialization for save & resume ---
 # Set to true by from_snapshot so the run scene resumes at the exact room.
@@ -197,6 +227,7 @@ func to_snapshot() -> Dictionary:
 	return {
 		"seed": seed_value,
 		"biome": biome_id,
+		"visited_biomes": visited_biomes,
 		"floor_index": floor_index,
 		"player_max_health": player_max_health,
 		"player_health": player_health,
@@ -216,6 +247,7 @@ func from_snapshot(s: Dictionary) -> void:
 	resuming = true
 	seed_value = int(s.get("seed", 0))
 	biome_id = s.get("biome", "greece")
+	visited_biomes = DataUtil.to_string_array(s.get("visited_biomes", []))
 	floor_index = int(s.get("floor_index", 0))
 	player_max_health = float(s.get("player_max_health", 6.0))
 	player_health = float(s.get("player_health", player_max_health))

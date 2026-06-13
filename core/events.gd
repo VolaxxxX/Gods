@@ -8,6 +8,7 @@ extends Node
 signal run_started(seed_value: int)
 signal run_ended(victory: bool)
 signal floor_generated(floor_index: int)
+signal biome_changed(biome_id: String)
 
 # --- Room flow ---
 signal room_entered(room)

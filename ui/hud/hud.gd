@@ -20,6 +20,7 @@ func _ready() -> void:
 
 	Events.player_health_changed.connect(_on_health)
 	Events.gold_changed.connect(_on_gold)
+	Events.biome_changed.connect(func(_id): _refresh_biome())
 	_refresh_biome()
 	_on_health(RunManager.player_health, RunManager.player_max_health)
 	_on_gold(RunManager.gold)
