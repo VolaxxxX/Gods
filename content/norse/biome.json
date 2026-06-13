@@ -1,0 +1,22 @@
+{
+	"type": "biome",
+	"entries": [
+		{
+			"id": "norse",
+			"name_key": "biome.norse.name",
+			"pantheon": "norse",
+			"palette": {
+				"bg": "#070a0f",
+				"floor": "#1a2230",
+				"wall": "#3b4a5a",
+				"accent": "#c0d6e8"
+			},
+			"room_count": 9,
+			"enemy_pool": ["norse_helhound", "norse_draugr", "norse_jotunn"],
+			"elite_pool": ["norse_jotunn"],
+			"boss_id": "norse_fenrir",
+			"enemies_per_room_min": 2,
+			"enemies_per_room_max": 4
+		}
+	]
+}

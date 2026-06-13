@@ -1,0 +1,35 @@
+{
+	"type": "deity",
+	"entries": [
+		{
+			"id": "aztec_huitzilopochtli", "name_key": "deity.huitzilopochtli.name", "pantheon": "aztec",
+			"color": "#e0703a", "identity_key": "deity.huitzilopochtli.identity",
+			"blessing_ids": ["aztec_huitzilopochtli_war"], "rivals": []
+		},
+		{
+			"id": "aztec_quetzalcoatl", "name_key": "deity.quetzalcoatl.name", "pantheon": "aztec",
+			"color": "#2ac0a0", "identity_key": "deity.quetzalcoatl.identity",
+			"blessing_ids": ["aztec_quetzalcoatl_wind"], "rivals": ["aztec_tezcatlipoca"]
+		},
+		{
+			"id": "aztec_tlaloc", "name_key": "deity.tlaloc.name", "pantheon": "aztec",
+			"color": "#3a8ad0", "identity_key": "deity.tlaloc.identity",
+			"blessing_ids": ["aztec_tlaloc_rain"], "rivals": []
+		},
+		{
+			"id": "aztec_tezcatlipoca", "name_key": "deity.tezcatlipoca.name", "pantheon": "aztec",
+			"color": "#6a5a8a", "identity_key": "deity.tezcatlipoca.identity",
+			"blessing_ids": ["aztec_tezcatlipoca_night"], "rivals": ["aztec_quetzalcoatl"]
+		},
+		{
+			"id": "aztec_mictlantecuhtli", "name_key": "deity.mictlantecuhtli.name", "pantheon": "aztec",
+			"color": "#b0a890", "identity_key": "deity.mictlantecuhtli.identity",
+			"blessing_ids": ["aztec_mictlantecuhtli_death"], "rivals": []
+		},
+		{
+			"id": "aztec_xochipilli", "name_key": "deity.xochipilli.name", "pantheon": "aztec",
+			"color": "#e0589a", "identity_key": "deity.xochipilli.identity",
+			"blessing_ids": ["aztec_xochipilli_feast"], "rivals": []
+		}
+	]
+}

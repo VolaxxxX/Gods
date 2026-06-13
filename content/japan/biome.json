@@ -1,0 +1,22 @@
+{
+	"type": "biome",
+	"entries": [
+		{
+			"id": "japan",
+			"name_key": "biome.japan.name",
+			"pantheon": "japan",
+			"palette": {
+				"bg": "#0c0608",
+				"floor": "#241016",
+				"wall": "#7a2230",
+				"accent": "#e8e0d0"
+			},
+			"room_count": 9,
+			"enemy_pool": ["japan_onibi", "japan_kappa", "japan_oni"],
+			"elite_pool": ["japan_oni"],
+			"boss_id": "japan_orochi",
+			"enemies_per_room_min": 2,
+			"enemies_per_room_max": 4
+		}
+	]
+}

@@ -1,0 +1,35 @@
+{
+	"type": "deity",
+	"entries": [
+		{
+			"id": "norse_odin", "name_key": "deity.odin.name", "pantheon": "norse",
+			"color": "#c9b48a", "identity_key": "deity.odin.identity",
+			"blessing_ids": ["norse_odin_runes"], "rivals": []
+		},
+		{
+			"id": "norse_thor", "name_key": "deity.thor.name", "pantheon": "norse",
+			"color": "#d04a3a", "identity_key": "deity.thor.identity",
+			"blessing_ids": ["norse_thor_hammer"], "rivals": []
+		},
+		{
+			"id": "norse_freyja", "name_key": "deity.freyja.name", "pantheon": "norse",
+			"color": "#e08ab0", "identity_key": "deity.freyja.identity",
+			"blessing_ids": ["norse_freyja_seidr"], "rivals": []
+		},
+		{
+			"id": "norse_tyr", "name_key": "deity.tyr.name", "pantheon": "norse",
+			"color": "#8ab0d0", "identity_key": "deity.tyr.identity",
+			"blessing_ids": ["norse_tyr_guard"], "rivals": ["norse_loki"]
+		},
+		{
+			"id": "norse_heimdall", "name_key": "deity.heimdall.name", "pantheon": "norse",
+			"color": "#d0d8e0", "identity_key": "deity.heimdall.identity",
+			"blessing_ids": ["norse_heimdall_watch"], "rivals": ["norse_loki"]
+		},
+		{
+			"id": "norse_loki", "name_key": "deity.loki.name", "pantheon": "norse",
+			"color": "#6ac06a", "identity_key": "deity.loki.identity",
+			"blessing_ids": ["norse_loki_chaos"], "rivals": ["norse_tyr", "norse_heimdall"]
+		}
+	]
+}

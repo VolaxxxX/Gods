@@ -1,0 +1,13 @@
+{
+	"type": "synergy",
+	"entries": [
+		{
+			"id": "norse_allfathers_storm",
+			"name_key": "synergy.allfathers_storm.name",
+			"desc_key": "synergy.allfathers_storm.desc",
+			"pantheon": "norse",
+			"requires_tags": ["thunder", "runes"],
+			"grants": {"damage_add": 2.0, "fire_rate_mult": 1.1}
+		}
+	]
+}

@@ -1,0 +1,35 @@
+{
+	"type": "blessing",
+	"entries": [
+		{
+			"id": "aztec_huitzilopochtli_war", "name_key": "blessing.huitzilopochtli_war.name", "desc_key": "blessing.huitzilopochtli_war.desc",
+			"deity_id": "aztec_huitzilopochtli", "pantheon": "aztec", "rarity": "common", "color": "#e0703a",
+			"modifiers": {"damage_add": 2.0}, "tags": ["war", "fire"]
+		},
+		{
+			"id": "aztec_quetzalcoatl_wind", "name_key": "blessing.quetzalcoatl_wind.name", "desc_key": "blessing.quetzalcoatl_wind.desc",
+			"deity_id": "aztec_quetzalcoatl", "pantheon": "aztec", "rarity": "common", "color": "#2ac0a0",
+			"modifiers": {"projectile_speed_mult": 1.2, "fire_rate_mult": 1.1}, "tags": ["wind"]
+		},
+		{
+			"id": "aztec_tlaloc_rain", "name_key": "blessing.tlaloc_rain.name", "desc_key": "blessing.tlaloc_rain.desc",
+			"deity_id": "aztec_tlaloc", "pantheon": "aztec", "rarity": "rare", "color": "#3a8ad0",
+			"modifiers": {"damage_mult": 1.18}, "tags": ["rain"]
+		},
+		{
+			"id": "aztec_tezcatlipoca_night", "name_key": "blessing.tezcatlipoca_night.name", "desc_key": "blessing.tezcatlipoca_night.desc",
+			"deity_id": "aztec_tezcatlipoca", "pantheon": "aztec", "rarity": "rare", "color": "#6a5a8a",
+			"modifiers": {"damage_mult": 1.2, "crit_chance_add": 0.05}, "tags": ["night"]
+		},
+		{
+			"id": "aztec_mictlantecuhtli_death", "name_key": "blessing.mictlantecuhtli_death.name", "desc_key": "blessing.mictlantecuhtli_death.desc",
+			"deity_id": "aztec_mictlantecuhtli", "pantheon": "aztec", "rarity": "common", "color": "#b0a890",
+			"modifiers": {"damage_add": 1.0, "crit_chance_add": 0.1}, "tags": ["death"]
+		},
+		{
+			"id": "aztec_xochipilli_feast", "name_key": "blessing.xochipilli_feast.name", "desc_key": "blessing.xochipilli_feast.desc",
+			"deity_id": "aztec_xochipilli", "pantheon": "aztec", "rarity": "common", "color": "#e0589a",
+			"modifiers": {"max_health_add": 2.0, "move_speed_add": 15.0}, "tags": ["feast", "life"]
+		}
+	]
+}

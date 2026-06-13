@@ -1,0 +1,57 @@
+{
+	"type": "entity",
+	"entries": [
+		{
+			"id": "norse_helhound",
+			"name_key": "enemy.helhound.name",
+			"role": "enemy",
+			"pantheon": "norse",
+			"max_health": 8,
+			"move_speed": 126,
+			"contact_damage": 1,
+			"radius": 11,
+			"ai": "chase",
+			"gold": 2,
+			"color": "#5a6b7a"
+		},
+		{
+			"id": "norse_draugr",
+			"name_key": "enemy.draugr.name",
+			"role": "enemy",
+			"pantheon": "norse",
+			"max_health": 18,
+			"move_speed": 58,
+			"contact_damage": 1,
+			"radius": 14,
+			"ai": "chase",
+			"gold": 3,
+			"color": "#8fa07f"
+		},
+		{
+			"id": "norse_jotunn",
+			"name_key": "enemy.jotunn.name",
+			"role": "enemy",
+			"pantheon": "norse",
+			"max_health": 32,
+			"move_speed": 44,
+			"contact_damage": 2,
+			"radius": 18,
+			"ai": "chase",
+			"gold": 5,
+			"color": "#6a7a9a"
+		},
+		{
+			"id": "norse_fenrir",
+			"name_key": "boss.fenrir.name",
+			"role": "boss",
+			"pantheon": "norse",
+			"max_health": 195,
+			"move_speed": 64,
+			"contact_damage": 2,
+			"radius": 34,
+			"ai": "chase",
+			"gold": 42,
+			"color": "#7a6a5a"
+		}
+	]
+}

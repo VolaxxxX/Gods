@@ -140,10 +140,14 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   carry over, +50% heal on descent), which unlocks **cross-pantheon hybrid
   synergies** (`content/cross/synergies.json`, evaluated over ALL synergies so
   tag combos fire across pantheons). Cultural note: Bali is a living tradition —
-  see the `_note` in `content/bali/biome.json`. 3rd pantheon **Egypt** (the
-  Duat) added — ties into the soul-judgment theme; Set↔Horus/Osiris rivalries;
-  cross synergies bridge Egypt↔Greece↔Bali. Runs now span up to 3 realms.
-  Remaining pantheons: Japan, Norse, Aztec.
+  see the `_note` in `content/bali/biome.json`. **ALL SIX pantheons now exist**
+  as data modules: Greece, Bali, Egypt (Duat), Norse (Helheim), Japan (Yomi),
+  Aztec (Mictlan) — each with biome, 3 enemies + boss, 5–6 deities + blessings,
+  4 relics, a synergy, rooms. Rivalries per pantheon; cross-pantheon hybrid
+  synergies bridge several. Runs span up to 3 of the 6 realms (branch choice).
+  Remaining Phase 3 polish: unique boss mechanics (Hydra heads, Orochi, etc.),
+  more authored room variety, mini-bosses, secret/cursed rooms, playable
+  characters with different starting kits.
 - Phases 4–5: not started. See the project brief.
 
 ### Progression aggregation (Phase 2)

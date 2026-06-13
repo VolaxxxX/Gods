@@ -1,0 +1,13 @@
+{
+	"type": "synergy",
+	"entries": [
+		{
+			"id": "aztec_obsidian_edge",
+			"name_key": "synergy.obsidian_edge.name",
+			"desc_key": "synergy.obsidian_edge.desc",
+			"pantheon": "aztec",
+			"requires_tags": ["obsidian", "crit"],
+			"grants": {"crit_mult_add": 1.0, "damage_add": 1.0}
+		}
+	]
+}

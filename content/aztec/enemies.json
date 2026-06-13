@@ -1,0 +1,21 @@
+{
+	"type": "entity",
+	"entries": [
+		{
+			"id": "aztec_obsidian", "name_key": "enemy.obsidian.name", "role": "enemy", "pantheon": "aztec",
+			"max_health": 7, "move_speed": 124, "contact_damage": 1, "radius": 11, "ai": "chase", "gold": 2, "color": "#2a2a3a"
+		},
+		{
+			"id": "aztec_jaguar", "name_key": "enemy.jaguar.name", "role": "enemy", "pantheon": "aztec",
+			"max_health": 16, "move_speed": 72, "contact_damage": 1, "radius": 13, "ai": "chase", "gold": 3, "color": "#c8902a"
+		},
+		{
+			"id": "aztec_tzitzimitl", "name_key": "enemy.tzitzimitl.name", "role": "enemy", "pantheon": "aztec",
+			"max_health": 30, "move_speed": 46, "contact_damage": 2, "radius": 17, "ai": "chase", "gold": 5, "color": "#9a3a5a"
+		},
+		{
+			"id": "aztec_cipactli", "name_key": "boss.cipactli.name", "role": "boss", "pantheon": "aztec",
+			"max_health": 200, "move_speed": 46, "contact_damage": 2, "radius": 38, "ai": "chase", "gold": 45, "color": "#3a7a5a"
+		}
+	]
+}

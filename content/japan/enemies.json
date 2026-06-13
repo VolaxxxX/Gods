@@ -1,0 +1,21 @@
+{
+	"type": "entity",
+	"entries": [
+		{
+			"id": "japan_onibi", "name_key": "enemy.onibi.name", "role": "enemy", "pantheon": "japan",
+			"max_health": 6, "move_speed": 130, "contact_damage": 1, "radius": 10, "ai": "chase", "gold": 2, "color": "#5fc8e0"
+		},
+		{
+			"id": "japan_kappa", "name_key": "enemy.kappa.name", "role": "enemy", "pantheon": "japan",
+			"max_health": 15, "move_speed": 64, "contact_damage": 1, "radius": 13, "ai": "chase", "gold": 3, "color": "#4f9a6a"
+		},
+		{
+			"id": "japan_oni", "name_key": "enemy.oni.name", "role": "enemy", "pantheon": "japan",
+			"max_health": 30, "move_speed": 48, "contact_damage": 2, "radius": 17, "ai": "chase", "gold": 5, "color": "#c0392b"
+		},
+		{
+			"id": "japan_orochi", "name_key": "boss.orochi.name", "role": "boss", "pantheon": "japan",
+			"max_health": 200, "move_speed": 46, "contact_damage": 2, "radius": 38, "ai": "chase", "gold": 45, "color": "#3a5f3a"
+		}
+	]
+}

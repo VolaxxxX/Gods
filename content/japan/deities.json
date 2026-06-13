@@ -1,0 +1,35 @@
+{
+	"type": "deity",
+	"entries": [
+		{
+			"id": "japan_amaterasu", "name_key": "deity.amaterasu.name", "pantheon": "japan",
+			"color": "#f2d24a", "identity_key": "deity.amaterasu.identity",
+			"blessing_ids": ["japan_amaterasu_light"], "rivals": ["japan_susanoo"]
+		},
+		{
+			"id": "japan_susanoo", "name_key": "deity.susanoo.name", "pantheon": "japan",
+			"color": "#3a6fae", "identity_key": "deity.susanoo.identity",
+			"blessing_ids": ["japan_susanoo_storm"], "rivals": ["japan_amaterasu"]
+		},
+		{
+			"id": "japan_raijin", "name_key": "deity.raijin.name", "pantheon": "japan",
+			"color": "#d8b84a", "identity_key": "deity.raijin.identity",
+			"blessing_ids": ["japan_raijin_thunder"], "rivals": []
+		},
+		{
+			"id": "japan_fujin", "name_key": "deity.fujin.name", "pantheon": "japan",
+			"color": "#6ac0a0", "identity_key": "deity.fujin.identity",
+			"blessing_ids": ["japan_fujin_wind"], "rivals": []
+		},
+		{
+			"id": "japan_tsukuyomi", "name_key": "deity.tsukuyomi.name", "pantheon": "japan",
+			"color": "#9aa0d0", "identity_key": "deity.tsukuyomi.identity",
+			"blessing_ids": ["japan_tsukuyomi_moon"], "rivals": []
+		},
+		{
+			"id": "japan_inari", "name_key": "deity.inari.name", "pantheon": "japan",
+			"color": "#e07a3a", "identity_key": "deity.inari.identity",
+			"blessing_ids": ["japan_inari_fox"], "rivals": []
+		}
+	]
+}

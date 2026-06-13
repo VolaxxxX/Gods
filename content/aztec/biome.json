@@ -1,0 +1,23 @@
+{
+	"type": "biome",
+	"entries": [
+		{
+			"id": "aztec",
+			"name_key": "biome.aztec.name",
+			"pantheon": "aztec",
+			"_note": "Mesoamerican beliefs and Nahua descendants are living cultures. Sacrifice is treated with historical distance, not glorified. Revise if a knowledgeable maintainer flags anything.",
+			"palette": {
+				"bg": "#08100c",
+				"floor": "#16241c",
+				"wall": "#2a6b5a",
+				"accent": "#e0c040"
+			},
+			"room_count": 9,
+			"enemy_pool": ["aztec_obsidian", "aztec_jaguar", "aztec_tzitzimitl"],
+			"elite_pool": ["aztec_tzitzimitl"],
+			"boss_id": "aztec_cipactli",
+			"enemies_per_room_min": 2,
+			"enemies_per_room_max": 4
+		}
+	]
+}

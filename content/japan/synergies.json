@@ -1,0 +1,13 @@
+{
+	"type": "synergy",
+	"entries": [
+		{
+			"id": "japan_way_of_the_blade",
+			"name_key": "synergy.way_of_the_blade.name",
+			"desc_key": "synergy.way_of_the_blade.desc",
+			"pantheon": "japan",
+			"requires_tags": ["blade", "crit"],
+			"grants": {"crit_mult_add": 1.0}
+		}
+	]
+}
