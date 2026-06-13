@@ -1,0 +1,53 @@
+{
+	"type": "entity",
+	"entries": [
+		{
+			"id": "greece_shade",
+			"name_key": "enemy.shade.name",
+			"role": "enemy",
+			"pantheon": "greece",
+			"max_health": 8,
+			"move_speed": 78,
+			"contact_damage": 1,
+			"radius": 12,
+			"ai": "chase",
+			"color": "#7a6cc4"
+		},
+		{
+			"id": "greece_skeleton",
+			"name_key": "enemy.skeleton.name",
+			"role": "enemy",
+			"pantheon": "greece",
+			"max_health": 16,
+			"move_speed": 58,
+			"contact_damage": 1,
+			"radius": 14,
+			"ai": "chase",
+			"color": "#d8d2c0"
+		},
+		{
+			"id": "greece_harpy",
+			"name_key": "enemy.harpy.name",
+			"role": "enemy",
+			"pantheon": "greece",
+			"max_health": 6,
+			"move_speed": 118,
+			"contact_damage": 1,
+			"radius": 11,
+			"ai": "chase",
+			"color": "#c79a5b"
+		},
+		{
+			"id": "greece_hydra",
+			"name_key": "boss.hydra.name",
+			"role": "boss",
+			"pantheon": "greece",
+			"max_health": 140,
+			"move_speed": 42,
+			"contact_damage": 2,
+			"radius": 34,
+			"ai": "chase",
+			"color": "#3fa66b"
+		}
+	]
+}

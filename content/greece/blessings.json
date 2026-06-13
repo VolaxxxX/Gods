@@ -1,0 +1,27 @@
+{
+	"type": "blessing",
+	"entries": [
+		{
+			"id": "greece_zeus_chain",
+			"name_key": "blessing.zeus_chain.name",
+			"desc_key": "blessing.zeus_chain.desc",
+			"deity_id": "greece_zeus",
+			"pantheon": "greece",
+			"rarity": "common",
+			"color": "#f2e27a",
+			"effect": {"kind": "on_hit", "effect": "chain_lightning", "value": 3, "jumps": 2},
+			"tags": ["lightning"]
+		},
+		{
+			"id": "greece_athena_deflect",
+			"name_key": "blessing.athena_deflect.name",
+			"desc_key": "blessing.athena_deflect.desc",
+			"deity_id": "greece_athena",
+			"pantheon": "greece",
+			"rarity": "common",
+			"color": "#9ad0c0",
+			"effect": {"kind": "passive", "effect": "deflect_chance", "value": 0.15},
+			"tags": ["guard"]
+		}
+	]
+}

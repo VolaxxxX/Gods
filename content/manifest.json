@@ -1,0 +1,11 @@
+{
+	"_comment": "Lists every content file GameData loads. Add a pantheon module by adding its files here.",
+	"files": [
+		"res://content/greece/biome.json",
+		"res://content/greece/enemies.json",
+		"res://content/greece/rooms.json",
+		"res://content/greece/items.json",
+		"res://content/greece/deities.json",
+		"res://content/greece/blessings.json"
+	]
+}

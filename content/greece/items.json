@@ -1,0 +1,25 @@
+{
+	"type": "item",
+	"entries": [
+		{
+			"id": "greece_swift_sandals",
+			"name_key": "item.swift_sandals.name",
+			"desc_key": "item.swift_sandals.desc",
+			"pantheon": "greece",
+			"rarity": "common",
+			"color": "#cfd8ff",
+			"modifiers": {"speed_add": 30.0},
+			"tags": ["speed", "hermes"]
+		},
+		{
+			"id": "greece_heavy_shot",
+			"name_key": "item.heavy_shot.name",
+			"desc_key": "item.heavy_shot.desc",
+			"pantheon": "greece",
+			"rarity": "common",
+			"color": "#c89b5a",
+			"modifiers": {"damage_add": 1.5, "fire_rate_mult": 0.9},
+			"tags": ["damage", "bronze"]
+		}
+	]
+}

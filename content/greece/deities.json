@@ -1,0 +1,23 @@
+{
+	"type": "deity",
+	"entries": [
+		{
+			"id": "greece_zeus",
+			"name_key": "deity.zeus.name",
+			"pantheon": "greece",
+			"color": "#f2e27a",
+			"identity_key": "deity.zeus.identity",
+			"blessing_ids": ["greece_zeus_chain"],
+			"rivals": ["greece_poseidon"]
+		},
+		{
+			"id": "greece_athena",
+			"name_key": "deity.athena.name",
+			"pantheon": "greece",
+			"color": "#9ad0c0",
+			"identity_key": "deity.athena.identity",
+			"blessing_ids": ["greece_athena_deflect"],
+			"rivals": ["greece_ares"]
+		}
+	]
+}

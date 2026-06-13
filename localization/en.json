@@ -1,0 +1,43 @@
+{
+	"game.title": "GODS",
+	"ui.tap_to_start": "Tap to Start",
+	"ui.play": "Descend",
+	"ui.daily": "Daily Seed",
+	"ui.options": "Options",
+	"ui.resume": "Resume",
+
+	"hub.title": "The Threshold",
+	"hub.runs": "Souls guided: {n}",
+
+	"hud.health": "HP {cur}/{max}",
+	"hud.floor": "Floor {n}",
+
+	"biome.unknown": "Unknown Realm",
+	"biome.greece.name": "The Underworld of Hades",
+
+	"enemy.shade.name": "Wandering Shade",
+	"enemy.skeleton.name": "Restless Skeleton",
+	"enemy.harpy.name": "Harpy",
+	"boss.hydra.name": "Hydra of Lerna",
+
+	"deity.zeus.name": "Zeus",
+	"deity.zeus.identity": "King of Olympus — chain lightning.",
+	"deity.athena.name": "Athena",
+	"deity.athena.identity": "Strategist — deflection and guard.",
+
+	"blessing.zeus_chain.name": "Chain Lightning",
+	"blessing.zeus_chain.desc": "Your hits arc to a nearby foe.",
+	"blessing.athena_deflect.name": "Aegis Guard",
+	"blessing.athena_deflect.desc": "A chance to deflect incoming damage.",
+
+	"item.swift_sandals.name": "Swift Sandals",
+	"item.swift_sandals.desc": "Hermes' gift. Move faster.",
+	"item.heavy_shot.name": "Bronze Shot",
+	"item.heavy_shot.desc": "Heavier projectiles deal more damage.",
+
+	"room.combat": "Combat",
+	"room.reward": "Reward",
+	"room.shop": "Shop",
+	"room.altar": "Altar",
+	"room.boss": "Boss"
+}

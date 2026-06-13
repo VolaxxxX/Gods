@@ -1,0 +1,22 @@
+{
+	"type": "biome",
+	"entries": [
+		{
+			"id": "greece",
+			"name_key": "biome.greece.name",
+			"pantheon": "greece",
+			"palette": {
+				"bg": "#0b0d14",
+				"floor": "#1b2230",
+				"wall": "#3a4a5a",
+				"accent": "#d8b25a"
+			},
+			"room_count": 8,
+			"enemy_pool": ["greece_shade", "greece_skeleton", "greece_harpy"],
+			"elite_pool": ["greece_skeleton"],
+			"boss_id": "greece_hydra",
+			"enemies_per_room_min": 2,
+			"enemies_per_room_max": 4
+		}
+	]
+}
