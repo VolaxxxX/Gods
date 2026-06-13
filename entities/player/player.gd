@@ -111,6 +111,10 @@ func _recompute_stats() -> void:
 				_deflect_chance = maxf(_deflect_chance, float(fx.get("value", 0.0)))
 	_emit_health()
 
+## Pay health as a deliberate cost (altars of sacrifice). Guaranteed, unfiltered.
+func pay_health(amount: float) -> void:
+	health.spend(amount)
+
 ## Damage filter hook for HealthComponent: chance to fully deflect a hit.
 func _filter_damage(amount: float) -> float:
 	if _deflect_chance > 0.0 and RNG.stream("combat").randf() < _deflect_chance:

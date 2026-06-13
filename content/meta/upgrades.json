@@ -1,0 +1,49 @@
+{
+	"type": "meta_upgrade",
+	"entries": [
+		{
+			"id": "meta_vitality",
+			"name_key": "meta.vitality.name",
+			"desc_key": "meta.vitality.desc",
+			"stat": "max_health",
+			"mode": "add",
+			"per_level": 1.0,
+			"max_level": 6,
+			"base_cost": 10,
+			"cost_growth": 1.6
+		},
+		{
+			"id": "meta_strength",
+			"name_key": "meta.strength.name",
+			"desc_key": "meta.strength.desc",
+			"stat": "damage",
+			"mode": "add",
+			"per_level": 0.5,
+			"max_level": 6,
+			"base_cost": 12,
+			"cost_growth": 1.7
+		},
+		{
+			"id": "meta_celerity",
+			"name_key": "meta.celerity.name",
+			"desc_key": "meta.celerity.desc",
+			"stat": "move_speed",
+			"mode": "add",
+			"per_level": 12.0,
+			"max_level": 5,
+			"base_cost": 10,
+			"cost_growth": 1.6
+		},
+		{
+			"id": "meta_focus",
+			"name_key": "meta.focus.name",
+			"desc_key": "meta.focus.desc",
+			"stat": "crit_chance",
+			"mode": "add",
+			"per_level": 0.04,
+			"max_level": 5,
+			"base_cost": 14,
+			"cost_growth": 1.8
+		}
+	]
+}

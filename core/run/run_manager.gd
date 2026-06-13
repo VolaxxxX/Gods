@@ -16,6 +16,10 @@ var gold: int = 0
 var owned_items: Array[String] = []
 var chosen_blessings: Array[String] = []
 
+# Run tallies (feed karma on run end).
+var enemies_killed: int = 0
+var rooms_cleared_count: int = 0
+
 # Style tracking for the Egyptian "weighing of the soul" (Phase 2). Accumulated
 # now so the data exists when the system lands.
 var style: Dictionary = {"aggressive": 0, "cautious": 0, "greedy": 0, "merciful": 0}
@@ -31,6 +35,8 @@ func start_run(p_seed: int, p_biome: String = "greece") -> void:
 	floor_index = 0
 	current_room_index = 0
 	gold = 0
+	enemies_killed = 0
+	rooms_cleared_count = 0
 	owned_items.clear()
 	chosen_blessings.clear()
 	style = {"aggressive": 0, "cautious": 0, "greedy": 0, "merciful": 0}
@@ -44,10 +50,31 @@ func start_run(p_seed: int, p_biome: String = "greece") -> void:
 func end_run(victory: bool) -> void:
 	active = false
 	floor_graph = null
+	# Reincarnation: convert the run's deeds into permanent karma.
+	var karma_gain := rooms_cleared_count * 2 + int(enemies_killed / 2.0) + (25 if victory else 0)
+	SaveManager.add_karma(karma_gain)
 	SaveManager.clear_run()
 	SaveManager.meta["runs_completed"] = int(SaveManager.meta.get("runs_completed", 0)) + 1
 	SaveManager.save_meta()
 	Events.emit_signal("run_ended", victory)
+
+# --- Gold & kills ---
+func add_gold(amount: int) -> void:
+	gold += amount
+	Events.emit_signal("gold_changed", gold)
+
+func spend_gold(amount: int) -> bool:
+	if gold < amount:
+		return false
+	gold -= amount
+	Events.emit_signal("gold_changed", gold)
+	return true
+
+func on_enemy_killed(gold_drop: int) -> void:
+	enemies_killed += 1
+	add_style("aggressive", 1)
+	if gold_drop > 0:
+		add_gold(gold_drop)
 
 func add_style(kind: String, amount: int = 1) -> void:
 	if style.has(kind):
@@ -76,7 +103,23 @@ func collect_modifiers() -> Array:
 			mods.append(b.modifiers)
 	for grant in _synergy_result()["modifiers"]:
 		mods.append(grant)
+	var meta := meta_modifiers()
+	if not meta.is_empty():
+		mods.append(meta)
 	return mods
+
+## Permanent karma upgrades (reincarnation traits) as a single StatBlock dict.
+func meta_modifiers() -> Dictionary:
+	var out := {}
+	for up in GameData.meta_upgrades.values():
+		var level := SaveManager.upgrade_level(up.id)
+		if level > 0:
+			# Multiplicative modifiers are factors around 1.0; additive are flat.
+			if up.mode == "mult":
+				out[up.modifier_key()] = 1.0 + up.per_level * level
+			else:
+				out[up.modifier_key()] = up.per_level * level
+	return out
 
 ## All active special effects (on_hit / passive) from blessings + synergies.
 func collect_effects() -> Array:

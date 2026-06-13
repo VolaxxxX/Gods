@@ -113,6 +113,8 @@ func _on_door_taken(side: String) -> void:
 	_enter_room(next, OPPOSITE[side])
 
 func _on_room_cleared(pos: Vector2i, type: String) -> void:
+	if not _cleared.has(pos):
+		RunManager.rooms_cleared_count += 1
 	_cleared[pos] = true
 	Events.emit_signal("room_cleared", current_room)
 	if type == "boss" and not _ended:

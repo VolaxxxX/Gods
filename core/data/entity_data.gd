@@ -14,6 +14,7 @@ var color: Color = Color(0.85, 0.3, 0.3)   # greybox tint
 var radius: float = 12.0         # greybox size & collision radius
 var ai: String = "chase"         # behavior id read by AIComponent
 var weapon_id: String = ""       # optional ranged weapon (ItemData/weapon)
+var gold: int = 1                # gold dropped on death
 var tags: Array[String] = []
 
 static func from_dict(d: Dictionary) -> EntityData:
@@ -28,6 +29,7 @@ static func from_dict(d: Dictionary) -> EntityData:
 	e.radius = float(d.get("radius", 12.0))
 	e.ai = d.get("ai", "chase")
 	e.weapon_id = d.get("weapon_id", "")
+	e.gold = int(d.get("gold", 1))
 	e.color = DataUtil.to_color(d.get("color", null), e.color)
 	e.tags = DataUtil.to_string_array(d.get("tags", []))
 	return e

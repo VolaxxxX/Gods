@@ -5,6 +5,7 @@ extends CanvasLayer
 
 var _biome_label: Label
 var _health_label: Label
+var _gold_label: Label
 
 func _ready() -> void:
 	layer = 10
@@ -15,10 +16,13 @@ func _ready() -> void:
 
 	_biome_label = _make_label(root, Vector2(24, 20))
 	_health_label = _make_label(root, Vector2(24, 52))
+	_gold_label = _make_label(root, Vector2(24, 84))
 
 	Events.player_health_changed.connect(_on_health)
+	Events.gold_changed.connect(_on_gold)
 	_refresh_biome()
 	_on_health(RunManager.player_health, RunManager.player_max_health)
+	_on_gold(RunManager.gold)
 
 func _make_label(parent: Control, pos: Vector2) -> Label:
 	var l := Label.new()
@@ -34,3 +38,6 @@ func _refresh_biome() -> void:
 
 func _on_health(current: float, maximum: float) -> void:
 	_health_label.text = Loc.t("hud.health", {"cur": int(ceil(current)), "max": int(maximum)})
+
+func _on_gold(total: int) -> void:
+	_gold_label.text = Loc.t("hud.gold", {"n": total})

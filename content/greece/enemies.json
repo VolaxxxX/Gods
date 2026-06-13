@@ -11,6 +11,7 @@
 			"contact_damage": 1,
 			"radius": 12,
 			"ai": "chase",
+			"gold": 2,
 			"color": "#7a6cc4"
 		},
 		{
@@ -23,6 +24,7 @@
 			"contact_damage": 1,
 			"radius": 14,
 			"ai": "chase",
+			"gold": 3,
 			"color": "#d8d2c0"
 		},
 		{
@@ -35,6 +37,7 @@
 			"contact_damage": 1,
 			"radius": 11,
 			"ai": "chase",
+			"gold": 2,
 			"color": "#c79a5b"
 		},
 		{
@@ -47,6 +50,7 @@
 			"contact_damage": 2,
 			"radius": 34,
 			"ai": "chase",
+			"gold": 30,
 			"color": "#3fa66b"
 		}
 	]

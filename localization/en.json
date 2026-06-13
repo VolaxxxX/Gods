@@ -9,8 +9,23 @@
 
 	"hub.title": "The Threshold",
 	"hub.runs": "Souls guided: {n}",
+	"hub.karma": "Karma: {n}",
+	"hub.reincarnation": "Reincarnation",
+
+	"meta.level": "Lv {lvl}/{max}",
+	"meta.level_max": "Lv MAX",
+	"meta.buy": "Reincarnate ({c})",
+	"meta.vitality.name": "Vitality",
+	"meta.vitality.desc": "+1 max HP per level.",
+	"meta.strength.name": "Strength",
+	"meta.strength.desc": "+0.5 attack damage per level.",
+	"meta.celerity.name": "Celerity",
+	"meta.celerity.desc": "+12 move speed per level.",
+	"meta.focus.name": "Focus",
+	"meta.focus.desc": "+4% critical chance per level.",
 
 	"hud.health": "HP {cur}/{max}",
+	"hud.gold": "Gold {n}",
 	"hud.floor": "Floor {n}",
 
 	"biome.unknown": "Unknown Realm",

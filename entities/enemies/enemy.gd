@@ -84,6 +84,7 @@ func _physics_process(delta: float) -> void:
 	queue_redraw()
 
 func _on_died() -> void:
+	RunManager.on_enemy_killed(data.gold)
 	Events.emit_signal("entity_died", self)
 	queue_free()
 

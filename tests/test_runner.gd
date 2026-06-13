@@ -10,6 +10,7 @@ func _initialize() -> void:
 		preload("res://tests/test_floor_generator.gd").new(),
 		preload("res://tests/test_stat_block.gd").new(),
 		preload("res://tests/test_synergy.gd").new(),
+		preload("res://tests/test_meta_upgrade.gd").new(),
 	]
 
 	var total := 0

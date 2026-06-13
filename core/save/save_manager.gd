@@ -30,18 +30,36 @@ func _default_meta() -> Dictionary:
 	return {
 		"version": SAVE_VERSION,
 		"karma": 0,
-		"unlocks": [],
+		"unlocks": {},  # meta_upgrade id -> owned level
 		"options": {"auto_aim": true, "auto_fire": false, "music": 0.8, "sfx": 0.9},
 		"runs_completed": 0,
 	}
 
 ## Forward-migration hook. Bump SAVE_VERSION and add cases as the schema evolves.
 func _migrate(data: Dictionary) -> Dictionary:
-	var v: int = int(data.get("version", 0))
-	# Example future migration:
-	# if v < 2: data["new_field"] = default; v = 2
+	# Normalize fields that may be missing or of an older shape.
+	if typeof(data.get("unlocks")) != TYPE_DICTIONARY:
+		data["unlocks"] = {}
+	if not data.has("karma"):
+		data["karma"] = 0
 	data["version"] = SAVE_VERSION
 	return data
+
+# --- Meta convenience ---
+func get_karma() -> int:
+	return int(meta.get("karma", 0))
+
+func add_karma(amount: int) -> void:
+	meta["karma"] = get_karma() + amount
+	Events.emit_signal("karma_changed", get_karma())
+
+func upgrade_level(id: String) -> int:
+	return int(meta.get("unlocks", {}).get(id, 0))
+
+func set_upgrade_level(id: String, level: int) -> void:
+	if not meta.has("unlocks"):
+		meta["unlocks"] = {}
+	meta["unlocks"][id] = level
 
 # --- Run resume ---
 func save_run(snapshot: Dictionary) -> void:

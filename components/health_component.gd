@@ -42,6 +42,17 @@ func take(amount: float) -> void:
 		_dead = true
 		died.emit()
 
+## Deliberate, unavoidable cost (sacrifices/offerings). Bypasses invulnerability
+## and the damage filter — the player chose to pay this.
+func spend(amount: float) -> void:
+	if _dead or amount <= 0.0:
+		return
+	health = maxf(0.0, health - amount)
+	damaged.emit(amount, health, max_health)
+	if health <= 0.0:
+		_dead = true
+		died.emit()
+
 func heal(amount: float) -> void:
 	if _dead or amount <= 0.0:
 		return

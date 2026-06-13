@@ -122,11 +122,13 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   juice (screenshake/hit-stop/damage-flash/death pops). **DONE (pending Web/editor
   verification).**
 - **Phase 2 — Roguelike systems:** **STARTED.** Done: `StatBlock` aggregation,
-  item pickups in reward/shop rooms with live stat application, data-driven
-  `SynergyEngine` (item synergies), divine pacts (blessing choice at altars,
-  applied via RunManager), on-hit/passive effects (chain lightning, deflect).
-  Remaining: shops with gold cost + sacrifices, meta-progression
-  (reincarnation/karma), weighing-of-the-soul, syncretism rivalries, seed UI.
+  item pickups + live stat application, data-driven `SynergyEngine`, divine pacts
+  (altar blessing choice), on-hit/passive effects (chain lightning, deflect),
+  **gold drops + priced shops**, **sacrifice altars** (HP → item), and
+  **meta-progression** (karma earned per run → permanent reincarnation upgrades,
+  data-driven `MetaUpgradeData`, bought at the hub, applied to base stats).
+  Remaining: weighing-of-the-soul payoff (style is tracked), syncretism
+  rivalries (`DeityData.rivals` exists), seed-entry UI, run resume to exact room.
 - Phases 3–5: not started. See the project brief.
 
 ### Progression aggregation (Phase 2)

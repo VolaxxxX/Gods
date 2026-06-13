@@ -47,10 +47,12 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 
 	# Reward/shop rooms lay out item pickups at their feature anchors.
 	if room_type == "reward" or room_type == "shop":
-		_spawn_pickups()
+		_spawn_pickups(room_type == "shop")
+	elif room_type == "challenge":
+		_spawn_sacrifice()
 
 	# Combat & boss rooms lock until cleared; safe rooms are open immediately.
-	var has_combat := room_type == "combat" or room_type == "boss" or room_type == "challenge"
+	var has_combat := room_type == "combat" or room_type == "boss"
 	if has_combat:
 		_spawn_enemies(target, pool)
 	if _alive_enemies > 0:
@@ -205,7 +207,7 @@ func _random_floor_point() -> Vector2:
 		rng.randf_range(margin, _size.x - margin),
 		rng.randf_range(margin, _size.y - margin))
 
-func _spawn_pickups() -> void:
+func _spawn_pickups(priced: bool) -> void:
 	if biome == null:
 		return
 	var pool := GameData.items_for(biome.pantheon)
@@ -217,13 +219,29 @@ func _spawn_pickups() -> void:
 	if anchors.is_empty():
 		anchors.append(_size * 0.5)
 	for i in anchors.size():
-		var item = RNG.pick("loot", pool)
+		var item: ItemData = RNG.pick("loot", pool)
 		if item == null:
 			continue
 		var p := Pickup.new()
-		p.setup(item)
+		p.setup(item, _price_for(item) if priced else 0)
 		p.position = anchors[i]
 		add_child(p)
+
+func _spawn_sacrifice() -> void:
+	var anchors: Array[Vector2] = []
+	if template != null:
+		anchors = template.feature_anchors()
+	var altar := SacrificeAltar.new()
+	altar.position = anchors[0] if not anchors.is_empty() else _size * 0.5
+	add_child(altar)
+
+func _price_for(item: ItemData) -> int:
+	match item.rarity:
+		"cursed": return 5
+		"common": return 8
+		"rare": return 16
+		"relic": return 28
+		_: return 10
 
 func _on_enemy_gone() -> void:
 	_alive_enemies -= 1
