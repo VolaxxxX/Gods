@@ -30,6 +30,16 @@ func _ready() -> void:
 	graph = FloorGenerator.new().generate(biome)
 	current_pos = graph.start_pos
 
+	# Resume: restore cleared rooms and start at the saved room (floor is
+	# regenerated deterministically from the seed, so coordinates still map).
+	if RunManager.resuming:
+		for c in RunManager.resume_cleared:
+			if c.size() >= 2:
+				_cleared[Vector2i(int(c[0]), int(c[1]))] = true
+		if graph.has(RunManager.resume_room_coords):
+			current_pos = RunManager.resume_room_coords
+		RunManager.resuming = false
+
 	pool = ProjectilePool.new()
 	add_child(pool)
 
@@ -141,4 +151,5 @@ func _save_progress() -> void:
 	# deterministically from the seed on resume (Phase 1 resumes at the start
 	# room; exact-room resume is a Phase 5 polish item).
 	if RunManager.active:
+		RunManager.set_room_progress(current_pos, _cleared.keys())
 		SaveManager.save_run(RunManager.to_snapshot())

@@ -130,10 +130,16 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   **weighing of the soul** (`SoulJudgment` turns play style into a verdict +
   bonus karma; style tracked via kills/no-damage clears/shop buys), and
   **syncretism rivalries** (mixing rival deities' boons applies a curse modifier,
-  warned in the altar UI).
-  Remaining: seed-entry UI, run resume to exact room, cross-pantheon hybrid
-  synergies (needs a 2nd pantheon).
-- Phases 3–5: not started. See the project brief.
+  warned in the altar UI), **seed-entry UI**, and **run resume to the exact room**
+  (snapshot stores current room + cleared set; floor regenerated from seed).
+  Remaining: cross-pantheon hybrid synergies (needs multi-biome runs).
+- **Phase 3 — Content expansion:** **STARTED.** 2nd pantheon **Bali/Indonesia**
+  added as a self-contained module (biome, 3 enemies + Rangda boss, deities,
+  blessings, items, synergy, rooms). Hub now has a **realm selector** to choose
+  which pantheon to descend into (groundwork for non-linear branches).
+  Cultural note: Bali is a living tradition — see the `_note` in
+  `content/bali/biome.json`. Remaining pantheons: Egypt, Japan, Norse, Aztec.
+- Phases 4–5: not started. See the project brief.
 
 ### Progression aggregation (Phase 2)
 `RunManager` owns `owned_items` / `chosen_blessings`. `collect_modifiers()` and

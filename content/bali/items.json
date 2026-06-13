@@ -1,0 +1,45 @@
+{
+	"type": "item",
+	"entries": [
+		{
+			"id": "bali_kris",
+			"name_key": "item.kris.name",
+			"desc_key": "item.kris.desc",
+			"pantheon": "bali",
+			"rarity": "rare",
+			"color": "#cfc6a8",
+			"modifiers": {"damage_add": 2.0},
+			"tags": ["damage", "kris"]
+		},
+		{
+			"id": "bali_canang",
+			"name_key": "item.canang.name",
+			"desc_key": "item.canang.desc",
+			"pantheon": "bali",
+			"rarity": "common",
+			"color": "#7fc77f",
+			"modifiers": {"max_health_add": 2.0},
+			"tags": ["life", "offering"]
+		},
+		{
+			"id": "bali_selendang",
+			"name_key": "item.selendang.name",
+			"desc_key": "item.selendang.desc",
+			"pantheon": "bali",
+			"rarity": "common",
+			"color": "#d4af37",
+			"modifiers": {"move_speed_add": 28.0},
+			"tags": ["speed"]
+		},
+		{
+			"id": "bali_barong_mask",
+			"name_key": "item.barong_mask.name",
+			"desc_key": "item.barong_mask.desc",
+			"pantheon": "bali",
+			"rarity": "rare",
+			"color": "#c0392b",
+			"modifiers": {"max_health_add": 1.0, "crit_chance_add": 0.1},
+			"tags": ["guard", "crit"]
+		}
+	]
+}

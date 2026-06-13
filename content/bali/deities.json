@@ -1,0 +1,50 @@
+{
+	"type": "deity",
+	"entries": [
+		{
+			"id": "bali_acintya",
+			"name_key": "deity.acintya.name",
+			"pantheon": "bali",
+			"color": "#f5e6a8",
+			"identity_key": "deity.acintya.identity",
+			"blessing_ids": ["bali_acintya_harmony"],
+			"rivals": []
+		},
+		{
+			"id": "bali_barong",
+			"name_key": "deity.barong.name",
+			"pantheon": "bali",
+			"color": "#e0b03a",
+			"identity_key": "deity.barong.identity",
+			"blessing_ids": ["bali_barong_ward"],
+			"rivals": []
+		},
+		{
+			"id": "bali_dewi_danu",
+			"name_key": "deity.dewi_danu.name",
+			"pantheon": "bali",
+			"color": "#5fb6d4",
+			"identity_key": "deity.dewi_danu.identity",
+			"blessing_ids": ["bali_danu_tide"],
+			"rivals": []
+		},
+		{
+			"id": "bali_dewi_sri",
+			"name_key": "deity.dewi_sri.name",
+			"pantheon": "bali",
+			"color": "#7fc77f",
+			"identity_key": "deity.dewi_sri.identity",
+			"blessing_ids": ["bali_sri_abundance"],
+			"rivals": ["bali_batara_kala"]
+		},
+		{
+			"id": "bali_batara_kala",
+			"name_key": "deity.batara_kala.name",
+			"pantheon": "bali",
+			"color": "#7a4a8a",
+			"identity_key": "deity.batara_kala.identity",
+			"blessing_ids": ["bali_kala_hunger"],
+			"rivals": ["bali_dewi_sri"]
+		}
+	]
+}

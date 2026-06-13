@@ -33,6 +33,7 @@ var floor_graph = null
 
 func start_run(p_seed: int, p_biome: String = "greece") -> void:
 	active = true
+	resuming = false
 	seed_value = p_seed
 	biome_id = p_biome
 	floor_index = 0
@@ -179,30 +180,53 @@ func _synergy_result() -> Dictionary:
 	return SynergyEngine.resolve(owned_items, GameData.items, GameData.synergies_for(biome_id))
 
 # --- Serialization for save & resume ---
+# Set to true by from_snapshot so the run scene resumes at the exact room.
+var resuming: bool = false
+var resume_room_coords: Vector2i = Vector2i.ZERO
+var resume_cleared: Array = []  # of [x, y]
+
+## Called by the run scene each room so the snapshot can resume in place.
+func set_room_progress(coords: Vector2i, cleared_keys: Array) -> void:
+	resume_room_coords = coords
+	var packed: Array = []
+	for k in cleared_keys:
+		packed.append([k.x, k.y])
+	resume_cleared = packed
+
 func to_snapshot() -> Dictionary:
 	return {
 		"seed": seed_value,
 		"biome": biome_id,
 		"floor_index": floor_index,
-		"current_room_index": current_room_index,
 		"player_max_health": player_max_health,
 		"player_health": player_health,
 		"gold": gold,
 		"owned_items": owned_items,
 		"chosen_blessings": chosen_blessings,
+		"curses": curses,
 		"style": style,
+		"enemies_killed": enemies_killed,
+		"rooms_cleared_count": rooms_cleared_count,
+		"current_room": [resume_room_coords.x, resume_room_coords.y],
+		"cleared": resume_cleared,
 	}
 
 func from_snapshot(s: Dictionary) -> void:
 	active = true
+	resuming = true
 	seed_value = int(s.get("seed", 0))
 	biome_id = s.get("biome", "greece")
 	floor_index = int(s.get("floor_index", 0))
-	current_room_index = int(s.get("current_room_index", 0))
 	player_max_health = float(s.get("player_max_health", 6.0))
 	player_health = float(s.get("player_health", player_max_health))
 	gold = int(s.get("gold", 0))
 	owned_items = DataUtil.to_string_array(s.get("owned_items", []))
 	chosen_blessings = DataUtil.to_string_array(s.get("chosen_blessings", []))
+	curses = s.get("curses", [])
 	style = s.get("style", style)
+	enemies_killed = int(s.get("enemies_killed", 0))
+	rooms_cleared_count = int(s.get("rooms_cleared_count", 0))
+	var cr: Array = s.get("current_room", [0, 0])
+	resume_room_coords = Vector2i(int(cr[0]), int(cr[1])) if cr.size() >= 2 else Vector2i.ZERO
+	resume_cleared = s.get("cleared", [])
 	RNG.seed_from_int(seed_value)

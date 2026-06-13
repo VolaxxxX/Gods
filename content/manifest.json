@@ -8,6 +8,13 @@
 		"res://content/greece/deities.json",
 		"res://content/greece/blessings.json",
 		"res://content/greece/synergies.json",
+		"res://content/bali/biome.json",
+		"res://content/bali/enemies.json",
+		"res://content/bali/rooms.json",
+		"res://content/bali/items.json",
+		"res://content/bali/deities.json",
+		"res://content/bali/blessings.json",
+		"res://content/bali/synergies.json",
 		"res://content/meta/upgrades.json"
 	]
 }

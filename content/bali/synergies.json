@@ -1,0 +1,13 @@
+{
+	"type": "synergy",
+	"entries": [
+		{
+			"id": "bali_tri_hita_karana",
+			"name_key": "synergy.tri_hita_karana.name",
+			"desc_key": "synergy.tri_hita_karana.desc",
+			"pantheon": "bali",
+			"requires_tags": ["damage", "life"],
+			"grants": {"max_health_add": 1.0, "damage_add": 1.0}
+		}
+	]
+}

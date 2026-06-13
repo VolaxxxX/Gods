@@ -1,0 +1,57 @@
+{
+	"type": "entity",
+	"entries": [
+		{
+			"id": "bali_leyak",
+			"name_key": "enemy.leyak.name",
+			"role": "enemy",
+			"pantheon": "bali",
+			"max_health": 7,
+			"move_speed": 122,
+			"contact_damage": 1,
+			"radius": 11,
+			"ai": "chase",
+			"gold": 2,
+			"color": "#e8d9b0"
+		},
+		{
+			"id": "bali_bhuta",
+			"name_key": "enemy.bhuta.name",
+			"role": "enemy",
+			"pantheon": "bali",
+			"max_health": 14,
+			"move_speed": 62,
+			"contact_damage": 1,
+			"radius": 14,
+			"ai": "chase",
+			"gold": 3,
+			"color": "#8a3a2c"
+		},
+		{
+			"id": "bali_celuluk",
+			"name_key": "enemy.celuluk.name",
+			"role": "enemy",
+			"pantheon": "bali",
+			"max_health": 22,
+			"move_speed": 50,
+			"contact_damage": 1,
+			"radius": 16,
+			"ai": "chase",
+			"gold": 4,
+			"color": "#9b8f6b"
+		},
+		{
+			"id": "bali_rangda",
+			"name_key": "boss.rangda.name",
+			"role": "boss",
+			"pantheon": "bali",
+			"max_health": 160,
+			"move_speed": 44,
+			"contact_damage": 2,
+			"radius": 36,
+			"ai": "chase",
+			"gold": 35,
+			"color": "#6a1020"
+		}
+	]
+}

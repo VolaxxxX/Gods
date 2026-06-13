@@ -1,9 +1,12 @@
 extends Control
-## The hub: return point between runs. Hosts reincarnation — spend karma earned
-## from past runs on permanent traits (meta-progression). Greybox UI.
+## The hub: return point between runs. Choose a realm (pantheon) and seed, descend,
+## resume an interrupted run, and spend karma on permanent reincarnation traits.
 
 var _karma_label: Label
-var _rows: Dictionary = {}  # upgrade id -> {name, level, buy, up}
+var _rows: Dictionary = {}        # upgrade id -> {name, level, buy, up}
+var _biome_option: OptionButton
+var _biome_ids: Array[String] = []
+var _seed_edit: LineEdit
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -12,8 +15,8 @@ func _ready() -> void:
 
 func _build() -> void:
 	var v := VBoxContainer.new()
-	v.position = Vector2(40, 32)
-	v.custom_minimum_size = Vector2(680, 0)
+	v.position = Vector2(40, 28)
+	v.custom_minimum_size = Vector2(700, 0)
 	v.add_theme_constant_override("separation", 10)
 	add_child(v)
 
@@ -26,19 +29,35 @@ func _build() -> void:
 	_karma_label.add_theme_font_size_override("font_size", 22)
 	v.add_child(_karma_label)
 
+	# Realm + seed selectors.
+	var sel := HBoxContainer.new()
+	sel.add_theme_constant_override("separation", 12)
+	v.add_child(sel)
+	var realm_l := Label.new()
+	realm_l.text = Loc.t("ui.realm")
+	sel.add_child(realm_l)
+	_biome_option = OptionButton.new()
+	for biome in GameData.biomes.values():
+		_biome_ids.append(biome.id)
+		_biome_option.add_item(Loc.t(biome.name_key))
+	if _biome_option.item_count > 0:
+		_biome_option.select(0)
+	sel.add_child(_biome_option)
+	var seed_l := Label.new()
+	seed_l.text = Loc.t("ui.seed")
+	sel.add_child(seed_l)
+	_seed_edit = LineEdit.new()
+	_seed_edit.custom_minimum_size = Vector2(180, 0)
+	sel.add_child(_seed_edit)
+
+	# Action buttons.
 	var buttons := HBoxContainer.new()
 	buttons.add_theme_constant_override("separation", 12)
 	v.add_child(buttons)
-	var play := Button.new()
-	play.text = Loc.t("ui.play")
-	play.custom_minimum_size = Vector2(220, 64)
-	play.pressed.connect(_on_play)
-	buttons.add_child(play)
-	var daily := Button.new()
-	daily.text = Loc.t("ui.daily")
-	daily.custom_minimum_size = Vector2(220, 64)
-	daily.pressed.connect(_on_daily)
-	buttons.add_child(daily)
+	buttons.add_child(_make_button(Loc.t("ui.play"), _on_play))
+	buttons.add_child(_make_button(Loc.t("ui.daily"), _on_daily))
+	if SaveManager.has_run():
+		buttons.add_child(_make_button(Loc.t("ui.resume"), _on_resume))
 
 	var header := Label.new()
 	header.text = Loc.t("hub.reincarnation")
@@ -49,21 +68,17 @@ func _build() -> void:
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
 		v.add_child(row)
-
 		var name_l := Label.new()
 		name_l.custom_minimum_size = Vector2(220, 0)
 		name_l.tooltip_text = Loc.t(up.desc_key)
 		row.add_child(name_l)
-
 		var level_l := Label.new()
 		level_l.custom_minimum_size = Vector2(120, 0)
 		row.add_child(level_l)
-
 		var buy := Button.new()
-		buy.custom_minimum_size = Vector2(180, 48)
+		buy.custom_minimum_size = Vector2(200, 44)
 		buy.pressed.connect(_on_buy.bind(up.id))
 		row.add_child(buy)
-
 		_rows[up.id] = {"name": name_l, "level": level_l, "buy": buy, "up": up}
 
 	var runs := Label.new()
@@ -77,6 +92,13 @@ func _build() -> void:
 		v.add_child(verdict)
 
 	_refresh()
+
+func _make_button(text: String, cb: Callable) -> Button:
+	var b := Button.new()
+	b.text = text
+	b.custom_minimum_size = Vector2(200, 60)
+	b.pressed.connect(cb)
+	return b
 
 func _refresh() -> void:
 	_karma_label.text = Loc.t("hub.karma", {"n": SaveManager.get_karma()})
@@ -110,12 +132,32 @@ func _on_buy(id: String) -> void:
 	SaveManager.save_meta()
 	_refresh()
 
+func _selected_biome() -> String:
+	var idx := _biome_option.selected
+	if idx >= 0 and idx < _biome_ids.size():
+		return _biome_ids[idx]
+	return "greece"
+
+func _selected_seed() -> int:
+	var t := _seed_edit.text.strip_edges()
+	if t == "":
+		return randi()
+	if t.is_valid_int():
+		return int(t)
+	return int(hash(t))
+
 func _on_play() -> void:
-	RunManager.start_run(randi(), "greece")
+	RunManager.start_run(_selected_seed(), _selected_biome())
 	SceneRouter.goto_run()
 
 func _on_daily() -> void:
-	var today := Time.get_date_string_from_system()
-	RNG.seed_from_string("daily-" + today)
-	RunManager.start_run(RNG.get_seed(), "greece")
+	RNG.seed_from_string("daily-" + Time.get_date_string_from_system())
+	RunManager.start_run(RNG.get_seed(), _selected_biome())
+	SceneRouter.goto_run()
+
+func _on_resume() -> void:
+	var snap := SaveManager.load_run()
+	if snap.is_empty():
+		return
+	RunManager.from_snapshot(snap)
 	SceneRouter.goto_run()
