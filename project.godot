@@ -1,0 +1,43 @@
+; Engine configuration file.
+; Godot 4.x project for "Gods" — a mythology roguelike.
+; This file is hand-editable; see CLAUDE.md for architecture rationale.
+
+config_version=5
+
+[application]
+
+config/name="Gods"
+config/description="A mythology & folklore action roguelike. Travel the underworlds of the world's pantheons."
+run/main_scene="res://scenes/boot/boot.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+config/icon="res://icon.svg"
+
+[autoload]
+
+; Order matters: low-level services first, stateful managers last.
+Events="*res://core/events.gd"
+RNG="*res://core/rng/rng.gd"
+Loc="*res://core/i18n/loc.gd"
+GameData="*res://core/data/game_data.gd"
+GameInput="*res://core/input/game_input.gd"
+SaveManager="*res://core/save/save_manager.gd"
+RunManager="*res://core/run/run_manager.gd"
+SceneRouter="*res://core/scene_router.gd"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/handheld/orientation="landscape"
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+; Input actions (move_up/down/left/right) are registered in code by the
+; GameInput autoload, so this file stays simple and version-robust.
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.05, 0.05, 0.08, 1)

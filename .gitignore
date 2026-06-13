@@ -1,0 +1,22 @@
+# Godot 4 .gitignore
+
+# Godot-generated editor & import caches (regenerated on open).
+.godot/
+
+# Exported builds.
+/builds/
+/export/
+*.pck
+*.zip
+
+# OS / editor cruft.
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+
+# Mono / C# (unused for now, kept for safety).
+.mono/
+mono_crash.*.json
