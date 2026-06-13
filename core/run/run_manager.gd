@@ -53,6 +53,48 @@ func add_style(kind: String, amount: int = 1) -> void:
 	if style.has(kind):
 		style[kind] = int(style[kind]) + amount
 
+# --- Progression: items & blessings ---
+func add_item(id: String) -> void:
+	owned_items.append(id)
+	Events.emit_signal("item_picked_up", id)
+
+func add_blessing(id: String) -> void:
+	chosen_blessings.append(id)
+	Events.emit_signal("blessing_chosen", id)
+
+## All active stat modifiers from items + blessings + active synergies.
+## Returns Array[Dictionary] for StatBlock.add_modifiers().
+func collect_modifiers() -> Array:
+	var mods: Array = []
+	for id in owned_items:
+		var it = GameData.items.get(id, null)
+		if it != null and not it.modifiers.is_empty():
+			mods.append(it.modifiers)
+	for id in chosen_blessings:
+		var b = GameData.blessings.get(id, null)
+		if b != null and not b.modifiers.is_empty():
+			mods.append(b.modifiers)
+	for grant in _synergy_result()["modifiers"]:
+		mods.append(grant)
+	return mods
+
+## All active special effects (on_hit / passive) from blessings + synergies.
+func collect_effects() -> Array:
+	var fx: Array = []
+	for id in chosen_blessings:
+		var b = GameData.blessings.get(id, null)
+		if b != null and not b.effect.is_empty():
+			fx.append(b.effect)
+	for e in _synergy_result()["effects"]:
+		fx.append(e)
+	return fx
+
+func active_synergy_ids() -> Array:
+	return _synergy_result()["active"]
+
+func _synergy_result() -> Dictionary:
+	return SynergyEngine.resolve(owned_items, GameData.items, GameData.synergies_for(biome_id))
+
 # --- Serialization for save & resume ---
 func to_snapshot() -> Dictionary:
 	return {

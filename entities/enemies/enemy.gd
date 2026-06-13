@@ -15,6 +15,7 @@ var contact: DamageArea
 
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
+var _flash: float = 0.0
 
 func setup(p_data: EntityData, target: Node2D) -> void:
 	data = p_data
@@ -34,6 +35,7 @@ func setup(p_data: EntityData, target: Node2D) -> void:
 	add_child(health)
 	health.setup(data.max_health)
 	health.died.connect(_on_died)
+	health.damaged.connect(func(_a, _c, _m): _flash = 0.07)
 
 	hurtbox = HurtboxComponent.new()
 	hurtbox.health = health
@@ -77,6 +79,8 @@ func _physics_process(delta: float) -> void:
 		velocity = movement.compute(velocity, dir, delta)
 		move_and_slide()
 	# Contact damage now ticks via the hurtbox cooldown (retrigger_interval).
+	if _flash > 0.0:
+		_flash -= delta
 	queue_redraw()
 
 func _on_died() -> void:
@@ -84,7 +88,8 @@ func _on_died() -> void:
 	queue_free()
 
 func _draw() -> void:
-	draw_circle(Vector2.ZERO, _radius, _color)
+	var c := Color(1, 1, 1) if _flash > 0.0 else _color
+	draw_circle(Vector2.ZERO, _radius, c)
 	# Health pip (thin arc) so damage is readable in greybox.
 	if health != null and health.fraction() < 1.0:
 		var w := _radius * 2.0 * health.fraction()

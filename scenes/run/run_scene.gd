@@ -86,6 +86,24 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	Events.emit_signal("room_entered", current_room)
 	_save_progress()
 
+	# Altars offer a divine pact on first visit.
+	if build_type == "altar":
+		_offer_blessing()
+
+func _offer_blessing() -> void:
+	var avail: Array = []
+	for b in GameData.blessings_for(biome.pantheon):
+		if not (b.id in RunManager.chosen_blessings):
+			avail.append(b)
+	RNG.shuffle("blessing", avail)
+	var opts: Array = avail.slice(0, mini(3, avail.size()))
+	if opts.is_empty():
+		return
+	var ui := BlessingChoice.new()
+	ui.setup(opts)
+	ui.chosen.connect(func(id): RunManager.add_blessing(id))
+	add_child(ui)
+
 func _on_door_taken(side: String) -> void:
 	var node := graph.get_node(current_pos)
 	if not node["neighbors"].has(side):

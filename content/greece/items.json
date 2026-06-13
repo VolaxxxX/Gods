@@ -8,7 +8,7 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#cfd8ff",
-			"modifiers": {"speed_add": 30.0},
+			"modifiers": {"move_speed_add": 30.0},
 			"tags": ["speed", "hermes"]
 		},
 		{
@@ -20,6 +20,36 @@
 			"color": "#c89b5a",
 			"modifiers": {"damage_add": 1.5, "fire_rate_mult": 0.9},
 			"tags": ["damage", "bronze"]
+		},
+		{
+			"id": "greece_laurel_crown",
+			"name_key": "item.laurel_crown.name",
+			"desc_key": "item.laurel_crown.desc",
+			"pantheon": "greece",
+			"rarity": "common",
+			"color": "#9ad97f",
+			"modifiers": {"max_health_add": 2.0},
+			"tags": ["health"]
+		},
+		{
+			"id": "greece_keen_edge",
+			"name_key": "item.keen_edge.name",
+			"desc_key": "item.keen_edge.desc",
+			"pantheon": "greece",
+			"rarity": "rare",
+			"color": "#ffd24a",
+			"modifiers": {"crit_chance_add": 0.15},
+			"tags": ["crit"]
+		},
+		{
+			"id": "greece_rapid_quiver",
+			"name_key": "item.rapid_quiver.name",
+			"desc_key": "item.rapid_quiver.desc",
+			"pantheon": "greece",
+			"rarity": "common",
+			"color": "#7fd0ff",
+			"modifiers": {"fire_rate_mult": 1.25, "damage_mult": 0.9},
+			"tags": ["speed", "artemis"]
 		}
 	]
 }

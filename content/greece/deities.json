@@ -18,6 +18,33 @@
 			"identity_key": "deity.athena.identity",
 			"blessing_ids": ["greece_athena_deflect"],
 			"rivals": ["greece_ares"]
+		},
+		{
+			"id": "greece_hermes",
+			"name_key": "deity.hermes.name",
+			"pantheon": "greece",
+			"color": "#bfe0ff",
+			"identity_key": "deity.hermes.identity",
+			"blessing_ids": ["greece_hermes_swift"],
+			"rivals": []
+		},
+		{
+			"id": "greece_ares",
+			"name_key": "deity.ares.name",
+			"pantheon": "greece",
+			"color": "#e0603f",
+			"identity_key": "deity.ares.identity",
+			"blessing_ids": ["greece_ares_might"],
+			"rivals": ["greece_athena"]
+		},
+		{
+			"id": "greece_artemis",
+			"name_key": "deity.artemis.name",
+			"pantheon": "greece",
+			"color": "#a0e0b0",
+			"identity_key": "deity.artemis.identity",
+			"blessing_ids": ["greece_artemis_focus"],
+			"rivals": []
 		}
 	]
 }

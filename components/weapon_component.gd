@@ -16,6 +16,10 @@ var damage_tags: Array[String] = ["projectile"]
 var crit_chance: float = 0.0
 var crit_mult: float = 2.0
 
+# On-hit effects from blessings/synergies (e.g. chain lightning). Set by the
+# player when stats are recomputed.
+var on_hit_effects: Array = []
+
 var pool: ProjectilePool
 var _cooldown: float = 0.0
 
@@ -38,5 +42,27 @@ func attempt(origin: Vector2, direction: Vector2) -> bool:
 	var dmg := Damage.new(rolled["amount"], damage_tags.duplicate(), get_parent())
 	dmg.is_crit = rolled["is_crit"]
 	var vel := direction.normalized() * projectile_speed
-	pool.spawn(origin, vel, dmg, faction_player, projectile_radius, projectile_color, projectile_life)
+	var p := pool.spawn(origin, vel, dmg, faction_player, projectile_radius, projectile_color, projectile_life)
+	if faction_player and not on_hit_effects.is_empty():
+		p.on_hit_extra = _on_projectile_hit
 	return true
+
+## Applies on-hit blessing/synergy effects when a player projectile lands.
+func _on_projectile_hit(pos: Vector2, hurtbox) -> void:
+	var struck = hurtbox.get_parent() if hurtbox != null else null
+	for fx in on_hit_effects:
+		if fx.get("effect", "") == "chain_lightning":
+			_chain_lightning(pos, struck, float(fx.get("value", 3.0)))
+
+func _chain_lightning(from: Vector2, exclude, amount: float) -> void:
+	var best = null  # untyped for dynamic .health access (Enemy)
+	var best_d := INF
+	for e in get_tree().get_nodes_in_group("enemies"):
+		if e == exclude or not is_instance_valid(e):
+			continue
+		var d: float = from.distance_squared_to(e.global_position)
+		if d < best_d:
+			best_d = d
+			best = e
+	if best != null and best_d <= 220.0 * 220.0 and best.health != null:
+		best.health.take(amount)

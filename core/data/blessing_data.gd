@@ -15,6 +15,8 @@ var color: Color = Color(0.6, 0.8, 1.0)
 # Effect descriptor interpreted by the blessing system. Example:
 #   { "kind": "on_hit", "effect": "chain_lightning", "value": 3 }
 var effect: Dictionary = {}
+# Optional flat stat modifiers (StatBlock convention), for stat-boon blessings.
+var modifiers: Dictionary = {}
 var tags: Array[String] = []         # for syncretism synergies
 
 static func from_dict(d: Dictionary) -> BlessingData:
@@ -27,5 +29,6 @@ static func from_dict(d: Dictionary) -> BlessingData:
 	b.rarity = d.get("rarity", "common")
 	b.color = DataUtil.to_color(d.get("color", null), b.color)
 	b.effect = d.get("effect", {})
+	b.modifiers = d.get("modifiers", {})
 	b.tags = DataUtil.to_string_array(d.get("tags", []))
 	return b

@@ -6,6 +6,7 @@
 		"res://content/greece/rooms.json",
 		"res://content/greece/items.json",
 		"res://content/greece/deities.json",
-		"res://content/greece/blessings.json"
+		"res://content/greece/blessings.json",
+		"res://content/greece/synergies.json"
 	]
 }

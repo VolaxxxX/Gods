@@ -1,0 +1,21 @@
+{
+	"type": "synergy",
+	"entries": [
+		{
+			"id": "greece_executioner",
+			"name_key": "synergy.executioner.name",
+			"desc_key": "synergy.executioner.desc",
+			"pantheon": "greece",
+			"requires_tags": ["crit", "damage"],
+			"grants": {"crit_mult_add": 1.0}
+		},
+		{
+			"id": "greece_olympic_runner",
+			"name_key": "synergy.olympic_runner.name",
+			"desc_key": "synergy.olympic_runner.desc",
+			"pantheon": "greece",
+			"requires_items": ["greece_swift_sandals", "greece_rapid_quiver"],
+			"grants": {"move_speed_mult": 1.15, "fire_rate_mult": 1.1}
+		}
+	]
+}

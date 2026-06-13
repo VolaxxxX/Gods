@@ -8,6 +8,8 @@ func _initialize() -> void:
 		preload("res://tests/test_rng.gd").new(),
 		preload("res://tests/test_damage.gd").new(),
 		preload("res://tests/test_floor_generator.gd").new(),
+		preload("res://tests/test_stat_block.gd").new(),
+		preload("res://tests/test_synergy.gd").new(),
 	]
 
 	var total := 0

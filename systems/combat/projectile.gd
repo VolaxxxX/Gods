@@ -11,6 +11,9 @@ var _life: float = 0.0
 var _max_life: float = 2.0
 var active: bool = false
 
+## Optional on-hit hook (pos, hurtbox) for blessing/synergy effects.
+var on_hit_extra: Callable = Callable()
+
 var _shape: CollisionShape2D
 
 func _ready() -> void:
@@ -33,6 +36,7 @@ func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool
 	color = p_color
 	_max_life = life
 	_life = 0.0
+	on_hit_extra = Callable()  # reset; weapon re-assigns per shot if needed
 	setup(dmg, pierce_through, 0.0)  # projectiles are single-hit
 	(_shape.shape as CircleShape2D).radius = radius
 	# Player projectiles hit enemy hurtboxes (+ walls); enemy projectiles hit
@@ -53,7 +57,9 @@ func _physics_process(delta: float) -> void:
 	if _life >= _max_life:
 		_deactivate()
 
-func _on_hit(_hurtbox: HurtboxComponent) -> void:
+func _on_hit(hurtbox: HurtboxComponent) -> void:
+	if on_hit_extra.is_valid():
+		on_hit_extra.call(global_position, hurtbox)
 	if not pierce:
 		_deactivate()
 

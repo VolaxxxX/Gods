@@ -117,9 +117,24 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
 - **Phase 0 — Foundations:** project, autoloads, data system, seeded RNG, i18n,
   Web export preset, hub scene, tests. **DONE (pending in-editor/Web verification
   by maintainer — Godot not available in the build container).**
-- **Phase 1 — Greek vertical slice (greybox):** twin-stick move + shoot, one
-  enemy, a small generated floor, room clear → doors, death → hub. **STARTED.**
-- Phases 2–5: not started. See the project brief.
+- **Phase 1 — Greek vertical slice (greybox):** twin-stick move + shoot, 3
+  enemies + Hydra boss, generated floor, room clear → doors, death → hub, plus
+  juice (screenshake/hit-stop/damage-flash/death pops). **DONE (pending Web/editor
+  verification).**
+- **Phase 2 — Roguelike systems:** **STARTED.** Done: `StatBlock` aggregation,
+  item pickups in reward/shop rooms with live stat application, data-driven
+  `SynergyEngine` (item synergies), divine pacts (blessing choice at altars,
+  applied via RunManager), on-hit/passive effects (chain lightning, deflect).
+  Remaining: shops with gold cost + sacrifices, meta-progression
+  (reincarnation/karma), weighing-of-the-soul, syncretism rivalries, seed UI.
+- Phases 3–5: not started. See the project brief.
+
+### Progression aggregation (Phase 2)
+`RunManager` owns `owned_items` / `chosen_blessings`. `collect_modifiers()` and
+`collect_effects()` merge item modifiers + blessing modifiers + active synergy
+grants (via `SynergyEngine`). The player rebuilds a `StatBlock` from
+`BASE_STATS` + these modifiers on `item_picked_up` / `blessing_chosen`. New stats
+need no code — just use the stat name (with `_add`/`_mult`) in data.
 
 ### Known limitation
 The dev container has **no Godot binary**, so the editor, the headless tests, and

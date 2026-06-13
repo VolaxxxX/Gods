@@ -13,6 +13,7 @@ var deities: Dictionary = {}    # DeityData
 var blessings: Dictionary = {}  # BlessingData
 var biomes: Dictionary = {}     # BiomeData
 var rooms: Dictionary = {}      # RoomTemplate
+var synergies: Dictionary = {}  # SynergyData
 
 func _ready() -> void:
 	load_all()
@@ -26,9 +27,9 @@ func load_all() -> void:
 	var files: Array = manifest.get("files", [])
 	for path in files:
 		_load_file(str(path))
-	print("GameData loaded: %d entities, %d items, %d deities, %d blessings, %d biomes, %d rooms" % [
+	print("GameData loaded: %d entities, %d items, %d deities, %d blessings, %d biomes, %d rooms, %d synergies" % [
 		entities.size(), items.size(), deities.size(),
-		blessings.size(), biomes.size(), rooms.size()])
+		blessings.size(), biomes.size(), rooms.size(), synergies.size()])
 
 func _load_file(path: String) -> void:
 	var data := _read_json(path)
@@ -62,6 +63,9 @@ func _register(category: String, entry: Dictionary) -> void:
 		"room":
 			var r := RoomTemplate.from_dict(entry)
 			rooms[r.id] = r
+		"synergy":
+			var s := SynergyData.from_dict(entry)
+			synergies[s.id] = s
 		_:
 			push_warning("GameData: unknown category '%s'" % category)
 
@@ -83,9 +87,33 @@ func rooms_for(pantheon: String, type: String) -> Array[RoomTemplate]:
 			out.append(r)
 	return out
 
+## All items belonging to a pantheon (for shop/reward pools).
+func items_for(pantheon: String) -> Array[ItemData]:
+	var out: Array[ItemData] = []
+	for it in items.values():
+		if it.pantheon == pantheon:
+			out.append(it)
+	return out
+
+## All blessings belonging to a pantheon (for altar offerings).
+func blessings_for(pantheon: String) -> Array[BlessingData]:
+	var out: Array[BlessingData] = []
+	for b in blessings.values():
+		if b.pantheon == pantheon:
+			out.append(b)
+	return out
+
+## Synergies belonging to a pantheon (empty pantheon = cross-pantheon).
+func synergies_for(pantheon: String) -> Array[SynergyData]:
+	var out: Array[SynergyData] = []
+	for s in synergies.values():
+		if s.pantheon == pantheon or s.pantheon == "":
+			out.append(s)
+	return out
+
 func _clear() -> void:
 	entities.clear(); items.clear(); deities.clear()
-	blessings.clear(); biomes.clear(); rooms.clear()
+	blessings.clear(); biomes.clear(); rooms.clear(); synergies.clear()
 
 func _read_json(path: String) -> Variant:
 	if not FileAccess.file_exists(path):

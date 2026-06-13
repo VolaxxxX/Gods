@@ -45,6 +45,10 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 	_build_obstacles()
 	_build_doors()
 
+	# Reward/shop rooms lay out item pickups at their feature anchors.
+	if room_type == "reward" or room_type == "shop":
+		_spawn_pickups()
+
 	# Combat & boss rooms lock until cleared; safe rooms are open immediately.
 	var has_combat := room_type == "combat" or room_type == "boss" or room_type == "challenge"
 	if has_combat:
@@ -200,6 +204,26 @@ func _random_floor_point() -> Vector2:
 	return Vector2(
 		rng.randf_range(margin, _size.x - margin),
 		rng.randf_range(margin, _size.y - margin))
+
+func _spawn_pickups() -> void:
+	if biome == null:
+		return
+	var pool := GameData.items_for(biome.pantheon)
+	if pool.is_empty():
+		return
+	var anchors: Array[Vector2] = []
+	if template != null:
+		anchors = template.feature_anchors()
+	if anchors.is_empty():
+		anchors.append(_size * 0.5)
+	for i in anchors.size():
+		var item = RNG.pick("loot", pool)
+		if item == null:
+			continue
+		var p := Pickup.new()
+		p.setup(item)
+		p.position = anchors[i]
+		add_child(p)
 
 func _on_enemy_gone() -> void:
 	_alive_enemies -= 1

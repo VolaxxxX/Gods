@@ -11,6 +11,9 @@ signal died
 var health: float = 0.0
 var invulnerable: bool = false
 var _dead: bool = false
+## Optional hook: takes incoming amount, returns possibly-modified amount
+## (e.g. blessings that deflect/reduce damage). Set by the owning entity.
+var damage_filter: Callable = Callable()
 
 func _ready() -> void:
 	if health <= 0.0:
@@ -29,6 +32,10 @@ func apply(damage: Damage) -> void:
 func take(amount: float) -> void:
 	if _dead or invulnerable or amount <= 0.0:
 		return
+	if damage_filter.is_valid():
+		amount = float(damage_filter.call(amount))
+		if amount <= 0.0:
+			return
 	health = maxf(0.0, health - amount)
 	damaged.emit(amount, health, max_health)
 	if health <= 0.0:
