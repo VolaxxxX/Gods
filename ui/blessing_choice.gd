@@ -35,8 +35,12 @@ func _ready() -> void:
 
 	for b in _options:
 		var btn := Button.new()
-		btn.text = "%s — %s" % [Loc.t(b.name_key), Loc.t(b.desc_key)]
-		btn.custom_minimum_size = Vector2(460, 64)
+		var label := "%s — %s" % [Loc.t(b.name_key), Loc.t(b.desc_key)]
+		# Warn when this boon would anger a rival deity already followed (curse).
+		if RunManager.is_rival_of_owned(b.deity_id):
+			label += "\n%s" % Loc.t("ui.rival_warning")
+		btn.text = label
+		btn.custom_minimum_size = Vector2(460, 72)
 		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		btn.pressed.connect(_on_pick.bind(b.id))
 		box.add_child(btn)

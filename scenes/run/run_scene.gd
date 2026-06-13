@@ -15,6 +15,7 @@ var current_room: Room
 var current_pos: Vector2i = Vector2i.ZERO
 var _cleared: Dictionary = {}   # Vector2i -> true
 var _ended: bool = false
+var _room_damage_taken: bool = false  # for the "cautious" play-style tally
 
 func _ready() -> void:
 	# Start a fresh run if one isn't already active (e.g. launched directly).
@@ -35,6 +36,7 @@ func _ready() -> void:
 	player = Player.new()
 	add_child(player)
 	player.set_pool(pool)
+	player.health.damaged.connect(func(_a, _c, _m): _room_damage_taken = true)
 
 	camera = Camera2D.new()
 	camera.position_smoothing_enabled = true
@@ -71,6 +73,8 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	add_child(current_room)
 	current_room.door_taken.connect(_on_door_taken)
 	current_room.cleared.connect(_on_room_cleared.bind(pos, node["type"]))
+
+	_room_damage_taken = false
 
 	# Build. If already cleared, treat as a safe room (no respawn).
 	var build_type: String = node["type"] if not already else "reward"
@@ -115,6 +119,9 @@ func _on_door_taken(side: String) -> void:
 func _on_room_cleared(pos: Vector2i, type: String) -> void:
 	if not _cleared.has(pos):
 		RunManager.rooms_cleared_count += 1
+		# Clearing a fight unscathed reads as a cautious soul.
+		if (type == "combat" or type == "boss") and not _room_damage_taken:
+			RunManager.add_style("cautious")
 	_cleared[pos] = true
 	Events.emit_signal("room_cleared", current_room)
 	if type == "boss" and not _ended:

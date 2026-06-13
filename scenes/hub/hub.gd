@@ -70,6 +70,12 @@ func _build() -> void:
 	runs.text = Loc.t("hub.runs", {"n": int(SaveManager.meta.get("runs_completed", 0))})
 	v.add_child(runs)
 
+	var verdict_key: String = SaveManager.meta.get("last_verdict", "")
+	if verdict_key != "":
+		var verdict := Label.new()
+		verdict.text = Loc.t("hub.last_verdict", {"v": Loc.t(verdict_key)})
+		v.add_child(verdict)
+
 	_refresh()
 
 func _refresh() -> void:

@@ -15,8 +15,11 @@ var player_health: float = 6.0
 var gold: int = 0
 var owned_items: Array[String] = []
 var chosen_blessings: Array[String] = []
+# Curses incurred by mixing rival deities (syncretism risk). Each is a StatBlock
+# modifier dict applied alongside items/blessings.
+var curses: Array = []
 
-# Run tallies (feed karma on run end).
+# Run tallies (feed karma + soul judgment on run end).
 var enemies_killed: int = 0
 var rooms_cleared_count: int = 0
 
@@ -39,6 +42,7 @@ func start_run(p_seed: int, p_biome: String = "greece") -> void:
 	rooms_cleared_count = 0
 	owned_items.clear()
 	chosen_blessings.clear()
+	curses.clear()
 	style = {"aggressive": 0, "cautious": 0, "greedy": 0, "merciful": 0}
 	var biome := GameData.get_biome(p_biome)
 	if biome:
@@ -50,8 +54,13 @@ func start_run(p_seed: int, p_biome: String = "greece") -> void:
 func end_run(victory: bool) -> void:
 	active = false
 	floor_graph = null
+	# Weighing of the soul: play style produces a verdict + bonus karma.
+	var judgment := SoulJudgment.weigh(style)
+	SaveManager.meta["last_verdict"] = judgment["verdict_key"]
+	Events.emit_signal("soul_judged", judgment["verdict_key"])
 	# Reincarnation: convert the run's deeds into permanent karma.
-	var karma_gain := rooms_cleared_count * 2 + int(enemies_killed / 2.0) + (25 if victory else 0)
+	var karma_gain := rooms_cleared_count * 2 + int(enemies_killed / 2.0) \
+		+ int(judgment["karma_bonus"]) + (25 if victory else 0)
 	SaveManager.add_karma(karma_gain)
 	SaveManager.clear_run()
 	SaveManager.meta["runs_completed"] = int(SaveManager.meta.get("runs_completed", 0)) + 1
@@ -86,8 +95,37 @@ func add_item(id: String) -> void:
 	Events.emit_signal("item_picked_up", id)
 
 func add_blessing(id: String) -> void:
+	# Syncretism: mixing a rival deity's boon angers the jealous gods → a curse.
+	var b = GameData.blessings.get(id, null)
+	var deity: String = b.deity_id if b != null else ""
+	var angers_rival: bool = deity != "" and is_rival_of_owned(deity)
 	chosen_blessings.append(id)
+	if angers_rival:
+		curses.append({"damage_mult": 0.9})
+		Events.emit_signal("rivalry_incurred", deity)
 	Events.emit_signal("blessing_chosen", id)
+
+## Distinct deity ids the player currently has blessings from.
+func owned_deities() -> Array:
+	var out: Array = []
+	for bid in chosen_blessings:
+		var b = GameData.blessings.get(bid, null)
+		if b != null and b.deity_id != "" and not (b.deity_id in out):
+			out.append(b.deity_id)
+	return out
+
+## True if `deity_id` is a rival of any deity the player already follows (mutual).
+func is_rival_of_owned(deity_id: String) -> bool:
+	var dd = GameData.deities.get(deity_id, null)
+	for od in owned_deities():
+		if od == deity_id:
+			continue
+		if dd != null and (od in dd.rivals):
+			return true
+		var odd = GameData.deities.get(od, null)
+		if odd != null and (deity_id in odd.rivals):
+			return true
+	return false
 
 ## All active stat modifiers from items + blessings + active synergies.
 ## Returns Array[Dictionary] for StatBlock.add_modifiers().
@@ -103,6 +141,8 @@ func collect_modifiers() -> Array:
 			mods.append(b.modifiers)
 	for grant in _synergy_result()["modifiers"]:
 		mods.append(grant)
+	for curse in curses:
+		mods.append(curse)
 	var meta := meta_modifiers()
 	if not meta.is_empty():
 		mods.append(meta)

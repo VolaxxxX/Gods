@@ -6,11 +6,19 @@
 	"ui.options": "Options",
 	"ui.resume": "Resume",
 	"ui.choose_blessing": "An altar hums. Choose a boon:",
+	"ui.rival_warning": "⚠ Angers a rival god — you will be cursed",
 
 	"hub.title": "The Threshold",
 	"hub.runs": "Souls guided: {n}",
 	"hub.karma": "Karma: {n}",
 	"hub.reincarnation": "Reincarnation",
+	"hub.last_verdict": "Last judgment: {v}",
+
+	"judgment.balanced": "Balanced (Ma'at is pleased)",
+	"judgment.wrathful": "Wrathful",
+	"judgment.prudent": "Prudent",
+	"judgment.avaricious": "Avaricious",
+	"judgment.merciful": "Merciful",
 
 	"meta.level": "Lv {lvl}/{max}",
 	"meta.level_max": "Lv MAX",

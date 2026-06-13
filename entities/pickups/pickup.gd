@@ -28,8 +28,10 @@ func _on_body_entered(_body: Node) -> void:
 	if item == null:
 		return
 	# Shops charge gold; if the player can't afford it, leave it on the floor.
-	if price > 0 and not RunManager.spend_gold(price):
-		return
+	if price > 0:
+		if not RunManager.spend_gold(price):
+			return
+		RunManager.add_style("greedy")
 	RunManager.add_item(item.id)
 	queue_free()
 

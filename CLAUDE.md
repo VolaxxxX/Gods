@@ -126,9 +126,13 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   (altar blessing choice), on-hit/passive effects (chain lightning, deflect),
   **gold drops + priced shops**, **sacrifice altars** (HP → item), and
   **meta-progression** (karma earned per run → permanent reincarnation upgrades,
-  data-driven `MetaUpgradeData`, bought at the hub, applied to base stats).
-  Remaining: weighing-of-the-soul payoff (style is tracked), syncretism
-  rivalries (`DeityData.rivals` exists), seed-entry UI, run resume to exact room.
+  data-driven `MetaUpgradeData`, bought at the hub, applied to base stats),
+  **weighing of the soul** (`SoulJudgment` turns play style into a verdict +
+  bonus karma; style tracked via kills/no-damage clears/shop buys), and
+  **syncretism rivalries** (mixing rival deities' boons applies a curse modifier,
+  warned in the altar UI).
+  Remaining: seed-entry UI, run resume to exact room, cross-pantheon hybrid
+  synergies (needs a 2nd pantheon).
 - Phases 3–5: not started. See the project brief.
 
 ### Progression aggregation (Phase 2)
