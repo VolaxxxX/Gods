@@ -15,7 +15,7 @@
 		},
 		{
 			"id": "aztec_cipactli", "name_key": "boss.cipactli.name", "role": "boss", "pantheon": "aztec",
-			"max_health": 200, "move_speed": 46, "contact_damage": 2, "radius": 38, "ai": "chase", "gold": 45, "color": "#3a7a5a"
+			"max_health": 200, "move_speed": 46, "contact_damage": 2, "radius": 38, "ai": "chase", "gold": 45, "color": "#3a7a5a", "ranged": true, "range_damage": 1, "range_rate": 1.4, "range_speed": 240
 		}
 	]
 }

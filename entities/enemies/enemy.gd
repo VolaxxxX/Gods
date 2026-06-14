@@ -12,13 +12,16 @@ var movement: MovementComponent
 var ai: AIComponent
 var hurtbox: HurtboxComponent
 var contact: DamageArea
+var weapon: WeaponComponent  # only for ranged entities (bosses, casters)
+var _target: Node2D
 
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
 var _flash: float = 0.0
 
-func setup(p_data: EntityData, target: Node2D) -> void:
+func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
 	data = p_data
+	_target = target
 	_radius = data.radius
 	_color = data.color
 
@@ -70,6 +73,19 @@ func setup(p_data: EntityData, target: Node2D) -> void:
 	contact.add_child(cshape)
 	add_child(contact)
 
+	# Optional ranged attack (bosses/casters fire at the player).
+	if data.ranged and pool != null:
+		weapon = WeaponComponent.new()
+		weapon.faction_player = false
+		weapon.pool = pool
+		weapon.base_damage = data.range_damage
+		weapon.fire_rate = data.range_rate
+		weapon.projectile_speed = data.range_speed
+		weapon.projectile_color = Color(1.0, 0.45, 0.4)
+		weapon.projectile_radius = 8.0
+		weapon.projectile_life = 2.5
+		add_child(weapon)
+
 func _ready() -> void:
 	add_to_group("enemies")
 
@@ -78,6 +94,10 @@ func _physics_process(delta: float) -> void:
 		var dir := ai.desired_direction(global_position)
 		velocity = movement.compute(velocity, dir, delta)
 		move_and_slide()
+	# Ranged entities fire at the player (the weapon throttles via fire_rate).
+	if weapon != null and is_instance_valid(_target):
+		var aim := _target.global_position - global_position
+		weapon.attempt(global_position + aim.normalized() * (_radius + 8.0), aim)
 	# Contact damage now ticks via the hurtbox cooldown (retrigger_interval).
 	if _flash > 0.0:
 		_flash -= delta

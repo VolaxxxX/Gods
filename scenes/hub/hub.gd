@@ -6,6 +6,9 @@ var _karma_label: Label
 var _rows: Dictionary = {}        # upgrade id -> {name, level, buy, up}
 var _biome_option: OptionButton
 var _biome_ids: Array[String] = []
+var _char_option: OptionButton
+var _char_ids: Array[String] = []
+var _hero_desc: Label
 var _seed_edit: LineEdit
 
 func _ready() -> void:
@@ -49,6 +52,25 @@ func _build() -> void:
 	_seed_edit = LineEdit.new()
 	_seed_edit.custom_minimum_size = Vector2(180, 0)
 	sel.add_child(_seed_edit)
+
+	# Character (starting kit) selector.
+	var hero := HBoxContainer.new()
+	hero.add_theme_constant_override("separation", 12)
+	v.add_child(hero)
+	var hero_l := Label.new()
+	hero_l.text = Loc.t("ui.character")
+	hero.add_child(hero_l)
+	_char_option = OptionButton.new()
+	for ch in GameData.characters.values():
+		_char_ids.append(ch.id)
+		_char_option.add_item(Loc.t(ch.name_key))
+	if _char_option.item_count > 0:
+		_char_option.select(0)
+	_char_option.item_selected.connect(func(_i): _refresh_hero_desc())
+	hero.add_child(_char_option)
+	_hero_desc = Label.new()
+	hero.add_child(_hero_desc)
+	_refresh_hero_desc()
 
 	# Action buttons.
 	var buttons := HBoxContainer.new()
@@ -138,6 +160,17 @@ func _selected_biome() -> String:
 		return _biome_ids[idx]
 	return "greece"
 
+func _selected_character() -> String:
+	var idx := _char_option.selected
+	if idx >= 0 and idx < _char_ids.size():
+		return _char_ids[idx]
+	return "char_wanderer"
+
+func _refresh_hero_desc() -> void:
+	var id := _selected_character()
+	var ch = GameData.characters.get(id, null)
+	_hero_desc.text = Loc.t(ch.desc_key) if ch != null else ""
+
 func _selected_seed() -> int:
 	var t := _seed_edit.text.strip_edges()
 	if t == "":
@@ -147,12 +180,12 @@ func _selected_seed() -> int:
 	return int(hash(t))
 
 func _on_play() -> void:
-	RunManager.start_run(_selected_seed(), _selected_biome())
+	RunManager.start_run(_selected_seed(), _selected_biome(), _selected_character())
 	SceneRouter.goto_run()
 
 func _on_daily() -> void:
 	RNG.seed_from_string("daily-" + Time.get_date_string_from_system())
-	RunManager.start_run(RNG.get_seed(), _selected_biome())
+	RunManager.start_run(RNG.get_seed(), _selected_biome(), _selected_character())
 	SceneRouter.goto_run()
 
 func _on_resume() -> void:

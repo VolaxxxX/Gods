@@ -36,9 +36,13 @@
 			"move_speed": 118,
 			"contact_damage": 1,
 			"radius": 11,
-			"ai": "chase",
+			"ai": "keep_distance",
 			"gold": 2,
-			"color": "#c79a5b"
+			"color": "#c79a5b",
+			"ranged": true,
+			"range_damage": 1,
+			"range_rate": 1.1,
+			"range_speed": 230
 		},
 		{
 			"id": "greece_hydra",
@@ -51,7 +55,11 @@
 			"radius": 34,
 			"ai": "chase",
 			"gold": 30,
-			"color": "#3fa66b"
+			"color": "#3fa66b",
+			"ranged": true,
+			"range_damage": 1,
+			"range_rate": 1.4,
+			"range_speed": 240
 		}
 	]
 }

@@ -26,9 +26,13 @@ var hurtbox: HurtboxComponent
 var _last_aim: Vector2 = Vector2.RIGHT
 var _deflect_chance: float = 0.0
 var _flash: float = 0.0
+var _body_color: Color = Color(0.4, 0.85, 1.0)
 
 func _ready() -> void:
 	add_to_group("player")
+	var ch = GameData.characters.get(RunManager.character_id, null)
+	if ch != null:
+		_body_color = ch.color
 	collision_layer = Collision.PLAYER_BODY
 	# Collide with walls only; pass through enemies (contact damage is handled by
 	# areas), which avoids the player getting shoved/stuck by mobs.
@@ -182,7 +186,7 @@ func _emit_health() -> void:
 	Events.emit_signal("player_health_changed", health.health, health.max_health)
 
 func _draw() -> void:
-	var body_color := Color(0.4, 0.85, 1.0)
+	var body_color := _body_color
 	if _flash > 0.0:
 		body_color = Color(1, 1, 1)
 	draw_circle(Vector2.ZERO, RADIUS, body_color)

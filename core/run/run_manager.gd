@@ -6,6 +6,7 @@ extends Node
 var active: bool = false
 var seed_value: int = 0
 var biome_id: String = "greece"
+var character_id: String = "char_wanderer"
 var floor_index: int = 0
 var current_room_index: int = 0
 # Multi-biome runs: realms descended so far this run (non-linear branching).
@@ -33,11 +34,12 @@ var style: Dictionary = {"aggressive": 0, "cautious": 0, "greedy": 0, "merciful"
 # regenerated from the seed on resume to keep saves tiny and deterministic.
 var floor_graph = null
 
-func start_run(p_seed: int, p_biome: String = "greece") -> void:
+func start_run(p_seed: int, p_biome: String = "greece", p_character: String = "char_wanderer") -> void:
 	active = true
 	resuming = false
 	seed_value = p_seed
 	biome_id = p_biome
+	character_id = p_character
 	floor_index = 0
 	current_room_index = 0
 	gold = 0
@@ -48,9 +50,15 @@ func start_run(p_seed: int, p_biome: String = "greece") -> void:
 	chosen_blessings.clear()
 	curses.clear()
 	style = {"aggressive": 0, "cautious": 0, "greedy": 0, "merciful": 0}
-	var biome := GameData.get_biome(p_biome)
-	if biome:
-		player_max_health = 6.0
+	# Apply the chosen character's starting kit (stats flow via collect_modifiers;
+	# any start grants are added so the player picks them up on _ready).
+	var ch = GameData.characters.get(character_id, null)
+	if ch != null:
+		if ch.start_item != "":
+			owned_items.append(ch.start_item)
+		if ch.start_blessing != "":
+			chosen_blessings.append(ch.start_blessing)
+	player_max_health = 6.0
 	player_health = player_max_health
 	RNG.seed_from_int(p_seed)
 	Events.emit_signal("run_started", p_seed)
@@ -175,6 +183,9 @@ func collect_modifiers() -> Array:
 	var meta := meta_modifiers()
 	if not meta.is_empty():
 		mods.append(meta)
+	var ch = GameData.characters.get(character_id, null)
+	if ch != null and not ch.modifiers.is_empty():
+		mods.append(ch.modifiers)
 	return mods
 
 ## Permanent karma upgrades (reincarnation traits) as a single StatBlock dict.
@@ -227,6 +238,7 @@ func to_snapshot() -> Dictionary:
 	return {
 		"seed": seed_value,
 		"biome": biome_id,
+		"character": character_id,
 		"visited_biomes": visited_biomes,
 		"floor_index": floor_index,
 		"player_max_health": player_max_health,
@@ -247,6 +259,7 @@ func from_snapshot(s: Dictionary) -> void:
 	resuming = true
 	seed_value = int(s.get("seed", 0))
 	biome_id = s.get("biome", "greece")
+	character_id = s.get("character", "char_wanderer")
 	visited_biomes = DataUtil.to_string_array(s.get("visited_biomes", []))
 	floor_index = int(s.get("floor_index", 0))
 	player_max_health = float(s.get("player_max_health", 6.0))

@@ -51,7 +51,11 @@
 			"radius": 36,
 			"ai": "chase",
 			"gold": 40,
-			"color": "#2f6b3a"
+			"color": "#2f6b3a",
+			"ranged": true,
+			"range_damage": 1,
+			"range_rate": 1.5,
+			"range_speed": 250
 		}
 	]
 }

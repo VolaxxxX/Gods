@@ -15,7 +15,7 @@
 		},
 		{
 			"id": "japan_orochi", "name_key": "boss.orochi.name", "role": "boss", "pantheon": "japan",
-			"max_health": 200, "move_speed": 46, "contact_damage": 2, "radius": 38, "ai": "chase", "gold": 45, "color": "#3a5f3a"
+			"max_health": 200, "move_speed": 46, "contact_damage": 2, "radius": 38, "ai": "chase", "gold": 45, "color": "#3a5f3a", "ranged": true, "range_damage": 1, "range_rate": 1.5, "range_speed": 245
 		}
 	]
 }

@@ -44,6 +44,7 @@
 		"res://content/aztec/blessings.json",
 		"res://content/aztec/synergies.json",
 		"res://content/cross/synergies.json",
-		"res://content/meta/upgrades.json"
+		"res://content/meta/upgrades.json",
+		"res://content/characters.json"
 	]
 }

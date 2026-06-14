@@ -145,9 +145,12 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   Aztec (Mictlan) — each with biome, 3 enemies + boss, 5–6 deities + blessings,
   4 relics, a synergy, rooms. Rivalries per pantheon; cross-pantheon hybrid
   synergies bridge several. Runs span up to 3 of the 6 realms (branch choice).
-  Remaining Phase 3 polish: unique boss mechanics (Hydra heads, Orochi, etc.),
-  more authored room variety, mini-bosses, secret/cursed rooms, playable
-  characters with different starting kits.
+  **Playable characters** (data-driven `CharacterData`: Wanderer/Warrior/Hunter/
+  Swift, chosen at the hub, starting-kit stat modifiers via StatBlock) and
+  **ranged attacks** (data-driven `ranged`/`range_*` on entities; all 6 bosses +
+  Greek harpy fire enemy projectiles via an enemy-faction WeaponComponent).
+  Remaining Phase 3 polish: bespoke boss patterns (Hydra heads, Orochi),
+  mini-bosses, secret/cursed rooms, more authored room variety.
 - Phases 4–5: not started. See the project brief.
 
 ### Progression aggregation (Phase 2)

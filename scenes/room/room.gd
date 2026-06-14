@@ -164,7 +164,7 @@ func _on_door_entered(_body: Node, side: String) -> void:
 	if not locked:
 		emit_signal("door_taken", side)
 
-func _spawn_enemies(target: Node2D, _pool: ProjectilePool) -> void:
+func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 	if biome == null:
 		return
 	var spawns: Array[Vector2] = []
@@ -191,7 +191,7 @@ func _spawn_enemies(target: Node2D, _pool: ProjectilePool) -> void:
 		if ed == null:
 			continue
 		var e := Enemy.new()
-		e.setup(ed, target)
+		e.setup(ed, target, pool)
 		if i < spawns.size():
 			e.position = spawns[i]
 		else:

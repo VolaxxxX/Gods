@@ -15,6 +15,7 @@ var biomes: Dictionary = {}     # BiomeData
 var rooms: Dictionary = {}      # RoomTemplate
 var synergies: Dictionary = {}  # SynergyData
 var meta_upgrades: Dictionary = {}  # MetaUpgradeData
+var characters: Dictionary = {}     # CharacterData
 
 func _ready() -> void:
 	load_all()
@@ -70,6 +71,9 @@ func _register(category: String, entry: Dictionary) -> void:
 		"meta_upgrade":
 			var mu := MetaUpgradeData.from_dict(entry)
 			meta_upgrades[mu.id] = mu
+		"character":
+			var c := CharacterData.from_dict(entry)
+			characters[c.id] = c
 		_:
 			push_warning("GameData: unknown category '%s'" % category)
 
@@ -118,7 +122,7 @@ func synergies_for(pantheon: String) -> Array[SynergyData]:
 func _clear() -> void:
 	entities.clear(); items.clear(); deities.clear()
 	blessings.clear(); biomes.clear(); rooms.clear(); synergies.clear()
-	meta_upgrades.clear()
+	meta_upgrades.clear(); characters.clear()
 
 func _read_json(path: String) -> Variant:
 	if not FileAccess.file_exists(path):

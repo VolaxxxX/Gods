@@ -1,0 +1,34 @@
+{
+	"_comment": "Playable souls with different starting kits. Pantheon-agnostic stat modifiers so they work in any realm.",
+	"type": "character",
+	"entries": [
+		{
+			"id": "char_wanderer",
+			"name_key": "char.wanderer.name",
+			"desc_key": "char.wanderer.desc",
+			"color": "#6cb8e8",
+			"modifiers": {}
+		},
+		{
+			"id": "char_warrior",
+			"name_key": "char.warrior.name",
+			"desc_key": "char.warrior.desc",
+			"color": "#e07a4a",
+			"modifiers": {"damage_add": 2.0, "max_health_add": 2.0, "fire_rate_mult": 0.85}
+		},
+		{
+			"id": "char_hunter",
+			"name_key": "char.hunter.name",
+			"desc_key": "char.hunter.desc",
+			"color": "#9ad07a",
+			"modifiers": {"crit_chance_add": 0.15, "fire_rate_mult": 1.15, "max_health_add": -1.0}
+		},
+		{
+			"id": "char_swift",
+			"name_key": "char.swift.name",
+			"desc_key": "char.swift.desc",
+			"color": "#d0c0f0",
+			"modifiers": {"move_speed_add": 45.0, "fire_rate_mult": 1.1, "max_health_add": -1.0}
+		}
+	]
+}
