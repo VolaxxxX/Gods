@@ -311,24 +311,35 @@ func _add_gate(side: String) -> StaticBody2D:
 func _draw() -> void:
 	var w := _size.x
 	var h := _size.y
-	# Floor.
+	# Floor: a bespoke realm tile as-is, else a generic tile tinted by palette,
+	# else solid colour. (One generic tileset thus serves all six realms.)
 	var floor_tex := Sprites.tile(_pantheon, "floor")
+	var floor_generic := floor_tex == null
+	if floor_generic:
+		floor_tex = Sprites.tile_generic("floor")
 	if floor_tex != null:
-		draw_texture_rect(floor_tex, Rect2(Vector2.ZERO, _size), true)
+		draw_texture_rect(floor_tex, Rect2(Vector2.ZERO, _size), true,
+			_floor_color if floor_generic else Color.WHITE)
 	else:
 		draw_rect(Rect2(Vector2.ZERO, _size), _floor_color, true)
 		draw_rect(Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, h - 2 * WALL_THICK),
 			Color(_accent_color.r, _accent_color.g, _accent_color.b, 0.10), false, 3.0)
-	# Walls (visual only; colliders are separate bodies).
+	# Walls.
 	var wall_tex := Sprites.tile(_pantheon, "wall")
+	var wall_generic := wall_tex == null
+	if wall_generic:
+		wall_tex = Sprites.tile_generic("wall")
 	for r in [Rect2(0, 0, w, WALL_THICK), Rect2(0, h - WALL_THICK, w, WALL_THICK),
 			Rect2(0, 0, WALL_THICK, h), Rect2(w - WALL_THICK, 0, WALL_THICK, h)]:
 		if wall_tex != null:
-			draw_texture_rect(wall_tex, r, true)
+			draw_texture_rect(wall_tex, r, true, _wall_color if wall_generic else Color.WHITE)
 		else:
 			draw_rect(r, _wall_color)
 	# Obstacles.
 	var obs_tex := Sprites.tile(_pantheon, "obstacle")
+	var obs_generic := obs_tex == null
+	if obs_generic:
+		obs_tex = Sprites.tile_generic("obstacle")
 	if template != null:
 		for y in template.grid.size():
 			var row: String = template.grid[y]
@@ -336,7 +347,8 @@ func _draw() -> void:
 				if row[x] == "O":
 					var cell := Rect2(x * TILE, y * TILE, TILE, TILE)
 					if obs_tex != null:
-						draw_texture_rect(obs_tex, cell, true)
+						draw_texture_rect(obs_tex, cell, true,
+							_accent_color if obs_generic else Color.WHITE)
 					else:
 						draw_rect(cell, _accent_color)
 	# Doors as accent marks.

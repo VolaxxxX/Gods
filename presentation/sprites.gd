@@ -28,6 +28,10 @@ func _get(path: String) -> Texture2D:
 func entity(id: String) -> Texture2D:
 	return _get(ENT + id + ".png")
 
+## Generic fallback monster sprite (tinted by the enemy's colour by the caller).
+func entity_generic() -> Texture2D:
+	return _get(ENT + "enemy.png")
+
 ## Player texture: per-character override, else a generic player.png.
 func player(character_id: String) -> Texture2D:
 	var t := _get(ENT + "player_" + character_id + ".png")
@@ -37,5 +41,10 @@ func player(character_id: String) -> Texture2D:
 func tile(pantheon: String, kind: String) -> Texture2D:
 	return _get(TILES + pantheon + "_" + kind + ".png")
 
+## Generic tile (tinted per realm palette by the caller) — one set fits all realms.
+func tile_generic(kind: String) -> Texture2D:
+	return _get(TILES + kind + ".png")
+
 func fx(name: String) -> Texture2D:
-	return _get(FX + name + ".png")
+	var t := _get(FX + name + ".png")
+	return t if t != null else _get(FX + "projectile.png")

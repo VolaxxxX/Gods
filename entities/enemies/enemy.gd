@@ -23,6 +23,7 @@ var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
 var _flash: float = 0.0
 var _sprite: Sprite2D  # set if a texture exists for this entity id
+var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
 
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
 	data = p_data
@@ -31,11 +32,19 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 	_radius = data.radius
 	_color = data.color
 
-	# Optional sprite (auto-loaded by entity id); greybox circle otherwise.
+	# Optional sprite: a bespoke one for this id, else a generic monster tinted by
+	# the enemy's colour (so one sprite can serve many enemies); greybox otherwise.
 	var tex := Sprites.entity(data.id)
+	var tinted := false
+	if tex == null:
+		tex = Sprites.entity_generic()
+		tinted = true
 	if tex != null:
 		_sprite = Sprite2D.new()
 		_sprite.texture = tex
+		if tinted:
+			_sprite.modulate = _color
+			_sprite_tinted = true
 		var dim: float = maxf(tex.get_width(), tex.get_height())
 		if dim > 0.0:
 			_sprite.scale = Vector2.ONE * (2.2 * _radius / dim)
@@ -137,7 +146,10 @@ func _physics_process(delta: float) -> void:
 	if _flash > 0.0:
 		_flash -= delta
 	if _sprite != null:
-		_sprite.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
+		if _flash > 0.0:
+			_sprite.modulate = Color(1.8, 1.8, 1.8)
+		else:
+			_sprite.modulate = _color if _sprite_tinted else Color.WHITE
 	queue_redraw()
 
 func _enter_phase2() -> void:

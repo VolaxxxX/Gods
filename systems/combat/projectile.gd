@@ -56,6 +56,7 @@ func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool
 	_spr.texture = tex
 	_spr.visible = tex != null
 	if tex != null:
+		_spr.modulate = color  # tints a shared/generic projectile to its faction colour
 		var dim: float = maxf(tex.get_width(), tex.get_height())
 		if dim > 0.0:
 			_spr.scale = Vector2.ONE * (2.0 * radius / dim)

@@ -17,6 +17,10 @@ Filename = the entity id. Top-down, centered, transparent background.
 - Aztec: `aztec_obsidian.png`, `aztec_jaguar.png`, `aztec_tzitzimitl.png`,
   `aztec_jaguar_lord.png`, `aztec_cipactli.png`
 
+**Generic monster (least work)** — `enemy.png`: used for ANY mob without its own
+file, auto-tinted by that enemy's colour. So one sprite can stand in for all
+enemies until you make bespoke ones (per-id files take priority).
+
 **Player** — `player.png` (used by all classes), or override per class:
 `player_char_warrior.png`, `player_char_hunter.png`, … (ids in `content/characters.json`).
 
