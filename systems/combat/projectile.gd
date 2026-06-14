@@ -74,15 +74,17 @@ func _draw() -> void:
 func _activate() -> void:
 	active = true
 	visible = true
-	monitoring = true
-	monitorable = true
+	# Toggling Area2D monitoring must be deferred — these run inside physics /
+	# collision callbacks, where direct changes are blocked by the engine.
+	set_deferred("monitoring", true)
+	set_deferred("monitorable", true)
 	set_physics_process(true)
 	queue_redraw()
 
 func _deactivate() -> void:
 	active = false
 	visible = false
-	monitoring = false
-	monitorable = false
+	set_deferred("monitoring", false)
+	set_deferred("monitorable", false)
 	set_physics_process(false)
 	global_position = Vector2(-100000, -100000)

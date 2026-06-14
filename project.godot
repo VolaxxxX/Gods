@@ -36,6 +36,12 @@ window/stretch/aspect="expand"
 ; Input actions (move_up/down/left/right) are registered in code by the
 ; GameInput autoload, so this file stays simple and version-robust.
 
+[debug]
+
+; The Events autoload is an event bus: its signals are emitted from other
+; scripts, so the per-class "unused signal" warning is a false positive.
+gdscript/warnings/unused_signal=0
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
