@@ -39,21 +39,40 @@ var _melee_damage: float = 4.0
 var _melee_rate: float = 2.5
 var _swing_t: float = 0.0
 var _sprite: Sprite2D
+var _anim: AnimatedSprite2D
+var _attack_t: float = 0.0
 
 func _ready() -> void:
 	add_to_group("player")
 	var ch = GameData.characters.get(RunManager.character_id, null)
 	if ch != null:
 		_body_color = ch.color
-	# Optional sprite (player_<character>.png or player.png); greybox otherwise.
-	var tex := Sprites.player(RunManager.character_id)
-	if tex != null:
-		_sprite = Sprite2D.new()
-		_sprite.texture = tex
-		var dim: float = maxf(tex.get_width(), tex.get_height())
-		if dim > 0.0:
-			_sprite.scale = Vector2.ONE * (2.2 * RADIUS / dim)
-		add_child(_sprite)
+	# Visuals: animated sheets > static sprite > greybox. Per-class override first.
+	var anim_id := ""
+	if Sprites.has_anim("player_" + RunManager.character_id):
+		anim_id = "player_" + RunManager.character_id
+	elif Sprites.has_anim("player"):
+		anim_id = "player"
+	if anim_id != "":
+		_anim = AnimatedSprite2D.new()
+		_anim.sprite_frames = Sprites.build_sprite_frames(anim_id)
+		var fs := Sprites.anim_frame_size(anim_id)
+		if fs > 0:
+			_anim.scale = Vector2.ONE * (2.4 * RADIUS / fs)
+		add_child(_anim)
+		if _anim.sprite_frames.has_animation("idle"):
+			_anim.play("idle")
+		elif _anim.sprite_frames.has_animation("walk"):
+			_anim.play("walk")
+	else:
+		var tex := Sprites.player(RunManager.character_id)
+		if tex != null:
+			_sprite = Sprite2D.new()
+			_sprite.texture = tex
+			var dim: float = maxf(tex.get_width(), tex.get_height())
+			if dim > 0.0:
+				_sprite.scale = Vector2.ONE * (2.2 * RADIUS / dim)
+			add_child(_sprite)
 	collision_layer = Collision.PLAYER_BODY
 	# Collide with walls only; pass through enemies (contact damage is handled by
 	# areas), which avoids the player getting shoved/stuck by mobs.
@@ -181,7 +200,8 @@ func _physics_process(delta: float) -> void:
 	if _weapon_kind == "melee":
 		_update_melee(delta)
 	elif _wants_fire():
-		weapon.attempt(global_position + _last_aim * RADIUS, _last_aim)
+		if weapon.attempt(global_position + _last_aim * RADIUS, _last_aim):
+			_attack_t = 0.22
 
 ## Close-range swing: a brief damage area in front of the player.
 func _update_melee(delta: float) -> void:
@@ -195,6 +215,7 @@ func _update_melee(delta: float) -> void:
 		_melee_cd = 1.0 / maxf(0.01, _melee_rate)
 		_melee_active_t = 0.16
 		_swing_t = 0.16
+		_attack_t = 0.22
 		_melee.position = _last_aim * MELEE_OFFSET
 		var rng := RNG.stream("combat")
 		var rolled := Damage.compute(_melee_damage, {
@@ -252,7 +273,7 @@ func _emit_health() -> void:
 	Events.emit_signal("player_health_changed", health.health, health.max_health)
 
 func _draw() -> void:
-	if _sprite == null:  # greybox body only when there's no texture
+	if _sprite == null and _anim == null:  # greybox body only when no sprite/anim
 		var body_color := _body_color
 		if _flash > 0.0:
 			body_color = Color(1, 1, 1)
@@ -270,6 +291,26 @@ func _process(delta: float) -> void:
 		_flash -= delta
 	if _swing_t > 0.0:
 		_swing_t -= delta
+	if _attack_t > 0.0:
+		_attack_t -= delta
 	if _sprite != null:
 		_sprite.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
+	if _anim != null:
+		_anim.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
+		_update_anim()
 	queue_redraw()
+
+## Pick walk/attack/idle and face the aim/movement direction.
+func _update_anim() -> void:
+	var sf := _anim.sprite_frames
+	var st := "idle"
+	if _attack_t > 0.0 and sf.has_animation("attack"):
+		st = "attack"
+	elif velocity.length() > 12.0 and sf.has_animation("walk"):
+		st = "walk"
+	if not sf.has_animation(st):
+		st = "idle"
+	if sf.has_animation(st) and _anim.animation != st:
+		_anim.play(st)
+	if absf(_last_aim.x) > 0.1:
+		_anim.flip_h = _last_aim.x < 0.0

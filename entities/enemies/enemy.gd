@@ -22,8 +22,10 @@ var _phase2_done: bool = false
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
 var _flash: float = 0.0
-var _sprite: Sprite2D  # set if a texture exists for this entity id
+var _sprite: Sprite2D  # set if a static texture exists for this entity id
 var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
+var _anim: AnimatedSprite2D  # set if animation sheets exist (takes priority)
+var _attack_t: float = 0.0   # time left showing the attack animation
 
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
 	data = p_data
@@ -32,23 +34,35 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 	_radius = data.radius
 	_color = data.color
 
-	# Optional sprite: a bespoke one for this id, else a generic monster tinted by
-	# the enemy's colour (so one sprite can serve many enemies); greybox otherwise.
-	var tex := Sprites.entity(data.id)
-	var tinted := false
-	if tex == null:
-		tex = Sprites.entity_generic()
-		tinted = true
-	if tex != null:
-		_sprite = Sprite2D.new()
-		_sprite.texture = tex
-		if tinted:
-			_sprite.modulate = _color
-			_sprite_tinted = true
-		var dim: float = maxf(tex.get_width(), tex.get_height())
-		if dim > 0.0:
-			_sprite.scale = Vector2.ONE * (2.2 * _radius / dim)
-		add_child(_sprite)
+	# Visuals, in priority order: animated sheets > bespoke static sprite >
+	# generic monster tinted by colour > greybox circle.
+	if Sprites.has_anim(data.id):
+		_anim = AnimatedSprite2D.new()
+		_anim.sprite_frames = Sprites.build_sprite_frames(data.id)
+		var fs := Sprites.anim_frame_size(data.id)
+		if fs > 0:
+			_anim.scale = Vector2.ONE * (2.4 * _radius / fs)
+		add_child(_anim)
+		if _anim.sprite_frames.has_animation("idle"):
+			_anim.play("idle")
+		elif _anim.sprite_frames.has_animation("walk"):
+			_anim.play("walk")
+	else:
+		var tex := Sprites.entity(data.id)
+		var tinted := false
+		if tex == null:
+			tex = Sprites.entity_generic()
+			tinted = true
+		if tex != null:
+			_sprite = Sprite2D.new()
+			_sprite.texture = tex
+			if tinted:
+				_sprite.modulate = _color
+				_sprite_tinted = true
+			var dim: float = maxf(tex.get_width(), tex.get_height())
+			if dim > 0.0:
+				_sprite.scale = Vector2.ONE * (2.2 * _radius / dim)
+			add_child(_sprite)
 
 	collision_layer = Collision.ENEMY_BODY
 	collision_mask = Collision.WORLD
@@ -129,7 +143,8 @@ func _physics_process(delta: float) -> void:
 	# Ranged entities fire at the player (the weapon throttles via fire_rate).
 	if weapon != null and is_instance_valid(_target):
 		var aim := _target.global_position - global_position
-		weapon.attempt(global_position + aim.normalized() * (_radius + 8.0), aim)
+		if weapon.attempt(global_position + aim.normalized() * (_radius + 8.0), aim):
+			_attack_t = 0.35
 	# Final-boss second phase: unlock new attacks + a burst at the threshold.
 	if not _phase2_done and not data.phase2_abilities.is_empty() \
 			and health.fraction() <= data.phase2_at:
@@ -145,12 +160,29 @@ func _physics_process(delta: float) -> void:
 	# Contact damage now ticks via the hurtbox cooldown (retrigger_interval).
 	if _flash > 0.0:
 		_flash -= delta
+	if _attack_t > 0.0:
+		_attack_t -= delta
 	if _sprite != null:
-		if _flash > 0.0:
-			_sprite.modulate = Color(1.8, 1.8, 1.8)
-		else:
-			_sprite.modulate = _color if _sprite_tinted else Color.WHITE
+		_sprite.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else (_color if _sprite_tinted else Color.WHITE)
+	if _anim != null:
+		_anim.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
+		_update_anim()
 	queue_redraw()
+
+## Pick walk/attack/idle and face the movement direction.
+func _update_anim() -> void:
+	var sf := _anim.sprite_frames
+	var st := "idle"
+	if _attack_t > 0.0 and sf.has_animation("attack"):
+		st = "attack"
+	elif velocity.length() > 8.0 and sf.has_animation("walk"):
+		st = "walk"
+	if not sf.has_animation(st):
+		st = "idle"
+	if sf.has_animation(st) and _anim.animation != st:
+		_anim.play(st)
+	if absf(velocity.x) > 1.0:
+		_anim.flip_h = velocity.x < 0.0
 
 func _enter_phase2() -> void:
 	_phase2_done = true
@@ -162,6 +194,7 @@ func _enter_phase2() -> void:
 	Juice.add_trauma(0.6)
 
 func _execute_ability(ab: Dictionary) -> void:
+	_attack_t = 0.4  # show the attack animation when an ability fires
 	match ab.get("kind", ""):
 		"nova":
 			_fire_pattern(int(ab.get("count", 8)), TAU, 0.0,
@@ -203,10 +236,17 @@ func _summon(entity_id: String, count: int) -> void:
 func _on_died() -> void:
 	RunManager.on_enemy_killed(data.gold)
 	Events.emit_signal("entity_died", self)
+	# Play the death animation before despawning, if there is one.
+	if _anim != null and _anim.sprite_frames != null and _anim.sprite_frames.has_animation("death"):
+		set_physics_process(false)
+		if contact != null:
+			contact.set_deferred("monitorable", false)
+		_anim.play("death")
+		await _anim.animation_finished
 	queue_free()
 
 func _draw() -> void:
-	if _sprite == null:  # greybox body only when there's no texture
+	if _sprite == null and _anim == null:  # greybox body only when no sprite/anim
 		var c := Color(1, 1, 1) if _flash > 0.0 else _color
 		draw_circle(Vector2.ZERO, _radius, c)
 	# Health pip (thin bar) so damage is readable.

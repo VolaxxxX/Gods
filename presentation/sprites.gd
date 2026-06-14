@@ -53,3 +53,53 @@ func tile_generic(kind: String) -> Texture2D:
 func fx(name: String) -> Texture2D:
 	var t := _resolve(FX, name)
 	return t if t != null else _resolve(FX, "projectile")
+
+# --- Animations ---
+const ANIMS := ["idle", "walk", "attack", "death"]
+const ANIM_FPS := {"idle": 6.0, "walk": 10.0, "attack": 12.0, "death": 10.0}
+
+## A per-animation spritesheet: entities/<id>_<anim>.png (horizontal strip of
+## square frames).
+func sheet(id: String, anim: String) -> Texture2D:
+	return _resolve(ENT, id + "_" + anim)
+
+func has_anim(id: String) -> bool:
+	for a in ANIMS:
+		if sheet(id, a) != null:
+			return true
+	return false
+
+## Square frame size (= sheet height) of the first available animation, else 0.
+func anim_frame_size(id: String) -> int:
+	for a in ANIMS:
+		var t := sheet(id, a)
+		if t != null:
+			return t.get_height()
+	return 0
+
+## Build a SpriteFrames from the per-animation strips (frames = width / height).
+## idle/walk loop; attack/death play once. Returns null if no sheets exist.
+func build_sprite_frames(id: String) -> SpriteFrames:
+	if not has_anim(id):
+		return null
+	var sf := SpriteFrames.new()
+	if sf.has_animation("default"):
+		sf.remove_animation("default")
+	for a in ANIMS:
+		var tex := sheet(id, a)
+		if tex == null:
+			continue
+		var fh := tex.get_height()
+		if fh <= 0:
+			continue
+		var count: int = maxi(1, int(round(float(tex.get_width()) / float(fh))))
+		sf.add_animation(a)
+		sf.set_animation_speed(a, ANIM_FPS.get(a, 8.0))
+		sf.set_animation_loop(a, a == "idle" or a == "walk")
+		for i in count:
+			var at := AtlasTexture.new()
+			at.atlas = tex
+			at.region = Rect2(i * fh, 0, fh, fh)
+			sf.add_frame(a, at)
+	return sf
+

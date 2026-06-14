@@ -24,6 +24,17 @@ enemies until you make bespoke ones (per-id files take priority).
 **Player** — `player.png` (used by all classes), or override per class:
 `player_char_warrior.png`, `player_char_hunter.png`, … (ids in `content/characters.json`).
 
+## Animations (optional, auto-detected)
+Drop per-animation **horizontal spritesheets of square frames** and the entity
+animates automatically (walk when moving, attack when firing, death on kill):
+- `<id>_idle.png`, `<id>_walk.png`, `<id>_attack.png`, `<id>_death.png`
+- Player: `player_idle.png` … (or `player_<character_id>_idle.png` per class)
+- Frame count is inferred as **width ÷ height** (e.g. 8 frames of 64px → 512×64).
+- idle/walk loop; attack/death play once (the entity waits for `death` before
+  despawning). The sprite flips horizontally with facing.
+- If animation sheets exist they take priority over the static `<id>.png`.
+- Missing animations are fine (it falls back to idle, then to static/greybox).
+
 ## Sizes
 - Normal mobs / player: **32×32 px** (auto-scaled to the entity's radius).
 - Minibosses: ~48×48. Bosses: ~64×64.
