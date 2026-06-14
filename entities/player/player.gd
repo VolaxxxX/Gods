@@ -5,6 +5,8 @@ extends CharacterBody2D
 ## Components do the heavy lifting (composition over inheritance).
 
 const RADIUS := 14.0
+const MELEE_RANGE := 42.0    # radius of the melee swing hitbox
+const MELEE_OFFSET := 30.0   # how far in front of the player it lands
 
 # Base stats before items/blessings/synergies. Everything stacks on top via
 # StatBlock (see _recompute_stats).
@@ -27,6 +29,15 @@ var _last_aim: Vector2 = Vector2.RIGHT
 var _deflect_chance: float = 0.0
 var _flash: float = 0.0
 var _body_color: Color = Color(0.4, 0.85, 1.0)
+
+# Melee class support.
+var _weapon_kind: String = "ranged"
+var _melee: DamageArea
+var _melee_cd: float = 0.0
+var _melee_active_t: float = 0.0
+var _melee_damage: float = 4.0
+var _melee_rate: float = 2.5
+var _swing_t: float = 0.0
 
 func _ready() -> void:
 	add_to_group("player")
@@ -74,6 +85,24 @@ func _ready() -> void:
 	weapon.projectile_color = Color(0.9, 0.95, 1.0)
 	add_child(weapon)
 
+	# Apply the class's combat style.
+	if ch != null:
+		_weapon_kind = ch.weapon_kind
+		weapon.projectile_count = ch.projectile_count
+		weapon.spread_deg = ch.spread_deg
+		weapon.pierce = ch.pierce
+	if _weapon_kind == "melee":
+		_melee = DamageArea.new()
+		_melee.collision_layer = Collision.PLAYER_DMG
+		_melee.collision_mask = 0
+		var msh := CollisionShape2D.new()
+		var mc := CircleShape2D.new()
+		mc.radius = MELEE_RANGE
+		msh.shape = mc
+		_melee.add_child(msh)
+		add_child(_melee)
+		_melee.monitorable = false  # gated to the swing window
+
 	# Recompute stats whenever the build changes during the run.
 	Events.item_picked_up.connect(func(_id): _recompute_stats())
 	Events.blessing_chosen.connect(func(_id): _recompute_stats())
@@ -93,6 +122,9 @@ func _recompute_stats() -> void:
 	weapon.projectile_speed = sb.value("projectile_speed")
 	weapon.crit_chance = sb.value("crit_chance")
 	weapon.crit_mult = sb.value("crit_mult")
+	# Melee hits harder but swings slower than shots (close-range risk).
+	_melee_damage = sb.value("damage") * 2.4
+	_melee_rate = sb.value("fire_rate") * 0.7
 
 	# Max health: grow current health by any increase so +HP items feel good.
 	var new_max := sb.value("max_health")
@@ -136,8 +168,32 @@ func _physics_process(delta: float) -> void:
 	var aim := _resolve_aim()
 	if aim.length() > 0.01:
 		_last_aim = aim.normalized()
-	if _wants_fire():
+	if _weapon_kind == "melee":
+		_update_melee(delta)
+	elif _wants_fire():
 		weapon.attempt(global_position + _last_aim * RADIUS, _last_aim)
+
+## Close-range swing: a brief damage area in front of the player.
+func _update_melee(delta: float) -> void:
+	_melee_cd -= delta
+	if _melee_active_t > 0.0:
+		_melee_active_t -= delta
+		_melee.position = _last_aim * MELEE_OFFSET
+		if _melee_active_t <= 0.0:
+			_melee.set_deferred("monitorable", false)
+	if _wants_fire() and _melee_cd <= 0.0:
+		_melee_cd = 1.0 / maxf(0.01, _melee_rate)
+		_melee_active_t = 0.16
+		_swing_t = 0.16
+		_melee.position = _last_aim * MELEE_OFFSET
+		var rng := RNG.stream("combat")
+		var rolled := Damage.compute(_melee_damage, {
+			"crit_chance": weapon.crit_chance, "crit_mult": weapon.crit_mult,
+		}, rng)
+		var d := Damage.new(rolled["amount"], ["melee"], self)
+		d.is_crit = rolled["is_crit"]
+		_melee.setup(d, false, 0.4)  # each enemy hit at most ~once per swing
+		_melee.set_deferred("monitorable", true)
 
 func _resolve_aim() -> Vector2:
 	# 1) Touch right stick.
@@ -192,8 +248,15 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, RADIUS, body_color)
 	# Aim indicator.
 	draw_line(Vector2.ZERO, _last_aim * (RADIUS + 10.0), Color(1, 1, 1, 0.8), 3.0)
+	# Melee swing arc feedback.
+	if _swing_t > 0.0:
+		var a := _last_aim.angle()
+		draw_arc(_last_aim * MELEE_OFFSET, MELEE_RANGE, a - 1.0, a + 1.0, 16,
+			Color(1, 1, 1, 0.7), 4.0)
 
 func _process(delta: float) -> void:
 	if _flash > 0.0:
 		_flash -= delta
+	if _swing_t > 0.0:
+		_swing_t -= delta
 	queue_redraw()

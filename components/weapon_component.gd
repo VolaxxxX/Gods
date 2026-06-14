@@ -20,6 +20,11 @@ var crit_mult: float = 2.0
 # player when stats are recomputed.
 var on_hit_effects: Array = []
 
+# Multi-shot / piercing (set per playable class). 1 shot, no spread by default.
+var projectile_count: int = 1
+var spread_deg: float = 0.0
+var pierce: bool = false
+
 var pool: ProjectilePool
 var _cooldown: float = 0.0
 
@@ -30,21 +35,28 @@ func _process(delta: float) -> void:
 func can_fire() -> bool:
 	return _cooldown <= 0.0 and pool != null
 
-## Fire one shot toward `direction` from `origin`. Returns true if it fired.
+## Fire toward `direction` from `origin`. Fires `projectile_count` shots across
+## `spread_deg`. Returns true if it fired.
 func attempt(origin: Vector2, direction: Vector2) -> bool:
 	if not can_fire() or direction.length() < 0.01:
 		return false
 	_cooldown = 1.0 / maxf(0.01, fire_rate)
 	var rng := RNG.stream("combat")
-	var rolled := Damage.compute(base_damage, {
-		"crit_chance": crit_chance, "crit_mult": crit_mult,
-	}, rng)
-	var dmg := Damage.new(rolled["amount"], damage_tags.duplicate(), get_parent())
-	dmg.is_crit = rolled["is_crit"]
-	var vel := direction.normalized() * projectile_speed
-	var p := pool.spawn(origin, vel, dmg, faction_player, projectile_radius, projectile_color, projectile_life)
-	if faction_player and not on_hit_effects.is_empty():
-		p.on_hit_extra = _on_projectile_hit
+	var base_ang := direction.angle()
+	var count: int = maxi(1, projectile_count)
+	for k in count:
+		var t := 0.0 if count == 1 else (float(k) / (count - 1) - 0.5)
+		var ang := base_ang + deg_to_rad(spread_deg) * t
+		var rolled := Damage.compute(base_damage, {
+			"crit_chance": crit_chance, "crit_mult": crit_mult,
+		}, rng)
+		var dmg := Damage.new(rolled["amount"], damage_tags.duplicate(), get_parent())
+		dmg.is_crit = rolled["is_crit"]
+		var vel := Vector2.from_angle(ang) * projectile_speed
+		var p := pool.spawn(origin, vel, dmg, faction_player, projectile_radius,
+			projectile_color, projectile_life, pierce)
+		if faction_player and not on_hit_effects.is_empty():
+			p.on_hit_extra = _on_projectile_hit
 	return true
 
 ## Applies on-hit blessing/synergy effects when a player projectile lands.

@@ -1,5 +1,5 @@
 {
-	"_comment": "Playable souls with different starting kits. Pantheon-agnostic stat modifiers so they work in any realm.",
+	"_comment": "Playable souls with distinct combat styles. Pantheon-agnostic.",
 	"type": "character",
 	"entries": [
 		{
@@ -7,6 +7,8 @@
 			"name_key": "char.wanderer.name",
 			"desc_key": "char.wanderer.desc",
 			"color": "#6cb8e8",
+			"weapon_kind": "ranged",
+			"projectile_count": 1,
 			"modifiers": {}
 		},
 		{
@@ -14,21 +16,28 @@
 			"name_key": "char.warrior.name",
 			"desc_key": "char.warrior.desc",
 			"color": "#e07a4a",
-			"modifiers": {"damage_add": 2.0, "max_health_add": 2.0, "fire_rate_mult": 0.85}
+			"weapon_kind": "melee",
+			"modifiers": {"max_health_add": 3.0, "move_speed_add": 15.0}
 		},
 		{
 			"id": "char_hunter",
 			"name_key": "char.hunter.name",
 			"desc_key": "char.hunter.desc",
 			"color": "#9ad07a",
-			"modifiers": {"crit_chance_add": 0.15, "fire_rate_mult": 1.15, "max_health_add": -1.0}
+			"weapon_kind": "ranged",
+			"projectile_count": 1,
+			"pierce": true,
+			"modifiers": {"damage_add": 2.0, "crit_chance_add": 0.2, "fire_rate_mult": 0.7}
 		},
 		{
 			"id": "char_swift",
 			"name_key": "char.swift.name",
 			"desc_key": "char.swift.desc",
 			"color": "#d0c0f0",
-			"modifiers": {"move_speed_add": 45.0, "fire_rate_mult": 1.1, "max_health_add": -1.0}
+			"weapon_kind": "ranged",
+			"projectile_count": 3,
+			"spread_deg": 18.0,
+			"modifiers": {"fire_rate_mult": 1.1, "damage_mult": 0.7, "move_speed_add": 30.0}
 		}
 	]
 }
