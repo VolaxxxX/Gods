@@ -5,11 +5,30 @@ Legend: 🟥 = FINAL BOSS (2 phases) · 🟧 = PALIER/MINI-BOSS · ▫️ = norm
 ## PixelLab settings (keep identical for ALL → coherent style)
 - Generation Mode: **v3**
 - Camera View: **Low Top-Down** (3/4)
-- Sprite Size: **48×48** mobs · **64×64** minibosses & bosses · 16×16 projectiles
 - Detail: **Highly detailed** · Outline: **Default**
 - Export: front/down-facing frame, **transparent PNG**, named EXACTLY as the key
   (e.g. `greece_hydra.png`) → `assets/sprites/entities/` (tiles → `tiles/`, fx → `fx/`).
-- Consistency tip: generate one you like, then **"Use as style"** for the rest.
+
+### Sizes (paid plan — go bigger for detail; the game auto-scales to the entity)
+| Category | PixelLab size |
+|---|---|
+| Tiny mob (onibi, scarab, leyak, hydra_head) | **48×48** |
+| Normal mob | **64×64** |
+| 🟧 Miniboss / palier | **96×96** |
+| 🟥 Final boss | **128×128** (imposing, detailed) |
+| Player | 64×64 |
+| Projectiles | 32×32 |
+| Tiles | 64×64 (matches the 64px cell 1:1) |
+
+Bigger source = crisper once scaled down in-game; keep boss files reasonable
+(128 is plenty) so the Web build stays light.
+
+### Consistency (paid plan)
+- Generate ONE anchor sprite you love, then use **"Use as style" / style reference**
+  on every other generation — this is the key to a unified art direction.
+- Optional: also generate **idle/attack animations** (paid) and keep the source;
+  the game currently uses one static frame, but we can wire animations later
+  (just export the single front frame for now and keep the rest).
 
 Each prompt already includes colours, materials, features, pose and mood. You can
 append: `clean pixel art, bold dark outline, mythological dark fantasy`.
