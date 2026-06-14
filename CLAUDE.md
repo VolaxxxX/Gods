@@ -149,8 +149,13 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   Swift, chosen at the hub, starting-kit stat modifiers via StatBlock) and
   **ranged attacks** (data-driven `ranged`/`range_*` on entities; all 6 bosses +
   Greek harpy fire enemy projectiles via an enemy-faction WeaponComponent).
-  Remaining Phase 3 polish: bespoke boss patterns (Hydra heads, Orochi),
-  mini-bosses, secret/cursed rooms, more authored room variety.
+  **Bespoke boss/miniboss patterns** (data-driven `abilities` on entities:
+  `nova`, `spread`, `summon`; cooldowns shorten when enraged <40% HP). Each boss
+  has a signature kit (Hydra summons heads + nova, Orochi 8-shot nova, Fenrir
+  summons helhounds, etc.). **Mini-bosses** (one per pantheon, `miniboss_id`) and
+  **cursed rooms** (free loot guarded by extra foes) are new dead-end room types.
+  Remaining Phase 3 polish: more authored room layouts, secret rooms.
+  Phase 4 (art/audio) needs sourced assets — blocked on the maintainer.
 - Phases 4–5: not started. See the project brief.
 
 ### Progression aggregation (Phase 2)

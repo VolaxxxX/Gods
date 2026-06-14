@@ -23,6 +23,11 @@ var range_damage: float = 2.0
 var range_rate: float = 1.0      # shots per second
 var range_speed: float = 260.0   # projectile speed (px/s)
 
+# Bespoke boss/miniboss patterns. Each entry: a Dictionary like
+#   {"kind": "nova"|"spread"|"summon", "cooldown": s, "count": n, ...}
+# Interpreted by the Enemy ability scheduler; cooldowns shorten when enraged.
+var abilities: Array = []
+
 static func from_dict(d: Dictionary) -> EntityData:
 	var e := EntityData.new()
 	e.id = d.get("id", "")
@@ -39,6 +44,7 @@ static func from_dict(d: Dictionary) -> EntityData:
 	e.range_damage = float(d.get("range_damage", 2.0))
 	e.range_rate = float(d.get("range_rate", 1.0))
 	e.range_speed = float(d.get("range_speed", 260.0))
+	e.abilities = d.get("abilities", [])
 	e.color = DataUtil.to_color(d.get("color", null), e.color)
 	e.tags = DataUtil.to_string_array(d.get("tags", []))
 	return e

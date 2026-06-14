@@ -15,6 +15,7 @@
 			"enemy_pool": ["norse_helhound", "norse_draugr", "norse_jotunn"],
 			"elite_pool": ["norse_jotunn"],
 			"boss_id": "norse_fenrir",
+			"miniboss_id": "norse_troll",
 			"enemies_per_room_min": 2,
 			"enemies_per_room_max": 4
 		}

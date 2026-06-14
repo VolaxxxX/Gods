@@ -59,7 +59,21 @@
 			"ranged": true,
 			"range_damage": 1,
 			"range_rate": 1.4,
-			"range_speed": 240
+			"range_speed": 240,
+			"abilities": [
+				{"kind": "summon", "entity": "greece_hydra_head", "count": 2, "cooldown": 7.0},
+				{"kind": "nova", "count": 10, "speed": 175, "damage": 1, "cooldown": 6.0}
+			]
+		},
+		{
+			"id": "greece_hydra_head", "name_key": "enemy.hydra_head.name", "role": "enemy", "pantheon": "greece",
+			"max_health": 9, "move_speed": 96, "contact_damage": 1, "radius": 10, "ai": "chase", "gold": 0, "color": "#5fbf7f"
+		},
+		{
+			"id": "greece_cyclops", "name_key": "miniboss.cyclops.name", "role": "miniboss", "pantheon": "greece",
+			"max_health": 65, "move_speed": 52, "contact_damage": 2, "radius": 24, "ai": "chase", "gold": 16,
+			"ranged": true, "range_damage": 1, "range_rate": 1.0, "range_speed": 230,
+			"abilities": [{"kind": "spread", "count": 3, "spread": 28, "speed": 240, "damage": 1, "cooldown": 5.0}]
 		}
 	]
 }

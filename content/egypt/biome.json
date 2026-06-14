@@ -15,6 +15,7 @@
 			"enemy_pool": ["egypt_scarab", "egypt_shabti", "egypt_mummy"],
 			"elite_pool": ["egypt_mummy"],
 			"boss_id": "egypt_apophis",
+			"miniboss_id": "egypt_sphinx",
 			"enemies_per_room_min": 2,
 			"enemies_per_room_max": 5
 		}

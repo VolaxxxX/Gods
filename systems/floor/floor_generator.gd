@@ -75,7 +75,7 @@ func _assign_special_rooms(g: FloorGraph, rng: RandomNumberGenerator) -> void:
 	var rest: Array = dead_ends.duplicate()
 	rest.erase(boss)
 	_shuffle(rng, rest)
-	var specials := ["reward", "shop", "altar", "challenge"]
+	var specials := ["reward", "shop", "altar", "miniboss", "challenge", "cursed"]
 	for i in rest.size():
 		if i < specials.size():
 			g.get_node(rest[i])["type"] = specials[i]

@@ -13,6 +13,7 @@ var room_count: int = 8          # total non-boss rooms target
 var enemy_pool: Array[String] = []   # EntityData ids
 var elite_pool: Array[String] = []
 var boss_id: String = ""             # EntityData id (role "boss")
+var miniboss_id: String = ""         # EntityData id spawned in miniboss rooms
 
 # How many combat enemies to spawn per combat room (scales with depth later).
 var enemies_per_room_min: int = 2
@@ -33,6 +34,7 @@ static func from_dict(d: Dictionary) -> BiomeData:
 	b.enemy_pool = DataUtil.to_string_array(d.get("enemy_pool", []))
 	b.elite_pool = DataUtil.to_string_array(d.get("elite_pool", []))
 	b.boss_id = d.get("boss_id", "")
+	b.miniboss_id = d.get("miniboss_id", "")
 	b.enemies_per_room_min = int(d.get("enemies_per_room_min", 2))
 	b.enemies_per_room_max = int(d.get("enemies_per_room_max", 4))
 	return b

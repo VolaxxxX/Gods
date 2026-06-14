@@ -55,7 +55,17 @@
 			"ranged": true,
 			"range_damage": 1,
 			"range_rate": 1.5,
-			"range_speed": 250
+			"range_speed": 250,
+			"abilities": [
+				{"kind": "nova", "count": 12, "speed": 190, "damage": 1, "cooldown": 5.0},
+				{"kind": "summon", "entity": "egypt_scarab", "count": 3, "cooldown": 8.0}
+			]
+		},
+		{
+			"id": "egypt_sphinx", "name_key": "miniboss.sphinx.name", "role": "miniboss", "pantheon": "egypt",
+			"max_health": 68, "move_speed": 50, "contact_damage": 2, "radius": 24, "ai": "chase", "gold": 16,
+			"ranged": true, "range_damage": 1, "range_rate": 1.1, "range_speed": 240,
+			"abilities": [{"kind": "spread", "count": 4, "spread": 36, "speed": 240, "damage": 1, "cooldown": 5.0}]
 		}
 	]
 }

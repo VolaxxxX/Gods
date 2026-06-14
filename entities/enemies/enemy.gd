@@ -14,6 +14,9 @@ var hurtbox: HurtboxComponent
 var contact: DamageArea
 var weapon: WeaponComponent  # only for ranged entities (bosses, casters)
 var _target: Node2D
+var _pool: ProjectilePool
+var _abilities: Array = []
+var _ability_cd: Array = []  # parallel to _abilities: seconds until next use
 
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
@@ -22,6 +25,7 @@ var _flash: float = 0.0
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
 	data = p_data
 	_target = target
+	_pool = pool
 	_radius = data.radius
 	_color = data.color
 
@@ -86,6 +90,13 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 		weapon.projectile_life = 2.5
 		add_child(weapon)
 
+	# Bespoke patterns (bosses/minibosses). Stagger initial cooldowns so the
+	# abilities don't all fire on the same frame.
+	_abilities = data.abilities
+	for i in _abilities.size():
+		var cd: float = float(_abilities[i].get("cooldown", 4.0))
+		_ability_cd.append(cd * (0.5 + 0.35 * i))
+
 func _ready() -> void:
 	add_to_group("enemies")
 
@@ -98,10 +109,57 @@ func _physics_process(delta: float) -> void:
 	if weapon != null and is_instance_valid(_target):
 		var aim := _target.global_position - global_position
 		weapon.attempt(global_position + aim.normalized() * (_radius + 8.0), aim)
+	# Bespoke ability patterns; fire faster when enraged (below 40% HP).
+	if not _abilities.is_empty() and is_instance_valid(_target):
+		var enrage := 1.6 if health.fraction() < 0.4 else 1.0
+		for i in _abilities.size():
+			_ability_cd[i] -= delta * enrage
+			if _ability_cd[i] <= 0.0:
+				_execute_ability(_abilities[i])
+				_ability_cd[i] = float(_abilities[i].get("cooldown", 4.0))
 	# Contact damage now ticks via the hurtbox cooldown (retrigger_interval).
 	if _flash > 0.0:
 		_flash -= delta
 	queue_redraw()
+
+func _execute_ability(ab: Dictionary) -> void:
+	match ab.get("kind", ""):
+		"nova":
+			_fire_pattern(int(ab.get("count", 8)), TAU, 0.0,
+				float(ab.get("speed", 200.0)), float(ab.get("damage", 1.0)))
+		"spread":
+			if is_instance_valid(_target):
+				var base := (_target.global_position - global_position).angle()
+				_fire_pattern(int(ab.get("count", 5)), deg_to_rad(float(ab.get("spread", 40.0))),
+					base, float(ab.get("speed", 240.0)), float(ab.get("damage", 1.0)))
+		"summon":
+			_summon(String(ab.get("entity", "")), int(ab.get("count", 2)))
+
+## Fires `count` projectiles spanning `arc` radians centered on `center` (use a
+## full TAU arc for an omni "nova").
+func _fire_pattern(count: int, arc: float, center: float, speed: float, dmg: float) -> void:
+	if _pool == null or count <= 0:
+		return
+	for k in count:
+		var t := 0.0 if count == 1 else (float(k) / (count - 1) - 0.5)
+		var angle := center + t * arc if arc < TAU else center + TAU * k / count
+		var dir := Vector2.from_angle(angle)
+		var d := Damage.new(dmg, ["enemy"], self)
+		_pool.spawn(global_position + dir * (_radius + 8.0), dir * speed, d, false,
+			8.0, Color(1, 0.5, 0.4), 3.0)
+
+func _summon(entity_id: String, count: int) -> void:
+	if entity_id == "" or count <= 0:
+		return
+	var ed := GameData.get_entity(entity_id)
+	var parent := get_parent()
+	if ed == null or parent == null:
+		return
+	for k in count:
+		var add := Enemy.new()
+		add.setup(ed, _target, _pool)
+		add.position = global_position + Vector2.from_angle(TAU * k / count) * (_radius + 28.0)
+		parent.add_child(add)
 
 func _on_died() -> void:
 	RunManager.on_enemy_killed(data.gold)

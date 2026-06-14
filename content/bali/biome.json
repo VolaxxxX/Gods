@@ -16,6 +16,7 @@
 			"enemy_pool": ["bali_leyak", "bali_bhuta", "bali_celuluk"],
 			"elite_pool": ["bali_celuluk"],
 			"boss_id": "bali_rangda",
+			"miniboss_id": "bali_bhuta_lord",
 			"enemies_per_room_min": 2,
 			"enemies_per_room_max": 4
 		}

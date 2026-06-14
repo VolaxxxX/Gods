@@ -313,6 +313,16 @@
 	"synergy.obsidian_edge.name": "Obsidian Edge",
 	"synergy.obsidian_edge.desc": "Obsidian + crit: brutal critical strikes.",
 
+	"enemy.hydra_head.name": "Hydra Head",
+	"miniboss.cyclops.name": "Cyclops",
+	"miniboss.bhuta_lord.name": "Bhuta Lord",
+	"miniboss.sphinx.name": "Sphinx",
+	"miniboss.troll.name": "Mountain Troll",
+	"miniboss.tengu.name": "Tengu",
+	"miniboss.jaguar_lord.name": "Jaguar Lord",
+
+	"room.miniboss": "Champion",
+	"room.cursed": "Cursed",
 	"room.combat": "Combat",
 	"room.reward": "Reward",
 	"room.shop": "Shop",

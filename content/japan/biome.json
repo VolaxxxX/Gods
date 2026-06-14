@@ -15,6 +15,7 @@
 			"enemy_pool": ["japan_onibi", "japan_kappa", "japan_oni"],
 			"elite_pool": ["japan_oni"],
 			"boss_id": "japan_orochi",
+			"miniboss_id": "japan_tengu",
 			"enemies_per_room_min": 2,
 			"enemies_per_room_max": 4
 		}

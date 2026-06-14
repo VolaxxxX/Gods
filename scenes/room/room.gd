@@ -45,14 +45,16 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 	_build_obstacles()
 	_build_doors()
 
-	# Reward/shop rooms lay out item pickups at their feature anchors.
+	# Room-type contents.
 	if room_type == "reward" or room_type == "shop":
 		_spawn_pickups(room_type == "shop")
 	elif room_type == "challenge":
 		_spawn_sacrifice()
+	elif room_type == "cursed":
+		_spawn_pickups(false)  # a free reward — but you must fight for it
 
-	# Combat & boss rooms lock until cleared; safe rooms are open immediately.
-	var has_combat := room_type == "combat" or room_type == "boss"
+	# Fight rooms lock until cleared; safe rooms are open immediately.
+	var has_combat: bool = room_type in ["combat", "boss", "miniboss", "cursed"]
 	if has_combat:
 		_spawn_enemies(target, pool)
 	if _alive_enemies > 0:
@@ -182,6 +184,12 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 	if room_type == "boss" and biome.boss_id != "":
 		pool_ids = [biome.boss_id]
 		count = 1
+	elif room_type == "miniboss":
+		if biome.miniboss_id != "":
+			pool_ids = [biome.miniboss_id]
+		count = 1
+	elif room_type == "cursed":
+		count += 1  # a curse: an extra foe guards the free loot
 
 	for i in count:
 		var id = RNG.pick("spawn", pool_ids)  # untyped: pick() may return null
