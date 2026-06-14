@@ -25,6 +25,7 @@ RunManager="*res://core/run/run_manager.gd"
 SceneRouter="*res://core/scene_router.gd"
 Juice="*res://presentation/juice.gd"
 Audio="*res://presentation/audio.gd"
+Sprites="*res://presentation/sprites.gd"
 
 [display]
 

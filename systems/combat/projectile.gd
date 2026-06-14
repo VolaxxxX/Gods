@@ -15,6 +15,7 @@ var active: bool = false
 var on_hit_extra: Callable = Callable()
 
 var _shape: CollisionShape2D
+var _spr: Sprite2D  # optional projectile texture; greybox disc when absent
 
 func _ready() -> void:
 	_shape = CollisionShape2D.new()
@@ -22,6 +23,9 @@ func _ready() -> void:
 	circle.radius = radius
 	_shape.shape = circle
 	add_child(_shape)
+	_spr = Sprite2D.new()
+	_spr.visible = false
+	add_child(_spr)
 	hit.connect(_on_hit)
 	# Walls are physics bodies, not areas, so despawn on body contact too.
 	body_entered.connect(_on_body_entered)
@@ -47,6 +51,14 @@ func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool
 	else:
 		collision_layer = Collision.ENEMY_DMG
 		collision_mask = Collision.PLAYER_HURT | Collision.WORLD
+	# Optional projectile sprite; greybox disc otherwise.
+	var tex := Sprites.fx("projectile_player" if faction_player else "projectile_enemy")
+	_spr.texture = tex
+	_spr.visible = tex != null
+	if tex != null:
+		var dim: float = maxf(tex.get_width(), tex.get_height())
+		if dim > 0.0:
+			_spr.scale = Vector2.ONE * (2.0 * radius / dim)
 	_activate()
 
 func _physics_process(delta: float) -> void:
@@ -68,7 +80,7 @@ func _on_body_entered(_body: Node) -> void:
 	_deactivate()
 
 func _draw() -> void:
-	if active:
+	if active and _spr != null and not _spr.visible:
 		draw_circle(Vector2.ZERO, radius, color)
 
 func _activate() -> void:

@@ -43,16 +43,41 @@ Google Fonts (OFL, free commercial) — https://fonts.google.com
 (Noto covers many scripts if we localize later.)
 I'll hook these into a Godot Theme once present.
 
-## 4. Sprites & tilesets — later (greybox is fine for now)
+## 4. Sprites & tilesets — fully plug-and-play (drop PNGs, no code)
 
-Only once gameplay/feel is locked. Keep ONE coherent style across all six
-pantheons (palette per culture, same line/scale). Candidates:
-- Kenney *Tiny Dungeon / Roguelike* tiles & characters (CC0)
-- itch.io top-down packs (**check commercial license per pack**)
+The sprite pipeline is wired: drop a PNG with the right name and it shows;
+otherwise greybox is used. So you can add art incrementally, realm by realm.
 
-Needed categories (per the brief): player + enemy sprites, projectiles, item
-icons, room tiles/props per pantheon, VFX, UI. We'll define exact sizes/palette
-before sourcing so everything stays consistent.
+**Recommended base (CC0): Kenney** — https://kenney.nl/assets
+- *Tiny Dungeon*, *Roguelike Characters/Caves/Dungeon*, *1-Bit Pack* — characters,
+  tiles, props (CC0, free, no credit).
+- itch.io top-down packs are fine too — **check each pack's commercial license**.
+
+Keep ONE coherent style across all six pantheons; differentiate realms by
+**palette/tint**, not by art style.
+
+### Where & how (auto-loaded by name)
+- **Mobs & player** → `assets/sprites/entities/` — file = entity id
+  (e.g. `greece_shade.png`, `bali_rangda.png`, `player.png`). 32×32 normal,
+  48×48 miniboss, 64×64 boss. See that folder's README for the full id list.
+- **Map tiles per realm** → `assets/sprites/tiles/` —
+  `<pantheon>_floor.png`, `<pantheon>_wall.png`, `<pantheon>_obstacle.png`
+  (e.g. `egypt_floor.png`). 32×32, seamlessly tileable.
+- **Attacks/projectiles** → `assets/sprites/fx/` —
+  `projectile_player.png`, `projectile_enemy.png`. 16×16.
+
+Drop the file, (re)open Godot so it imports, run. Sizes aren't strict (sprites
+are scaled to the entity/tile), but stay consistent. Animation (multiple frames)
+can come later — single-frame PNGs work now.
+
+### Suggested order
+1. One realm's tiles (`greece_floor/wall/obstacle`) → instant "real" room.
+2. `player.png` + that realm's mobs.
+3. `projectile_player/enemy`.
+4. Repeat per realm; tell me and I'll help with tinting/consistency.
+
+Item icons & UI sprites: later (a Godot Theme + icon atlas); greybox is fine
+for now.
 
 ## 5. AI-generated assets (optional)
 

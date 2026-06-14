@@ -22,6 +22,7 @@ var _phase2_done: bool = false
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
 var _flash: float = 0.0
+var _sprite: Sprite2D  # set if a texture exists for this entity id
 
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
 	data = p_data
@@ -29,6 +30,16 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 	_pool = pool
 	_radius = data.radius
 	_color = data.color
+
+	# Optional sprite (auto-loaded by entity id); greybox circle otherwise.
+	var tex := Sprites.entity(data.id)
+	if tex != null:
+		_sprite = Sprite2D.new()
+		_sprite.texture = tex
+		var dim: float = maxf(tex.get_width(), tex.get_height())
+		if dim > 0.0:
+			_sprite.scale = Vector2.ONE * (2.2 * _radius / dim)
+		add_child(_sprite)
 
 	collision_layer = Collision.ENEMY_BODY
 	collision_mask = Collision.WORLD
@@ -125,6 +136,8 @@ func _physics_process(delta: float) -> void:
 	# Contact damage now ticks via the hurtbox cooldown (retrigger_interval).
 	if _flash > 0.0:
 		_flash -= delta
+	if _sprite != null:
+		_sprite.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
 	queue_redraw()
 
 func _enter_phase2() -> void:
@@ -181,9 +194,10 @@ func _on_died() -> void:
 	queue_free()
 
 func _draw() -> void:
-	var c := Color(1, 1, 1) if _flash > 0.0 else _color
-	draw_circle(Vector2.ZERO, _radius, c)
-	# Health pip (thin arc) so damage is readable in greybox.
+	if _sprite == null:  # greybox body only when there's no texture
+		var c := Color(1, 1, 1) if _flash > 0.0 else _color
+		draw_circle(Vector2.ZERO, _radius, c)
+	# Health pip (thin bar) so damage is readable.
 	if health != null and health.fraction() < 1.0:
 		var w := _radius * 2.0 * health.fraction()
 		draw_rect(Rect2(-_radius, -_radius - 8.0, w, 3.0), Color(0.2, 1.0, 0.3))

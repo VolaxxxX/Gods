@@ -38,12 +38,22 @@ var _melee_active_t: float = 0.0
 var _melee_damage: float = 4.0
 var _melee_rate: float = 2.5
 var _swing_t: float = 0.0
+var _sprite: Sprite2D
 
 func _ready() -> void:
 	add_to_group("player")
 	var ch = GameData.characters.get(RunManager.character_id, null)
 	if ch != null:
 		_body_color = ch.color
+	# Optional sprite (player_<character>.png or player.png); greybox otherwise.
+	var tex := Sprites.player(RunManager.character_id)
+	if tex != null:
+		_sprite = Sprite2D.new()
+		_sprite.texture = tex
+		var dim: float = maxf(tex.get_width(), tex.get_height())
+		if dim > 0.0:
+			_sprite.scale = Vector2.ONE * (2.2 * RADIUS / dim)
+		add_child(_sprite)
 	collision_layer = Collision.PLAYER_BODY
 	# Collide with walls only; pass through enemies (contact damage is handled by
 	# areas), which avoids the player getting shoved/stuck by mobs.
@@ -242,10 +252,11 @@ func _emit_health() -> void:
 	Events.emit_signal("player_health_changed", health.health, health.max_health)
 
 func _draw() -> void:
-	var body_color := _body_color
-	if _flash > 0.0:
-		body_color = Color(1, 1, 1)
-	draw_circle(Vector2.ZERO, RADIUS, body_color)
+	if _sprite == null:  # greybox body only when there's no texture
+		var body_color := _body_color
+		if _flash > 0.0:
+			body_color = Color(1, 1, 1)
+		draw_circle(Vector2.ZERO, RADIUS, body_color)
 	# Aim indicator.
 	draw_line(Vector2.ZERO, _last_aim * (RADIUS + 10.0), Color(1, 1, 1, 0.8), 3.0)
 	# Melee swing arc feedback.
@@ -259,4 +270,6 @@ func _process(delta: float) -> void:
 		_flash -= delta
 	if _swing_t > 0.0:
 		_swing_t -= delta
+	if _sprite != null:
+		_sprite.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
 	queue_redraw()
