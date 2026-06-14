@@ -24,6 +24,7 @@ SaveManager="*res://core/save/save_manager.gd"
 RunManager="*res://core/run/run_manager.gd"
 SceneRouter="*res://core/scene_router.gd"
 Juice="*res://presentation/juice.gd"
+Audio="*res://presentation/audio.gd"
 
 [display]
 

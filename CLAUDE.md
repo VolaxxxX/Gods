@@ -162,8 +162,13 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   `phase2_at` HP). The realm-choice (next pantheon) appears only after the final
   boss. Floors are short (`room_count` 6) to keep runs ~15–30 min.
   Remaining Phase 3 polish: more authored room layouts, secret rooms.
-  Phase 4 (art/audio) needs sourced assets — blocked on the maintainer.
-- Phases 4–5: not started. See the project brief.
+- **Phase 4 — Art & audio:** **STARTED (code-only).** Data-driven `Audio`
+  autoload: event-driven SFX + per-realm looping music, auto-loaded from
+  `assets/audio/{sfx,music}/` by filename (silent if absent), volumes persisted
+  in `meta.options` and tweakable from the pause menu. Asset inventory written
+  in `ASSETS.md`. Sprites/tilesets/fonts/music files themselves are **blocked on
+  the maintainer** (sourcing). No procedural visuals (greybox stays until art).
+- **Phase 5 — Distribution:** not started (Web/Android export presets exist).
 
 ### Progression aggregation (Phase 2)
 `RunManager` owns `owned_items` / `chosen_blessings`. `collect_modifiers()` and

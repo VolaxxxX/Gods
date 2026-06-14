@@ -61,6 +61,11 @@ func _build_panel() -> void:
 	fire.toggled.connect(func(v): GameInput.set_auto_fire(v))
 	box.add_child(fire)
 
+	box.add_child(_volume_row(Loc.t("ui.music"), Audio.music_volume(),
+		func(v): Audio.set_music_volume(v)))
+	box.add_child(_volume_row(Loc.t("ui.sfx"), Audio.sfx_volume(),
+		func(v): Audio.set_sfx_volume(v)))
+
 	var resume := Button.new()
 	resume.text = Loc.t("ui.resume")
 	resume.custom_minimum_size = Vector2(360, 60)
@@ -72,6 +77,24 @@ func _build_panel() -> void:
 	abandon.custom_minimum_size = Vector2(360, 60)
 	abandon.pressed.connect(_abandon)
 	box.add_child(abandon)
+
+## A labelled volume slider row.
+func _volume_row(label: String, value: float, on_change: Callable) -> HBoxContainer:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 12)
+	var l := Label.new()
+	l.text = label
+	l.custom_minimum_size = Vector2(120, 0)
+	row.add_child(l)
+	var slider := HSlider.new()
+	slider.min_value = 0.0
+	slider.max_value = 1.0
+	slider.step = 0.05
+	slider.value = value
+	slider.custom_minimum_size = Vector2(220, 40)
+	slider.value_changed.connect(on_change)
+	row.add_child(slider)
+	return row
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):

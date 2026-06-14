@@ -8,6 +8,8 @@
 	"ui.paused": "Paused",
 	"ui.auto_aim": "Auto-aim",
 	"ui.auto_fire": "Auto-fire",
+	"ui.music": "Music",
+	"ui.sfx": "Sound",
 	"ui.abandon": "Abandon Run",
 	"ui.realm": "Realm",
 	"ui.character": "Soul",
