@@ -4,6 +4,8 @@ extends Control
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	# Apply saved control options now that all autoloads are initialized.
+	GameInput.load_options()
 
 	var title := Label.new()
 	title.text = Loc.t("game.title")

@@ -67,3 +67,25 @@ func reset() -> void:
 	_touch_move = Vector2.ZERO
 	_touch_aim = Vector2.ZERO
 	_touch_fire = false
+
+# --- Options (persisted in SaveManager.meta.options) ---
+## Loaded once after autoloads are up (called from the boot scene).
+func load_options() -> void:
+	var o: Dictionary = SaveManager.meta.get("options", {})
+	auto_aim = bool(o.get("auto_aim", true))
+	auto_fire = bool(o.get("auto_fire", false))
+
+func set_auto_aim(value: bool) -> void:
+	auto_aim = value
+	_save_options()
+
+func set_auto_fire(value: bool) -> void:
+	auto_fire = value
+	_save_options()
+
+func _save_options() -> void:
+	if not SaveManager.meta.has("options"):
+		SaveManager.meta["options"] = {}
+	SaveManager.meta["options"]["auto_aim"] = auto_aim
+	SaveManager.meta["options"]["auto_fire"] = auto_fire
+	SaveManager.save_meta()

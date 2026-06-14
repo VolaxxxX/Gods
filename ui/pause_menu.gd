@@ -1,0 +1,88 @@
+class_name PauseMenu
+extends CanvasLayer
+## On-screen pause button + options overlay. Mobile-first: exposes auto-aim and
+## auto-fire toggles (crucial on touch) and an Abandon option. Works while the
+## tree is paused (process_mode ALWAYS). Esc also toggles it on desktop.
+
+var _panel: Control
+
+func _ready() -> void:
+	layer = 15
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+	var pause_btn := Button.new()
+	pause_btn.text = "II"
+	pause_btn.anchor_left = 1.0
+	pause_btn.anchor_right = 1.0
+	pause_btn.offset_left = -88
+	pause_btn.offset_top = 18
+	pause_btn.offset_right = -20
+	pause_btn.offset_bottom = 66
+	pause_btn.pressed.connect(_toggle)
+	add_child(pause_btn)
+
+	_build_panel()
+	_panel.visible = false
+
+func _build_panel() -> void:
+	_panel = Control.new()
+	_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(_panel)
+
+	var dim := ColorRect.new()
+	dim.color = Color(0, 0, 0, 0.7)
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_panel.add_child(dim)
+
+	var box := VBoxContainer.new()
+	box.set_anchors_preset(Control.PRESET_CENTER)
+	box.position = Vector2(-180, -170)
+	box.custom_minimum_size = Vector2(360, 0)
+	box.add_theme_constant_override("separation", 16)
+	_panel.add_child(box)
+
+	var title := Label.new()
+	title.text = Loc.t("ui.paused")
+	title.add_theme_font_size_override("font_size", 34)
+	box.add_child(title)
+
+	var aim := CheckButton.new()
+	aim.text = Loc.t("ui.auto_aim")
+	aim.custom_minimum_size = Vector2(360, 56)
+	aim.set_pressed_no_signal(GameInput.auto_aim)
+	aim.toggled.connect(func(v): GameInput.set_auto_aim(v))
+	box.add_child(aim)
+
+	var fire := CheckButton.new()
+	fire.text = Loc.t("ui.auto_fire")
+	fire.custom_minimum_size = Vector2(360, 56)
+	fire.set_pressed_no_signal(GameInput.auto_fire)
+	fire.toggled.connect(func(v): GameInput.set_auto_fire(v))
+	box.add_child(fire)
+
+	var resume := Button.new()
+	resume.text = Loc.t("ui.resume")
+	resume.custom_minimum_size = Vector2(360, 60)
+	resume.pressed.connect(_toggle)
+	box.add_child(resume)
+
+	var abandon := Button.new()
+	abandon.text = Loc.t("ui.abandon")
+	abandon.custom_minimum_size = Vector2(360, 60)
+	abandon.pressed.connect(_abandon)
+	box.add_child(abandon)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		_toggle()
+
+func _toggle() -> void:
+	var paused := not get_tree().paused
+	get_tree().paused = paused
+	_panel.visible = paused
+
+func _abandon() -> void:
+	get_tree().paused = false
+	RunManager.end_run(false)
+	SceneRouter.goto_hub()

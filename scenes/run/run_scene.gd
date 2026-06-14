@@ -49,6 +49,7 @@ func _ready() -> void:
 	ui_layer.layer = 5
 	add_child(ui_layer)
 	ui_layer.add_child(TouchControls.new())
+	add_child(PauseMenu.new())
 
 	_setup_biome(RunManager.resuming)
 
