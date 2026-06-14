@@ -24,11 +24,14 @@
 	"ui.choose_blessing": "An altar hums. Choose a boon:",
 	"ui.rival_warning": "⚠ Angers a rival god — you will be cursed",
 	"ui.choose_realm": "The boss falls. Descend into the next underworld:",
+	"ui.god_favor": "A god of this realm offers their favor:",
 
 	"hub.title": "The Threshold",
 	"hub.runs": "Souls guided: {n}",
 	"hub.karma": "Karma: {n}",
 	"hub.reincarnation": "Reincarnation",
+	"hub.new_descent": "New Descent",
+	"hub.realm_guarded": "Guarded by {boss}",
 	"hub.last_verdict": "Last judgment: {v}",
 
 	"judgment.balanced": "Balanced (Ma'at is pleased)",

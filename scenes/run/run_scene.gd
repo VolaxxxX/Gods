@@ -16,6 +16,7 @@ var current_pos: Vector2i = Vector2i.ZERO
 var _cleared: Dictionary = {}   # Vector2i -> true
 var _ended: bool = false
 var _room_damage_taken: bool = false  # for the "cautious" play-style tally
+var _wrath_active: bool = false       # a god's wrath wave is in progress
 
 func _ready() -> void:
 	# Start a fresh run if one isn't already active (e.g. launched directly).
@@ -119,13 +120,17 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	if build_type == "altar":
 		_offer_blessing()
 
-func _offer_blessing() -> void:
+## Up to `n` random not-yet-owned blessings of the current pantheon.
+func _blessing_options(n: int) -> Array:
 	var avail: Array = []
 	for b in GameData.blessings_for(biome.pantheon):
 		if not (b.id in RunManager.chosen_blessings):
 			avail.append(b)
 	RNG.shuffle("blessing", avail)
-	var opts: Array = avail.slice(0, mini(3, avail.size()))
+	return avail.slice(0, mini(n, avail.size()))
+
+func _offer_blessing() -> void:
+	var opts := _blessing_options(3)
 	if opts.is_empty():
 		return
 	var ui := BlessingChoice.new()
@@ -142,15 +147,57 @@ func _on_door_taken(side: String) -> void:
 	_enter_room(next, OPPOSITE[side])
 
 func _on_room_cleared(pos: Vector2i, type: String) -> void:
-	if not _cleared.has(pos):
+	var first := not _cleared.has(pos)
+	if first:
 		RunManager.rooms_cleared_count += 1
 		# Clearing a fight unscathed reads as a cautious soul.
-		if (type == "combat" or type == "boss") and not _room_damage_taken:
+		if type in ["combat", "boss", "miniboss"] and not _room_damage_taken:
 			RunManager.add_style("cautious")
 	_cleared[pos] = true
 	Events.emit_signal("room_cleared", current_room)
+
 	if type == "boss" and not _ended:
 		_complete_biome()
+		return
+	# A god's wrath wave just ended -> reward.
+	if _wrath_active:
+		_wrath_active = false
+		_grant_wrath_reward()
+		return
+	# On first clearing a combat room, a god of the realm may appear (Hades-style).
+	if first and type == "combat":
+		_roll_god_encounter()
+
+## Random roaming-god event after clearing a combat room: a boon choice, a wrath
+## fight, or nothing.
+func _roll_god_encounter() -> void:
+	var r := RNG.stream("encounter").randf()
+	if r < 0.30:
+		_offer_boon()
+	elif r < 0.40:
+		_trigger_wrath()
+
+func _offer_boon() -> void:
+	var opts := _blessing_options(2)
+	if opts.is_empty():
+		return
+	var ui := BlessingChoice.new()
+	ui.setup(opts, "ui.god_favor")
+	ui.chosen.connect(func(id): RunManager.add_blessing(id))
+	add_child(ui)
+
+func _trigger_wrath() -> void:
+	if current_room == null:
+		return
+	_wrath_active = true
+	current_room.spawn_wave(player, pool, biome.enemy_pool, 3)
+
+func _grant_wrath_reward() -> void:
+	RunManager.add_gold(25)
+	var items := GameData.items_for(biome.pantheon)
+	var it = RNG.pick("encounter", items)
+	if it != null:
+		RunManager.add_item(it.id)
 
 ## Boss down: either the run is won (final realm) or the player branches into the
 ## next underworld, carrying everything and healing for the descent.

@@ -9,6 +9,7 @@ var _biome_ids: Array[String] = []
 var _char_option: OptionButton
 var _char_ids: Array[String] = []
 var _hero_desc: Label
+var _realm_teaser: Label
 var _seed_edit: LineEdit
 
 func _ready() -> void:
@@ -32,6 +33,11 @@ func _build() -> void:
 	_karma_label.add_theme_font_size_override("font_size", 22)
 	v.add_child(_karma_label)
 
+	var descent_h := Label.new()
+	descent_h.text = Loc.t("hub.new_descent")
+	descent_h.add_theme_font_size_override("font_size", 26)
+	v.add_child(descent_h)
+
 	# Realm + seed selectors.
 	var sel := HBoxContainer.new()
 	sel.add_theme_constant_override("separation", 12)
@@ -45,7 +51,12 @@ func _build() -> void:
 		_biome_option.add_item(Loc.t(biome.name_key))
 	if _biome_option.item_count > 0:
 		_biome_option.select(0)
+	_biome_option.item_selected.connect(func(_i): _refresh_realm_teaser())
 	sel.add_child(_biome_option)
+	_realm_teaser = Label.new()
+	_realm_teaser.modulate = Color(0.8, 0.8, 0.85)
+	sel.add_child(_realm_teaser)
+	_refresh_realm_teaser()
 	var seed_l := Label.new()
 	seed_l.text = Loc.t("ui.seed")
 	sel.add_child(seed_l)
@@ -170,6 +181,15 @@ func _refresh_hero_desc() -> void:
 	var id := _selected_character()
 	var ch = GameData.characters.get(id, null)
 	_hero_desc.text = Loc.t(ch.desc_key) if ch != null else ""
+
+func _refresh_realm_teaser() -> void:
+	var biome := GameData.get_biome(_selected_biome())
+	if biome == null:
+		_realm_teaser.text = ""
+		return
+	var boss := GameData.get_entity(biome.boss_id)
+	var boss_name := Loc.t(boss.name_key) if boss != null else "?"
+	_realm_teaser.text = Loc.t("hub.realm_guarded", {"boss": boss_name})
 
 func _selected_seed() -> int:
 	var t := _seed_edit.text.strip_edges()

@@ -7,9 +7,11 @@ extends CanvasLayer
 signal chosen(blessing_id: String)
 
 var _options: Array = []  # Array[BlessingData]
+var _title_key: String = "ui.choose_blessing"
 
-func setup(options: Array) -> void:
+func setup(options: Array, title_key: String = "ui.choose_blessing") -> void:
 	_options = options
+	_title_key = title_key
 
 func _ready() -> void:
 	layer = 20
@@ -29,7 +31,7 @@ func _ready() -> void:
 	add_child(box)
 
 	var title := Label.new()
-	title.text = Loc.t("ui.choose_blessing")
+	title.text = Loc.t(_title_key)
 	title.add_theme_font_size_override("font_size", 28)
 	box.add_child(title)
 

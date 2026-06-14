@@ -208,6 +208,25 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		_alive_enemies += 1
 		e.tree_exited.connect(_on_enemy_gone)
 
+## Spawn an extra wave into an already-cleared room and re-lock the doors (used
+## by a god's "wrath" encounter). Clearing it emits `cleared` again.
+func spawn_wave(target: Node2D, pool: ProjectilePool, ids: Array, n: int) -> void:
+	for i in n:
+		var id = RNG.pick("encounter", ids)
+		if id == null:
+			continue
+		var ed := GameData.get_entity(id)
+		if ed == null:
+			continue
+		var e := Enemy.new()
+		e.setup(ed, target, pool)
+		e.position = _random_floor_point()
+		add_child(e)
+		_alive_enemies += 1
+		e.tree_exited.connect(_on_enemy_gone)
+	if _alive_enemies > 0:
+		_lock()
+
 func _random_floor_point() -> Vector2:
 	var margin := WALL_THICK + 48.0
 	var rng := RNG.stream("spawn")
