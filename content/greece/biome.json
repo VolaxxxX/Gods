@@ -11,13 +11,13 @@
 				"wall": "#3a4a5a",
 				"accent": "#d8b25a"
 			},
-			"room_count": 6,
+			"room_count": 9,
 			"enemy_pool": ["greece_shade", "greece_skeleton", "greece_harpy"],
 			"elite_pool": ["greece_skeleton"],
 			"boss_id": "greece_hydra",
 			"miniboss_id": "greece_cyclops",
-			"enemies_per_room_min": 2,
-			"enemies_per_room_max": 4
+			"enemies_per_room_min": 3,
+			"enemies_per_room_max": 5
 		}
 	]
 }

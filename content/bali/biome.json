@@ -12,13 +12,13 @@
 				"wall": "#4a3b2a",
 				"accent": "#d4af37"
 			},
-			"room_count": 6,
+			"room_count": 9,
 			"enemy_pool": ["bali_leyak", "bali_bhuta", "bali_celuluk"],
 			"elite_pool": ["bali_celuluk"],
 			"boss_id": "bali_rangda",
 			"miniboss_id": "bali_bhuta_lord",
-			"enemies_per_room_min": 2,
-			"enemies_per_room_max": 4
+			"enemies_per_room_min": 3,
+			"enemies_per_room_max": 5
 		}
 	]
 }

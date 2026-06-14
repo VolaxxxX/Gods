@@ -25,6 +25,7 @@ var _alive_enemies: int = 0
 var _gates: Array[StaticBody2D] = []
 var _floor_color := Color(0.15, 0.15, 0.2)
 var _wall_color := Color(0.35, 0.32, 0.28)
+var _accent_color := Color(0.85, 0.7, 0.35)
 
 func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[String],
 		p_type: String, target: Node2D, pool: ProjectilePool) -> void:
@@ -35,6 +36,7 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 	if biome:
 		_floor_color = biome.palette_color("floor", _floor_color)
 		_wall_color = biome.palette_color("wall", _wall_color)
+		_accent_color = biome.palette_color("accent", _accent_color)
 
 	if template != null:
 		_size = template.pixel_size()
@@ -306,15 +308,25 @@ func _add_gate(side: String) -> StaticBody2D:
 # --- Greybox rendering ---
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, _size), _floor_color, true)
-	# Walls (visual only; colliders are separate bodies).
 	var w := _size.x
 	var h := _size.y
+	# Accent inlay border (per-pantheon colour → realm identity at a glance).
+	draw_rect(Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, h - 2 * WALL_THICK),
+		Color(_accent_color.r, _accent_color.g, _accent_color.b, 0.10), false, 3.0)
+	# Walls (visual only; colliders are separate bodies).
 	draw_rect(Rect2(0, 0, w, WALL_THICK), _wall_color)
 	draw_rect(Rect2(0, h - WALL_THICK, w, WALL_THICK), _wall_color)
 	draw_rect(Rect2(0, 0, WALL_THICK, h), _wall_color)
 	draw_rect(Rect2(w - WALL_THICK, 0, WALL_THICK, h), _wall_color)
+	# Obstacles, drawn in the pantheon accent colour (fills the room, adds theme).
+	if template != null:
+		for y in template.grid.size():
+			var row: String = template.grid[y]
+			for x in row.length():
+				if row[x] == "O":
+					draw_rect(Rect2(x * TILE, y * TILE, TILE, TILE), _accent_color)
 	# Doors as accent marks.
-	var door_col := Color(0.9, 0.8, 0.4) if not locked else Color(0.5, 0.4, 0.4)
+	var door_col := _accent_color if not locked else Color(0.5, 0.4, 0.4)
 	for side in open_sides:
 		var p := _door_position(side)
-		draw_circle(p, 8.0, door_col)
+		draw_circle(p, 10.0, door_col)

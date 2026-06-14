@@ -12,13 +12,13 @@
 				"wall": "#2a6b5a",
 				"accent": "#e0c040"
 			},
-			"room_count": 6,
+			"room_count": 9,
 			"enemy_pool": ["aztec_obsidian", "aztec_jaguar", "aztec_tzitzimitl"],
 			"elite_pool": ["aztec_tzitzimitl"],
 			"boss_id": "aztec_cipactli",
 			"miniboss_id": "aztec_jaguar_lord",
-			"enemies_per_room_min": 2,
-			"enemies_per_room_max": 4
+			"enemies_per_room_min": 3,
+			"enemies_per_room_max": 5
 		}
 	]
 }

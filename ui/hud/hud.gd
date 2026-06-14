@@ -6,6 +6,8 @@ extends CanvasLayer
 var _biome_label: Label
 var _health_label: Label
 var _gold_label: Label
+var _banner: Label
+var _banner_t: float = 0.0
 
 func _ready() -> void:
 	layer = 10
@@ -18,12 +20,32 @@ func _ready() -> void:
 	_health_label = _make_label(root, Vector2(24, 52))
 	_gold_label = _make_label(root, Vector2(24, 84))
 
+	# Big centered realm banner, shown briefly on entering a zone.
+	_banner = Label.new()
+	_banner.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	_banner.position = Vector2(-400, 90)
+	_banner.size = Vector2(800, 60)
+	_banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_banner.add_theme_font_size_override("font_size", 46)
+	_banner.modulate.a = 0.0
+	root.add_child(_banner)
+
 	Events.player_health_changed.connect(_on_health)
 	Events.gold_changed.connect(_on_gold)
-	Events.biome_changed.connect(func(_id): _refresh_biome())
+	Events.biome_changed.connect(func(_id): _refresh_biome(); _show_banner())
 	_refresh_biome()
+	_show_banner()
 	_on_health(RunManager.player_health, RunManager.player_max_health)
 	_on_gold(RunManager.gold)
+
+func _process(delta: float) -> void:
+	if _banner_t > 0.0:
+		_banner_t -= delta
+		_banner.modulate.a = clampf(_banner_t, 0.0, 1.0)
+
+func _show_banner() -> void:
+	_banner.text = _biome_label.text
+	_banner_t = 2.5
 
 func _make_label(parent: Control, pos: Vector2) -> Label:
 	var l := Label.new()

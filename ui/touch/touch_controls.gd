@@ -21,14 +21,13 @@ func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE  # don't steal from HUD buttons
 
 func _unhandled_input(event: InputEvent) -> void:
+	# Real touch only. On desktop the mouse aims/fires (handled by the player)
+	# and the keyboard moves — the mouse must NOT spawn a floating joystick,
+	# which felt like an obstacle ("rond infranchissable").
 	if event is InputEventScreenTouch:
 		_handle_touch(event.index, event.position, event.pressed)
 	elif event is InputEventScreenDrag:
 		_handle_drag(event.index, event.position)
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		_handle_touch(MOUSE_INDEX, event.position, event.pressed)
-	elif event is InputEventMouseMotion and (event.button_mask & MOUSE_BUTTON_MASK_LEFT):
-		_handle_drag(MOUSE_INDEX, event.position)
 
 func _handle_touch(index: int, pos: Vector2, pressed: bool) -> void:
 	if pressed:
