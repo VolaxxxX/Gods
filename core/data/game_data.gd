@@ -87,11 +87,13 @@ func get_biome(id: String) -> BiomeData:
 func get_room(id: String) -> RoomTemplate:
 	return rooms.get(id, null)
 
-## All room templates for a pantheon of a given type.
+## Room templates for a pantheon of a given type. Includes shared templates
+## (pantheon == "") so every realm draws from a common pool of layouts plus its
+## own — lots of variety without per-pantheon duplication (palette gives identity).
 func rooms_for(pantheon: String, type: String) -> Array[RoomTemplate]:
 	var out: Array[RoomTemplate] = []
 	for r in rooms.values():
-		if r.pantheon == pantheon and r.type == type:
+		if r.type == type and (r.pantheon == pantheon or r.pantheon == ""):
 			out.append(r)
 	return out
 

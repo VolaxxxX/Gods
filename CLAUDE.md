@@ -161,7 +161,9 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   ends with the **true boss in 2 phases** (`phase2_abilities` + burst at
   `phase2_at` HP). The realm-choice (next pantheon) appears only after the final
   boss. Floors are short (`room_count` 6) to keep runs ~15–30 min.
-  Remaining Phase 3 polish: more authored room layouts, secret rooms.
+  Shared room library (`content/rooms_common.json`, pantheon "") gives every
+  realm a common pool of varied authored layouts + its own (palette = identity).
+  Remaining Phase 3 polish: secret rooms.
 - **Phase 4 — Art & audio:** **STARTED (code-only).** Data-driven `Audio`
   autoload: event-driven SFX + per-realm looping music, auto-loaded from
   `assets/audio/{sfx,music}/` by filename (silent if absent), volumes persisted
