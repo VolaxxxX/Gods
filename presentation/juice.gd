@@ -47,6 +47,7 @@ func _spawn_pop(entity) -> void:
 		return
 	var pop := DeathPop.new()
 	scene.add_child(pop)
+	pop.z_index = 15  # above the room floor
 	var c := Color(1, 0.6, 0.3)
 	if "_color" in entity:
 		c = entity._color

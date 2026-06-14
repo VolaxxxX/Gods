@@ -31,6 +31,11 @@ func _ready() -> void:
 	player.set_pool(pool)
 	player.health.damaged.connect(func(_a, _c, _m): _room_damage_taken = true)
 
+	# Rooms are (re)created after the player/pool, so without explicit z_index the
+	# room floor would draw OVER them. Lift player and projectiles above it.
+	pool.z_index = 10
+	player.z_index = 20
+
 	camera = Camera2D.new()
 	camera.position_smoothing_enabled = true
 	player.add_child(camera)
