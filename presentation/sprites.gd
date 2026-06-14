@@ -1,50 +1,55 @@
 extends Node
-## Sprite resolver: loads textures by naming convention and caches them. Returns
-## null when a file is absent, so every visual falls back to greybox until art
-## is dropped in. Drop a PNG with the right name and it appears — no code/JSON
-## changes needed (see ASSETS.md / the sprite guide).
+## Sprite resolver: loads textures by naming convention and caches them. Accepts
+## .png AND .svg (Godot rasterizes SVG on import), so vector art works too.
+## Returns null when a file is absent → greybox fallback. Drop a file with the
+## right name and it appears, no code/JSON changes (see ASSETS.md / the guide).
 ##
-## Conventions (all under res://assets/sprites/):
-##   entities/<entity_id>.png        e.g. greece_shade.png, bali_rangda.png
-##   entities/player.png             (or player_<character_id>.png to override)
-##   tiles/<pantheon>_floor.png      e.g. greece_floor.png
-##   tiles/<pantheon>_wall.png
-##   tiles/<pantheon>_obstacle.png
-##   fx/projectile_player.png        fx/projectile_enemy.png
+## Conventions (under res://assets/sprites/), .png or .svg:
+##   entities/<entity_id>      e.g. greece_shade, bali_rangda
+##   entities/enemy            generic monster (tinted by enemy colour)
+##   entities/player[_<char>]  player (per-class override optional)
+##   tiles/<pantheon>_<kind>   kind = floor|wall|obstacle (used as-is)
+##   tiles/<kind>              generic tile (tinted per realm palette)
+##   fx/projectile_player | projectile_enemy | projectile
 
 const ENT := "res://assets/sprites/entities/"
 const TILES := "res://assets/sprites/tiles/"
 const FX := "res://assets/sprites/fx/"
+const EXTS := [".png", ".svg"]
 
 var _cache: Dictionary = {}
 
-func _get(path: String) -> Texture2D:
-	if _cache.has(path):
-		return _cache[path]
-	var t: Texture2D = load(path) if ResourceLoader.exists(path) else null
-	_cache[path] = t
-	return t
+## Resolve `dir + name + (ext)` trying each extension; cache the result (or null).
+func _resolve(dir: String, name: String) -> Texture2D:
+	var key := dir + name
+	if _cache.has(key):
+		return _cache[key]
+	var tex: Texture2D = null
+	for ext in EXTS:
+		var path := key + ext
+		if ResourceLoader.exists(path):
+			tex = load(path)
+			break
+	_cache[key] = tex
+	return tex
 
 func entity(id: String) -> Texture2D:
-	return _get(ENT + id + ".png")
+	return _resolve(ENT, id)
 
-## Generic fallback monster sprite (tinted by the enemy's colour by the caller).
 func entity_generic() -> Texture2D:
-	return _get(ENT + "enemy.png")
+	return _resolve(ENT, "enemy")
 
-## Player texture: per-character override, else a generic player.png.
 func player(character_id: String) -> Texture2D:
-	var t := _get(ENT + "player_" + character_id + ".png")
-	return t if t != null else _get(ENT + "player.png")
+	var t := _resolve(ENT, "player_" + character_id)
+	return t if t != null else _resolve(ENT, "player")
 
 ## kind: "floor" | "wall" | "obstacle"
 func tile(pantheon: String, kind: String) -> Texture2D:
-	return _get(TILES + pantheon + "_" + kind + ".png")
+	return _resolve(TILES, pantheon + "_" + kind)
 
-## Generic tile (tinted per realm palette by the caller) — one set fits all realms.
 func tile_generic(kind: String) -> Texture2D:
-	return _get(TILES + kind + ".png")
+	return _resolve(TILES, kind)
 
 func fx(name: String) -> Texture2D:
-	var t := _get(FX + name + ".png")
-	return t if t != null else _get(FX + "projectile.png")
+	var t := _resolve(FX, name)
+	return t if t != null else _resolve(FX, "projectile")

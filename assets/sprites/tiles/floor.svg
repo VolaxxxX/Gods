@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Light, near-neutral so each realm's palette tints it. Tileable. -->
+  <rect width="64" height="64" fill="#d7d7dd"/>
+  <rect x="0.5" y="0.5" width="63" height="63" fill="none" stroke="#c4c4cc" stroke-width="1"/>
+  <path d="M32 0 V64 M0 32 H64" stroke="#cdcdd4" stroke-width="1"/>
+</svg>

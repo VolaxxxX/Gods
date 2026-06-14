@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- A solid block/pillar. Light so it tints to the realm accent colour. -->
+  <rect x="8" y="8" width="48" height="48" rx="6" fill="#d2d2d8" stroke="#a9a9b2" stroke-width="3"/>
+  <path d="M8 32 H56 M32 8 V56" stroke="#bcbcc4" stroke-width="2"/>
+  <rect x="8" y="8" width="48" height="48" rx="6" fill="none" stroke="#eaeaf0" stroke-width="1.5" opacity="0.6"/>
+</svg>

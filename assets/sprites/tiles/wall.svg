@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Brick pattern, light so it tints per realm. Tileable. -->
+  <rect width="64" height="64" fill="#cfcfd6"/>
+  <g stroke="#b4b4bd" stroke-width="2">
+    <path d="M0 21 H64 M0 43 H64"/>
+    <path d="M32 0 V21 M16 21 V43 M48 21 V43 M32 43 V64"/>
+  </g>
+</svg>

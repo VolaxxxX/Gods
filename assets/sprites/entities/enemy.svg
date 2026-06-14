@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- Generic monster. Body is light so it takes the enemy's colour (tinted via
+       modulate); outline/eyes stay readable. -->
+  <g stroke="#1c1c26" stroke-width="3" stroke-linejoin="round">
+    <!-- horns -->
+    <path d="M20 18 L14 4 L26 16 Z" fill="#e9e9ee"/>
+    <path d="M44 18 L50 4 L38 16 Z" fill="#e9e9ee"/>
+    <!-- body -->
+    <path d="M12 34 C12 18 52 18 52 34 C52 50 44 56 32 56 C20 56 12 50 12 34 Z" fill="#ededf2"/>
+    <!-- jagged mouth -->
+    <path d="M22 44 L27 49 L32 44 L37 49 L42 44" fill="none" stroke-width="3"/>
+  </g>
+  <!-- eyes (kept dark so they read after tinting) -->
+  <circle cx="25" cy="34" r="5" fill="#ffffff" stroke="#1c1c26" stroke-width="2.5"/>
+  <circle cx="39" cy="34" r="5" fill="#ffffff" stroke="#1c1c26" stroke-width="2.5"/>
+  <circle cx="25" cy="35" r="2.2" fill="#1c1c26"/>
+  <circle cx="39" cy="35" r="2.2" fill="#1c1c26"/>
+</svg>

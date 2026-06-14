@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- The soul: a hooded wanderer with a glowing core. Fixed colours. -->
+  <g stroke="#0e1622" stroke-width="3" stroke-linejoin="round">
+    <!-- cloak -->
+    <path d="M16 52 C16 30 22 16 32 16 C42 16 48 30 48 52 C42 56 38 56 32 56 C26 56 22 56 16 52 Z" fill="#3aa0d6"/>
+    <!-- hood -->
+    <path d="M22 22 C22 12 42 12 42 22 C42 30 36 34 32 34 C28 34 22 30 22 22 Z" fill="#2b6f97"/>
+  </g>
+  <!-- inner glow (the soul) -->
+  <ellipse cx="32" cy="24" rx="6" ry="7" fill="#bff0ff"/>
+  <circle cx="32" cy="23" r="3" fill="#ffffff"/>
+</svg>
