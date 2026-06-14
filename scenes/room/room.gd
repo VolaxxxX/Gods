@@ -101,7 +101,7 @@ func _build_walls() -> void:
 	var cy := h * 0.5
 	# Each side: full wall, or two segments leaving a centered door gap.
 	for side in ["N", "S", "E", "W"]:
-		var has_door := side in open_sides
+		var has_door: bool = side in open_sides
 		match side:
 			"N":
 				if has_door:

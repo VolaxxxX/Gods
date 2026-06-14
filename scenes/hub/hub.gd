@@ -104,7 +104,7 @@ func _refresh() -> void:
 	_karma_label.text = Loc.t("hub.karma", {"n": SaveManager.get_karma()})
 	for id in _rows:
 		var r: Dictionary = _rows[id]
-		var up = r["up"]
+		var up: MetaUpgradeData = r["up"]
 		var level := SaveManager.upgrade_level(id)
 		r["name"].text = Loc.t(up.name_key)
 		if level >= up.max_level:
@@ -118,7 +118,7 @@ func _refresh() -> void:
 			r["buy"].disabled = SaveManager.get_karma() < cost
 
 func _on_buy(id: String) -> void:
-	var up = GameData.meta_upgrades.get(id, null)
+	var up: MetaUpgradeData = GameData.meta_upgrades.get(id, null)
 	if up == null:
 		return
 	var level := SaveManager.upgrade_level(id)

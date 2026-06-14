@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func load_all() -> void:
 	_clear()
-	var manifest := _read_json(MANIFEST_PATH)
+	var manifest: Variant = _read_json(MANIFEST_PATH)
 	if typeof(manifest) != TYPE_DICTIONARY:
 		push_error("GameData: manifest missing or invalid at %s" % MANIFEST_PATH)
 		return
@@ -33,7 +33,7 @@ func load_all() -> void:
 		blessings.size(), biomes.size(), rooms.size(), synergies.size()])
 
 func _load_file(path: String) -> void:
-	var data := _read_json(path)
+	var data: Variant = _read_json(path)
 	if typeof(data) != TYPE_DICTIONARY:
 		push_warning("GameData: skipping invalid file %s" % path)
 		return
