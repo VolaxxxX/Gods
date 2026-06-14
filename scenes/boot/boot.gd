@@ -6,6 +6,7 @@ func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	# Apply saved control options now that all autoloads are initialized.
 	GameInput.load_options()
+	_apply_font()
 
 	var title := Label.new()
 	title.text = Loc.t("game.title")
@@ -32,3 +33,21 @@ func _unlock_audio() -> void:
 	# Touching the audio system within a user gesture satisfies the Web autoplay
 	# policy. Safe no-op on native platforms.
 	AudioServer.set_bus_mute(0, false)
+
+## If a UI font has been dropped in assets/fonts/, apply it game-wide. Like the
+## audio, it "just works" once the file exists; greybox uses the default font.
+func _apply_font() -> void:
+	var path := ""
+	for p in ["res://assets/fonts/ui.ttf", "res://assets/fonts/ui.otf"]:
+		if ResourceLoader.exists(p):
+			path = p
+			break
+	if path == "":
+		return
+	var font := load(path)
+	if font == null:
+		return
+	var theme := Theme.new()
+	theme.default_font = font
+	theme.default_font_size = 22
+	get_tree().root.theme = theme  # persists across scene changes
