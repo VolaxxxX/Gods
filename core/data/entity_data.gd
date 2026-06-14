@@ -27,6 +27,10 @@ var range_speed: float = 260.0   # projectile speed (px/s)
 #   {"kind": "nova"|"spread"|"summon", "cooldown": s, "count": n, ...}
 # Interpreted by the Enemy ability scheduler; cooldowns shorten when enraged.
 var abilities: Array = []
+# Final-boss second phase: abilities ADDED when HP drops below phase2_at,
+# accompanied by a burst. Empty = single-phase enemy.
+var phase2_abilities: Array = []
+var phase2_at: float = 0.5
 
 static func from_dict(d: Dictionary) -> EntityData:
 	var e := EntityData.new()
@@ -45,6 +49,8 @@ static func from_dict(d: Dictionary) -> EntityData:
 	e.range_rate = float(d.get("range_rate", 1.0))
 	e.range_speed = float(d.get("range_speed", 260.0))
 	e.abilities = d.get("abilities", [])
+	e.phase2_abilities = d.get("phase2_abilities", [])
+	e.phase2_at = float(d.get("phase2_at", 0.5))
 	e.color = DataUtil.to_color(d.get("color", null), e.color)
 	e.tags = DataUtil.to_string_array(d.get("tags", []))
 	return e

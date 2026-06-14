@@ -63,6 +63,11 @@
 			"abilities": [
 				{"kind": "summon", "entity": "greece_hydra_head", "count": 2, "cooldown": 7.0},
 				{"kind": "nova", "count": 10, "speed": 175, "damage": 1, "cooldown": 6.0}
+			],
+			"phase2_at": 0.5,
+			"phase2_abilities": [
+				{"kind": "nova", "count": 16, "speed": 210, "damage": 1, "cooldown": 4.0},
+				{"kind": "summon", "entity": "greece_hydra_head", "count": 3, "cooldown": 6.0}
 			]
 		},
 		{

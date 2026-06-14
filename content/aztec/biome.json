@@ -12,7 +12,7 @@
 				"wall": "#2a6b5a",
 				"accent": "#e0c040"
 			},
-			"room_count": 9,
+			"room_count": 6,
 			"enemy_pool": ["aztec_obsidian", "aztec_jaguar", "aztec_tzitzimitl"],
 			"elite_pool": ["aztec_tzitzimitl"],
 			"boss_id": "aztec_cipactli",

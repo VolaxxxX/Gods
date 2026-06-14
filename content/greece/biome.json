@@ -11,7 +11,7 @@
 				"wall": "#3a4a5a",
 				"accent": "#d8b25a"
 			},
-			"room_count": 8,
+			"room_count": 6,
 			"enemy_pool": ["greece_shade", "greece_skeleton", "greece_harpy"],
 			"elite_pool": ["greece_skeleton"],
 			"boss_id": "greece_hydra",

@@ -19,6 +19,11 @@
 			"abilities": [
 				{"kind": "nova", "count": 8, "speed": 200, "damage": 1, "cooldown": 5.0},
 				{"kind": "spread", "count": 4, "spread": 40, "speed": 235, "damage": 1, "cooldown": 6.0}
+			],
+			"phase2_at": 0.5,
+			"phase2_abilities": [
+				{"kind": "nova", "count": 16, "speed": 215, "damage": 1, "cooldown": 3.5},
+				{"kind": "spread", "count": 6, "spread": 60, "speed": 240, "damage": 1, "cooldown": 5.0}
 			]
 		},
 		{

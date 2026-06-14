@@ -19,6 +19,11 @@
 			"abilities": [
 				{"kind": "summon", "entity": "aztec_obsidian", "count": 3, "cooldown": 8.0},
 				{"kind": "nova", "count": 10, "speed": 185, "damage": 1, "cooldown": 6.0}
+			],
+			"phase2_at": 0.5,
+			"phase2_abilities": [
+				{"kind": "summon", "entity": "aztec_obsidian", "count": 4, "cooldown": 6.0},
+				{"kind": "nova", "count": 16, "speed": 205, "damage": 1, "cooldown": 4.0}
 			]
 		},
 		{

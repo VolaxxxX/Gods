@@ -17,6 +17,7 @@ var _target: Node2D
 var _pool: ProjectilePool
 var _abilities: Array = []
 var _ability_cd: Array = []  # parallel to _abilities: seconds until next use
+var _phase2_done: bool = false
 
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
@@ -109,6 +110,10 @@ func _physics_process(delta: float) -> void:
 	if weapon != null and is_instance_valid(_target):
 		var aim := _target.global_position - global_position
 		weapon.attempt(global_position + aim.normalized() * (_radius + 8.0), aim)
+	# Final-boss second phase: unlock new attacks + a burst at the threshold.
+	if not _phase2_done and not data.phase2_abilities.is_empty() \
+			and health.fraction() <= data.phase2_at:
+		_enter_phase2()
 	# Bespoke ability patterns; fire faster when enraged (below 40% HP).
 	if not _abilities.is_empty() and is_instance_valid(_target):
 		var enrage := 1.6 if health.fraction() < 0.4 else 1.0
@@ -121,6 +126,15 @@ func _physics_process(delta: float) -> void:
 	if _flash > 0.0:
 		_flash -= delta
 	queue_redraw()
+
+func _enter_phase2() -> void:
+	_phase2_done = true
+	for ab in data.phase2_abilities:
+		_abilities.append(ab)
+		_ability_cd.append(0.6)  # the new attacks come online almost at once
+	_flash = 0.25
+	_fire_pattern(16, TAU, 0.0, 200.0, 1.0)  # dramatic phase-change burst
+	Juice.add_trauma(0.6)
 
 func _execute_ability(ab: Dictionary) -> void:
 	match ab.get("kind", ""):

@@ -181,8 +181,11 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 			biome.enemies_per_room_min, biome.enemies_per_room_max)
 
 	var pool_ids: Array = biome.enemy_pool
-	if room_type == "boss" and biome.boss_id != "":
-		pool_ids = [biome.boss_id]
+	if room_type == "boss":
+		# Palier boss on earlier floors, the true boss on the final floor.
+		var bid := RunManager.current_boss_id()
+		if bid != "":
+			pool_ids = [bid]
 		count = 1
 	elif room_type == "miniboss":
 		if biome.miniboss_id != "":

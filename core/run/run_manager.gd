@@ -8,6 +8,7 @@ var seed_value: int = 0
 var biome_id: String = "greece"
 var character_id: String = "char_wanderer"
 var floor_index: int = 0
+var floor_in_biome: int = 1   # 1 = palier-boss floor, last = final-boss floor
 var current_room_index: int = 0
 # Multi-biome runs: realms descended so far this run (non-linear branching).
 var visited_biomes: Array[String] = []
@@ -41,6 +42,7 @@ func start_run(p_seed: int, p_biome: String = "greece", p_character: String = "c
 	biome_id = p_biome
 	character_id = p_character
 	floor_index = 0
+	floor_in_biome = 1
 	current_room_index = 0
 	gold = 0
 	enemies_killed = 0
@@ -120,7 +122,29 @@ func advance_to_biome(next_biome: String) -> void:
 	if not (biome_id in visited_biomes):
 		visited_biomes.append(biome_id)
 	biome_id = next_biome
+	floor_in_biome = 1
 	Events.emit_signal("biome_changed", next_biome)
+
+# --- Floors within a zone (palier boss -> final boss) ---
+func _biome_floors() -> int:
+	var b := GameData.get_biome(biome_id)
+	return b.floors if b != null else 1
+
+func is_final_floor() -> bool:
+	return floor_in_biome >= _biome_floors()
+
+func advance_floor() -> void:
+	floor_in_biome += 1
+
+## Which boss the current floor's boss room should spawn: the palier (miniboss)
+## on earlier floors, the true boss on the final floor.
+func current_boss_id() -> String:
+	var b := GameData.get_biome(biome_id)
+	if b == null:
+		return ""
+	if not is_final_floor() and b.miniboss_id != "":
+		return b.miniboss_id
+	return b.boss_id
 
 func add_style(kind: String, amount: int = 1) -> void:
 	if style.has(kind):
@@ -241,6 +265,7 @@ func to_snapshot() -> Dictionary:
 		"character": character_id,
 		"visited_biomes": visited_biomes,
 		"floor_index": floor_index,
+		"floor_in_biome": floor_in_biome,
 		"player_max_health": player_max_health,
 		"player_health": player_health,
 		"gold": gold,
@@ -262,6 +287,7 @@ func from_snapshot(s: Dictionary) -> void:
 	character_id = s.get("character", "char_wanderer")
 	visited_biomes = DataUtil.to_string_array(s.get("visited_biomes", []))
 	floor_index = int(s.get("floor_index", 0))
+	floor_in_biome = int(s.get("floor_in_biome", 1))
 	player_max_health = float(s.get("player_max_health", 6.0))
 	player_health = float(s.get("player_health", player_max_health))
 	gold = int(s.get("gold", 0))

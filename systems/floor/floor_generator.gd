@@ -71,33 +71,16 @@ func _assign_special_rooms(g: FloorGraph, rng: RandomNumberGenerator) -> void:
 	g.get_node(boss)["type"] = "boss"
 	g.boss_pos = boss
 
-	# Other dead-ends become special rooms, deterministically. Miniboss is first
-	# so it has priority among the dead-ends.
+	# Other dead-ends become special rooms, deterministically. The "boss" room
+	# is the palier/gate boss on early floors and the true boss on the last
+	# floor (decided at spawn time by RunManager).
 	var rest: Array = dead_ends.duplicate()
 	rest.erase(boss)
 	_shuffle(rng, rest)
-	var specials := ["miniboss", "reward", "shop", "altar", "challenge", "cursed"]
+	var specials := ["reward", "shop", "altar", "challenge", "cursed"]
 	for i in rest.size():
 		if i < specials.size():
 			g.get_node(rest[i])["type"] = specials[i]
-
-	# Guarantee exactly one miniboss per floor: if no dead-end became one,
-	# promote a random combat room.
-	_ensure_one(g, "miniboss", rng)
-
-## Make sure at least one room has `type`, converting a combat room if needed.
-func _ensure_one(g: FloorGraph, type: String, rng: RandomNumberGenerator) -> void:
-	var combats: Array = []
-	for pos in g.nodes:
-		var t: String = g.nodes[pos]["type"]
-		if t == type:
-			return
-		if t == "combat":
-			combats.append(pos)
-	if combats.is_empty():
-		return
-	_shuffle(rng, combats)
-	g.get_node(combats[0])["type"] = type
 
 func _assign_templates(g: FloorGraph, biome: BiomeData) -> void:
 	for pos in g.nodes:

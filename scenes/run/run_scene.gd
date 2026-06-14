@@ -157,7 +157,11 @@ func _on_room_cleared(pos: Vector2i, type: String) -> void:
 	Events.emit_signal("room_cleared", current_room)
 
 	if type == "boss" and not _ended:
-		_complete_biome()
+		# Palier boss -> deeper into the SAME zone; final boss -> next realm/win.
+		if RunManager.is_final_floor():
+			_complete_biome()
+		else:
+			_next_floor()
 		return
 	# A god's wrath wave just ended -> reward.
 	if _wrath_active:
@@ -221,6 +225,13 @@ func _complete_biome() -> void:
 func _on_realm_chosen(next_biome: String) -> void:
 	player.health.heal(player.health.max_health * 0.5)  # reward for the descent
 	RunManager.advance_to_biome(next_biome)
+	_setup_biome(false)
+
+## Palier boss down: a new map of the SAME zone (regenerated layout), keeping
+## everything and healing somewhat. The final floor's boss is the true 2-phase boss.
+func _next_floor() -> void:
+	player.health.heal(player.health.max_health * 0.35)
+	RunManager.advance_floor()
 	_setup_biome(false)
 
 func _on_entity_died(entity) -> void:

@@ -59,6 +59,11 @@
 			"abilities": [
 				{"kind": "summon", "entity": "norse_helhound", "count": 2, "cooldown": 7.0},
 				{"kind": "spread", "count": 3, "spread": 30, "speed": 265, "damage": 1, "cooldown": 4.0}
+			],
+			"phase2_at": 0.5,
+			"phase2_abilities": [
+				{"kind": "summon", "entity": "norse_helhound", "count": 3, "cooldown": 6.0},
+				{"kind": "nova", "count": 14, "speed": 210, "damage": 1, "cooldown": 4.0}
 			]
 		},
 		{

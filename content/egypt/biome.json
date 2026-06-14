@@ -11,7 +11,7 @@
 				"wall": "#6b5a2a",
 				"accent": "#37c7c0"
 			},
-			"room_count": 9,
+			"room_count": 6,
 			"enemy_pool": ["egypt_scarab", "egypt_shabti", "egypt_mummy"],
 			"elite_pool": ["egypt_mummy"],
 			"boss_id": "egypt_apophis",

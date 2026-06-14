@@ -152,8 +152,15 @@ editor. Audio must unlock on first tap (Web autoplay policy) — handled in boot
   **Bespoke boss/miniboss patterns** (data-driven `abilities` on entities:
   `nova`, `spread`, `summon`; cooldowns shorten when enraged <40% HP). Each boss
   has a signature kit (Hydra summons heads + nova, Orochi 8-shot nova, Fenrir
-  summons helhounds, etc.). **Mini-bosses** (one per pantheon, `miniboss_id`) and
-  **cursed rooms** (free loot guarded by extra foes) are new dead-end room types.
+  summons helhounds, etc.). **Cursed rooms** (free loot guarded by extra foes)
+  and **god encounters** (clearing a combat room may make a realm god offer 2
+  boons, or unleash a WRATH wave rewarding gold + an item).
+  **Hades-style zone structure:** each pantheon = `floors` sub-maps (default 2).
+  Floor 1 ends with a **palier boss** (the pantheon's `miniboss_id`); clearing it
+  regenerates a NEW map of the SAME zone (heal, keep everything). The final floor
+  ends with the **true boss in 2 phases** (`phase2_abilities` + burst at
+  `phase2_at` HP). The realm-choice (next pantheon) appears only after the final
+  boss. Floors are short (`room_count` 6) to keep runs ~15–30 min.
   Remaining Phase 3 polish: more authored room layouts, secret rooms.
   Phase 4 (art/audio) needs sourced assets — blocked on the maintainer.
 - Phases 4–5: not started. See the project brief.

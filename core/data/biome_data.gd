@@ -9,7 +9,8 @@ var pantheon: String = ""
 var palette: Dictionary = {}     # named Colors: bg, wall, floor, accent
 
 # Floor generation quotas. The generator guarantees these counts (plus a boss).
-var room_count: int = 8          # total non-boss rooms target
+var room_count: int = 6          # non-boss rooms per floor
+var floors: int = 2              # sub-floors per zone: palier boss, then final
 var enemy_pool: Array[String] = []   # EntityData ids
 var elite_pool: Array[String] = []
 var boss_id: String = ""             # EntityData id (role "boss")
@@ -30,7 +31,8 @@ static func from_dict(d: Dictionary) -> BiomeData:
 	b.name_key = d.get("name_key", b.id)
 	b.pantheon = d.get("pantheon", b.id)
 	b.palette = d.get("palette", {})
-	b.room_count = int(d.get("room_count", 8))
+	b.room_count = int(d.get("room_count", 6))
+	b.floors = int(d.get("floors", 2))
 	b.enemy_pool = DataUtil.to_string_array(d.get("enemy_pool", []))
 	b.elite_pool = DataUtil.to_string_array(d.get("elite_pool", []))
 	b.boss_id = d.get("boss_id", "")

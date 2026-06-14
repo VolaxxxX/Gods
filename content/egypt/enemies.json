@@ -59,6 +59,11 @@
 			"abilities": [
 				{"kind": "nova", "count": 12, "speed": 190, "damage": 1, "cooldown": 5.0},
 				{"kind": "summon", "entity": "egypt_scarab", "count": 3, "cooldown": 8.0}
+			],
+			"phase2_at": 0.5,
+			"phase2_abilities": [
+				{"kind": "nova", "count": 18, "speed": 200, "damage": 1, "cooldown": 3.5},
+				{"kind": "summon", "entity": "egypt_scarab", "count": 4, "cooldown": 6.0}
 			]
 		},
 		{
