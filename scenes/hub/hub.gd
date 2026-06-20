@@ -16,8 +16,8 @@ func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	_build()
 	Events.karma_changed.connect(func(_k): _refresh())
-	# Story/ambient line from the Ferryman (evolves with progress).
-	Dialogue.speak("narrator", "hub")
+	# Story / death / victory / ambient line (evolves with progress).
+	Dialogue.on_enter_hub()
 
 func _build() -> void:
 	var v := VBoxContainer.new()

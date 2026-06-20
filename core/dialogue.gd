@@ -3,8 +3,23 @@ extends Node
 ## you've met the speaker, the story stage, and flags (Hades-style). State lives
 ## in SaveManager. A boon line plays automatically when a blessing is chosen.
 
+var _pending := ""  # "death"/"victory" queued by the last run, shown at the hub
+
 func _ready() -> void:
 	Events.blessing_chosen.connect(_on_blessing_chosen)
+	Events.run_ended.connect(func(victory): _pending = "victory" if victory else "death")
+
+## Called by the hub on entry: show the death/victory beat if a run just ended,
+## else an ambient line from the Ferryman or a fellow shade.
+func on_enter_hub() -> void:
+	if _pending != "":
+		var t := _pending
+		_pending = ""
+		if speak("narrator", t):
+			return
+	var who := "shade" if randf() < 0.4 else "narrator"
+	if not speak(who, "hub"):
+		speak("narrator", "hub")
 
 ## Speak the best-matching line for (speaker, trigger). Returns true if something
 ## was shown. `speaker` is a deity id or "narrator".
