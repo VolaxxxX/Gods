@@ -22,14 +22,14 @@ func _build() -> Theme:
 		t.default_font = f
 	t.default_font_size = 20
 
-	var panel := _box("panel", 24, Color(0.10, 0.10, 0.14, 0.94))
+	var panel := _box("panel", 0.25, Color(0.10, 0.10, 0.14, 0.94))
 	t.set_stylebox("panel", "PanelContainer", panel)
 	t.set_stylebox("panel", "Panel", panel)
 
-	t.set_stylebox("normal", "Button", _box("button", 16, Color(0.16, 0.16, 0.22, 0.96)))
-	t.set_stylebox("hover", "Button", _box("button_hover", 16, Color(0.22, 0.22, 0.30, 0.98)))
-	t.set_stylebox("pressed", "Button", _box("button_pressed", 16, Color(0.12, 0.12, 0.16, 1.0)))
-	t.set_stylebox("disabled", "Button", _box("button", 16, Color(0.12, 0.12, 0.14, 0.6)))
+	t.set_stylebox("normal", "Button", _box("button", 0.25, Color(0.16, 0.16, 0.22, 0.96)))
+	t.set_stylebox("hover", "Button", _box("button_hover", 0.25, Color(0.22, 0.22, 0.30, 0.98)))
+	t.set_stylebox("pressed", "Button", _box("button_pressed", 0.25, Color(0.12, 0.12, 0.16, 1.0)))
+	t.set_stylebox("disabled", "Button", _box("button", 0.25, Color(0.12, 0.12, 0.14, 0.6)))
 	t.set_color("font_color", "Button", INK)
 	t.set_color("font_hover_color", "Button", Color(1, 1, 1))
 	t.set_color("font_disabled_color", "Button", Color(0.5, 0.5, 0.55))
@@ -45,20 +45,26 @@ func _font() -> FontFile:
 			return load(p)
 	return null
 
-## 9-slice texture box if assets/sprites/ui/<name>.png exists, else a rounded flat box.
-func _box(name: String, margin: float, flat_color: Color) -> StyleBox:
+## 9-slice texture box if assets/sprites/ui/<name>.png exists, else a rounded flat
+## box. Margins are a FRACTION of the texture's actual size, so any generation
+## size works (no pixel-exact export needed) as long as the ornate border keeps
+## roughly that proportion and the centre stays uniform/tileable.
+func _box(name: String, frac: float, flat_color: Color) -> StyleBox:
 	var path := UI + name + ".png"
 	if ResourceLoader.exists(path):
+		var tex: Texture2D = load(path)
 		var sb := StyleBoxTexture.new()
-		sb.texture = load(path)
-		sb.texture_margin_left = margin
-		sb.texture_margin_right = margin
-		sb.texture_margin_top = margin
-		sb.texture_margin_bottom = margin
-		sb.content_margin_left = margin
-		sb.content_margin_right = margin
-		sb.content_margin_top = margin * 0.6
-		sb.content_margin_bottom = margin * 0.6
+		sb.texture = tex
+		var mw := tex.get_width() * frac
+		var mh := tex.get_height() * frac
+		sb.texture_margin_left = mw
+		sb.texture_margin_right = mw
+		sb.texture_margin_top = mh
+		sb.texture_margin_bottom = mh
+		sb.content_margin_left = mw
+		sb.content_margin_right = mw
+		sb.content_margin_top = mh * 0.7
+		sb.content_margin_bottom = mh * 0.7
 		return sb
 	var f := StyleBoxFlat.new()
 	f.bg_color = flat_color
@@ -68,15 +74,17 @@ func _box(name: String, margin: float, flat_color: Color) -> StyleBox:
 	f.set_content_margin_all(14)
 	return f
 
+## Bar box: thin proportional frame (the centre stretches with the value).
 func _bar(name: String, flat_color: Color) -> StyleBox:
 	var path := UI + name + ".png"
 	if ResourceLoader.exists(path):
+		var tex: Texture2D = load(path)
 		var sb := StyleBoxTexture.new()
-		sb.texture = load(path)
-		sb.texture_margin_left = 6
-		sb.texture_margin_right = 6
-		sb.texture_margin_top = 6
-		sb.texture_margin_bottom = 6
+		sb.texture = tex
+		sb.texture_margin_left = tex.get_width() * 0.14
+		sb.texture_margin_right = tex.get_width() * 0.14
+		sb.texture_margin_top = tex.get_height() * 0.22
+		sb.texture_margin_bottom = tex.get_height() * 0.22
 		return sb
 	var f := StyleBoxFlat.new()
 	f.bg_color = flat_color

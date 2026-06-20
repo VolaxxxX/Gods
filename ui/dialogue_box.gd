@@ -47,11 +47,19 @@ func _ready() -> void:
 	# Dedicated dialogue frame if provided, else the global themed panel.
 	var frame := "res://assets/sprites/ui/dialogue.png"
 	if ResourceLoader.exists(frame):
+		var tex: Texture2D = load(frame)
 		var sb := StyleBoxTexture.new()
-		sb.texture = load(frame)
-		for s in ["left", "right", "top", "bottom"]:
-			sb.set("texture_margin_" + s, 28)
-			sb.set("content_margin_" + s, 24)
+		sb.texture = tex
+		var mw: float = tex.get_width() * 0.22
+		var mh: float = tex.get_height() * 0.22
+		sb.texture_margin_left = mw
+		sb.texture_margin_right = mw
+		sb.texture_margin_top = mh
+		sb.texture_margin_bottom = mh
+		sb.content_margin_left = mw
+		sb.content_margin_right = mw
+		sb.content_margin_top = mh
+		sb.content_margin_bottom = mh
 		panel.add_theme_stylebox_override("panel", sb)
 	add_child(panel)
 
