@@ -51,12 +51,15 @@ func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool
 	else:
 		collision_layer = Collision.ENEMY_DMG
 		collision_mask = Collision.PLAYER_HURT | Collision.WORLD
-	# Optional projectile sprite; greybox disc otherwise.
-	var tex := Sprites.fx("projectile_player" if faction_player else "projectile_enemy")
+	# Optional projectile sprite; greybox disc otherwise. A faction-specific art
+	# (e.g. blue/red orb) is shown as-is; only a generic projectile is tinted.
+	var faction_name := "projectile_player" if faction_player else "projectile_enemy"
+	var has_specific := Sprites.has_fx(faction_name)
+	var tex := Sprites.fx(faction_name)
 	_spr.texture = tex
 	_spr.visible = tex != null
 	if tex != null:
-		_spr.modulate = color  # tints a shared/generic projectile to its faction colour
+		_spr.modulate = Color.WHITE if has_specific else color
 		var dim: float = maxf(tex.get_width(), tex.get_height())
 		if dim > 0.0:
 			_spr.scale = Vector2.ONE * (2.0 * radius / dim)

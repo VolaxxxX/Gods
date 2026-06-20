@@ -59,6 +59,10 @@ func fx(name: String) -> Texture2D:
 	var t := _resolve(FX, name)
 	return t if t != null else _resolve(FX, "projectile")
 
+## True if a specific FX texture exists (vs falling back to a generic one).
+func has_fx(name: String) -> bool:
+	return _resolve(FX, name) != null
+
 # --- Animations ---
 const ANIMS := ["idle", "walk", "attack", "death"]
 const ANIM_FPS := {"idle": 6.0, "walk": 10.0, "attack": 12.0, "death": 10.0}
