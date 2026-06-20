@@ -45,14 +45,29 @@ func _font() -> FontFile:
 			return load(p)
 	return null
 
+## Crop a texture to its opaque bounds (PixelLab exports are centered in a big
+## transparent square; 9-slice must work on the actual art, not the padding).
+func _cropped(tex: Texture2D) -> Texture2D:
+	var img := tex.get_image()
+	if img == null:
+		return tex
+	var r := img.get_used_rect()
+	if r.size.x <= 0 or r.size.y <= 0:
+		return tex
+	if r.position == Vector2i.ZERO and r.size == Vector2i(tex.get_width(), tex.get_height()):
+		return tex
+	var at := AtlasTexture.new()
+	at.atlas = tex
+	at.region = Rect2(r)
+	return at
+
 ## 9-slice texture box if assets/sprites/ui/<name>.png exists, else a rounded flat
-## box. Margins are a FRACTION of the texture's actual size, so any generation
-## size works (no pixel-exact export needed) as long as the ornate border keeps
-## roughly that proportion and the centre stays uniform/tileable.
+## box. The art is cropped to its opaque bounds, then margins are a FRACTION of
+## that — so any free-size export slices correctly.
 func _box(name: String, frac: float, flat_color: Color) -> StyleBox:
 	var path := UI + name + ".png"
 	if ResourceLoader.exists(path):
-		var tex: Texture2D = load(path)
+		var tex := _cropped(load(path))
 		var sb := StyleBoxTexture.new()
 		sb.texture = tex
 		var mw := tex.get_width() * frac
@@ -74,17 +89,17 @@ func _box(name: String, frac: float, flat_color: Color) -> StyleBox:
 	f.set_content_margin_all(14)
 	return f
 
-## Bar box: thin proportional frame (the centre stretches with the value).
+## Bar box: thin proportional frame on the cropped art (centre stretches).
 func _bar(name: String, flat_color: Color) -> StyleBox:
 	var path := UI + name + ".png"
 	if ResourceLoader.exists(path):
-		var tex: Texture2D = load(path)
+		var tex := _cropped(load(path))
 		var sb := StyleBoxTexture.new()
 		sb.texture = tex
-		sb.texture_margin_left = tex.get_width() * 0.14
-		sb.texture_margin_right = tex.get_width() * 0.14
-		sb.texture_margin_top = tex.get_height() * 0.22
-		sb.texture_margin_bottom = tex.get_height() * 0.22
+		sb.texture_margin_left = tex.get_width() * 0.12
+		sb.texture_margin_right = tex.get_width() * 0.12
+		sb.texture_margin_top = tex.get_height() * 0.18
+		sb.texture_margin_bottom = tex.get_height() * 0.18
 		return sb
 	var f := StyleBoxFlat.new()
 	f.bg_color = flat_color

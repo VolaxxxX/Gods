@@ -47,7 +47,9 @@ func _ready() -> void:
 	# Dedicated dialogue frame if provided, else the global themed panel.
 	var frame := "res://assets/sprites/ui/dialogue.png"
 	if ResourceLoader.exists(frame):
-		var tex: Texture2D = load(frame)
+		# Crop to opaque bounds: PixelLab exports centre the art in a big
+		# transparent square, so 9-slice must slice the actual frame, not padding.
+		var tex: Texture2D = _crop(load(frame))
 		var sb := StyleBoxTexture.new()
 		sb.texture = tex
 		var mw: float = tex.get_width() * 0.22
@@ -89,6 +91,22 @@ func _ready() -> void:
 	col.add_child(_text)
 
 	_show_line()
+
+## Crop a texture to its opaque bounds (mirrors UITheme._cropped) so the
+## dialogue frame's 9-slice lands on the ornament, not the transparent padding.
+func _crop(tex: Texture2D) -> Texture2D:
+	var img := tex.get_image()
+	if img == null:
+		return tex
+	var r := img.get_used_rect()
+	if r.size.x <= 0 or r.size.y <= 0:
+		return tex
+	if r.position == Vector2i.ZERO and r.size == Vector2i(tex.get_width(), tex.get_height()):
+		return tex
+	var at := AtlasTexture.new()
+	at.atlas = tex
+	at.region = Rect2(r)
+	return at
 
 func _show_line() -> void:
 	_t = 0.0
