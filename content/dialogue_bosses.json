@@ -1,0 +1,35 @@
+{
+	"_comment": "Per-boss fall commentary. trigger 'boss_<biome>'. Narrator + that realm's god. Modal beats, played in sequence by the dialogue queue.",
+	"type": "dialogue",
+	"entries": [
+		{"id": "boss_greece_narr", "speaker": "narrator", "trigger": "boss_greece", "modal": true,
+		 "lines": ["The Hydra of Lerna lies still — its many heads silenced at last."]},
+		{"id": "boss_greece_god", "speaker": "greece_zeus", "trigger": "boss_greece", "modal": true,
+		 "lines": ["The Hydra, dead? Even Olympus did not foresee that. Well struck, soul."]},
+
+		{"id": "boss_bali_narr", "speaker": "narrator", "trigger": "boss_bali", "modal": true,
+		 "lines": ["Rangda is unmade. The demon queen's curse lifts from this realm."]},
+		{"id": "boss_bali_god", "speaker": "bali_acintya", "trigger": "boss_bali", "modal": true,
+		 "lines": ["Balance returns by your hand. The cycle turns cleaner now."]},
+
+		{"id": "boss_egypt_narr", "speaker": "narrator", "trigger": "boss_egypt", "modal": true,
+		 "lines": ["Apophis, the chaos serpent, is undone. The Duat steadies."]},
+		{"id": "boss_egypt_god", "speaker": "egypt_osiris", "trigger": "boss_egypt", "modal": true,
+		 "lines": ["The serpent devours the sun no more. You have my gratitude, traveler."]},
+
+		{"id": "boss_norse_narr", "speaker": "narrator", "trigger": "boss_norse", "modal": true,
+		 "lines": ["Fenrir falls, its chains scattered. Helheim trembles at your name."]},
+		{"id": "boss_norse_god", "speaker": "norse_odin", "trigger": "boss_norse", "modal": true,
+		 "lines": ["The wolf felled before Ragnarok. The runes did not foresee you, mortal."]},
+
+		{"id": "boss_japan_narr", "speaker": "narrator", "trigger": "boss_japan", "modal": true,
+		 "lines": ["Orochi's eight heads are severed. Yomi falls quiet."]},
+		{"id": "boss_japan_god", "speaker": "japan_amaterasu", "trigger": "boss_japan", "modal": true,
+		 "lines": ["Orochi's shadow lifts. My light reaches even into Yomi now."]},
+
+		{"id": "boss_aztec_narr", "speaker": "narrator", "trigger": "boss_aztec", "modal": true,
+		 "lines": ["Cipactli, the devourer, is slain. Mictlan bows before you."]},
+		{"id": "boss_aztec_god", "speaker": "aztec_mictlantecuhtli", "trigger": "boss_aztec", "modal": true,
+		 "lines": ["The devourer falls — and even I, lord of Mictlan, take note of you."]}
+	]
+}

@@ -203,11 +203,27 @@ func _grant_wrath_reward() -> void:
 	if it != null:
 		RunManager.add_item(it.id)
 
-## Boss down: either the run is won (final realm) or the player branches into the
-## next underworld, carrying everything and healing for the descent.
+# The realm god who comments when that zone's boss falls.
+const REALM_LORDS := {
+	"greece": "greece_zeus", "bali": "bali_acintya", "egypt": "egypt_osiris",
+	"norse": "norse_odin", "japan": "japan_amaterasu", "aztec": "aztec_mictlantecuhtli",
+}
+
+## Boss down: narrator + realm god comment on its fall, THEN win or branch on.
 func _complete_biome() -> void:
 	# Beating a zone's true boss conquers that realm (drives the meta goal).
 	SaveManager.record_realm_cleared(RunManager.biome_id)
+	var b := RunManager.biome_id
+	var shown := Dialogue.speak("narrator", "boss_" + b)
+	var god: String = REALM_LORDS.get(b, "")
+	if god != "":
+		shown = Dialogue.speak(god, "boss_" + b) or shown
+	if shown:
+		Dialogue.queue_empty.connect(_after_boss, CONNECT_ONE_SHOT)
+	else:
+		_after_boss()
+
+func _after_boss() -> void:
 	if RunManager.is_final_biome():
 		_end_run(true)
 		return

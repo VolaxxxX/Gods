@@ -1,16 +1,20 @@
 extends Node
-## Picks and shows dialogue. Lines EVOLVE: selection is gated by how many times
-## you've met the speaker, the story stage, and flags (Hades-style). State lives
-## in SaveManager. A boon line plays automatically when a blessing is chosen.
+## Picks and shows dialogue, EVOLVING via meeting count / story stage / flags
+## (Hades-style). State lives in SaveManager. Requests are queued so several lines
+## (e.g. narrator then the realm's god) play one after another, never stacked.
 
-var _pending := ""  # "death"/"victory" queued by the last run, shown at the hub
+signal queue_empty
+
+var _pending := ""        # "death"/"victory" to show at the hub
+var _active := false
+var _queue: Array = []    # DialogueData waiting to show
 
 func _ready() -> void:
 	Events.blessing_chosen.connect(_on_blessing_chosen)
 	Events.run_ended.connect(func(victory): _pending = "victory" if victory else "death")
 
-## Called by the hub on entry: show the death/victory beat if a run just ended,
-## else an ambient line from the Ferryman or a fellow shade.
+## Called by the hub on entry: death/victory beat if a run just ended, else an
+## ambient line from the Ferryman or a fellow shade.
 func on_enter_hub() -> void:
 	if _pending != "":
 		var t := _pending
@@ -21,22 +25,27 @@ func on_enter_hub() -> void:
 	if not speak(who, "hub"):
 		speak("narrator", "hub")
 
-## Speak the best-matching line for (speaker, trigger). Returns true if something
-## was shown. `speaker` is a deity id or "narrator".
+## Queue the best matching line for (speaker, trigger). Returns true if one was
+## found (and will be shown when its turn comes).
 func speak(speaker: String, trigger: String) -> bool:
+	var pick = _select(speaker, trigger)
+	if pick == null:
+		return false
+	_queue.append(pick)
+	_pump()
+	return true
+
+func _select(speaker: String, trigger: String):
 	var cands: Array = []
 	for d in GameData.dialogues.values():
 		if d.speaker == speaker and d.trigger == trigger and _ok(d):
 			cands.append(d)
 	if cands.is_empty():
-		return false
-	# Prefer the most advanced unlocked variant (highest min_meet), then weighted.
+		return null
 	var best := -1
 	for d in cands:
 		best = maxi(best, d.min_meet)
-	var top: Array = cands.filter(func(d): return d.min_meet == best)
-	_present(_weighted(top))
-	return true
+	return _weighted(cands.filter(func(d): return d.min_meet == best))
 
 func _ok(d) -> bool:
 	var m := SaveManager.meetings(d.speaker)
@@ -66,7 +75,11 @@ func _weighted(arr: Array):
 			return d
 	return arr[0]
 
-func _present(d) -> void:
+func _pump() -> void:
+	if _active or _queue.is_empty():
+		return
+	var d = _queue.pop_front()
+	_active = true
 	SaveManager.meet(d.speaker)
 	if d.once:
 		SaveManager.mark_line_seen(d.id)
@@ -74,13 +87,25 @@ func _present(d) -> void:
 		SaveManager.set_flag(f)
 	var box := DialogueBox.new()
 	box.setup(_speaker_name(d.speaker), Sprites.portrait(d.speaker), d.lines, d.modal)
+	box.finished.connect(_on_finished, CONNECT_ONE_SHOT)
 	var host := get_tree().current_scene
 	if host != null:
 		host.add_child(box)
+	else:
+		_on_finished()
+
+func _on_finished() -> void:
+	_active = false
+	if _queue.is_empty():
+		queue_empty.emit()
+	else:
+		_pump()
 
 func _speaker_name(speaker: String) -> String:
 	if speaker == "narrator":
 		return Loc.t("speaker.narrator")
+	if speaker == "shade":
+		return Loc.t("speaker.shade")
 	var dd = GameData.deities.get(speaker, null)
 	return Loc.t(dd.name_key) if dd != null else speaker
 
@@ -88,8 +113,6 @@ func _on_blessing_chosen(blessing_id: String) -> void:
 	var b = GameData.blessings.get(blessing_id, null)
 	if b == null or b.deity_id == "":
 		return
-	# If this boon angers a rival you already follow, the offended god reacts
-	# jealously instead of the usual boon line (Hades-style).
 	var rival := RunManager.owned_rival_of(b.deity_id)
 	if rival != "" and speak(rival, "rival"):
 		return

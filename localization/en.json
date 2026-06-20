@@ -34,6 +34,7 @@
 	"hub.objective": "Realms conquered: {n}/6 — escape the cycle.",
 	"hub.reincarnation": "Reincarnation",
 	"speaker.narrator": "The Ferryman",
+	"speaker.shade": "Lost Shade",
 	"hub.new_descent": "New Descent",
 	"hub.realm_guarded": "Guarded by {boss}",
 	"hub.last_verdict": "Last judgment: {v}",
