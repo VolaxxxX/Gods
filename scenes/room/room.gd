@@ -48,6 +48,7 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 	_build_walls()
 	_build_obstacles()
 	_build_doors()
+	_scatter_props()
 
 	# Room-type contents.
 	if room_type == "reward" or room_type == "shop":
@@ -260,6 +261,25 @@ func _spawn_pickups(priced: bool) -> void:
 		p.setup(item, _price_for(item) if priced else 0)
 		p.position = anchors[i]
 		add_child(p)
+
+## Scatter a few non-colliding decorative props from the biome's prop pool.
+## Inert until the biome lists props AND the prop PNGs exist.
+func _scatter_props() -> void:
+	if biome == null or biome.props.is_empty():
+		return
+	var area := _size.x * _size.y
+	var n: int = clampi(int(area / (9.0 * TILE * TILE)), 2, 6)
+	for i in n:
+		var id = RNG.pick("decor", biome.props)
+		if id == null:
+			continue
+		var tex := Sprites.prop(id)
+		if tex == null:
+			continue
+		var s := Sprite2D.new()
+		s.texture = tex
+		s.position = _random_floor_point()
+		add_child(s)
 
 func _spawn_sacrifice() -> void:
 	var anchors: Array[Vector2] = []

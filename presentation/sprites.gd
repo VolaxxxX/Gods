@@ -15,6 +15,7 @@ extends Node
 const ENT := "res://assets/sprites/entities/"
 const TILES := "res://assets/sprites/tiles/"
 const FX := "res://assets/sprites/fx/"
+const PROPS := "res://assets/sprites/props/"
 const EXTS := [".png", ".svg"]
 
 var _cache: Dictionary = {}
@@ -49,6 +50,10 @@ func tile(pantheon: String, kind: String) -> Texture2D:
 
 func tile_generic(kind: String) -> Texture2D:
 	return _resolve(TILES, kind)
+
+## Decorative prop (non-colliding), e.g. greece_column, egypt_urn.
+func prop(id: String) -> Texture2D:
+	return _resolve(PROPS, id)
 
 func fx(name: String) -> Texture2D:
 	var t := _resolve(FX, name)

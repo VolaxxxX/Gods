@@ -20,6 +20,10 @@ var miniboss_id: String = ""         # EntityData id spawned in miniboss rooms
 var enemies_per_room_min: int = 2
 var enemies_per_room_max: int = 4
 
+# Decorative prop ids scattered (non-colliding) in rooms; sprites live at
+# assets/sprites/props/<id>.png. Empty = none.
+var props: Array[String] = []
+
 func palette_color(key: String, fallback: Color) -> Color:
 	if palette.has(key):
 		return DataUtil.to_color(palette[key], fallback)
@@ -39,4 +43,5 @@ static func from_dict(d: Dictionary) -> BiomeData:
 	b.miniboss_id = d.get("miniboss_id", "")
 	b.enemies_per_room_min = int(d.get("enemies_per_room_min", 2))
 	b.enemies_per_room_max = int(d.get("enemies_per_room_max", 4))
+	b.props = DataUtil.to_string_array(d.get("props", []))
 	return b
