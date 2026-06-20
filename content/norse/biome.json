@@ -17,7 +17,8 @@
 			"boss_id": "norse_fenrir",
 			"miniboss_id": "norse_troll",
 			"enemies_per_room_min": 3,
-			"enemies_per_room_max": 5
+			"enemies_per_room_max": 5,
+			"props": ["norse_runestone", "norse_banner", "norse_shield", "norse_iceshard", "norse_furs", "norse_axe"]
 		}
 	]
 }

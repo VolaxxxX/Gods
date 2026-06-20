@@ -17,7 +17,8 @@
 			"boss_id": "greece_hydra",
 			"miniboss_id": "greece_cyclops",
 			"enemies_per_room_min": 3,
-			"enemies_per_room_max": 5
+			"enemies_per_room_max": 5,
+			"props": ["greece_column", "greece_brazier", "greece_vase", "greece_statue", "greece_scrolls", "greece_broken_column"]
 		}
 	]
 }
