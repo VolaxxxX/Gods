@@ -43,9 +43,9 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 	if Sprites.has_anim(data.id):
 		_anim = AnimatedSprite2D.new()
 		_anim.sprite_frames = Sprites.build_sprite_frames(data.id)
-		var fs := Sprites.anim_frame_size(data.id)
-		if fs > 0:
-			_anim.scale = Vector2.ONE * (2.4 * _radius / fs)
+		var cs := Sprites.anim_content_size(data.id)
+		if cs > 0.0:
+			_anim.scale = Vector2.ONE * (2.4 * _radius / cs)
 		add_child(_anim)
 		if _anim.sprite_frames.has_animation("idle"):
 			_anim.play("idle")
@@ -63,9 +63,9 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 			if tinted:
 				_sprite.modulate = _color
 				_sprite_tinted = true
-			var dim: float = maxf(tex.get_width(), tex.get_height())
-			if dim > 0.0:
-				_sprite.scale = Vector2.ONE * (2.2 * _radius / dim)
+			var cs := Sprites.content_size(tex)
+			if cs > 0.0:
+				_sprite.scale = Vector2.ONE * (2.2 * _radius / cs)
 			add_child(_sprite)
 
 	collision_layer = Collision.ENEMY_BODY

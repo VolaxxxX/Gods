@@ -56,9 +56,9 @@ func _ready() -> void:
 	if anim_id != "":
 		_anim = AnimatedSprite2D.new()
 		_anim.sprite_frames = Sprites.build_sprite_frames(anim_id)
-		var fs := Sprites.anim_frame_size(anim_id)
-		if fs > 0:
-			_anim.scale = Vector2.ONE * (2.4 * RADIUS / fs)
+		var cs := Sprites.anim_content_size(anim_id)
+		if cs > 0.0:
+			_anim.scale = Vector2.ONE * (2.4 * RADIUS / cs)
 		add_child(_anim)
 		if _anim.sprite_frames.has_animation("idle"):
 			_anim.play("idle")
@@ -69,9 +69,9 @@ func _ready() -> void:
 		if tex != null:
 			_sprite = Sprite2D.new()
 			_sprite.texture = tex
-			var dim: float = maxf(tex.get_width(), tex.get_height())
-			if dim > 0.0:
-				_sprite.scale = Vector2.ONE * (2.2 * RADIUS / dim)
+			var cs := Sprites.content_size(tex)
+			if cs > 0.0:
+				_sprite.scale = Vector2.ONE * (2.2 * RADIUS / cs)
 			add_child(_sprite)
 	collision_layer = Collision.PLAYER_BODY
 	# Collide with walls only; pass through enemies (contact damage is handled by

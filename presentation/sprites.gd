@@ -96,6 +96,49 @@ func anim_frame_size(id: String) -> int:
 			return t.get_height()
 	return 0
 
+# --- Content sizing (ignore transparent padding so on-screen size is consistent
+# regardless of how much empty space the art tool pads around the character) ---
+var _content_cache: Dictionary = {}
+
+## Max dimension of the opaque bounding box of a texture (falls back to full size).
+func content_size(tex: Texture2D) -> float:
+	if tex == null:
+		return 1.0
+	var key := tex.resource_path + "#full"
+	if _content_cache.has(key):
+		return _content_cache[key]
+	var v := float(maxi(tex.get_width(), tex.get_height()))
+	var img := tex.get_image()
+	if img != null:
+		var r := img.get_used_rect()
+		if r.size.x > 0 and r.size.y > 0:
+			v = float(maxi(r.size.x, r.size.y))
+	_content_cache[key] = v
+	return v
+
+## Opaque content max-dim of the FIRST frame (fs×fs) of the first animation strip.
+func anim_content_size(id: String) -> float:
+	for a in ANIMS:
+		var t := sheet(id, a)
+		if t == null:
+			continue
+		var fs := t.get_height()
+		if fs <= 0:
+			return 0.0
+		var key := t.resource_path + "#f0"
+		if _content_cache.has(key):
+			return _content_cache[key]
+		var v := float(fs)
+		var img := t.get_image()
+		if img != null:
+			var frame := img.get_region(Rect2i(0, 0, fs, fs))
+			var r := frame.get_used_rect()
+			if r.size.x > 0 and r.size.y > 0:
+				v = float(maxi(r.size.x, r.size.y))
+		_content_cache[key] = v
+		return v
+	return 0.0
+
 ## Build a SpriteFrames from the per-animation strips (frames = width / height).
 ## idle/walk loop; attack/death play once. Returns null if no sheets exist.
 func build_sprite_frames(id: String) -> SpriteFrames:
