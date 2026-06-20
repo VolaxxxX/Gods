@@ -28,6 +28,7 @@ Audio="*res://presentation/audio.gd"
 Sprites="*res://presentation/sprites.gd"
 Fx="*res://presentation/fx.gd"
 Dialogue="*res://core/dialogue.gd"
+UITheme="*res://presentation/ui_theme.gd"
 
 [display]
 

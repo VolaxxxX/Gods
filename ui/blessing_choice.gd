@@ -23,12 +23,16 @@ func _ready() -> void:
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(dim)
 
+	# Styled window panel (themed) holding the choices.
+	var window := PanelContainer.new()
+	window.set_anchors_preset(Control.PRESET_CENTER)
+	window.position = Vector2(-260, -70 - 45 * _options.size())
+	add_child(window)
+
 	var box := VBoxContainer.new()
-	box.set_anchors_preset(Control.PRESET_CENTER)
-	box.position = Vector2(-230, -40 - 40 * _options.size())
-	box.custom_minimum_size = Vector2(460, 0)
+	box.custom_minimum_size = Vector2(480, 0)
 	box.add_theme_constant_override("separation", 12)
-	add_child(box)
+	window.add_child(box)
 
 	var title := Label.new()
 	title.text = Loc.t(_title_key)

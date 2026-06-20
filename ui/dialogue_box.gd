@@ -44,6 +44,15 @@ func _ready() -> void:
 	panel.offset_right = -40
 	panel.offset_top = -210
 	panel.offset_bottom = -30
+	# Dedicated dialogue frame if provided, else the global themed panel.
+	var frame := "res://assets/sprites/ui/dialogue.png"
+	if ResourceLoader.exists(frame):
+		var sb := StyleBoxTexture.new()
+		sb.texture = load(frame)
+		for s in ["left", "right", "top", "bottom"]:
+			sb.set("texture_margin_" + s, 28)
+			sb.set("content_margin_" + s, 24)
+		panel.add_theme_stylebox_override("panel", sb)
 	add_child(panel)
 
 	var row := HBoxContainer.new()
