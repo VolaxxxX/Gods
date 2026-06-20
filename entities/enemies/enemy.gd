@@ -207,6 +207,7 @@ func _execute_ability(ab: Dictionary) -> void:
 		"nova":
 			_fire_pattern(int(ab.get("count", 8)), TAU, 0.0,
 				float(ab.get("speed", 200.0)), float(ab.get("damage", 1.0)))
+			Fx.play("shockwave", global_position, _radius * 4.0)
 		"spread":
 			if is_instance_valid(_target):
 				var base := (_target.global_position - global_position).angle()
@@ -219,6 +220,7 @@ func _execute_ability(ab: Dictionary) -> void:
 				_charge_dir = (_target.global_position - global_position).normalized()
 				_charge_speed = float(ab.get("speed", 420.0))
 				_charge_t = float(ab.get("duration", 0.45))
+				Fx.play("shockwave", global_position, _radius * 3.0)
 		"barrage":
 			# A tight, fast volley aimed at the player.
 			if is_instance_valid(_target):
