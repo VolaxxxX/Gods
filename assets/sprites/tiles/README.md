@@ -19,3 +19,10 @@ Per-realm files take priority over the generic ones.
 ## Sizes
 - **32×32 px**, seamlessly tileable. The engine tiles them (cell size in-game is
   64px, so a 32px tile repeats 2× per cell — that's fine).
+
+## Post-mini-boss variant (floor 2 of a zone)
+After the palier/mini-boss, the SAME zone's 2nd floor uses a variant tile:
+`<pantheon>_<kind>_alt.png` (e.g. `aztec_floor_alt.png`). If absent, the base
+tile is shown darkened to read as "corrupted". Suggested theme per realm for the
+_alt set: Greece=hallowed/cracked, Bali=ember/volcanic, Egypt=cursed gold,
+Norse=deep-frozen, Japan=blighted red, Aztec=blood-soaked.

@@ -327,52 +327,62 @@ func _add_gate(side: String) -> StaticBody2D:
 		rect = Rect2(pos.x - WALL_THICK * 0.5, pos.y - DOOR_HALF, WALL_THICK, DOOR_HALF * 2.0)
 	return _add_wall(rect)
 
-# --- Rendering (textures if present, else greybox) ---
+# --- Rendering (textures if present, else greybox). Floor 2 of a zone (after the
+# palier/mini-boss) uses each tile's "_alt" variant, or a darkened base. ---
 func _draw() -> void:
 	var w := _size.x
 	var h := _size.y
-	# Floor: a bespoke realm tile as-is, else a generic tile tinted by palette,
-	# else solid colour. (One generic tileset thus serves all six realms.)
-	var floor_tex := Sprites.tile(_pantheon, "floor")
-	var floor_generic := floor_tex == null
-	if floor_generic:
-		floor_tex = Sprites.tile_generic("floor")
-	if floor_tex != null:
-		draw_texture_rect(floor_tex, Rect2(Vector2.ZERO, _size), true,
-			_floor_color if floor_generic else Color.WHITE)
+	# Floor.
+	var fr := _tile("floor", _floor_color)
+	if fr[0] != null:
+		draw_texture_rect(fr[0], Rect2(Vector2.ZERO, _size), true, fr[1])
 	else:
-		draw_rect(Rect2(Vector2.ZERO, _size), _floor_color, true)
+		draw_rect(Rect2(Vector2.ZERO, _size), fr[1], true)
 		draw_rect(Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, h - 2 * WALL_THICK),
 			Color(_accent_color.r, _accent_color.g, _accent_color.b, 0.10), false, 3.0)
 	# Walls.
-	var wall_tex := Sprites.tile(_pantheon, "wall")
-	var wall_generic := wall_tex == null
-	if wall_generic:
-		wall_tex = Sprites.tile_generic("wall")
+	var wr := _tile("wall", _wall_color)
 	for r in [Rect2(0, 0, w, WALL_THICK), Rect2(0, h - WALL_THICK, w, WALL_THICK),
 			Rect2(0, 0, WALL_THICK, h), Rect2(w - WALL_THICK, 0, WALL_THICK, h)]:
-		if wall_tex != null:
-			draw_texture_rect(wall_tex, r, true, _wall_color if wall_generic else Color.WHITE)
+		if wr[0] != null:
+			draw_texture_rect(wr[0], r, true, wr[1])
 		else:
-			draw_rect(r, _wall_color)
+			draw_rect(r, wr[1])
 	# Obstacles.
-	var obs_tex := Sprites.tile(_pantheon, "obstacle")
-	var obs_generic := obs_tex == null
-	if obs_generic:
-		obs_tex = Sprites.tile_generic("obstacle")
+	var ob := _tile("obstacle", _accent_color)
 	if template != null:
 		for y in template.grid.size():
 			var row: String = template.grid[y]
 			for x in row.length():
 				if row[x] == "O":
 					var cell := Rect2(x * TILE, y * TILE, TILE, TILE)
-					if obs_tex != null:
-						draw_texture_rect(obs_tex, cell, true,
-							_accent_color if obs_generic else Color.WHITE)
+					if ob[0] != null:
+						draw_texture_rect(ob[0], cell, true, ob[1])
 					else:
-						draw_rect(cell, _accent_color)
+						draw_rect(cell, ob[1])
 	# Doors as accent marks.
 	var door_col := _accent_color if not locked else Color(0.5, 0.4, 0.4)
 	for side in open_sides:
-		var p := _door_position(side)
-		draw_circle(p, 10.0, door_col)
+		draw_circle(_door_position(side), 10.0, door_col)
+
+## Returns [Texture2D|null, modulate] for a tile kind. On the zone's 2nd floor
+## (post mini-boss) it uses the bespoke "<biome>_<kind>_alt.png" variant if it
+## exists, else falls back to the base art / palette darkened to read as corrupted.
+func _tile(kind: String, palette_col: Color) -> Array:
+	var v2: bool = RunManager.floor_in_biome > 1
+	if v2:
+		var alt := Sprites.tile(_pantheon, kind + "_alt")
+		if alt != null:
+			return [alt, Color.WHITE]
+	var bespoke := Sprites.tile(_pantheon, kind)
+	if bespoke != null:
+		return [bespoke, _variant_tint(Color.WHITE) if v2 else Color.WHITE]
+	var generic := Sprites.tile_generic(kind)
+	var col: Color = _variant_tint(palette_col) if v2 else palette_col
+	if generic != null:
+		return [generic, col]
+	return [null, col]
+
+## Darken/shift toward a corrupted look (fallback when no "_alt" art exists yet).
+func _variant_tint(c: Color) -> Color:
+	return Color(c.r * 0.72, c.g * 0.6, c.b * 0.82)
