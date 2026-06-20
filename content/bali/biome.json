@@ -13,7 +13,7 @@
 				"accent": "#d4af37"
 			},
 			"room_count": 9,
-			"enemy_pool": ["bali_leyak", "bali_bhuta", "bali_celuluk"],
+			"enemy_pool": ["bali_leyak", "bali_bhuta", "bali_celuluk", "bali_naga"],
 			"elite_pool": ["bali_celuluk"],
 			"boss_id": "bali_rangda",
 			"miniboss_id": "bali_bhuta_lord",

@@ -1,6 +1,7 @@
 {
 	"type": "entity",
 	"entries": [
+		{"id": "egypt_anubis_guard", "name_key": "enemy.anubis_guard.name", "role": "enemy", "pantheon": "egypt", "max_health": 18, "move_speed": 66, "contact_damage": 1, "radius": 14, "ai": "chase", "gold": 3, "color": "#3a3a4a"},
 		{
 			"id": "egypt_scarab",
 			"name_key": "enemy.scarab.name",
@@ -58,7 +59,8 @@
 			"range_speed": 250,
 			"abilities": [
 				{"kind": "nova", "count": 12, "speed": 190, "damage": 1, "cooldown": 5.0},
-				{"kind": "summon", "entity": "egypt_scarab", "count": 3, "cooldown": 8.0}
+				{"kind": "summon", "entity": "egypt_scarab", "count": 3, "cooldown": 8.0},
+				{"kind": "charge", "speed": 430, "duration": 0.5, "cooldown": 7.0}
 			],
 			"phase2_at": 0.5,
 			"phase2_abilities": [

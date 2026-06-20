@@ -1,6 +1,7 @@
 {
 	"type": "entity",
 	"entries": [
+		{"id": "aztec_eagle_warrior", "name_key": "enemy.eagle_warrior.name", "role": "enemy", "pantheon": "aztec", "max_health": 14, "move_speed": 74, "contact_damage": 1, "radius": 13, "ai": "keep_distance", "gold": 3, "color": "#c08030", "ranged": true, "range_damage": 1, "range_rate": 1.1, "range_speed": 250},
 		{
 			"id": "aztec_obsidian", "name_key": "enemy.obsidian.name", "role": "enemy", "pantheon": "aztec",
 			"max_health": 7, "move_speed": 124, "contact_damage": 1, "radius": 11, "ai": "chase", "gold": 2, "color": "#2a2a3a"
@@ -18,7 +19,8 @@
 			"max_health": 200, "move_speed": 46, "contact_damage": 2, "radius": 38, "ai": "chase", "gold": 45, "color": "#3a7a5a", "ranged": true, "range_damage": 1, "range_rate": 1.4, "range_speed": 240,
 			"abilities": [
 				{"kind": "summon", "entity": "aztec_obsidian", "count": 3, "cooldown": 8.0},
-				{"kind": "nova", "count": 10, "speed": 185, "damage": 1, "cooldown": 6.0}
+				{"kind": "nova", "count": 10, "speed": 185, "damage": 1, "cooldown": 6.0},
+				{"kind": "charge", "speed": 430, "duration": 0.5, "cooldown": 7.0}
 			],
 			"phase2_at": 0.5,
 			"phase2_abilities": [

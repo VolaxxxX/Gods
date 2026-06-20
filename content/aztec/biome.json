@@ -13,7 +13,7 @@
 				"accent": "#e0c040"
 			},
 			"room_count": 9,
-			"enemy_pool": ["aztec_obsidian", "aztec_jaguar", "aztec_tzitzimitl"],
+			"enemy_pool": ["aztec_obsidian", "aztec_jaguar", "aztec_tzitzimitl", "aztec_eagle_warrior"],
 			"elite_pool": ["aztec_tzitzimitl"],
 			"boss_id": "aztec_cipactli",
 			"miniboss_id": "aztec_jaguar_lord",

@@ -26,6 +26,9 @@ var _sprite: Sprite2D  # set if a static texture exists for this entity id
 var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
 var _anim: AnimatedSprite2D  # set if animation sheets exist (takes priority)
 var _attack_t: float = 0.0   # time left showing the attack animation
+var _charge_t: float = 0.0   # time left dashing (charge ability)
+var _charge_dir: Vector2 = Vector2.ZERO
+var _charge_speed: float = 420.0
 
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
 	data = p_data
@@ -136,7 +139,12 @@ func _ready() -> void:
 	add_to_group("enemies")
 
 func _physics_process(delta: float) -> void:
-	if ai != null:
+	if _charge_t > 0.0:
+		# Dashing toward the player (charge ability) — overrides normal movement.
+		_charge_t -= delta
+		velocity = _charge_dir * _charge_speed
+		move_and_slide()
+	elif ai != null:
 		var dir := ai.desired_direction(global_position)
 		velocity = movement.compute(velocity, dir, delta)
 		move_and_slide()
@@ -206,6 +214,17 @@ func _execute_ability(ab: Dictionary) -> void:
 					base, float(ab.get("speed", 240.0)), float(ab.get("damage", 1.0)))
 		"summon":
 			_summon(String(ab.get("entity", "")), int(ab.get("count", 2)))
+		"charge":
+			if is_instance_valid(_target):
+				_charge_dir = (_target.global_position - global_position).normalized()
+				_charge_speed = float(ab.get("speed", 420.0))
+				_charge_t = float(ab.get("duration", 0.45))
+		"barrage":
+			# A tight, fast volley aimed at the player.
+			if is_instance_valid(_target):
+				var base := (_target.global_position - global_position).angle()
+				_fire_pattern(int(ab.get("count", 5)), deg_to_rad(float(ab.get("spread", 12.0))),
+					base, float(ab.get("speed", 300.0)), float(ab.get("damage", 1.0)))
 
 ## Fires `count` projectiles spanning `arc` radians centered on `center` (use a
 ## full TAU arc for an omni "nova").

@@ -12,7 +12,7 @@
 				"accent": "#e8e0d0"
 			},
 			"room_count": 9,
-			"enemy_pool": ["japan_onibi", "japan_kappa", "japan_oni"],
+			"enemy_pool": ["japan_onibi", "japan_kappa", "japan_oni", "japan_kitsune"],
 			"elite_pool": ["japan_oni"],
 			"boss_id": "japan_orochi",
 			"miniboss_id": "japan_tengu",

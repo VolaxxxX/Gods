@@ -326,6 +326,13 @@
 	"miniboss.tengu.name": "Tengu",
 	"miniboss.jaguar_lord.name": "Jaguar Lord",
 
+	"enemy.minotaur.name": "Minotaur",
+	"enemy.naga.name": "Naga",
+	"enemy.anubis_guard.name": "Anubis Guard",
+	"enemy.ulfhednar.name": "Ulfhednar",
+	"enemy.kitsune.name": "Kitsune",
+	"enemy.eagle_warrior.name": "Eagle Warrior",
+
 	"room.miniboss": "Champion",
 	"room.cursed": "Cursed",
 	"room.combat": "Combat",

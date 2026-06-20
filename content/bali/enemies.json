@@ -1,6 +1,7 @@
 {
 	"type": "entity",
 	"entries": [
+		{"id": "bali_naga", "name_key": "enemy.naga.name", "role": "enemy", "pantheon": "bali", "max_health": 14, "move_speed": 60, "contact_damage": 1, "radius": 14, "ai": "keep_distance", "gold": 3, "color": "#3a8a5a", "ranged": true, "range_damage": 1, "range_rate": 1.0, "range_speed": 240},
 		{
 			"id": "bali_leyak",
 			"name_key": "enemy.leyak.name",
@@ -58,7 +59,8 @@
 			"range_speed": 235,
 			"abilities": [
 				{"kind": "spread", "count": 5, "spread": 55, "speed": 225, "damage": 1, "cooldown": 4.0},
-				{"kind": "summon", "entity": "bali_leyak", "count": 2, "cooldown": 8.0}
+				{"kind": "summon", "entity": "bali_leyak", "count": 2, "cooldown": 8.0},
+				{"kind": "charge", "speed": 380, "duration": 0.5, "cooldown": 8.0}
 			],
 			"phase2_at": 0.5,
 			"phase2_abilities": [

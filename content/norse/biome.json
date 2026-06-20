@@ -12,7 +12,7 @@
 				"accent": "#c0d6e8"
 			},
 			"room_count": 9,
-			"enemy_pool": ["norse_helhound", "norse_draugr", "norse_jotunn"],
+			"enemy_pool": ["norse_helhound", "norse_draugr", "norse_jotunn", "norse_ulfhednar"],
 			"elite_pool": ["norse_jotunn"],
 			"boss_id": "norse_fenrir",
 			"miniboss_id": "norse_troll",
