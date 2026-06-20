@@ -26,6 +26,7 @@ SceneRouter="*res://core/scene_router.gd"
 Juice="*res://presentation/juice.gd"
 Audio="*res://presentation/audio.gd"
 Sprites="*res://presentation/sprites.gd"
+Fx="*res://presentation/fx.gd"
 
 [display]
 

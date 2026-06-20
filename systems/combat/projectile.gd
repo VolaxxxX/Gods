@@ -73,6 +73,7 @@ func _physics_process(delta: float) -> void:
 func _on_hit(hurtbox: HurtboxComponent) -> void:
 	if on_hit_extra.is_valid():
 		on_hit_extra.call(global_position, hurtbox)
+	Fx.play("impact", global_position, 36.0)
 	if not pierce:
 		_deactivate()
 

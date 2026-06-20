@@ -202,6 +202,7 @@ func _physics_process(delta: float) -> void:
 	elif _wants_fire():
 		if weapon.attempt(global_position + _last_aim * RADIUS, _last_aim):
 			_attack_t = 0.22
+			Fx.play("muzzle", global_position + _last_aim * (RADIUS + 6.0), 30.0)
 
 ## Close-range swing: a brief damage area in front of the player.
 func _update_melee(delta: float) -> void:
@@ -216,6 +217,7 @@ func _update_melee(delta: float) -> void:
 		_melee_active_t = 0.16
 		_swing_t = 0.16
 		_attack_t = 0.22
+		Fx.play("slash", global_position + _last_aim * MELEE_OFFSET, 60.0)
 		_melee.position = _last_aim * MELEE_OFFSET
 		var rng := RNG.stream("combat")
 		var rolled := Damage.compute(_melee_damage, {
