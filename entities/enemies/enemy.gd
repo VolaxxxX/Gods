@@ -29,6 +29,7 @@ var _attack_t: float = 0.0   # time left showing the attack animation
 var _charge_t: float = 0.0   # time left dashing (charge ability)
 var _charge_dir: Vector2 = Vector2.ZERO
 var _charge_speed: float = 420.0
+var _melee_swing_cd: float = 0.0  # melee mobs: throttle the attack animation
 
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
 	data = p_data
@@ -153,6 +154,16 @@ func _physics_process(delta: float) -> void:
 		var aim := _target.global_position - global_position
 		if weapon.attempt(global_position + aim.normalized() * (_radius + 8.0), aim):
 			_attack_t = 0.35
+	# Melee mobs (no weapon/abilities) play their attack anim when adjacent.
+	if weapon == null and _abilities.is_empty() and is_instance_valid(_target):
+		_melee_swing_cd -= delta
+		if _melee_swing_cd <= 0.0 \
+				and global_position.distance_to(_target.global_position) < _radius + 28.0:
+			_melee_swing_cd = CONTACT_INTERVAL
+			_attack_t = 0.3
+			if _anim != null and _anim.sprite_frames != null \
+					and _anim.sprite_frames.has_animation("attack"):
+				_anim.play("attack")
 	# Final-boss second phase: unlock new attacks + a burst at the threshold.
 	if not _phase2_done and not data.phase2_abilities.is_empty() \
 			and health.fraction() <= data.phase2_at:
