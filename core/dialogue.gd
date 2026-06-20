@@ -86,5 +86,11 @@ func _speaker_name(speaker: String) -> String:
 
 func _on_blessing_chosen(blessing_id: String) -> void:
 	var b = GameData.blessings.get(blessing_id, null)
-	if b != null and b.deity_id != "":
-		speak(b.deity_id, "boon")
+	if b == null or b.deity_id == "":
+		return
+	# If this boon angers a rival you already follow, the offended god reacts
+	# jealously instead of the usual boon line (Hades-style).
+	var rival := RunManager.owned_rival_of(b.deity_id)
+	if rival != "" and speak(rival, "rival"):
+		return
+	speak(b.deity_id, "boon")

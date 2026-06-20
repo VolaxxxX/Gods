@@ -188,6 +188,20 @@ func is_rival_of_owned(deity_id: String) -> bool:
 			return true
 	return false
 
+## The first owned deity that rivals `deity_id` (mutual), or "" if none — lets the
+## offended god react jealously in dialogue.
+func owned_rival_of(deity_id: String) -> String:
+	var dd = GameData.deities.get(deity_id, null)
+	for od in owned_deities():
+		if od == deity_id:
+			continue
+		if dd != null and (od in dd.rivals):
+			return od
+		var odd = GameData.deities.get(od, null)
+		if odd != null and (deity_id in odd.rivals):
+			return od
+	return ""
+
 ## All active stat modifiers from items + blessings + active synergies.
 ## Returns Array[Dictionary] for StatBlock.add_modifiers().
 func collect_modifiers() -> Array:

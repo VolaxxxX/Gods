@@ -47,6 +47,7 @@
 		"res://content/cross/synergies.json",
 		"res://content/meta/upgrades.json",
 		"res://content/characters.json",
-		"res://content/dialogue.json"
+		"res://content/dialogue.json",
+		"res://content/dialogue_rivals.json"
 	]
 }
