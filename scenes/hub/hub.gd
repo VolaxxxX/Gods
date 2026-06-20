@@ -16,6 +16,8 @@ func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	_build()
 	Events.karma_changed.connect(func(_k): _refresh())
+	# Story/ambient line from the Ferryman (evolves with progress).
+	Dialogue.speak("narrator", "hub")
 
 func _build() -> void:
 	var v := VBoxContainer.new()
@@ -32,6 +34,11 @@ func _build() -> void:
 	_karma_label = Label.new()
 	_karma_label.add_theme_font_size_override("font_size", 22)
 	v.add_child(_karma_label)
+
+	var objective := Label.new()
+	objective.text = Loc.t("hub.objective", {"n": SaveManager.realms_cleared().size()})
+	objective.modulate = Color(0.85, 0.8, 0.6)
+	v.add_child(objective)
 
 	var descent_h := Label.new()
 	descent_h.text = Loc.t("hub.new_descent")

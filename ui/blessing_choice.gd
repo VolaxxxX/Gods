@@ -44,6 +44,10 @@ func _ready() -> void:
 		btn.text = label
 		btn.custom_minimum_size = Vector2(460, 72)
 		btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		var ic := Sprites.icon(b.id)  # boon icon if one exists
+		if ic != null:
+			btn.icon = ic
+			btn.expand_icon = true
 		btn.pressed.connect(_on_pick.bind(b.id))
 		box.add_child(btn)
 

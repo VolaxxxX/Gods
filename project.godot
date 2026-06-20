@@ -27,6 +27,7 @@ Juice="*res://presentation/juice.gd"
 Audio="*res://presentation/audio.gd"
 Sprites="*res://presentation/sprites.gd"
 Fx="*res://presentation/fx.gd"
+Dialogue="*res://core/dialogue.gd"
 
 [display]
 

@@ -206,6 +206,8 @@ func _grant_wrath_reward() -> void:
 ## Boss down: either the run is won (final realm) or the player branches into the
 ## next underworld, carrying everything and healing for the descent.
 func _complete_biome() -> void:
+	# Beating a zone's true boss conquers that realm (drives the meta goal).
+	SaveManager.record_realm_cleared(RunManager.biome_id)
 	if RunManager.is_final_biome():
 		_end_run(true)
 		return

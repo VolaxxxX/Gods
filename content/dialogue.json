@@ -1,0 +1,76 @@
+{
+	"_comment": "Hades-style dialogue. Lines are raw English (pass through Loc). Selection evolves via min_meet/min_stage/once. speaker = deity id or 'narrator'. trigger = hub | boon | death | victory.",
+	"type": "dialogue",
+	"entries": [
+		{
+			"id": "narr_intro", "speaker": "narrator", "trigger": "hub", "once": true, "modal": true,
+			"lines": [
+				"You are a soul, lost in the lands of the dead.",
+				"Six underworlds bar your road to the light.",
+				"Cast down the lord of each realm, and you may break the cycle.",
+				"Death is no ending here. It is only the road. Walk it again."
+			]
+		},
+		{
+			"id": "narr_hub_early", "speaker": "narrator", "trigger": "hub", "modal": true,
+			"min_meet": 1, "max_stage": 0,
+			"lines": ["Another descent awaits. The dead do not rest — and neither shall you."]
+		},
+		{
+			"id": "narr_hub_early2", "speaker": "narrator", "trigger": "hub", "modal": true,
+			"min_meet": 1, "max_stage": 0, "weight": 1,
+			"lines": ["The gates are open, wanderer. Six thrones of death still stand."]
+		},
+		{
+			"id": "narr_stage1", "speaker": "narrator", "trigger": "hub", "modal": true,
+			"min_stage": 1, "max_stage": 2,
+			"lines": ["A realm has fallen to you. The other lords take notice."]
+		},
+		{
+			"id": "narr_stage3", "speaker": "narrator", "trigger": "hub", "modal": true,
+			"min_stage": 3, "max_stage": 5,
+			"lines": ["Realm upon realm lies broken behind you. The light feels nearer now."]
+		},
+		{
+			"id": "narr_final", "speaker": "narrator", "trigger": "hub", "modal": true,
+			"min_stage": 6,
+			"lines": [
+				"All six lords are vanquished. The cycle... it breaks.",
+				"Step into the light, wanderer. You have earned the dawn."
+			]
+		},
+
+		{
+			"id": "zeus_boon_1", "speaker": "greece_zeus", "trigger": "boon", "min_meet": 0,
+			"lines": ["So — a mortal soul dares borrow my thunder. Use it well."]
+		},
+		{
+			"id": "zeus_boon_2", "speaker": "greece_zeus", "trigger": "boon", "min_meet": 2,
+			"lines": ["Again you call on Olympus. I am... amused. Take it."]
+		},
+		{
+			"id": "zeus_boon_3", "speaker": "greece_zeus", "trigger": "boon", "min_meet": 5,
+			"lines": ["You wield my lightning like an old friend now, little soul."]
+		},
+		{
+			"id": "athena_boon_1", "speaker": "greece_athena", "trigger": "boon", "min_meet": 0,
+			"lines": ["Wisdom shields those who think. Bear my aegis."]
+		},
+		{
+			"id": "athena_boon_2", "speaker": "greece_athena", "trigger": "boon", "min_meet": 3,
+			"lines": ["You learn. Good — few souls ever do."]
+		},
+		{
+			"id": "hermes_boon", "speaker": "greece_hermes", "trigger": "boon",
+			"lines": ["Quick feet, quicker wit — here, try to keep up!"]
+		},
+		{
+			"id": "ares_boon", "speaker": "greece_ares", "trigger": "boon",
+			"lines": ["Blood and fury! Spill them in my name."]
+		},
+		{
+			"id": "artemis_boon", "speaker": "greece_artemis", "trigger": "boon",
+			"lines": ["Aim true, little soul. The hunt rewards the patient."]
+		}
+	]
+}

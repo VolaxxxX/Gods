@@ -16,6 +16,8 @@ const ENT := "res://assets/sprites/entities/"
 const TILES := "res://assets/sprites/tiles/"
 const FX := "res://assets/sprites/fx/"
 const PROPS := "res://assets/sprites/props/"
+const PORTRAITS := "res://assets/sprites/portraits/"
+const ICONS := "res://assets/sprites/icons/"
 const EXTS := [".png", ".svg"]
 
 var _cache: Dictionary = {}
@@ -54,6 +56,14 @@ func tile_generic(kind: String) -> Texture2D:
 ## Decorative prop (non-colliding), e.g. greece_column, egypt_urn.
 func prop(id: String) -> Texture2D:
 	return _resolve(PROPS, id)
+
+## Speaker portrait for dialogue (deity id or "narrator").
+func portrait(speaker: String) -> Texture2D:
+	return _resolve(PORTRAITS, speaker)
+
+## Boon/blessing icon (by blessing id).
+func icon(id: String) -> Texture2D:
+	return _resolve(ICONS, id)
 
 func fx(name: String) -> Texture2D:
 	var t := _resolve(FX, name)

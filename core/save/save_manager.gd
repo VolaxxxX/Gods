@@ -33,6 +33,10 @@ func _default_meta() -> Dictionary:
 		"unlocks": {},  # meta_upgrade id -> owned level
 		"options": {"auto_aim": true, "auto_fire": false, "music": 0.8, "sfx": 0.9},
 		"runs_completed": 0,
+		# Narrative state (Hades-style): per-speaker meeting counts, story flags,
+		# one-shot lines seen, realms whose final boss is beaten.
+		"story": {"stage": 0, "flags": [], "met": {}, "seen": []},
+		"bosses_cleared": [],
 	}
 
 ## Forward-migration hook. Bump SAVE_VERSION and add cases as the schema evolves.
@@ -42,8 +46,69 @@ func _migrate(data: Dictionary) -> Dictionary:
 		data["unlocks"] = {}
 	if not data.has("karma"):
 		data["karma"] = 0
+	if typeof(data.get("story")) != TYPE_DICTIONARY:
+		data["story"] = {"stage": 0, "flags": [], "met": {}, "seen": []}
+	if not data.has("bosses_cleared"):
+		data["bosses_cleared"] = []
 	data["version"] = SAVE_VERSION
 	return data
+
+# --- Narrative state ---
+func story() -> Dictionary:
+	if typeof(meta.get("story")) != TYPE_DICTIONARY:
+		meta["story"] = {"stage": 0, "flags": [], "met": {}, "seen": []}
+	return meta["story"]
+
+func meetings(speaker: String) -> int:
+	return int(story().get("met", {}).get(speaker, 0))
+
+func meet(speaker: String) -> int:
+	var s := story()
+	var m: Dictionary = s.get("met", {})
+	m[speaker] = int(m.get(speaker, 0)) + 1
+	s["met"] = m
+	save_meta()
+	return m[speaker]
+
+func has_flag(f: String) -> bool:
+	return f in story().get("flags", [])
+
+func set_flag(f: String) -> void:
+	var s := story()
+	var a: Array = s.get("flags", [])
+	if not (f in a):
+		a.append(f)
+		s["flags"] = a
+		save_meta()
+
+func line_seen(id: String) -> bool:
+	return id in story().get("seen", [])
+
+func mark_line_seen(id: String) -> void:
+	var s := story()
+	var a: Array = s.get("seen", [])
+	if not (id in a):
+		a.append(id)
+		s["seen"] = a
+		save_meta()
+
+func story_stage() -> int:
+	return int(story().get("stage", 0))
+
+func set_story_stage(n: int) -> void:
+	var s := story()
+	s["stage"] = n
+	save_meta()
+
+func realms_cleared() -> Array:
+	return meta.get("bosses_cleared", [])
+
+func record_realm_cleared(biome: String) -> void:
+	var a: Array = meta.get("bosses_cleared", [])
+	if not (biome in a):
+		a.append(biome)
+		meta["bosses_cleared"] = a
+		set_story_stage(a.size())  # stage advances with realms conquered
 
 # --- Meta convenience ---
 func get_karma() -> int:
