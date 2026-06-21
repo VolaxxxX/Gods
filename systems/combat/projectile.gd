@@ -33,7 +33,7 @@ func _ready() -> void:
 
 func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool,
 		p_radius: float = 6.0, p_color: Color = Color(1, 1, 0.6), life: float = 2.0,
-		pierce_through: bool = false) -> void:
+		pierce_through: bool = false, sprite_name: String = "") -> void:
 	global_position = p_pos
 	velocity = p_velocity
 	radius = p_radius
@@ -54,8 +54,12 @@ func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool
 	# Optional projectile sprite; greybox disc otherwise. A faction-specific art
 	# (e.g. blue/red orb) is shown as-is; only a generic projectile is tinted.
 	var faction_name := "projectile_player" if faction_player else "projectile_enemy"
-	var has_specific := Sprites.has_fx(faction_name)
-	var tex := Sprites.fx(faction_name)
+	# A per-source themed projectile (e.g. projectile_greece_hydra) wins if present.
+	var use_name := faction_name
+	if sprite_name != "" and Sprites.has_fx(sprite_name):
+		use_name = sprite_name
+	var has_specific := Sprites.has_fx(use_name)
+	var tex := Sprites.fx(use_name)
 	_spr.texture = tex
 	_spr.visible = tex != null
 	if tex != null:

@@ -29,9 +29,9 @@ func acquire() -> Projectile:
 ## Convenience: spawn a configured projectile in one call.
 func spawn(pos: Vector2, velocity: Vector2, dmg: Damage, faction_player: bool,
 		radius: float = 6.0, color: Color = Color(1, 1, 0.6), life: float = 2.0,
-		pierce_through: bool = false) -> Projectile:
+		pierce_through: bool = false, sprite_name: String = "") -> Projectile:
 	var p := acquire()
-	p.fire(pos, velocity, dmg, faction_player, radius, color, life, pierce_through)
+	p.fire(pos, velocity, dmg, faction_player, radius, color, life, pierce_through, sprite_name)
 	return p
 
 func deactivate_all() -> void:
