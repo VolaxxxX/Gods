@@ -142,8 +142,16 @@ func _build_obstacles() -> void:
 	for y in template.grid.size():
 		var row: String = template.grid[y]
 		for x in row.length():
-			if row[x] == "O":
+			if _is_solid_cell(row, x, y):
 				_add_wall(Rect2(x * TILE, y * TILE, TILE, TILE))
+
+## A full-cell solid block: an 'O' obstacle, or an INTERIOR '#' (carved room
+## shape — non-rectangular rooms). The outer border is built by _build_walls.
+func _is_solid_cell(row: String, x: int, y: int) -> bool:
+	var c := row[x]
+	if c == "O":
+		return true
+	return c == "#" and x > 0 and x < row.length() - 1 and y > 0 and y < template.grid.size() - 1
 
 func _build_doors() -> void:
 	for side in open_sides:
@@ -269,9 +277,18 @@ func _scatter_props() -> void:
 	_prop_marks.clear()
 	if biome == null or biome.props.is_empty():
 		return
-	# Furnish the walls with TIDY, evenly spaced rows of props (flush, foot-
-	# anchored, shadowed) so the arena reads as a real place, not an empty box.
-	# Props are non-colliding, foot-anchored, ~1 cell tall, and cast a soft shadow.
+	# 1) Prefer HAND-PLACED decor: 'D' anchors authored in the template are
+	#    symmetric and designed — never random.
+	var anchors: Array[Vector2] = []
+	if template != null:
+		anchors = template.decor_anchors()
+	if not anchors.is_empty():
+		var di := 0
+		for pos in anchors:
+			di += 1
+			_place_prop(biome.props[di % biome.props.size()], pos, TILE * 1.15)
+		return
+	# 2) Fallback (templates without 'D'): tidy rows flush to the walls.
 	var ins := WALL_THICK + 14.0
 	var step := 110.0
 	var spots: Array[Vector2] = []
@@ -292,19 +309,22 @@ func _scatter_props() -> void:
 		i += 1
 		if _near_open_door(pos):
 			continue   # never block a passage
-		var id: String = biome.props[i % biome.props.size()]  # cycle -> tidy varied line
-		var tex := Sprites.prop(id)
-		if tex == null:
-			continue
-		var s := Sprite2D.new()
-		s.texture = tex
-		var dim: float = maxf(tex.get_width(), tex.get_height())
-		if dim > 0.0:
-			s.scale = Vector2.ONE * (TILE * 1.05 / dim)   # consistent ~1 cell
-		s.offset = Vector2(0, -tex.get_height() * 0.5)   # foot-anchored at pos
-		s.position = pos
-		add_child(s)
-		_prop_marks.append([pos, TILE * 0.40])
+		_place_prop(biome.props[i % biome.props.size()], pos, TILE * 1.05)
+
+## Instantiate one decorative prop: foot-anchored, scaled, with a shadow mark.
+func _place_prop(id: String, pos: Vector2, target: float) -> void:
+	var tex := Sprites.prop(id)
+	if tex == null:
+		return
+	var s := Sprite2D.new()
+	s.texture = tex
+	var dim: float = maxf(tex.get_width(), tex.get_height())
+	if dim > 0.0:
+		s.scale = Vector2.ONE * (target / dim)
+	s.offset = Vector2(0, -tex.get_height() * 0.5)
+	s.position = pos
+	add_child(s)
+	_prop_marks.append([pos, target * 0.40])
 
 ## True if a point sits in front of an OPEN door (so we don't decorate over it).
 func _near_open_door(pos: Vector2) -> bool:
@@ -387,18 +407,23 @@ func _draw() -> void:
 			draw_rect(r, wr[1])
 	# Faux depth: a soft dark "front face" just under the top wall.
 	draw_rect(Rect2(0, WALL_THICK, w, 10.0), Color(0, 0, 0, 0.22))
-	# Obstacles.
+	# Obstacles ('O') and carved interior walls ('#') — both full cells.
 	var ob := _tile("obstacle", _accent_color)
+	var wl := _tile("wall", _wall_color)
 	if template != null:
 		for y in template.grid.size():
 			var row: String = template.grid[y]
 			for x in row.length():
-				if row[x] == "O":
-					var cell := Rect2(x * TILE, y * TILE, TILE, TILE)
-					if ob[0] != null:
-						draw_texture_rect(ob[0], cell, true, ob[1])
-					else:
-						draw_rect(cell, ob[1])
+				if not _is_solid_cell(row, x, y):
+					continue
+				var cell := Rect2(x * TILE, y * TILE, TILE, TILE)
+				var is_wall_cell := row[x] == "#"
+				var t: Array = wl if is_wall_cell else ob
+				var mod: Color = _dim(t[1], 0.72) if is_wall_cell else t[1]
+				if t[0] != null:
+					draw_texture_rect(t[0], cell, true, mod)
+				else:
+					draw_rect(cell, mod)
 	# Inner shadow band -> depth + focuses the eye on the centre (cheap vignette).
 	for band in [[0.0, 0.20], [9.0, 0.12], [18.0, 0.06]]:
 		var o: float = WALL_THICK + band[0]
