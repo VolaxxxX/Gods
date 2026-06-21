@@ -10,6 +10,8 @@ extends Node
 @export var projectile_color: Color = Color(1, 1, 0.6)
 @export var projectile_life: float = 1.2
 @export var faction_player: bool = true
+## Optional themed projectile art (e.g. "projectile_greece_hydra"); "" = faction default.
+var projectile_sprite: String = ""
 
 # Synergy hooks (read by the damage model / Phase 2).
 var damage_tags: Array[String] = ["projectile"]
@@ -54,7 +56,7 @@ func attempt(origin: Vector2, direction: Vector2) -> bool:
 		dmg.is_crit = rolled["is_crit"]
 		var vel := Vector2.from_angle(ang) * projectile_speed
 		var p := pool.spawn(origin, vel, dmg, faction_player, projectile_radius,
-			projectile_color, projectile_life, pierce)
+			projectile_color, projectile_life, pierce, projectile_sprite)
 		if faction_player and not on_hit_effects.is_empty():
 			p.on_hit_extra = _on_projectile_hit
 	return true
