@@ -129,6 +129,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 		weapon.fire_rate = data.range_rate
 		weapon.projectile_speed = data.range_speed
 		weapon.projectile_color = Color(1.0, 0.45, 0.4)
+		weapon.projectile_sprite = "projectile_" + data.id
 		weapon.projectile_radius = 8.0
 		weapon.projectile_life = 2.5
 		add_child(weapon)
@@ -230,7 +231,7 @@ func _execute_ability(ab: Dictionary) -> void:
 		"nova":
 			_fire_pattern(int(ab.get("count", 8)), TAU, 0.0,
 				float(ab.get("speed", 200.0)), float(ab.get("damage", 1.0)))
-			Fx.play("shockwave", global_position, _radius * 4.0)
+			Fx.play(_burst_fx(), global_position, _radius * 4.0)
 		"spread":
 			if is_instance_valid(_target):
 				var base := (_target.global_position - global_position).angle()
@@ -244,13 +245,18 @@ func _execute_ability(ab: Dictionary) -> void:
 				_charge_speed = float(ab.get("speed", 420.0))
 				_charge_t = float(ab.get("duration", 0.45))
 				_charge_vanish = bool(ab.get("vanish", false))  # fade during the dash
-				Fx.play("shockwave", global_position, _radius * 3.0)
+				Fx.play(_burst_fx(), global_position, _radius * 3.0)
 		"barrage":
 			# A tight, fast volley aimed at the player.
 			if is_instance_valid(_target):
 				var base := (_target.global_position - global_position).angle()
 				_fire_pattern(int(ab.get("count", 5)), deg_to_rad(float(ab.get("spread", 12.0))),
 					base, float(ab.get("speed", 300.0)), float(ab.get("damage", 1.0)))
+
+## Themed nova/charge burst for this enemy if its art exists, else the generic ring.
+func _burst_fx() -> String:
+	var n := "burst_" + data.id
+	return n if Fx.has(n) else "shockwave"
 
 ## Fires `count` projectiles spanning `arc` radians centered on `center` (use a
 ## full TAU arc for an omni "nova").
@@ -263,7 +269,7 @@ func _fire_pattern(count: int, arc: float, center: float, speed: float, dmg: flo
 		var dir := Vector2.from_angle(angle)
 		var d := Damage.new(dmg, ["enemy"], self)
 		_pool.spawn(global_position + dir * (_radius + 8.0), dir * speed, d, false,
-			8.0, Color(1, 0.5, 0.4), 3.0)
+			8.0, Color(1, 0.5, 0.4), 3.0, false, "projectile_" + data.id)
 
 func _summon(entity_id: String, count: int, regen: bool = false) -> void:
 	if entity_id == "" or count <= 0:
