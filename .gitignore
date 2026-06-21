@@ -1,7 +1,11 @@
 # Godot 4 .gitignore
 
-# Godot-generated editor & import caches (regenerated on open).
+# Godot-generated editor & import caches (regenerated on open / --import).
 .godot/
+# Per-asset import metadata + compiled translations (regenerated from source
+# assets; this project treats art as drop-in, so we don't track the churn).
+*.import
+*.translation
 
 # Exported builds.
 /builds/
