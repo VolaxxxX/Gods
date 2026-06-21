@@ -6,7 +6,7 @@ extends RefCounted
 ## `grid` is an array of equal-length strings, one per row. Legend:
 ##   '#' wall          '.' floor (walkable)       ' ' floor (alias)
 ##   'P' player spawn   'E' enemy spawn point      'O' obstacle (solid block)
-##   'X' altar/feature anchor
+##   'X' altar/feature anchor   'D' decorative prop anchor
 ## Doors are punched at the middle of each allowed side at build time.
 
 const TILE_SIZE := 64  # px per cell (greybox)
@@ -46,6 +46,9 @@ func player_spawn() -> Vector2:
 
 func feature_anchors() -> Array[Vector2]:
 	return _markers("X")
+
+func decor_anchors() -> Array[Vector2]:
+	return _markers("D")
 
 func _markers(symbol: String) -> Array[Vector2]:
 	var out: Array[Vector2] = []
