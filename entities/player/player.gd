@@ -67,7 +67,7 @@ func _ready() -> void:
 		_anim.sprite_frames = Sprites.build_sprite_frames(anim_id, ["dash"])
 		var cs := Sprites.anim_content_size(anim_id)
 		if cs > 0.0:
-			_anim.scale = Vector2.ONE * (2.4 * RADIUS / cs)
+			_anim.scale = Vector2.ONE * (2.9 * RADIUS / cs)
 		add_child(_anim)
 		if _anim.sprite_frames.has_animation("idle"):
 			_anim.play("idle")
@@ -80,7 +80,7 @@ func _ready() -> void:
 			_sprite.texture = tex
 			var cs := Sprites.content_size(tex)
 			if cs > 0.0:
-				_sprite.scale = Vector2.ONE * (2.2 * RADIUS / cs)
+				_sprite.scale = Vector2.ONE * (2.7 * RADIUS / cs)
 			add_child(_sprite)
 	collision_layer = Collision.PLAYER_BODY
 	# Collide with walls only; pass through enemies (contact damage is handled by
@@ -304,6 +304,10 @@ func _emit_health() -> void:
 	Events.emit_signal("player_health_changed", health.health, health.max_health)
 
 func _draw() -> void:
+	# Soft contact shadow under the feet so the player stays readable on any floor.
+	draw_set_transform(Vector2(0, RADIUS * 1.2), 0.0, Vector2(1.0, 0.42))
+	draw_circle(Vector2.ZERO, RADIUS * 1.15, Color(0, 0, 0, 0.34))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	if _sprite == null and _anim == null:  # greybox body only when no sprite/anim
 		var body_color := _body_color
 		if _flash > 0.0:
