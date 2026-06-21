@@ -269,42 +269,42 @@ func _scatter_props() -> void:
 	_prop_marks.clear()
 	if biome == null or biome.props.is_empty():
 		return
-	# Furnish the PERIMETER (corners + along every wall) so the arena reads as a
-	# real place, not an empty box — without cluttering the central play space.
+	# Furnish the walls with TIDY, evenly spaced rows of props (flush, foot-
+	# anchored, shadowed) so the arena reads as a real place, not an empty box.
 	# Props are non-colliding, foot-anchored, ~1 cell tall, and cast a soft shadow.
-	var ins := WALL_THICK + 30.0
-	var spots: Array[Vector2] = [
-		Vector2(ins, ins), Vector2(_size.x - ins, ins),
-		Vector2(ins, _size.y - ins), Vector2(_size.x - ins, _size.y - ins),
-	]
-	for k in 3:
-		var fx := lerpf(ins + 60.0, _size.x - ins - 60.0, float(k + 1) / 4.0)
-		spots.append(Vector2(fx, ins))
-		spots.append(Vector2(fx, _size.y - ins))
-	for k in 2:
-		var fy := lerpf(ins + 40.0, _size.y - ins - 40.0, float(k + 1) / 3.0)
-		spots.append(Vector2(ins, fy))
-		spots.append(Vector2(_size.x - ins, fy))
-	var rng := RNG.stream("decor")
+	var ins := WALL_THICK + 14.0
+	var step := 110.0
+	var spots: Array[Vector2] = []
+	# Top & bottom walls: an evenly spaced ROW of props, flush to the wall.
+	var lx := ins + 30.0
+	while lx < _size.x - ins - 20.0:
+		spots.append(Vector2(lx, ins + 34.0))
+		spots.append(Vector2(lx, _size.y - ins))
+		lx += step
+	# Left & right walls: an evenly spaced COLUMN of props.
+	var ly := ins + 50.0
+	while ly < _size.y - ins - 30.0:
+		spots.append(Vector2(ins + 18.0, ly))
+		spots.append(Vector2(_size.x - ins - 18.0, ly))
+		ly += step
+	var i := 0
 	for pos in spots:
+		i += 1
 		if _near_open_door(pos):
 			continue   # never block a passage
-		var id = RNG.pick("decor", biome.props)
-		if id == null:
-			continue
+		var id: String = biome.props[i % biome.props.size()]  # cycle -> tidy varied line
 		var tex := Sprites.prop(id)
 		if tex == null:
 			continue
 		var s := Sprite2D.new()
 		s.texture = tex
 		var dim: float = maxf(tex.get_width(), tex.get_height())
-		var target: float = TILE * rng.randf_range(0.95, 1.3)
 		if dim > 0.0:
-			s.scale = Vector2.ONE * (target / dim)
-		s.offset = Vector2(0, -tex.get_height() * 0.5)   # anchor the base at pos
+			s.scale = Vector2.ONE * (TILE * 1.05 / dim)   # consistent ~1 cell
+		s.offset = Vector2(0, -tex.get_height() * 0.5)   # foot-anchored at pos
 		s.position = pos
 		add_child(s)
-		_prop_marks.append([pos, target * 0.42])
+		_prop_marks.append([pos, TILE * 0.40])
 
 ## True if a point sits in front of an OPEN door (so we don't decorate over it).
 func _near_open_door(pos: Vector2) -> bool:
