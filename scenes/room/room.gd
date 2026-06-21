@@ -8,7 +8,7 @@ extends Node2D
 ## neighbors (open_sides). Walking into a door emits `door_taken(side)`.
 
 const TILE := RoomTemplate.TILE_SIZE
-const WALL_THICK := 16.0
+const WALL_THICK := 28.0
 const DOOR_HALF := 48.0   # half-width of a door gap
 
 signal cleared
@@ -335,7 +335,7 @@ func _draw() -> void:
 	# Floor.
 	var fr := _tile("floor", _floor_color)
 	if fr[0] != null:
-		draw_texture_rect(fr[0], Rect2(Vector2.ZERO, _size), true, fr[1])
+		draw_texture_rect(fr[0], Rect2(Vector2.ZERO, _size), true, _dim(fr[1], 0.85))
 	else:
 		draw_rect(Rect2(Vector2.ZERO, _size), fr[1], true)
 		draw_rect(Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, h - 2 * WALL_THICK),
@@ -345,7 +345,7 @@ func _draw() -> void:
 	for r in [Rect2(0, 0, w, WALL_THICK), Rect2(0, h - WALL_THICK, w, WALL_THICK),
 			Rect2(0, 0, WALL_THICK, h), Rect2(w - WALL_THICK, 0, WALL_THICK, h)]:
 		if wr[0] != null:
-			draw_texture_rect(wr[0], r, true, wr[1])
+			draw_texture_rect(wr[0], r, true, _dim(wr[1], 0.72))
 		else:
 			draw_rect(r, wr[1])
 	# Obstacles.
@@ -360,6 +360,10 @@ func _draw() -> void:
 						draw_texture_rect(ob[0], cell, true, ob[1])
 					else:
 						draw_rect(cell, ob[1])
+	# Inner shadow band -> depth + focuses the eye on the centre (cheap vignette).
+	for band in [[0.0, 0.20], [9.0, 0.12], [18.0, 0.06]]:
+		var o: float = WALL_THICK + band[0]
+		draw_rect(Rect2(o, o, w - 2.0 * o, h - 2.0 * o), Color(0, 0, 0, band[1]), false, 9.0)
 	# Doors as accent marks.
 	var door_col := _accent_color if not locked else Color(0.5, 0.4, 0.4)
 	for side in open_sides:
@@ -382,6 +386,10 @@ func _tile(kind: String, palette_col: Color) -> Array:
 	if generic != null:
 		return [generic, col]
 	return [null, col]
+
+## Multiply a colour's RGB (keep alpha) — used to dim floor/walls so entities pop.
+func _dim(c: Color, f: float) -> Color:
+	return Color(c.r * f, c.g * f, c.b * f, c.a)
 
 ## Darken/shift toward a corrupted look (fallback when no "_alt" art exists yet).
 func _variant_tint(c: Color) -> Color:
