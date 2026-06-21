@@ -19,6 +19,7 @@ var auto_fire: bool = false
 var _touch_move: Vector2 = Vector2.ZERO
 var _touch_aim: Vector2 = Vector2.ZERO
 var _touch_fire: bool = false
+var _dash_queued: bool = false
 
 func _ready() -> void:
 	_ensure_actions()
@@ -29,6 +30,7 @@ func _ensure_actions() -> void:
 	var bindings := {
 		"move_up": KEY_W, "move_down": KEY_S,
 		"move_left": KEY_A, "move_right": KEY_D,
+		"dash": KEY_SPACE,
 	}
 	for action in bindings:
 		if not InputMap.has_action(action):
@@ -46,6 +48,10 @@ func _process(_delta: float) -> void:
 	move_vector = kb if kb.length() > 0.01 else _touch_move
 	if move_vector.length() > 1.0:
 		move_vector = move_vector.normalized()
+
+	# Dash: latch the press so gameplay (_physics_process) can consume it once.
+	if Input.is_action_just_pressed("dash"):
+		_dash_queued = true
 
 	# Aim: touch right stick wins; else mouse aim relative to viewport center
 	# is handled by the player (which knows its screen position). Here we just
@@ -67,6 +73,16 @@ func reset() -> void:
 	_touch_move = Vector2.ZERO
 	_touch_aim = Vector2.ZERO
 	_touch_fire = false
+
+## Touch UI calls this to request a dash (same as the keyboard Space tap).
+func request_dash() -> void:
+	_dash_queued = true
+
+## Gameplay consumes the queued dash exactly once (returns true on a fresh tap).
+func consume_dash() -> bool:
+	var q := _dash_queued
+	_dash_queued = false
+	return q
 
 # --- Options (persisted in SaveManager.meta.options) ---
 ## Loaded once after autoloads are up (called from the boot scene).
