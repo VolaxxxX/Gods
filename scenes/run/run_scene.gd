@@ -39,6 +39,10 @@ func _ready() -> void:
 
 	camera = Camera2D.new()
 	camera.position_smoothing_enabled = true
+	# Zoom in so the arena fills the screen instead of floating small in the
+	# 1280x720 viewport (a 13x9 room is 832x576 px; at 1.25x it fills the height
+	# while keeping the whole standard room visible). Bigger rooms scroll naturally.
+	camera.zoom = Vector2(1.25, 1.25)
 	player.add_child(camera)
 	camera.make_current()
 
