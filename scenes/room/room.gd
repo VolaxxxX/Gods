@@ -23,6 +23,7 @@ var locked: bool = false
 var _size: Vector2 = Vector2(13 * TILE, 9 * TILE)
 var _alive_enemies: int = 0
 var _gates: Array[StaticBody2D] = []
+var _prop_marks: Array = []   # [foot_pos: Vector2, radius: float] for prop shadows
 var _floor_color := Color(0.15, 0.15, 0.2)
 var _wall_color := Color(0.35, 0.32, 0.28)
 var _accent_color := Color(0.85, 0.7, 0.35)
@@ -265,11 +266,29 @@ func _spawn_pickups(priced: bool) -> void:
 ## Scatter a few non-colliding decorative props from the biome's prop pool.
 ## Inert until the biome lists props AND the prop PNGs exist.
 func _scatter_props() -> void:
+	_prop_marks.clear()
 	if biome == null or biome.props.is_empty():
 		return
-	var area := _size.x * _size.y
-	var n: int = clampi(int(area / (9.0 * TILE * TILE)), 2, 6)
-	for i in n:
+	# Furnish the PERIMETER (corners + along every wall) so the arena reads as a
+	# real place, not an empty box — without cluttering the central play space.
+	# Props are non-colliding, foot-anchored, ~1 cell tall, and cast a soft shadow.
+	var ins := WALL_THICK + 30.0
+	var spots: Array[Vector2] = [
+		Vector2(ins, ins), Vector2(_size.x - ins, ins),
+		Vector2(ins, _size.y - ins), Vector2(_size.x - ins, _size.y - ins),
+	]
+	for k in 3:
+		var fx := lerpf(ins + 60.0, _size.x - ins - 60.0, float(k + 1) / 4.0)
+		spots.append(Vector2(fx, ins))
+		spots.append(Vector2(fx, _size.y - ins))
+	for k in 2:
+		var fy := lerpf(ins + 40.0, _size.y - ins - 40.0, float(k + 1) / 3.0)
+		spots.append(Vector2(ins, fy))
+		spots.append(Vector2(_size.x - ins, fy))
+	var rng := RNG.stream("decor")
+	for pos in spots:
+		if _near_open_door(pos):
+			continue   # never block a passage
 		var id = RNG.pick("decor", biome.props)
 		if id == null:
 			continue
@@ -278,8 +297,21 @@ func _scatter_props() -> void:
 			continue
 		var s := Sprite2D.new()
 		s.texture = tex
-		s.position = _random_floor_point()
+		var dim: float = maxf(tex.get_width(), tex.get_height())
+		var target: float = TILE * rng.randf_range(0.95, 1.3)
+		if dim > 0.0:
+			s.scale = Vector2.ONE * (target / dim)
+		s.offset = Vector2(0, -tex.get_height() * 0.5)   # anchor the base at pos
+		s.position = pos
 		add_child(s)
+		_prop_marks.append([pos, target * 0.42])
+
+## True if a point sits in front of an OPEN door (so we don't decorate over it).
+func _near_open_door(pos: Vector2) -> bool:
+	for side in open_sides:
+		if pos.distance_to(_door_position(side)) < DOOR_HALF + 40.0:
+			return true
+	return false
 
 func _spawn_sacrifice() -> void:
 	var anchors: Array[Vector2] = []
@@ -340,6 +372,11 @@ func _draw() -> void:
 		draw_rect(Rect2(Vector2.ZERO, _size), fr[1], true)
 		draw_rect(Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, h - 2 * WALL_THICK),
 			Color(_accent_color.r, _accent_color.g, _accent_color.b, 0.10), false, 3.0)
+	# Soft shadows under perimeter props (props are child sprites drawn after this).
+	for mark in _prop_marks:
+		draw_set_transform(mark[0], 0.0, Vector2(1.0, 0.4))
+		draw_circle(Vector2.ZERO, mark[1], Color(0, 0, 0, 0.26))
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	# Walls.
 	var wr := _tile("wall", _wall_color)
 	for r in [Rect2(0, 0, w, WALL_THICK), Rect2(0, h - WALL_THICK, w, WALL_THICK),
@@ -348,6 +385,8 @@ func _draw() -> void:
 			draw_texture_rect(wr[0], r, true, _dim(wr[1], 0.72))
 		else:
 			draw_rect(r, wr[1])
+	# Faux depth: a soft dark "front face" just under the top wall.
+	draw_rect(Rect2(0, WALL_THICK, w, 10.0), Color(0, 0, 0, 0.22))
 	# Obstacles.
 	var ob := _tile("obstacle", _accent_color)
 	if template != null:
