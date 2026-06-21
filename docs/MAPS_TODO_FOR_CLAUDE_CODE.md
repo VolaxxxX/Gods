@@ -1,53 +1,47 @@
 # À FAIRE DANS GODOT — maps "belles" + flow (brief pour Claude Code)
 
-Le joueur trouve les maps encore trop plates/petites et veut un rendu qui "donne
-envie". J'ai poussé tout ce qui se fait **sans moteur** (assets + code drop-in,
-validé au parseur gdtoolkit mais **jamais lancé dans Godot**). Ce qui reste exige
-l'éditeur + des allers-retours visuels : c'est ton terrain.
+Le joueur trouve les maps encore trop plates et "tout flotte". J'ai poussé ce qui
+se fait **sans moteur** (assets + code drop-in, validé au parseur gdtoolkit mais
+**jamais lancé dans Godot**). Le reste exige l'éditeur + des allers-retours
+visuels sur un vrai téléphone : c'est ton terrain.
 
-## Déjà fait (à TESTER puis AJUSTER en jeu)
-- Sprites agrandis : joueur `3.4×RADIUS`, ennemis `3.0×_radius` (pour voir le pixel art).
-- Caméra `zoom = 1.6→1.7` (vue serrée, on ne voit pas toute la salle d'un coup).
-- Murs épais 28px + sol/murs assombris + vignette + relief "front-face".
-- Ombres de contact sous joueur/mobs/props.
-- Grandes salles 19×13 / 21×13 + salles **non rectangulaires** (octagon/cross/hex/T,
-  via murs `#` intérieurs désormais rendus+collisionnés).
-- Déco **placée à la main** dans les templates (symbole `D`), plus d'aléatoire.
-- FX de combat + FX signature par boss/miniboss (assets/sprites/fx).
+## 0. DÉCISIONS DU JOUEUR (à respecter)
+- **Branchement : 2 portes façon Hades.** À la fin de chaque étage *palier*,
+  proposer **2 portes au choix** avec un **aperçu** de ce qu'il y a derrière
+  (type de salle / récompense). **Le boss FINAL** garde le **choix de royaume**
+  (`RealmChoice`). Implémenter côté `run_scene` + `floor_generator` ; réutiliser
+  une UI type `RealmChoice`/`BlessingChoice` pour le picker de portes.
+- Maps **plus grandes**, **zoomées** (on ne voit pas tout sans bouger), **non
+  rectangulaires**, déco **non aléatoire**, mobs **gros** (voir le pixel art).
 
-➡️ **Régle ces valeurs au feeling sur un vrai téléphone** : `camera.zoom`
-(`scenes/run/run_scene.gd`), les facteurs d'échelle (`player.gd`, `enemy.gd`),
-`WALL_THICK` et la densité de déco (`scenes/room/room.gd`).
+## 1. "Tout flotte" + "pas de murs" (BLOQUANT visuel — à régler en jeu)
+- **Sprites/props pas ancrés au sol** : les objets PixelLab ont du vide en bas de
+  leur cadre, donc un ancrage par hauteur d'image laisse un trou → "ça vole".
+  ➜ Ancrer par le **bas de la boîte englobante opaque** (used_rect), pas par la
+  hauteur du PNG. Idem vérifier l'ancrage des entités (joueur/mobs) + position de
+  l'ombre de contact pile sous les pieds.
+- **Murs invisibles** : faible contraste mur/sol (ex. Grèce : mur clair ≈ sol
+  clair) → la forme non-rect ne se lit pas. ➜ **Assombrir/teinter les murs par
+  royaume** pour qu'ils tranchent, + le relief (voir §2).
 
-## 1. Vraie beauté des sols (LE gros morceau — impossible à faire à l'aveugle)
-Le sol reste **une tuile 64px répétée à plat** → répétition visible + faible
-contraste (ex. Grèce : mur clair ≈ sol clair, donc la forme octogonale ne se lit
-presque pas). À faire en moteur :
-- **TileMapLayer + TileSet avec terrains (autotiling)** : bords, coins int/ext,
-  transitions automatiques au lieu d'un remplissage plat.
-- **Variantes de sol** (3–4 par royaume, placées en random pondéré) pour casser la
-  répétition. (Les `_alt` existent ; en générer d'autres au besoin.)
-- **Murs avec profondeur** : face supérieure + face avant ("south") + coins, ombre
-  portée — pas juste une bande.
-- **Contraste par royaume** : assombrir/teinter les murs pour qu'ils tranchent sur
-  le sol (sinon les salles non-rect ne se voient pas).
-- **Lighting** (`CanvasModulate` + `PointLight2D` sur braseros/lave/runes),
-  vignette écran, particules d'ambiance.
+## 2. Vraie beauté des sols (LE gros morceau)
+Le sol reste **une tuile 64px répétée à plat**. À faire en moteur :
+- **TileMapLayer + TileSet avec terrains (autotiling)** : bords, coins, transitions.
+- **Variantes de sol** (3–4 par royaume, random pondéré) pour casser la répétition.
+- **Murs avec profondeur** : face haute + face avant + coins + ombre portée.
+- **Lighting** (`CanvasModulate` + `PointLight2D`), vignette écran, particules.
 - Garder le fallback greybox si une tuile manque.
 
-## 2. "Deux choix à la fin de chaque étage, sauf après le boss" (à préciser)
-Le joueur veut un **embranchement à 2 choix** en fin d'étage (style Hades / Slay
-the Spire), sauf après un boss. Aujourd'hui : l'étage est un **arbre de salles**
-(plusieurs portes), le boss est le cul-de-sac le plus loin, et le choix de
-**royaume** n'apparaît qu'après le boss final.
-**Décision produit à confirmer avec le joueur** : veut-il
-(a) qu'à chaque fin d'étage palier on **propose 2 portes/destinations** (avec aperçu
-de la récompense derrière, à la Hades), le boss final gardant le choix de royaume ?
-ou (b) autre chose ? Implémenter côté `run_scene` / `floor_generator` + une petite
-UI de choix (réutiliser `RealmChoice`/`BlessingChoice`).
+## 3. Déjà fait (à TESTER puis AJUSTER au feeling)
+- Sprites : joueur `3.4×RADIUS`, ennemis `3.0×_radius`. Caméra `zoom 1.7`.
+- Grandes salles 19×13 / 21×13 + non-rect (octagon/cross/hex/T : murs `#`
+  intérieurs rendus+collisionnés). Déco hand-placed (symbole `D`).
+- Murs 28px + sol/murs assombris + vignette + relief + ombres de contact.
+- FX de combat + signatures par boss/miniboss.
+➜ Régler `camera.zoom` (`run_scene.gd`), les échelles (`player.gd`/`enemy.gd`),
+`WALL_THICK` et la densité de déco (`room.gd`) en regardant l'écran.
 
-## 3. Vérifs
-- Relancer `godot --headless --script res://tests/test_runner.gd` : j'ai ajouté de
-  gros templates non-rect → vérifier `test_floor_generator` (reachability/quotas)
-  passe encore.
-- Réimporter les assets (sprites/fx/tiles) puis tester l'export Web sur mobile.
+## 4. Vérifs
+- `godot --headless --script res://tests/test_runner.gd` (j'ai ajouté de gros
+  templates non-rect → vérifier `test_floor_generator`).
+- Réimporter sprites/fx/tiles, tester l'export Web sur mobile.
