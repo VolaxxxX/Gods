@@ -24,7 +24,11 @@ var range_rate: float = 1.0      # shots per second
 var range_speed: float = 260.0   # projectile speed (px/s)
 
 # Bespoke boss/miniboss patterns. Each entry: a Dictionary like
-#   {"kind": "nova"|"spread"|"summon", "cooldown": s, "count": n, ...}
+#   {"kind": "nova"|"spread"|"barrage"|"charge"|"summon", "cooldown": s, ...}
+# Optional per-entry keys:
+#   "anim"   : animation name played when the attack fires (sheet <id>_<anim>.png)
+#   "summon" : "entity" (add id), "count", "regen" (replace a slain add 1:1)
+#   "charge" : "speed", "duration", "vanish" (fade out during the dash)
 # Interpreted by the Enemy ability scheduler; cooldowns shorten when enraged.
 var abilities: Array = []
 # Final-boss second phase: abilities ADDED when HP drops below phase2_at,

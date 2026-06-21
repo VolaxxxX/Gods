@@ -1,7 +1,19 @@
 {
 	"type": "entity",
 	"entries": [
-		{"id": "norse_ulfhednar", "name_key": "enemy.ulfhednar.name", "role": "enemy", "pantheon": "norse", "max_health": 16, "move_speed": 98, "contact_damage": 1, "radius": 13, "ai": "chase", "gold": 3, "color": "#6a6a7a"},
+		{
+			"id": "norse_ulfhednar",
+			"name_key": "enemy.ulfhednar.name",
+			"role": "enemy",
+			"pantheon": "norse",
+			"max_health": 16,
+			"move_speed": 98,
+			"contact_damage": 1,
+			"radius": 13,
+			"ai": "chase",
+			"gold": 3,
+			"color": "#6a6a7a"
+		},
 		{
 			"id": "norse_helhound",
 			"name_key": "enemy.helhound.name",
@@ -58,21 +70,32 @@
 			"range_rate": 1.3,
 			"range_speed": 240,
 			"abilities": [
-				{"kind": "summon", "entity": "norse_helhound", "count": 2, "cooldown": 7.0},
-				{"kind": "spread", "count": 3, "spread": 30, "speed": 265, "damage": 1, "cooldown": 4.0},
-				{"kind": "charge", "speed": 540, "duration": 0.45, "cooldown": 6.0}
+				{"kind": "summon", "anim": "pack_howl", "entity": "norse_helhound", "count": 2, "cooldown": 7.0},
+				{"kind": "charge", "anim": "frost_bite_dash", "speed": 540, "duration": 0.45, "cooldown": 6.0},
+				{"kind": "nova", "anim": "gleipnir_snap", "count": 10, "speed": 200, "damage": 1, "cooldown": 6.5}
 			],
 			"phase2_at": 0.5,
 			"phase2_abilities": [
-				{"kind": "summon", "entity": "norse_helhound", "count": 3, "cooldown": 6.0},
-				{"kind": "nova", "count": 14, "speed": 210, "damage": 1, "cooldown": 4.0}
+				{"kind": "nova", "anim": "gleipnir_snap", "count": 14, "speed": 215, "damage": 1, "cooldown": 4.0},
+				{"kind": "summon", "anim": "pack_howl", "entity": "norse_helhound", "count": 3, "cooldown": 6.0}
 			]
 		},
 		{
-			"id": "norse_troll", "name_key": "miniboss.troll.name", "role": "miniboss", "pantheon": "norse",
-			"max_health": 72, "move_speed": 48, "contact_damage": 2, "radius": 25, "ai": "chase", "gold": 16,
+			"id": "norse_troll",
+			"name_key": "miniboss.troll.name",
+			"role": "miniboss",
+			"pantheon": "norse",
+			"max_health": 72,
+			"move_speed": 48,
+			"contact_damage": 2,
+			"radius": 25,
+			"ai": "chase",
+			"gold": 16,
 			"ranged": false,
-			"abilities": [{"kind": "nova", "count": 8, "speed": 190, "damage": 1, "cooldown": 5.5}]
+			"abilities": [
+				{"kind": "barrage", "anim": "rock_throw", "count": 1, "spread": 0, "speed": 165, "damage": 2, "cooldown": 4.0},
+				{"kind": "nova", "anim": "quake_slam", "count": 8, "speed": 190, "damage": 1, "cooldown": 5.5}
+			]
 		}
 	]
 }

@@ -26,9 +26,11 @@ var _sprite: Sprite2D  # set if a static texture exists for this entity id
 var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
 var _anim: AnimatedSprite2D  # set if animation sheets exist (takes priority)
 var _attack_t: float = 0.0   # time left showing the attack animation
+var _attack_anim: String = "attack"  # which animation the active ability requests
 var _charge_t: float = 0.0   # time left dashing (charge ability)
 var _charge_dir: Vector2 = Vector2.ZERO
 var _charge_speed: float = 420.0
+var _charge_vanish: bool = false  # fade out while dashing (Sand Veil Dash)
 var _melee_swing_cd: float = 0.0  # melee mobs: throttle the attack animation
 
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
@@ -39,10 +41,12 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 	_color = data.color
 
 	# Visuals, in priority order: animated sheets > bespoke static sprite >
-	# generic monster tinted by colour > greybox circle.
-	if Sprites.has_anim(data.id):
+	# generic monster tinted by colour > greybox circle. Bosses also load a sheet
+	# per bespoke attack (the `anim` named on each ability).
+	var attack_anims := _ability_anim_names()
+	if Sprites.has_anim(data.id, attack_anims):
 		_anim = AnimatedSprite2D.new()
-		_anim.sprite_frames = Sprites.build_sprite_frames(data.id)
+		_anim.sprite_frames = Sprites.build_sprite_frames(data.id, attack_anims)
 		var cs := Sprites.anim_content_size(data.id)
 		if cs > 0.0:
 			_anim.scale = Vector2.ONE * (2.4 * _radius / cs)
@@ -181,10 +185,15 @@ func _physics_process(delta: float) -> void:
 		_flash -= delta
 	if _attack_t > 0.0:
 		_attack_t -= delta
+	var fade := 0.3 if (_charge_t > 0.0 and _charge_vanish) else 1.0  # Sand Veil Dash
 	if _sprite != null:
-		_sprite.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else (_color if _sprite_tinted else Color.WHITE)
+		var m := Color(1.8, 1.8, 1.8) if _flash > 0.0 else (_color if _sprite_tinted else Color.WHITE)
+		m.a = fade
+		_sprite.modulate = m
 	if _anim != null:
-		_anim.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
+		var m2 := Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
+		m2.a = fade
+		_anim.modulate = m2
 		_update_anim()
 	queue_redraw()
 
@@ -192,7 +201,9 @@ func _physics_process(delta: float) -> void:
 func _update_anim() -> void:
 	var sf := _anim.sprite_frames
 	var st := "idle"
-	if _attack_t > 0.0 and sf.has_animation("attack"):
+	if _attack_t > 0.0 and sf.has_animation(_attack_anim):
+		st = _attack_anim  # bespoke per-attack animation
+	elif _attack_t > 0.0 and sf.has_animation("attack"):
 		st = "attack"
 	elif velocity.length() > 8.0 and sf.has_animation("walk"):
 		st = "walk"
@@ -214,6 +225,7 @@ func _enter_phase2() -> void:
 
 func _execute_ability(ab: Dictionary) -> void:
 	_attack_t = 0.4  # show the attack animation when an ability fires
+	_attack_anim = String(ab.get("anim", "attack"))  # bespoke per-attack sheet
 	match ab.get("kind", ""):
 		"nova":
 			_fire_pattern(int(ab.get("count", 8)), TAU, 0.0,
@@ -225,12 +237,13 @@ func _execute_ability(ab: Dictionary) -> void:
 				_fire_pattern(int(ab.get("count", 5)), deg_to_rad(float(ab.get("spread", 40.0))),
 					base, float(ab.get("speed", 240.0)), float(ab.get("damage", 1.0)))
 		"summon":
-			_summon(String(ab.get("entity", "")), int(ab.get("count", 2)))
+			_summon(String(ab.get("entity", "")), int(ab.get("count", 2)), bool(ab.get("regen", false)))
 		"charge":
 			if is_instance_valid(_target):
 				_charge_dir = (_target.global_position - global_position).normalized()
 				_charge_speed = float(ab.get("speed", 420.0))
 				_charge_t = float(ab.get("duration", 0.45))
+				_charge_vanish = bool(ab.get("vanish", false))  # fade during the dash
 				Fx.play("shockwave", global_position, _radius * 3.0)
 		"barrage":
 			# A tight, fast volley aimed at the player.
@@ -252,7 +265,7 @@ func _fire_pattern(count: int, arc: float, center: float, speed: float, dmg: flo
 		_pool.spawn(global_position + dir * (_radius + 8.0), dir * speed, d, false,
 			8.0, Color(1, 0.5, 0.4), 3.0)
 
-func _summon(entity_id: String, count: int) -> void:
+func _summon(entity_id: String, count: int, regen: bool = false) -> void:
 	if entity_id == "" or count <= 0:
 		return
 	var ed := GameData.get_entity(entity_id)
@@ -264,6 +277,27 @@ func _summon(entity_id: String, count: int) -> void:
 		add.setup(ed, _target, _pool)
 		add.position = global_position + Vector2.from_angle(TAU * k / count) * (_radius + 28.0)
 		parent.add_child(add)
+		# Hydra "heads grow back": a slain add is replaced 1:1 while the boss lives.
+		if regen and add.health != null:
+			add.health.died.connect(_on_regen_add.bind(entity_id))
+
+## Replace a killed regenerating add, deferred so it doesn't spawn mid-death.
+func _on_regen_add(entity_id: String) -> void:
+	if health == null or health.fraction() <= 0.0:
+		return  # boss is dead — stop regenerating
+	call_deferred("_summon", entity_id, 1, true)
+
+## The bespoke attack-animation names declared on this entity's abilities, so the
+## sprite pipeline can load a sheet per attack (<id>_<anim>.png).
+func _ability_anim_names() -> Array:
+	var names: Array = []
+	for src in [data.abilities, data.phase2_abilities]:
+		if src is Array:
+			for ab in src:
+				var n := String(ab.get("anim", ""))
+				if n != "" and not names.has(n):
+					names.append(n)
+	return names
 
 func _on_died() -> void:
 	RunManager.on_enemy_killed(data.gold)
@@ -280,6 +314,8 @@ func _on_died() -> void:
 func _draw() -> void:
 	if _sprite == null and _anim == null:  # greybox body only when no sprite/anim
 		var c := Color(1, 1, 1) if _flash > 0.0 else _color
+		if _charge_t > 0.0 and _charge_vanish:
+			c.a = 0.3  # Sand Veil Dash fade
 		draw_circle(Vector2.ZERO, _radius, c)
 	# Health pip (thin bar) so damage is readable.
 	if health != null and health.fraction() < 1.0:

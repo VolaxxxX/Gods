@@ -35,6 +35,13 @@ animates automatically (walk when moving, attack when firing, death on kill):
 - If animation sheets exist they take priority over the static `<id>.png`.
 - Missing animations are fine (it falls back to idle, then to static/greybox).
 
+### Bespoke boss attacks (per-ability animations)
+Bosses/minibosses can play a different animation per signature attack. Each
+ability in `content/<pantheon>/enemies.json` carries an `anim` name; drop a sheet
+`<boss_id>_<anim>.png` and that attack uses it (else it falls back to `attack`).
+Plays once, like `attack`. e.g. `greece_hydra_venom_spray.png`,
+`egypt_sphinx_sand_veil_dash.png`. Full attack→sheet list is in the design log.
+
 ## Sizes
 - Normal mobs / player: **32×32 px** (auto-scaled to the entity's radius).
 - Minibosses: ~48×48. Bosses: ~64×64.

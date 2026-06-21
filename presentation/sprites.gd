@@ -82,9 +82,12 @@ const ANIM_FPS := {"idle": 6.0, "walk": 10.0, "attack": 12.0, "death": 10.0}
 func sheet(id: String, anim: String) -> Texture2D:
 	return _resolve(ENT, id + "_" + anim)
 
-func has_anim(id: String) -> bool:
+func has_anim(id: String, extra: Array = []) -> bool:
 	for a in ANIMS:
 		if sheet(id, a) != null:
+			return true
+	for a in extra:
+		if sheet(id, String(a)) != null:
 			return true
 	return false
 
@@ -140,14 +143,19 @@ func anim_content_size(id: String) -> float:
 	return 0.0
 
 ## Build a SpriteFrames from the per-animation strips (frames = width / height).
-## idle/walk loop; attack/death play once. Returns null if no sheets exist.
-func build_sprite_frames(id: String) -> SpriteFrames:
-	if not has_anim(id):
+## idle/walk loop; attack/death (and any bespoke boss attack in `extra`) play
+## once. Returns null if no sheets exist.
+func build_sprite_frames(id: String, extra: Array = []) -> SpriteFrames:
+	if not has_anim(id, extra):
 		return null
 	var sf := SpriteFrames.new()
 	if sf.has_animation("default"):
 		sf.remove_animation("default")
-	for a in ANIMS:
+	var names := ANIMS.duplicate()
+	for a in extra:
+		if not names.has(String(a)):
+			names.append(String(a))
+	for a in names:
 		var tex := sheet(id, a)
 		if tex == null:
 			continue
@@ -156,7 +164,7 @@ func build_sprite_frames(id: String) -> SpriteFrames:
 			continue
 		var count: int = maxi(1, int(round(float(tex.get_width()) / float(fh))))
 		sf.add_animation(a)
-		sf.set_animation_speed(a, ANIM_FPS.get(a, 8.0))
+		sf.set_animation_speed(a, ANIM_FPS.get(a, 12.0))  # bespoke attacks default to 12 fps
 		sf.set_animation_loop(a, a == "idle" or a == "walk")
 		for i in count:
 			var at := AtlasTexture.new()
