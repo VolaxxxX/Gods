@@ -318,6 +318,10 @@ func _on_died() -> void:
 	queue_free()
 
 func _draw() -> void:
+	# Contact shadow so enemies read against any floor.
+	draw_set_transform(Vector2(0, _radius * 1.1), 0.0, Vector2(1.0, 0.42))
+	draw_circle(Vector2.ZERO, _radius * 1.05, Color(0, 0, 0, 0.30))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	if _sprite == null and _anim == null:  # greybox body only when no sprite/anim
 		var c := Color(1, 1, 1) if _flash > 0.0 else _color
 		if _charge_t > 0.0 and _charge_vanish:
