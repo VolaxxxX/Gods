@@ -49,7 +49,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 		_anim.sprite_frames = Sprites.build_sprite_frames(data.id, attack_anims)
 		var cs := Sprites.anim_content_size(data.id)
 		if cs > 0.0:
-			_anim.scale = Vector2.ONE * (2.4 * _radius / cs)
+			_anim.scale = Vector2.ONE * (3.0 * _radius / cs)
 		add_child(_anim)
 		if _anim.sprite_frames.has_animation("idle"):
 			_anim.play("idle")
@@ -69,7 +69,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 				_sprite_tinted = true
 			var cs := Sprites.content_size(tex)
 			if cs > 0.0:
-				_sprite.scale = Vector2.ONE * (2.2 * _radius / cs)
+				_sprite.scale = Vector2.ONE * (2.8 * _radius / cs)
 			add_child(_sprite)
 
 	collision_layer = Collision.ENEMY_BODY
