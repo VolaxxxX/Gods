@@ -42,7 +42,7 @@ func _ready() -> void:
 	# Zoom in so the arena fills the screen instead of floating small in the
 	# 1280x720 viewport. At 1.6x the camera is tight: you DON'T see the whole
 	# (now larger) room at once — you move to explore it. More immersive on phones.
-	camera.zoom = Vector2(1.6, 1.6)
+	camera.zoom = Vector2(1.7, 1.7)
 	player.add_child(camera)
 	camera.make_current()
 
