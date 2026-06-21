@@ -161,11 +161,12 @@ func _on_room_cleared(pos: Vector2i, type: String) -> void:
 	Events.emit_signal("room_cleared", current_room)
 
 	if type == "boss" and not _ended:
-		# Palier boss -> deeper into the SAME zone; final boss -> next realm/win.
+		# Palier boss -> pick one of 2 doors, then deeper into the SAME zone; final
+		# boss -> next realm/win (RealmChoice).
 		if RunManager.is_final_floor():
 			_complete_biome()
 		else:
-			_next_floor()
+			_offer_doors()
 		return
 	# A god's wrath wave just ended -> reward.
 	if _wrath_active:
@@ -249,10 +250,35 @@ func _on_realm_chosen(next_biome: String) -> void:
 	RunManager.advance_to_biome(next_biome)
 	_setup_biome(false)
 
-## Palier boss down: a new map of the SAME zone (regenerated layout), keeping
-## everything and healing somewhat. The final floor's boss is the true 2-phase boss.
+## Palier boss down: present TWO doors (Hades-style) previewing their reward; the
+## chosen reward is applied, then descend into a fresh map of the SAME zone.
+func _offer_doors() -> void:
+	var kinds := ["treasure", "boon", "vigor"]
+	RNG.shuffle("door", kinds)
+	var ui := DoorChoice.new()
+	ui.setup(kinds.slice(0, 2))
+	ui.chosen.connect(_on_door_chosen)
+	add_child(ui)
+
+func _on_door_chosen(kind: String) -> void:
+	match kind:
+		"treasure":
+			RunManager.add_gold(30)
+			var it = RNG.pick("door", GameData.items_for(biome.pantheon))
+			if it != null:
+				RunManager.add_item(it.id)
+		"boon":
+			var opts := _blessing_options(1)
+			if not opts.is_empty():
+				RunManager.add_blessing(opts[0].id)
+		"vigor":
+			player.health.heal(player.health.max_health)  # full heal through the door
+	_next_floor()
+
+## A new map of the SAME zone (regenerated layout), keeping everything. A door
+## reward was already granted; still top up a little so the descent feels safe.
 func _next_floor() -> void:
-	player.health.heal(player.health.max_health * 0.35)
+	player.health.heal(player.health.max_health * 0.2)
 	RunManager.advance_floor()
 	_setup_biome(false)
 

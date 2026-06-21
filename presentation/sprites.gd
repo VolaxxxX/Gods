@@ -29,7 +29,7 @@ func _resolve(dir: String, name: String) -> Texture2D:
 		return _cache[key]
 	var tex: Texture2D = null
 	for ext in EXTS:
-		var path := key + ext
+		var path: String = key + ext
 		if ResourceLoader.exists(path):
 			tex = load(path)
 			break
@@ -138,6 +138,50 @@ func anim_content_size(id: String) -> float:
 			var r := frame.get_used_rect()
 			if r.size.x > 0 and r.size.y > 0:
 				v = float(maxi(r.size.x, r.size.y))
+		_content_cache[key] = v
+		return v
+	return 0.0
+
+## Signed distance (texture px) from a texture's vertical CENTRE to the bottom of
+## its opaque content. PixelLab art is centred in a big transparent frame, so the
+## visible feet sit ABOVE the frame bottom — anchoring by frame height makes
+## things "float". Anchor by this instead. Positive = content bottom below centre.
+func content_bottom(tex: Texture2D) -> float:
+	if tex == null:
+		return 0.0
+	var key := tex.resource_path + "#cb"
+	if _content_cache.has(key):
+		return _content_cache[key]
+	var h := tex.get_height()
+	var v := 0.0
+	var img := tex.get_image()
+	if img != null:
+		var r := img.get_used_rect()
+		if r.size.y > 0:
+			v = float(r.position.y + r.size.y) - float(h) * 0.5
+	_content_cache[key] = v
+	return v
+
+## Same as content_bottom but for the FIRST frame (fs×fs) of an entity's first
+## animation strip — so animated entities anchor by their feet too.
+func anim_content_bottom(id: String) -> float:
+	for a in ANIMS:
+		var t := sheet(id, a)
+		if t == null:
+			continue
+		var fs := t.get_height()
+		if fs <= 0:
+			return 0.0
+		var key := t.resource_path + "#cb0"
+		if _content_cache.has(key):
+			return _content_cache[key]
+		var v := 0.0
+		var img := t.get_image()
+		if img != null:
+			var frame := img.get_region(Rect2i(0, 0, fs, fs))
+			var r := frame.get_used_rect()
+			if r.size.y > 0:
+				v = float(r.position.y + r.size.y) - float(fs) * 0.5
 		_content_cache[key] = v
 		return v
 	return 0.0

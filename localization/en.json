@@ -27,6 +27,13 @@
 	"ui.rival_warning": "⚠ Angers a rival god — you will be cursed",
 	"ui.choose_realm": "The boss falls. Descend into the next underworld:",
 	"ui.god_favor": "A god of this realm offers their favor:",
+	"ui.choose_door": "Two ways down. Choose your path:",
+	"ui.door_treasure": "Hall of Riches",
+	"ui.door_treasure_desc": "Gold and a relic await beyond.",
+	"ui.door_boon": "Shrine of Favor",
+	"ui.door_boon_desc": "A god's boon waits in the dark.",
+	"ui.door_vigor": "Spring of Vigor",
+	"ui.door_vigor_desc": "Restore your wounds in full.",
 
 	"hub.title": "The Threshold",
 	"hub.runs": "Souls guided: {n}",

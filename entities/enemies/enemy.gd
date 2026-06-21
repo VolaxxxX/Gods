@@ -49,7 +49,9 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 		_anim.sprite_frames = Sprites.build_sprite_frames(data.id, attack_anims)
 		var cs := Sprites.anim_content_size(data.id)
 		if cs > 0.0:
-			_anim.scale = Vector2.ONE * (3.0 * _radius / cs)
+			var sc := 3.0 * _radius / cs
+			_anim.scale = Vector2.ONE * sc
+			_anim.position.y = _radius - Sprites.anim_content_bottom(data.id) * sc
 		add_child(_anim)
 		if _anim.sprite_frames.has_animation("idle"):
 			_anim.play("idle")
@@ -69,7 +71,9 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 				_sprite_tinted = true
 			var cs := Sprites.content_size(tex)
 			if cs > 0.0:
-				_sprite.scale = Vector2.ONE * (2.8 * _radius / cs)
+				var sc := 2.8 * _radius / cs
+				_sprite.scale = Vector2.ONE * sc
+				_sprite.position.y = _radius - Sprites.content_bottom(tex) * sc
 			add_child(_sprite)
 
 	collision_layer = Collision.ENEMY_BODY
@@ -321,6 +325,12 @@ func _draw() -> void:
 	# Contact shadow so enemies read against any floor.
 	draw_set_transform(Vector2(0, _radius * 1.1), 0.0, Vector2(1.0, 0.42))
 	draw_circle(Vector2.ZERO, _radius * 1.05, Color(0, 0, 0, 0.30))
+	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+	# Soft contact shadow under the feet so every mob reads as grounded (sprite or
+	# greybox), and doesn't look like it floats over the floor.
+	var sh := 0.30 if (_charge_t > 0.0 and _charge_vanish) else 1.0
+	draw_set_transform(Vector2(0, _radius * 0.95), 0.0, Vector2(1.0, 0.4))
+	draw_circle(Vector2.ZERO, _radius * 1.05, Color(0, 0, 0, 0.28 * sh))
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	if _sprite == null and _anim == null:  # greybox body only when no sprite/anim
 		var c := Color(1, 1, 1) if _flash > 0.0 else _color

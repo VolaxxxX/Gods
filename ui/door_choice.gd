@@ -1,0 +1,74 @@
+class_name DoorChoice
+extends CanvasLayer
+## Hades-style branching: after a palier (mini-)boss falls, the player picks one
+## of TWO doors to the next floor of the SAME realm. Each door previews its reward
+## (icon + name + description). Pauses the run while open. Presentation only — it
+## emits the chosen door kind; the run applies the reward and descends.
+
+signal chosen(kind: String)
+
+# kind -> [name_key, desc_key, fallback glyph]. Icons come from assets/sprites/ui/
+# door_<kind>.png if present, else the glyph is drawn as text.
+const DOORS := {
+	"treasure": ["ui.door_treasure", "ui.door_treasure_desc", "❖"],
+	"boon": ["ui.door_boon", "ui.door_boon_desc", "✦"],
+	"vigor": ["ui.door_vigor", "ui.door_vigor_desc", "✚"],
+}
+
+var _kinds: Array = []
+
+func setup(kinds: Array) -> void:
+	_kinds = kinds
+
+func _ready() -> void:
+	layer = 20
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	get_tree().paused = true
+
+	var dim := ColorRect.new()
+	dim.color = Color(0, 0, 0, 0.7)
+	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(dim)
+
+	var root := VBoxContainer.new()
+	root.set_anchors_preset(Control.PRESET_CENTER)
+	root.position = Vector2(-330, -170)
+	root.custom_minimum_size = Vector2(660, 0)
+	root.add_theme_constant_override("separation", 18)
+	add_child(root)
+
+	var title := Label.new()
+	title.text = Loc.t("ui.choose_door")
+	title.add_theme_font_size_override("font_size", 30)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	root.add_child(title)
+
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 24)
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	root.add_child(row)
+
+	for kind in _kinds:
+		row.add_child(_make_door(String(kind)))
+
+## One door = a tall button with an icon/glyph, a name and a short reward preview.
+func _make_door(kind: String) -> Button:
+	var meta: Array = DOORS.get(kind, ["ui.door_boon", "ui.door_boon_desc", "?"])
+	var btn := Button.new()
+	btn.custom_minimum_size = Vector2(300, 300)
+	btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	btn.text = "%s\n\n%s" % [Loc.t(meta[0]), Loc.t(meta[1])]
+	var ic := Sprites.icon("door_" + kind)  # optional bespoke art (icons/door_*.png)
+	if ic != null:
+		btn.icon = ic
+		btn.expand_icon = true
+		btn.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+	else:
+		btn.text = "%s\n%s\n\n%s" % [meta[2], Loc.t(meta[0]), Loc.t(meta[1])]
+	btn.pressed.connect(_on_pick.bind(kind))
+	return btn
+
+func _on_pick(kind: String) -> void:
+	get_tree().paused = false
+	chosen.emit(kind)
+	queue_free()

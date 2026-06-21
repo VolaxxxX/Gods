@@ -128,7 +128,7 @@ func _save() -> void:
 
 func _find_stream(dir: String, key: String):
 	for ext in EXTS:
-		var path := dir + key + ext
+		var path: String = dir + key + ext
 		if ResourceLoader.exists(path):
 			return load(path)
 	return null

@@ -321,7 +321,9 @@ func _place_prop(id: String, pos: Vector2, target: float) -> void:
 	var dim: float = maxf(tex.get_width(), tex.get_height())
 	if dim > 0.0:
 		s.scale = Vector2.ONE * (target / dim)
-	s.offset = Vector2(0, -tex.get_height() * 0.5)
+	# Anchor by the bottom of the OPAQUE box (not the padded frame) so props sit on
+	# the floor instead of hovering above their transparent padding.
+	s.offset = Vector2(0, -Sprites.content_bottom(tex))
 	s.position = pos
 	add_child(s)
 	_prop_marks.append([pos, target * 0.40])
@@ -392,22 +394,36 @@ func _draw() -> void:
 		draw_rect(Rect2(Vector2.ZERO, _size), fr[1], true)
 		draw_rect(Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, h - 2 * WALL_THICK),
 			Color(_accent_color.r, _accent_color.g, _accent_color.b, 0.10), false, 3.0)
+	# Per-cell tint variation breaks the "one flat repeated texture" look. Cheap and
+	# deterministic (no RNG) so it's stable per cell.
+	_draw_floor_variation(w, h)
 	# Soft shadows under perimeter props (props are child sprites drawn after this).
 	for mark in _prop_marks:
 		draw_set_transform(mark[0], 0.0, Vector2(1.0, 0.4))
 		draw_circle(Vector2.ZERO, mark[1], Color(0, 0, 0, 0.26))
 		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
-	# Walls.
+	# Walls — drawn distinctly DARKER than the floor so the (possibly non-rect)
+	# shape always reads, even when a realm's wall/floor palettes are close (Greece).
 	var wr := _tile("wall", _wall_color)
 	for r in [Rect2(0, 0, w, WALL_THICK), Rect2(0, h - WALL_THICK, w, WALL_THICK),
 			Rect2(0, 0, WALL_THICK, h), Rect2(w - WALL_THICK, 0, WALL_THICK, h)]:
 		if wr[0] != null:
-			draw_texture_rect(wr[0], r, true, _dim(wr[1], 0.72))
+			draw_texture_rect(wr[0], r, true, _dim(wr[1], 0.55))
 		else:
-			draw_rect(r, wr[1])
-	# Faux depth: a soft dark "front face" just under the top wall.
-	draw_rect(Rect2(0, WALL_THICK, w, 10.0), Color(0, 0, 0, 0.22))
-	# Obstacles ('O') and carved interior walls ('#') — both full cells.
+			draw_rect(r, _dim(wr[1], 0.7))
+	# Depth: bright top bevel on the outer rim + a tall dark "front face" under the
+	# top wall + a soft drop shadow cast by every wall onto the floor.
+	var bevel := Color(1, 1, 1, 0.10)
+	draw_rect(Rect2(0, 0, w, 3.0), bevel)
+	draw_rect(Rect2(0, 0, 3.0, h), bevel)
+	draw_rect(Rect2(0, WALL_THICK, w, 12.0), Color(0, 0, 0, 0.28))         # front face
+	for sh in [Rect2(WALL_THICK, WALL_THICK + 12.0, w - 2 * WALL_THICK, 12.0),  # under N
+			Rect2(WALL_THICK, h - WALL_THICK - 12.0, w - 2 * WALL_THICK, 12.0),  # over S
+			Rect2(WALL_THICK, WALL_THICK, 12.0, h - 2 * WALL_THICK),             # right of W
+			Rect2(w - WALL_THICK - 12.0, WALL_THICK, 12.0, h - 2 * WALL_THICK)]: # left of E
+		draw_rect(sh, Color(0, 0, 0, 0.14))
+	# Obstacles ('O') and carved interior walls ('#') — both full cells, with a top
+	# bevel + drop shadow so they read as solid blocks, not flat squares.
 	var ob := _tile("obstacle", _accent_color)
 	var wl := _tile("wall", _wall_color)
 	if template != null:
@@ -417,21 +433,65 @@ func _draw() -> void:
 				if not _is_solid_cell(row, x, y):
 					continue
 				var cell := Rect2(x * TILE, y * TILE, TILE, TILE)
+				draw_rect(Rect2(cell.position + Vector2(3, TILE - 2), Vector2(TILE, 8)),
+					Color(0, 0, 0, 0.22))  # drop shadow below the block
 				var is_wall_cell := row[x] == "#"
 				var t: Array = wl if is_wall_cell else ob
-				var mod: Color = _dim(t[1], 0.72) if is_wall_cell else t[1]
+				var mod: Color = _dim(t[1], 0.55) if is_wall_cell else _dim(t[1], 0.92)
 				if t[0] != null:
 					draw_texture_rect(t[0], cell, true, mod)
 				else:
 					draw_rect(cell, mod)
+				draw_rect(Rect2(cell.position, Vector2(TILE, 3)), Color(1, 1, 1, 0.10))
 	# Inner shadow band -> depth + focuses the eye on the centre (cheap vignette).
-	for band in [[0.0, 0.20], [9.0, 0.12], [18.0, 0.06]]:
+	for band in [[0.0, 0.22], [9.0, 0.13], [18.0, 0.07], [30.0, 0.04]]:
 		var o: float = WALL_THICK + band[0]
 		draw_rect(Rect2(o, o, w - 2.0 * o, h - 2.0 * o), Color(0, 0, 0, band[1]), false, 9.0)
-	# Doors as accent marks.
-	var door_col := _accent_color if not locked else Color(0.5, 0.4, 0.4)
+	# Doorways: a framed arch in the accent colour (locked = dim red gate).
 	for side in open_sides:
-		draw_circle(_door_position(side), 10.0, door_col)
+		_draw_doorway(side)
+
+## Deterministic faint light/dark patches over the floor cells (anti-repetition).
+func _draw_floor_variation(w: float, h: float) -> void:
+	var cols := int(ceil(w / TILE))
+	var rows := int(ceil(h / TILE))
+	for cy in rows:
+		for cx in cols:
+			var px := cx * TILE
+			var py := cy * TILE
+			# Skip the wall ring (variation only on walkable floor).
+			if px < WALL_THICK or py < WALL_THICK \
+					or px > w - WALL_THICK - TILE or py > h - WALL_THICK - TILE:
+				continue
+			var hsh := ((cx * 73856093) ^ (cy * 19349663)) & 255
+			var cell := Rect2(px, py, TILE, TILE)
+			if hsh < 40:
+				draw_rect(cell, Color(0, 0, 0, 0.07))
+			elif hsh > 224:
+				draw_rect(cell, Color(1, 1, 1, 0.05))
+
+## A doorway frame in the wall gap: an arched opening (accent), red gate if locked.
+func _draw_doorway(side: String) -> void:
+	var p := _door_position(side)
+	var col := _accent_color if not locked else Color(0.55, 0.32, 0.30)
+	var horizontal := side == "N" or side == "S"
+	var rect: Rect2
+	if horizontal:
+		rect = Rect2(p.x - DOOR_HALF, p.y - WALL_THICK * 0.5, DOOR_HALF * 2.0, WALL_THICK)
+	else:
+		rect = Rect2(p.x - WALL_THICK * 0.5, p.y - DOOR_HALF, WALL_THICK, DOOR_HALF * 2.0)
+	# Dark threshold, bright frame.
+	draw_rect(rect, Color(0.05, 0.04, 0.06, 0.9))
+	draw_rect(rect, Color(col.r, col.g, col.b, 0.9), false, 3.0)
+	if locked:
+		# Barred gate.
+		for i in range(1, 4):
+			if horizontal:
+				var gx := rect.position.x + rect.size.x * i / 4.0
+				draw_line(Vector2(gx, rect.position.y), Vector2(gx, rect.end.y), col, 2.0)
+			else:
+				var gy := rect.position.y + rect.size.y * i / 4.0
+				draw_line(Vector2(rect.position.x, gy), Vector2(rect.end.x, gy), col, 2.0)
 
 ## Returns [Texture2D|null, modulate] for a tile kind. On the zone's 2nd floor
 ## (post mini-boss) it uses the bespoke "<biome>_<kind>_alt.png" variant if it

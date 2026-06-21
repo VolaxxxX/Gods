@@ -102,9 +102,13 @@ See `core/data/*_data.gd` for the schema each category expects (`from_dict`).
 
 ## 8. Testing
 
-Headless: `godot --headless --script res://tests/test_runner.gd`.
+Headless: **`godot --headless res://tests/test_main.tscn`** (run as a SCENE so the
+autoloads boot before the test scripts compile — `floor_generator.gd` references
+the RNG/Events autoloads, so the old `--script test_runner.gd` form fails to
+compile it). `test_runner.gd` (SceneTree form) is kept but the scene form is
+canonical. Exit code 0 = all pass.
 Critical coverage: RNG determinism, damage calculation, floor generation
-(reachability, quotas, determinism).
+(reachability, quotas, determinism), stat blocks, synergies, meta, soul judgment.
 
 ## 9. Build / export
 

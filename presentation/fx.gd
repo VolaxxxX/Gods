@@ -15,7 +15,7 @@ func _strip(name: String) -> Texture2D:
 		return _cache[name]
 	var tex: Texture2D = null
 	for ext in EXTS:
-		var path := DIR + name + ext
+		var path: String = DIR + name + ext
 		if ResourceLoader.exists(path):
 			tex = load(path)
 			break
