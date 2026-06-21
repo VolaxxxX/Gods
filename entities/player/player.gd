@@ -7,6 +7,11 @@ extends CharacterBody2D
 const RADIUS := 14.0
 const MELEE_RANGE := 42.0    # radius of the melee swing hitbox
 const MELEE_OFFSET := 30.0   # how far in front of the player it lands
+# Dash (dodge): a short burst in the move/aim direction with brief i-frames.
+# Lives on the shared Player, so EVERY class gets it regardless of weapon kind.
+const DASH_SPEED := 640.0
+const DASH_TIME := 0.16     # seconds of dash motion
+const DASH_COOLDOWN := 0.85 # seconds before you can dash again
 
 # Base stats before items/blessings/synergies. Everything stacks on top via
 # StatBlock (see _recompute_stats).
@@ -41,6 +46,10 @@ var _swing_t: float = 0.0
 var _sprite: Sprite2D
 var _anim: AnimatedSprite2D
 var _attack_t: float = 0.0
+var _dash_t: float = 0.0      # remaining dash time (>0 means dashing)
+var _dash_cd: float = 0.0     # remaining cooldown
+var _dash_dir: Vector2 = Vector2.RIGHT
+var _invuln_t: float = 0.0    # i-frames (set during a dash)
 
 func _ready() -> void:
 	add_to_group("player")
@@ -55,7 +64,7 @@ func _ready() -> void:
 		anim_id = "player"
 	if anim_id != "":
 		_anim = AnimatedSprite2D.new()
-		_anim.sprite_frames = Sprites.build_sprite_frames(anim_id)
+		_anim.sprite_frames = Sprites.build_sprite_frames(anim_id, ["dash"])
 		var cs := Sprites.anim_content_size(anim_id)
 		if cs > 0.0:
 			_anim.scale = Vector2.ONE * (2.4 * RADIUS / cs)
@@ -182,6 +191,8 @@ func pay_health(amount: float) -> void:
 
 ## Damage filter hook for HealthComponent: chance to fully deflect a hit.
 func _filter_damage(amount: float) -> float:
+	if _invuln_t > 0.0:  # dash i-frames
+		return 0.0
 	if _deflect_chance > 0.0 and RNG.stream("combat").randf() < _deflect_chance:
 		return 0.0
 	return amount
@@ -191,7 +202,25 @@ func set_pool(pool: ProjectilePool) -> void:
 	weapon.pool = pool
 
 func _physics_process(delta: float) -> void:
-	velocity = movement.compute(velocity, GameInput.move_vector, delta)
+	_dash_cd = maxf(0.0, _dash_cd - delta)
+	if _invuln_t > 0.0:
+		_invuln_t -= delta
+	# Start a dash on a fresh tap, if off cooldown and not already dashing.
+	if _dash_t <= 0.0 and _dash_cd <= 0.0 and GameInput.consume_dash():
+		var ddir := GameInput.move_vector
+		if ddir.length() < 0.1:
+			ddir = _last_aim
+		if ddir.length() > 0.01:
+			_dash_dir = ddir.normalized()
+			_dash_t = DASH_TIME
+			_dash_cd = DASH_COOLDOWN
+			_invuln_t = DASH_TIME + 0.05
+			Fx.play("muzzle", global_position, 22.0)
+	if _dash_t > 0.0:
+		_dash_t -= delta
+		velocity = _dash_dir * DASH_SPEED
+	else:
+		velocity = movement.compute(velocity, GameInput.move_vector, delta)
 	move_and_slide()
 
 	var aim := _resolve_aim()
@@ -306,7 +335,9 @@ func _process(delta: float) -> void:
 func _update_anim() -> void:
 	var sf := _anim.sprite_frames
 	var st := "idle"
-	if _attack_t > 0.0 and sf.has_animation("attack"):
+	if _dash_t > 0.0 and sf.has_animation("dash"):
+		st = "dash"
+	elif _attack_t > 0.0 and sf.has_animation("attack"):
 		st = "attack"
 	elif velocity.length() > 12.0 and sf.has_animation("walk"):
 		st = "walk"
