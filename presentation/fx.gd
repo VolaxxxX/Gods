@@ -22,6 +22,11 @@ func _strip(name: String) -> Texture2D:
 	_cache[name] = tex
 	return tex
 
+## True if an FX sheet named `name` exists, so callers can choose a themed
+## effect and fall back to a generic one.
+func has(name: String) -> bool:
+	return _strip(name) != null
+
 ## Play effect `name` centered at `world_pos`. `target_px` is the on-screen size.
 ## Accepts a horizontal strip (frames = width/height) OR a square 4x4 grid
 ## (16 frames, row-major) — PixelLab exports VFX as a 4x4 sheet.
