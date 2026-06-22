@@ -48,6 +48,15 @@ func _migrate(data: Dictionary) -> Dictionary:
 		data["karma"] = 0
 	if typeof(data.get("story")) != TYPE_DICTIONARY:
 		data["story"] = {"stage": 0, "flags": [], "met": {}, "seen": []}
+	# Normalize story sub-fields so a malformed/older save can't crash set_flag /
+	# mark_line_seen (which expect flags & seen as Arrays, met as a Dictionary).
+	var st: Dictionary = data["story"]
+	if typeof(st.get("flags")) != TYPE_ARRAY:
+		st["flags"] = []
+	if typeof(st.get("seen")) != TYPE_ARRAY:
+		st["seen"] = []
+	if typeof(st.get("met")) != TYPE_DICTIONARY:
+		st["met"] = {}
 	if not data.has("bosses_cleared"):
 		data["bosses_cleared"] = []
 	data["version"] = SAVE_VERSION

@@ -94,6 +94,16 @@ func _setup_biome(from_resume: bool) -> void:
 
 	_enter_room(current_pos, "")
 
+	# Arriving in a NEW realm (its first floor): the narrator teaches its myth and
+	# its lord greets you. Plays in the safe start room; lore is told once, then a
+	# short flavour line on later visits. Skipped on floor regen and on resume.
+	if not from_resume and RunManager.floor_in_biome == 1:
+		var b := RunManager.biome_id
+		Dialogue.speak("narrator", "enter_" + b)
+		var god: String = REALM_LORDS.get(b, "")
+		if god != "":
+			Dialogue.speak(god, "enter_" + b)
+
 func _enter_room(pos: Vector2i, from_side: String) -> void:
 	if current_room != null:
 		current_room.queue_free()
