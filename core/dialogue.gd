@@ -16,11 +16,21 @@ func _ready() -> void:
 ## Called by the hub on entry: death/victory beat if a run just ended, else an
 ## ambient line from the Ferryman or a fellow shade.
 func on_enter_hub() -> void:
+	var spoke := false
 	if _pending != "":
 		var t := _pending
 		_pending = ""
-		if speak("narrator", t):
+		spoke = speak("narrator", t)
+	# The true ending: all six realms conquered, shown once.
+	if SaveManager.has_flag("all_six") and not SaveManager.line_seen("narr_ending"):
+		if speak("narrator", "ending"):
 			return
+	# A story-reveal beat for the current stage (each shown once) — the slow
+	# unveiling of why the soul is bound. Queues after a victory line if present.
+	if speak("narrator", "reveal"):
+		return
+	if spoke:
+		return
 	var who := "shade" if randf() < 0.4 else "narrator"
 	if not speak(who, "hub"):
 		speak("narrator", "hub")

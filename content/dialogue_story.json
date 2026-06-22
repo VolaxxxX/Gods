@@ -1,0 +1,61 @@
+{
+	"type": "dialogue",
+	"entries": [
+		{
+			"id": "reveal_1", "speaker": "narrator", "trigger": "reveal",
+			"once": true, "modal": true, "min_stage": 1, "max_stage": 1,
+			"lines": [
+				"One throne has fallen. Strange — when its lord died, I felt you grow... heavier. More real.",
+				"I have ferried a thousand thousand souls. Yours alone has no name on my ledger.",
+				"Why is that, I wonder?"
+			]
+		},
+		{
+			"id": "reveal_2", "speaker": "narrator", "trigger": "reveal",
+			"once": true, "modal": true, "min_stage": 2, "max_stage": 2,
+			"lines": [
+				"Two lords cast down, and with each, a memory returns to you. A face. A shore. A name half-spoken.",
+				"You were mortal once. That much is plain now.",
+				"But no mortal walks all the underworlds. What were you?"
+			]
+		},
+		{
+			"id": "reveal_3", "speaker": "narrator", "trigger": "reveal",
+			"once": true, "modal": true, "min_stage": 3, "max_stage": 3,
+			"lines": [
+				"I remember you now. You died — and you ran. From the scales, from the river, from every judgment laid before you.",
+				"So death could not keep you whole. Each afterlife seized a shard of your soul as you fled.",
+				"Six shards. Six lords. That is why you are scattered, wanderer."
+			]
+		},
+		{
+			"id": "reveal_4", "speaker": "narrator", "trigger": "reveal",
+			"once": true, "modal": true, "min_stage": 4, "max_stage": 4,
+			"lines": [
+				"Four shards reclaimed. You stand almost whole — and I see in your eyes that you remember why you ran.",
+				"You were afraid of the weighing. Of what the scales would say you were.",
+				"Only two deaths remain to face that fear."
+			]
+		},
+		{
+			"id": "reveal_5", "speaker": "narrator", "trigger": "reveal",
+			"once": true, "modal": true, "min_stage": 5, "max_stage": 5,
+			"lines": [
+				"One shard remains, held by the last lord of the dead.",
+				"When you take it, you will hold your whole self again — your name, your deeds, your weight.",
+				"Then there is no more running. Only the road, and what waits at its end."
+			]
+		},
+		{
+			"id": "narr_ending", "speaker": "narrator", "trigger": "ending",
+			"once": true, "modal": true, "requires_flags": ["all_six"],
+			"lines": [
+				"It is done. Six lords of death lie behind you, and the last shard returns to its place.",
+				"You are whole, wanderer. You remember your name — and you no longer fear to say it.",
+				"The scales were never your enemy. Only the running was.",
+				"Step onto the river one last time. This crossing leads not down, but up — into the light you fled so long ago.",
+				"Go. The cycle is broken. You are judged at last, and found... enough."
+			]
+		}
+	]
+}

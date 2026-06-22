@@ -244,6 +244,9 @@ const REALM_LORDS := {
 func _complete_biome() -> void:
 	# Beating a zone's true boss conquers that realm (drives the meta goal).
 	SaveManager.record_realm_cleared(RunManager.biome_id)
+	# All six conquered ever -> unlock the true ending beat (shown next at the hub).
+	if SaveManager.realms_cleared().size() >= 6:
+		SaveManager.set_flag("all_six")
 	var b := RunManager.biome_id
 	var shown := Dialogue.speak("narrator", "boss_" + b)
 	var god: String = REALM_LORDS.get(b, "")
