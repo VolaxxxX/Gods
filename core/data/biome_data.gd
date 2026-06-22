@@ -8,6 +8,11 @@ var name_key: String = ""
 var pantheon: String = ""
 var palette: Dictionary = {}     # named Colors: bg, wall, floor, accent
 
+# Atmosphere (presentation). `ambient` tints the whole world via a CanvasModulate
+# (mood lighting); `ambient_particle` is a drifting overlay: ember/dust/snow/petal.
+var ambient: Color = Color(1, 1, 1)
+var ambient_particle: String = ""
+
 # Floor generation quotas. The generator guarantees these counts (plus a boss).
 var room_count: int = 6          # non-boss rooms per floor
 var floors: int = 2              # sub-floors per zone: palier boss, then final
@@ -35,6 +40,8 @@ static func from_dict(d: Dictionary) -> BiomeData:
 	b.name_key = d.get("name_key", b.id)
 	b.pantheon = d.get("pantheon", b.id)
 	b.palette = d.get("palette", {})
+	b.ambient = DataUtil.to_color(d.get("ambient", "#ffffff"), Color(1, 1, 1))
+	b.ambient_particle = d.get("ambient_particle", "")
 	b.room_count = int(d.get("room_count", 6))
 	b.floors = int(d.get("floors", 2))
 	b.enemy_pool = DataUtil.to_string_array(d.get("enemy_pool", []))

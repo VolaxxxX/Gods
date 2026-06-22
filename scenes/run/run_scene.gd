@@ -17,6 +17,7 @@ var _cleared: Dictionary = {}   # Vector2i -> true
 var _ended: bool = false
 var _room_damage_taken: bool = false  # for the "cautious" play-style tally
 var _wrath_active: bool = false       # a god's wrath wave is in progress
+var _canvas_mod: CanvasModulate       # per-realm mood lighting
 
 func _ready() -> void:
 	# Start a fresh run if one isn't already active (e.g. launched directly).
@@ -46,6 +47,13 @@ func _ready() -> void:
 	player.add_child(camera)
 	camera.make_current()
 
+	# Mood lighting: a per-realm CanvasModulate tints the world; a soft warm light
+	# follows the player so they're always readable in the gloom. Pure code.
+	_canvas_mod = CanvasModulate.new()
+	add_child(_canvas_mod)
+	var glow := Atmosphere.point_light(Color(1.0, 0.95, 0.86), 0.6, 240.0)
+	player.add_child(glow)
+
 	Events.entity_died.connect(_on_entity_died)
 
 	# UI overlays (screen space).
@@ -65,6 +73,8 @@ func _setup_biome(from_resume: bool) -> void:
 	if biome == null:
 		push_error("RunScene: unknown biome '%s'" % RunManager.biome_id)
 		return
+	if _canvas_mod != null:
+		_canvas_mod.color = biome.ambient
 
 	_cleared.clear()
 	if pool != null:

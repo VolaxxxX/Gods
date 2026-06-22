@@ -50,6 +50,11 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 	_build_obstacles()
 	_build_doors()
 	_scatter_props()
+	# Drifting ambient particles (ember/dust/snow/petal) set the realm's mood.
+	if biome != null:
+		var pf := Atmosphere.ambient_particles(biome.ambient_particle, _size)
+		if pf != null:
+			add_child(pf)
 
 	# Room-type contents.
 	if room_type == "reward" or room_type == "shop":
@@ -327,6 +332,11 @@ func _place_prop(id: String, pos: Vector2, target: float) -> void:
 	s.position = pos
 	add_child(s)
 	_prop_marks.append([pos, target * 0.40])
+	# Braziers / torches / lanterns cast a warm flickering glow.
+	if Atmosphere.is_light_prop(id):
+		var l := Atmosphere.point_light(Color(1.0, 0.7, 0.35), 0.9, 170.0)
+		l.position = pos + Vector2(0, -target * 0.25)
+		add_child(l)
 
 ## True if a point sits in front of an OPEN door (so we don't decorate over it).
 func _near_open_door(pos: Vector2) -> bool:
