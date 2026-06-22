@@ -125,3 +125,11 @@ sun-stone block.
 
 Drop the PNGs in `assets/sprites/tiles/`, tell me, and I build the autotiling
 TileMapLayer (greybox/code-drawn stays as the fallback when a piece is missing).
+
+
+---
+## ✅ WIRED (Claude Code)
+The 30 atlas pieces are integrated: rooms now build a real **TileMapLayer floor**
+with weighted random variants (`<r>_floor`/`_floor_b`/`_floor_c`, `_alt` on floor 2),
+and the renderer uses `<r>_wall_face`, `<r>_wall_corner` and `<r>_door` (arch) sprites.
+Greybox/code-drawn rendering remains the fallback when a piece is absent. Verified in Godot.

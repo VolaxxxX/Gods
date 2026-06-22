@@ -29,6 +29,8 @@ var _floor_color := Color(0.15, 0.15, 0.2)
 var _wall_color := Color(0.35, 0.32, 0.28)
 var _accent_color := Color(0.85, 0.7, 0.35)
 var _pantheon := ""
+var _floor_layer: TileMapLayer       # real tiled floor (variants); null = greybox
+var _use_tilemap_floor := false
 
 func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[String],
 		p_type: String, target: Node2D, pool: ProjectilePool) -> void:
@@ -47,6 +49,7 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 	else:
 		_size = Vector2(13 * TILE, 9 * TILE)
 
+	_build_floor_tilemap()  # real TileMapLayer floor w/ variants (else greybox _draw)
 	_build_walls()
 	_build_obstacles()
 	_build_doors()
@@ -99,6 +102,53 @@ func entry_point_for(side: String) -> Vector2:
 	return c
 
 # --- Construction ---
+
+## Build a real TileMapLayer floor from the realm's floor variants
+## (<r>_floor / _floor_b / _floor_c, or their _alt on the post-mini-boss floor),
+## placed with weighted random per cell to kill repetition. If no art exists the
+## function bails and _draw() falls back to the greybox/single-tile floor.
+func _build_floor_tilemap() -> void:
+	var v2: bool = RunManager.floor_in_biome > 1
+	var variants: Array = []
+	for k in ["floor", "floor_b", "floor_c"]:
+		var t: Texture2D = null
+		if v2:
+			t = Sprites.tile(_pantheon, k + "_alt")
+		if t == null:
+			t = Sprites.tile(_pantheon, k)
+		if t != null:
+			variants.append(t)
+	if variants.is_empty():
+		return  # no floor art -> greybox fallback in _draw()
+
+	var ts := TileSet.new()
+	ts.tile_size = Vector2i(TILE, TILE)
+	var src_ids: Array[int] = []
+	for tex in variants:
+		var src := TileSetAtlasSource.new()
+		src.texture = tex
+		src.texture_region_size = Vector2i(tex.get_width(), tex.get_height())
+		src.create_tile(Vector2i.ZERO)
+		src_ids.append(ts.add_source(src))
+
+	_floor_layer = TileMapLayer.new()
+	_floor_layer.tile_set = ts
+	_floor_layer.z_index = -2  # under the walls/vignette drawn by _draw()
+	add_child(_floor_layer)
+
+	var cols := int(ceil(_size.x / TILE))
+	var rows := int(ceil(_size.y / TILE))
+	for cy in rows:
+		for cx in cols:
+			var h := ((cx * 73856093) ^ (cy * 19349663)) & 255
+			var vi := 0
+			if src_ids.size() >= 3:
+				vi = 0 if h < 184 else (1 if h < 226 else 2)  # ~72% / 16% / 12%
+			elif src_ids.size() == 2:
+				vi = 0 if h < 205 else 1
+			_floor_layer.set_cell(Vector2i(cx, cy), src_ids[vi], Vector2i.ZERO)
+	_use_tilemap_floor = true
+
 func _add_wall(rect: Rect2) -> StaticBody2D:
 	var body := StaticBody2D.new()
 	body.collision_layer = Collision.WORLD
@@ -465,18 +515,18 @@ func _add_gate(side: String) -> StaticBody2D:
 func _draw() -> void:
 	var w := _size.x
 	var h := _size.y
-	# Floor.
-	var fr := _tile("floor", _floor_color)
-	if fr[0] != null:
-		draw_texture_rect(fr[0], Rect2(Vector2.ZERO, _size), true, _dim(fr[1], 0.85))
-	else:
-		draw_rect(Rect2(Vector2.ZERO, _size), fr[1], true)
-		draw_rect(Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, h - 2 * WALL_THICK),
-			Color(_accent_color.r, _accent_color.g, _accent_color.b, 0.10), false, 3.0)
-	# Per-cell tint variation breaks the "one flat repeated texture" look. Cheap and
-	# deterministic (no RNG) so it's stable per cell.
-	_draw_floor_variation(w, h)
-	_draw_floor_grid(w, h)  # crisp grout seams = a real tiled floor
+	# Floor. A real TileMapLayer (variants) draws it when art exists; otherwise the
+	# greybox single-tile / flat fill + grout grid is the fallback.
+	if not _use_tilemap_floor:
+		var fr := _tile("floor", _floor_color)
+		if fr[0] != null:
+			draw_texture_rect(fr[0], Rect2(Vector2.ZERO, _size), true, _dim(fr[1], 0.85))
+		else:
+			draw_rect(Rect2(Vector2.ZERO, _size), fr[1], true)
+			draw_rect(Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, h - 2 * WALL_THICK),
+				Color(_accent_color.r, _accent_color.g, _accent_color.b, 0.10), false, 3.0)
+		_draw_floor_variation(w, h)
+		_draw_floor_grid(w, h)  # crisp grout seams = a real tiled floor
 	# Soft shadows under perimeter props (props are child sprites drawn after this).
 	for mark in _prop_marks:
 		draw_set_transform(mark[0], 0.0, Vector2(1.0, 0.4))
@@ -514,6 +564,15 @@ func _draw() -> void:
 	var cs := WALL_THICK
 	for cpos in [Vector2(0, 0), Vector2(w - cs, 0), Vector2(0, h - cs), Vector2(w - cs, h - cs)]:
 		draw_rect(Rect2(cpos, Vector2(cs, cs)), Color(corner.r, corner.g, corner.b, 0.5))
+	# Bespoke wall art (front face + corner pieces) when the realm provides it —
+	# real depth instead of the flat procedural lip. Falls back silently if absent.
+	var face := Sprites.tile(_pantheon, "wall_face")
+	if face != null:
+		draw_texture_rect(face, Rect2(WALL_THICK, WALL_THICK, w - 2 * WALL_THICK, 22.0), true)
+	var wcorner := Sprites.tile(_pantheon, "wall_corner")
+	if wcorner != null:
+		for cpos in [Vector2(0, 0), Vector2(w - cs, 0), Vector2(0, h - cs), Vector2(w - cs, h - cs)]:
+			draw_texture_rect(wcorner, Rect2(cpos, Vector2(cs, cs)), false)
 	# Obstacles ('O') and carved interior walls ('#') — both full cells, with a top
 	# bevel + drop shadow so they read as solid blocks, not flat squares.
 	var ob := _tile("obstacle", _accent_color)
@@ -613,6 +672,16 @@ func _draw_doorway(side: String) -> void:
 		rect = Rect2(p.x - WALL_THICK * 0.5, p.y - DOOR_HALF, WALL_THICK, DOOR_HALF * 2.0)
 	if side in secret_sides:
 		_draw_secret_door(rect, horizontal)
+		return
+	# Bespoke door/arch sprite if the realm provides one (centred on the opening),
+	# tinted red while locked; else the drawn frame below.
+	var door_tex := Sprites.tile(_pantheon, "door")
+	if door_tex != null:
+		var ds := DOOR_HALF * 2.0 + 16.0
+		var dr := Rect2(p - Vector2(ds, ds) * 0.5, Vector2(ds, ds))
+		draw_rect(rect, Color(0.05, 0.04, 0.06, 0.9))  # dark threshold behind it
+		draw_texture_rect(door_tex, dr, false,
+			Color(1, 0.6, 0.55) if locked else Color.WHITE)
 		return
 	var col := _accent_color if not locked else Color(0.55, 0.32, 0.30)
 	# Dark threshold, bright frame.
