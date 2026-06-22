@@ -24,6 +24,7 @@ func _ready() -> void:
 	_biome_label = Label.new()
 	_biome_label.position = Vector2(24, 16)
 	_biome_label.add_theme_font_size_override("font_size", 24)
+	UITheme.title(_biome_label)
 	root.add_child(_biome_label)
 
 	# Graphical health bar (320x26) with the value drawn on top.
@@ -64,6 +65,7 @@ func _ready() -> void:
 	_banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_banner.add_theme_font_size_override("font_size", 46)
 	_banner.modulate.a = 0.0
+	UITheme.title(_banner)
 	root.add_child(_banner)
 
 	Events.player_health_changed.connect(_on_health)

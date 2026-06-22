@@ -37,6 +37,7 @@ func _ready() -> void:
 	var title := Label.new()
 	title.text = Loc.t(_title_key)
 	title.add_theme_font_size_override("font_size", 28)
+	UITheme.title(title)
 	box.add_child(title)
 
 	for b in _options:

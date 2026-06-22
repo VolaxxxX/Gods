@@ -41,6 +41,7 @@ func _ready() -> void:
 	title.text = Loc.t("ui.choose_door")
 	title.add_theme_font_size_override("font_size", 30)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	UITheme.title(title)
 	root.add_child(title)
 
 	var row := HBoxContainer.new()

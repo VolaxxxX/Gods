@@ -84,6 +84,7 @@ func _ready() -> void:
 	nameplate.text = _speaker
 	nameplate.add_theme_font_size_override("font_size", 26)
 	nameplate.modulate = Color(0.95, 0.85, 0.5)
+	UITheme.title(nameplate)
 	col.add_child(nameplate)
 	_text = Label.new()
 	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART

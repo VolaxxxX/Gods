@@ -7,13 +7,25 @@ extends Node
 const UI := "res://assets/sprites/ui/"
 const FONT_TTF := "res://assets/fonts/ui.ttf"
 const FONT_OTF := "res://assets/fonts/ui.otf"
+const DISPLAY_TTF := "res://assets/fonts/display.ttf"  # Cinzel — titles/headers
 
 # Gold / bronze accent used across the UI.
 const ACCENT := Color(0.85, 0.72, 0.38)
 const INK := Color(0.95, 0.92, 0.85)
 
+# Mythic display font for titles (null if absent). Big Labels apply it via
+# add_theme_font_override("font", UITheme.display).
+var display: Font
+
 func _ready() -> void:
+	if ResourceLoader.exists(DISPLAY_TTF):
+		display = load(DISPLAY_TTF)
 	get_tree().root.theme = _build()
+
+## Apply the display (title) font to a Label, if available. No-op otherwise.
+func title(label: Label) -> void:
+	if display != null and label != null:
+		label.add_theme_font_override("font", display)
 
 func _build() -> Theme:
 	var t := Theme.new()
