@@ -2,34 +2,114 @@
 	"type": "blessing",
 	"entries": [
 		{
-			"id": "japan_amaterasu_light", "name_key": "blessing.amaterasu_light.name", "desc_key": "blessing.amaterasu_light.desc",
-			"deity_id": "japan_amaterasu", "pantheon": "japan", "rarity": "common", "color": "#f2d24a",
-			"modifiers": {"max_health_add": 1.0, "damage_add": 1.0}, "tags": ["light"]
+			"id": "japan_amaterasu_light",
+			"name_key": "blessing.amaterasu_light.name",
+			"desc_key": "blessing.amaterasu_light.desc",
+			"deity_id": "japan_amaterasu",
+			"pantheon": "japan",
+			"rarity": "common",
+			"color": "#f2d24a",
+			"modifiers": {
+				"max_health_add": 1.0,
+				"damage_add": 1.0
+			},
+			"tags": [
+				"light"
+			]
 		},
 		{
-			"id": "japan_susanoo_storm", "name_key": "blessing.susanoo_storm.name", "desc_key": "blessing.susanoo_storm.desc",
-			"deity_id": "japan_susanoo", "pantheon": "japan", "rarity": "common", "color": "#3a6fae",
-			"modifiers": {"damage_add": 2.0, "fire_rate_mult": 0.95}, "tags": ["storm"]
+			"id": "japan_susanoo_storm",
+			"name_key": "blessing.susanoo_storm.name",
+			"desc_key": "blessing.susanoo_storm.desc",
+			"deity_id": "japan_susanoo",
+			"pantheon": "japan",
+			"rarity": "common",
+			"color": "#3a6fae",
+			"modifiers": {
+				"damage_add": 2.0,
+				"fire_rate_mult": 0.95
+			},
+			"tags": [
+				"storm"
+			]
 		},
 		{
-			"id": "japan_raijin_thunder", "name_key": "blessing.raijin_thunder.name", "desc_key": "blessing.raijin_thunder.desc",
-			"deity_id": "japan_raijin", "pantheon": "japan", "rarity": "rare", "color": "#d8b84a",
-			"modifiers": {"damage_mult": 1.2}, "tags": ["thunder"]
+			"id": "japan_raijin_thunder",
+			"name_key": "blessing.raijin_thunder.name",
+			"desc_key": "blessing.raijin_thunder.desc",
+			"deity_id": "japan_raijin",
+			"pantheon": "japan",
+			"rarity": "rare",
+			"color": "#d8b84a",
+			"modifiers": {
+				"damage_mult": 1.2
+			},
+			"tags": [
+				"thunder"
+			]
 		},
 		{
-			"id": "japan_fujin_wind", "name_key": "blessing.fujin_wind.name", "desc_key": "blessing.fujin_wind.desc",
-			"deity_id": "japan_fujin", "pantheon": "japan", "rarity": "common", "color": "#6ac0a0",
-			"modifiers": {"move_speed_add": 30.0}, "tags": ["wind", "speed"]
+			"id": "japan_fujin_wind",
+			"name_key": "blessing.fujin_wind.name",
+			"desc_key": "blessing.fujin_wind.desc",
+			"deity_id": "japan_fujin",
+			"pantheon": "japan",
+			"rarity": "common",
+			"color": "#6ac0a0",
+			"modifiers": {
+				"move_speed_add": 30.0
+			},
+			"tags": [
+				"wind",
+				"speed"
+			]
 		},
 		{
-			"id": "japan_tsukuyomi_moon", "name_key": "blessing.tsukuyomi_moon.name", "desc_key": "blessing.tsukuyomi_moon.desc",
-			"deity_id": "japan_tsukuyomi", "pantheon": "japan", "rarity": "rare", "color": "#9aa0d0",
-			"modifiers": {"crit_chance_add": 0.2}, "tags": ["moon"]
+			"id": "japan_tsukuyomi_moon",
+			"name_key": "blessing.tsukuyomi_moon.name",
+			"desc_key": "blessing.tsukuyomi_moon.desc",
+			"deity_id": "japan_tsukuyomi",
+			"pantheon": "japan",
+			"rarity": "rare",
+			"color": "#9aa0d0",
+			"modifiers": {
+				"crit_chance_add": 0.2
+			},
+			"tags": [
+				"moon"
+			]
 		},
 		{
-			"id": "japan_inari_fox", "name_key": "blessing.inari_fox.name", "desc_key": "blessing.inari_fox.desc",
-			"deity_id": "japan_inari", "pantheon": "japan", "rarity": "common", "color": "#e07a3a",
-			"modifiers": {"fire_rate_mult": 1.2}, "tags": ["fox"]
+			"id": "japan_inari_fox",
+			"name_key": "blessing.inari_fox.name",
+			"desc_key": "blessing.inari_fox.desc",
+			"deity_id": "japan_inari",
+			"pantheon": "japan",
+			"rarity": "common",
+			"color": "#e07a3a",
+			"modifiers": {
+				"fire_rate_mult": 1.2
+			},
+			"tags": [
+				"fox"
+			]
+		},
+		{
+			"id": "japan_amaterasu_dawn",
+			"name_key": "blessing.amaterasu_dawn.name",
+			"desc_key": "blessing.amaterasu_dawn.desc",
+			"deity_id": "japan_amaterasu",
+			"pantheon": "japan",
+			"rarity": "epic",
+			"color": "#ffd98a",
+			"modifiers": {
+				"fire_rate_mult": 1.2,
+				"damage_add": 1.0
+			},
+			"tags": [
+				"solar",
+				"light"
+			]
 		}
 	]
 }

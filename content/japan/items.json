@@ -2,24 +2,78 @@
 	"type": "item",
 	"entries": [
 		{
-			"id": "japan_kusanagi", "name_key": "item.kusanagi.name", "desc_key": "item.kusanagi.desc",
-			"pantheon": "japan", "rarity": "rare", "color": "#d8d2c0",
-			"modifiers": {"damage_add": 2.5}, "tags": ["damage", "blade"]
+			"id": "japan_kusanagi",
+			"name_key": "item.kusanagi.name",
+			"desc_key": "item.kusanagi.desc",
+			"pantheon": "japan",
+			"rarity": "rare",
+			"color": "#d8d2c0",
+			"modifiers": {
+				"damage_add": 2.5
+			},
+			"tags": [
+				"damage",
+				"blade"
+			]
 		},
 		{
-			"id": "japan_magatama", "name_key": "item.magatama.name", "desc_key": "item.magatama.desc",
-			"pantheon": "japan", "rarity": "common", "color": "#4f9a6a",
-			"modifiers": {"max_health_add": 2.0}, "tags": ["life"]
+			"id": "japan_magatama",
+			"name_key": "item.magatama.name",
+			"desc_key": "item.magatama.desc",
+			"pantheon": "japan",
+			"rarity": "common",
+			"color": "#4f9a6a",
+			"modifiers": {
+				"max_health_add": 2.0
+			},
+			"tags": [
+				"life"
+			]
 		},
 		{
-			"id": "japan_yata_mirror", "name_key": "item.yata_mirror.name", "desc_key": "item.yata_mirror.desc",
-			"pantheon": "japan", "rarity": "rare", "color": "#e8c860",
-			"modifiers": {"crit_chance_add": 0.12}, "tags": ["crit"]
+			"id": "japan_yata_mirror",
+			"name_key": "item.yata_mirror.name",
+			"desc_key": "item.yata_mirror.desc",
+			"pantheon": "japan",
+			"rarity": "rare",
+			"color": "#e8c860",
+			"modifiers": {
+				"crit_chance_add": 0.12
+			},
+			"tags": [
+				"crit"
+			]
 		},
 		{
-			"id": "japan_fox_mask", "name_key": "item.fox_mask.name", "desc_key": "item.fox_mask.desc",
-			"pantheon": "japan", "rarity": "common", "color": "#e07a3a",
-			"modifiers": {"fire_rate_mult": 1.2}, "tags": ["speed", "fox"]
+			"id": "japan_fox_mask",
+			"name_key": "item.fox_mask.name",
+			"desc_key": "item.fox_mask.desc",
+			"pantheon": "japan",
+			"rarity": "common",
+			"color": "#e07a3a",
+			"modifiers": {
+				"fire_rate_mult": 1.2
+			},
+			"tags": [
+				"speed",
+				"fox"
+			]
+		},
+		{
+			"id": "japan_omamori",
+			"name_key": "item.omamori.name",
+			"desc_key": "item.omamori.desc",
+			"pantheon": "japan",
+			"rarity": "relic",
+			"color": "#c8f0d8",
+			"modifiers": {
+				"max_health_add": 2.0,
+				"fire_rate_mult": 1.1
+			},
+			"tags": [
+				"japan",
+				"guard"
+			]
 		}
 	]
 }

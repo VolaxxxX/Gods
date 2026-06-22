@@ -2,34 +2,118 @@
 	"type": "blessing",
 	"entries": [
 		{
-			"id": "norse_odin_runes", "name_key": "blessing.odin_runes.name", "desc_key": "blessing.odin_runes.desc",
-			"deity_id": "norse_odin", "pantheon": "norse", "rarity": "rare", "color": "#c9b48a",
-			"modifiers": {"damage_add": 1.5, "crit_chance_add": 0.1}, "tags": ["runes"]
+			"id": "norse_odin_runes",
+			"name_key": "blessing.odin_runes.name",
+			"desc_key": "blessing.odin_runes.desc",
+			"deity_id": "norse_odin",
+			"pantheon": "norse",
+			"rarity": "rare",
+			"color": "#c9b48a",
+			"modifiers": {
+				"damage_add": 1.5,
+				"crit_chance_add": 0.1
+			},
+			"tags": [
+				"runes"
+			]
 		},
 		{
-			"id": "norse_thor_hammer", "name_key": "blessing.thor_hammer.name", "desc_key": "blessing.thor_hammer.desc",
-			"deity_id": "norse_thor", "pantheon": "norse", "rarity": "common", "color": "#d04a3a",
-			"modifiers": {"damage_add": 3.0, "fire_rate_mult": 0.9}, "tags": ["thunder"]
+			"id": "norse_thor_hammer",
+			"name_key": "blessing.thor_hammer.name",
+			"desc_key": "blessing.thor_hammer.desc",
+			"deity_id": "norse_thor",
+			"pantheon": "norse",
+			"rarity": "common",
+			"color": "#d04a3a",
+			"modifiers": {
+				"damage_add": 3.0,
+				"fire_rate_mult": 0.9
+			},
+			"tags": [
+				"thunder"
+			]
 		},
 		{
-			"id": "norse_freyja_seidr", "name_key": "blessing.freyja_seidr.name", "desc_key": "blessing.freyja_seidr.desc",
-			"deity_id": "norse_freyja", "pantheon": "norse", "rarity": "common", "color": "#e08ab0",
-			"modifiers": {"fire_rate_mult": 1.15, "crit_chance_add": 0.05}, "tags": ["magic"]
+			"id": "norse_freyja_seidr",
+			"name_key": "blessing.freyja_seidr.name",
+			"desc_key": "blessing.freyja_seidr.desc",
+			"deity_id": "norse_freyja",
+			"pantheon": "norse",
+			"rarity": "common",
+			"color": "#e08ab0",
+			"modifiers": {
+				"fire_rate_mult": 1.15,
+				"crit_chance_add": 0.05
+			},
+			"tags": [
+				"magic"
+			]
 		},
 		{
-			"id": "norse_tyr_guard", "name_key": "blessing.tyr_guard.name", "desc_key": "blessing.tyr_guard.desc",
-			"deity_id": "norse_tyr", "pantheon": "norse", "rarity": "common", "color": "#8ab0d0",
-			"effect": {"kind": "passive", "effect": "deflect_chance", "value": 0.18}, "tags": ["guard"]
+			"id": "norse_tyr_guard",
+			"name_key": "blessing.tyr_guard.name",
+			"desc_key": "blessing.tyr_guard.desc",
+			"deity_id": "norse_tyr",
+			"pantheon": "norse",
+			"rarity": "common",
+			"color": "#8ab0d0",
+			"effect": {
+				"kind": "passive",
+				"effect": "deflect_chance",
+				"value": 0.18
+			},
+			"tags": [
+				"guard"
+			]
 		},
 		{
-			"id": "norse_heimdall_watch", "name_key": "blessing.heimdall_watch.name", "desc_key": "blessing.heimdall_watch.desc",
-			"deity_id": "norse_heimdall", "pantheon": "norse", "rarity": "common", "color": "#d0d8e0",
-			"modifiers": {"max_health_add": 2.0, "crit_chance_add": 0.05}, "tags": ["guard"]
+			"id": "norse_heimdall_watch",
+			"name_key": "blessing.heimdall_watch.name",
+			"desc_key": "blessing.heimdall_watch.desc",
+			"deity_id": "norse_heimdall",
+			"pantheon": "norse",
+			"rarity": "common",
+			"color": "#d0d8e0",
+			"modifiers": {
+				"max_health_add": 2.0,
+				"crit_chance_add": 0.05
+			},
+			"tags": [
+				"guard"
+			]
 		},
 		{
-			"id": "norse_loki_chaos", "name_key": "blessing.loki_chaos.name", "desc_key": "blessing.loki_chaos.desc",
-			"deity_id": "norse_loki", "pantheon": "norse", "rarity": "rare", "color": "#6ac06a",
-			"modifiers": {"damage_mult": 1.25}, "tags": ["chaos"]
+			"id": "norse_loki_chaos",
+			"name_key": "blessing.loki_chaos.name",
+			"desc_key": "blessing.loki_chaos.desc",
+			"deity_id": "norse_loki",
+			"pantheon": "norse",
+			"rarity": "rare",
+			"color": "#6ac06a",
+			"modifiers": {
+				"damage_mult": 1.25
+			},
+			"tags": [
+				"chaos"
+			]
+		},
+		{
+			"id": "norse_odin_allfather",
+			"name_key": "blessing.odin_allfather.name",
+			"desc_key": "blessing.odin_allfather.desc",
+			"deity_id": "norse_odin",
+			"pantheon": "norse",
+			"rarity": "epic",
+			"color": "#bfd8ff",
+			"modifiers": {
+				"damage_add": 1.5,
+				"crit_chance_add": 0.1,
+				"projectile_speed_mult": 1.1
+			},
+			"tags": [
+				"runes",
+				"war"
+			]
 		}
 	]
 }

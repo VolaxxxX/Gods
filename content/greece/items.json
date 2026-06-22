@@ -8,8 +8,13 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#cfd8ff",
-			"modifiers": {"move_speed_add": 30.0},
-			"tags": ["speed", "hermes"]
+			"modifiers": {
+				"move_speed_add": 30.0
+			},
+			"tags": [
+				"speed",
+				"hermes"
+			]
 		},
 		{
 			"id": "greece_heavy_shot",
@@ -18,8 +23,14 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#c89b5a",
-			"modifiers": {"damage_add": 1.5, "fire_rate_mult": 0.9},
-			"tags": ["damage", "bronze"]
+			"modifiers": {
+				"damage_add": 1.5,
+				"fire_rate_mult": 0.9
+			},
+			"tags": [
+				"damage",
+				"bronze"
+			]
 		},
 		{
 			"id": "greece_laurel_crown",
@@ -28,8 +39,12 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#9ad97f",
-			"modifiers": {"max_health_add": 2.0},
-			"tags": ["health"]
+			"modifiers": {
+				"max_health_add": 2.0
+			},
+			"tags": [
+				"health"
+			]
 		},
 		{
 			"id": "greece_keen_edge",
@@ -38,8 +53,12 @@
 			"pantheon": "greece",
 			"rarity": "rare",
 			"color": "#ffd24a",
-			"modifiers": {"crit_chance_add": 0.15},
-			"tags": ["crit"]
+			"modifiers": {
+				"crit_chance_add": 0.15
+			},
+			"tags": [
+				"crit"
+			]
 		},
 		{
 			"id": "greece_rapid_quiver",
@@ -48,8 +67,29 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#7fd0ff",
-			"modifiers": {"fire_rate_mult": 1.25, "damage_mult": 0.9},
-			"tags": ["speed", "artemis"]
+			"modifiers": {
+				"fire_rate_mult": 1.25,
+				"damage_mult": 0.9
+			},
+			"tags": [
+				"speed",
+				"artemis"
+			]
+		},
+		{
+			"id": "greece_charon_obol",
+			"name_key": "item.charon_obol.name",
+			"desc_key": "item.charon_obol.desc",
+			"pantheon": "greece",
+			"rarity": "relic",
+			"color": "#cfe0ff",
+			"modifiers": {
+				"max_health_add": 2.0,
+				"move_speed_add": 10.0
+			},
+			"tags": [
+				"greece"
+			]
 		}
 	]
 }

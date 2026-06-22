@@ -9,8 +9,13 @@
 			"pantheon": "egypt",
 			"rarity": "common",
 			"color": "#f2c14a",
-			"modifiers": {"damage_add": 2.0},
-			"tags": ["fire", "solar"]
+			"modifiers": {
+				"damage_add": 2.0
+			},
+			"tags": [
+				"fire",
+				"solar"
+			]
 		},
 		{
 			"id": "egypt_osiris_life",
@@ -20,8 +25,12 @@
 			"pantheon": "egypt",
 			"rarity": "common",
 			"color": "#3fae6a",
-			"modifiers": {"max_health_add": 2.0},
-			"tags": ["life"]
+			"modifiers": {
+				"max_health_add": 2.0
+			},
+			"tags": [
+				"life"
+			]
 		},
 		{
 			"id": "egypt_anubis_judgment",
@@ -31,8 +40,13 @@
 			"pantheon": "egypt",
 			"rarity": "rare",
 			"color": "#9aa0a8",
-			"modifiers": {"damage_mult": 1.15, "crit_chance_add": 0.05},
-			"tags": ["death"]
+			"modifiers": {
+				"damage_mult": 1.15,
+				"crit_chance_add": 0.05
+			},
+			"tags": [
+				"death"
+			]
 		},
 		{
 			"id": "egypt_horus_strike",
@@ -42,8 +56,12 @@
 			"pantheon": "egypt",
 			"rarity": "common",
 			"color": "#5fa8d4",
-			"modifiers": {"crit_chance_add": 0.2},
-			"tags": ["precision"]
+			"modifiers": {
+				"crit_chance_add": 0.2
+			},
+			"tags": [
+				"precision"
+			]
 		},
 		{
 			"id": "egypt_set_chaos",
@@ -53,8 +71,12 @@
 			"pantheon": "egypt",
 			"rarity": "rare",
 			"color": "#b24a2a",
-			"modifiers": {"damage_mult": 1.2},
-			"tags": ["chaos"]
+			"modifiers": {
+				"damage_mult": 1.2
+			},
+			"tags": [
+				"chaos"
+			]
 		},
 		{
 			"id": "egypt_sekhmet_fury",
@@ -64,8 +86,29 @@
 			"pantheon": "egypt",
 			"rarity": "common",
 			"color": "#d4694a",
-			"modifiers": {"fire_rate_mult": 1.15, "damage_add": 1.0},
-			"tags": ["fury"]
+			"modifiers": {
+				"fire_rate_mult": 1.15,
+				"damage_add": 1.0
+			},
+			"tags": [
+				"fury"
+			]
+		},
+		{
+			"id": "egypt_osiris_eternal",
+			"name_key": "blessing.osiris_eternal.name",
+			"desc_key": "blessing.osiris_eternal.desc",
+			"deity_id": "egypt_osiris",
+			"pantheon": "egypt",
+			"rarity": "epic",
+			"color": "#7ad0a0",
+			"modifiers": {
+				"max_health_add": 2.0,
+				"damage_mult": 1.1
+			},
+			"tags": [
+				"life"
+			]
 		}
 	]
 }

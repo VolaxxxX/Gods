@@ -8,8 +8,13 @@
 			"pantheon": "egypt",
 			"rarity": "common",
 			"color": "#37c7c0",
-			"modifiers": {"max_health_add": 2.0},
-			"tags": ["life", "ankh"]
+			"modifiers": {
+				"max_health_add": 2.0
+			},
+			"tags": [
+				"life",
+				"ankh"
+			]
 		},
 		{
 			"id": "egypt_eye_horus",
@@ -18,8 +23,13 @@
 			"pantheon": "egypt",
 			"rarity": "rare",
 			"color": "#e0c060",
-			"modifiers": {"crit_chance_add": 0.15},
-			"tags": ["crit", "precision"]
+			"modifiers": {
+				"crit_chance_add": 0.15
+			},
+			"tags": [
+				"crit",
+				"precision"
+			]
 		},
 		{
 			"id": "egypt_scarab_khepri",
@@ -28,8 +38,13 @@
 			"pantheon": "egypt",
 			"rarity": "common",
 			"color": "#3a6b8a",
-			"modifiers": {"max_health_add": 1.0, "fire_rate_mult": 1.1},
-			"tags": ["life"]
+			"modifiers": {
+				"max_health_add": 1.0,
+				"fire_rate_mult": 1.1
+			},
+			"tags": [
+				"life"
+			]
 		},
 		{
 			"id": "egypt_was_scepter",
@@ -38,8 +53,28 @@
 			"pantheon": "egypt",
 			"rarity": "rare",
 			"color": "#caa23a",
-			"modifiers": {"damage_add": 2.0},
-			"tags": ["damage", "power"]
+			"modifiers": {
+				"damage_add": 2.0
+			},
+			"tags": [
+				"damage",
+				"power"
+			]
+		},
+		{
+			"id": "egypt_feather_maat",
+			"name_key": "item.feather_maat.name",
+			"desc_key": "item.feather_maat.desc",
+			"pantheon": "egypt",
+			"rarity": "relic",
+			"color": "#ffe08a",
+			"modifiers": {
+				"crit_chance_add": 0.2
+			},
+			"tags": [
+				"egypt",
+				"balance"
+			]
 		}
 	]
 }

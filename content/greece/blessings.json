@@ -9,8 +9,15 @@
 			"pantheon": "greece",
 			"rarity": "rare",
 			"color": "#f2e27a",
-			"effect": {"kind": "on_hit", "effect": "chain_lightning", "value": 3, "jumps": 1},
-			"tags": ["lightning"]
+			"effect": {
+				"kind": "on_hit",
+				"effect": "chain_lightning",
+				"value": 3,
+				"jumps": 1
+			},
+			"tags": [
+				"lightning"
+			]
 		},
 		{
 			"id": "greece_athena_deflect",
@@ -20,8 +27,14 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#9ad0c0",
-			"effect": {"kind": "passive", "effect": "deflect_chance", "value": 0.15},
-			"tags": ["guard"]
+			"effect": {
+				"kind": "passive",
+				"effect": "deflect_chance",
+				"value": 0.15
+			},
+			"tags": [
+				"guard"
+			]
 		},
 		{
 			"id": "greece_hermes_swift",
@@ -31,8 +44,13 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#bfe0ff",
-			"modifiers": {"move_speed_mult": 1.15, "fire_rate_mult": 1.1},
-			"tags": ["speed"]
+			"modifiers": {
+				"move_speed_mult": 1.15,
+				"fire_rate_mult": 1.1
+			},
+			"tags": [
+				"speed"
+			]
 		},
 		{
 			"id": "greece_ares_might",
@@ -42,8 +60,12 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#e0603f",
-			"modifiers": {"damage_add": 2.0},
-			"tags": ["fury"]
+			"modifiers": {
+				"damage_add": 2.0
+			},
+			"tags": [
+				"fury"
+			]
 		},
 		{
 			"id": "greece_artemis_focus",
@@ -53,8 +75,30 @@
 			"pantheon": "greece",
 			"rarity": "common",
 			"color": "#a0e0b0",
-			"modifiers": {"crit_chance_add": 0.2},
-			"tags": ["crit"]
+			"modifiers": {
+				"crit_chance_add": 0.2
+			},
+			"tags": [
+				"crit"
+			]
+		},
+		{
+			"id": "greece_zeus_olympian",
+			"name_key": "blessing.zeus_olympian.name",
+			"desc_key": "blessing.zeus_olympian.desc",
+			"deity_id": "greece_zeus",
+			"pantheon": "greece",
+			"rarity": "epic",
+			"color": "#f2e27a",
+			"modifiers": {
+				"damage_mult": 1.15,
+				"fire_rate_mult": 1.15,
+				"max_health_add": 1.0
+			},
+			"tags": [
+				"storm",
+				"war"
+			]
 		}
 	]
 }

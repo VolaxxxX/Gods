@@ -14,7 +14,6 @@
 	"ui.realm": "Realm",
 	"ui.character": "Soul",
 	"ui.seed": "Seed (blank = random)",
-
 	"char.wanderer.name": "Shade",
 	"char.wanderer.desc": "Balanced ranged soul. A good first journey.",
 	"char.warrior.name": "Champion",
@@ -34,7 +33,6 @@
 	"ui.door_boon_desc": "A god's boon waits in the dark.",
 	"ui.door_vigor": "Spring of Vigor",
 	"ui.door_vigor_desc": "Restore your wounds in full.",
-
 	"hub.title": "The Threshold",
 	"hub.runs": "Souls guided: {n}",
 	"hub.karma": "Karma: {n}",
@@ -45,13 +43,11 @@
 	"hub.new_descent": "New Descent",
 	"hub.realm_guarded": "Guarded by {boss}",
 	"hub.last_verdict": "Last judgment: {v}",
-
 	"judgment.balanced": "Balanced (Ma'at is pleased)",
 	"judgment.wrathful": "Wrathful",
 	"judgment.prudent": "Prudent",
 	"judgment.avaricious": "Avaricious",
 	"judgment.merciful": "Merciful",
-
 	"meta.level": "Lv {lvl}/{max}",
 	"meta.level_max": "Lv MAX",
 	"meta.buy": "Reincarnate ({c})",
@@ -63,19 +59,15 @@
 	"meta.celerity.desc": "+12 move speed per level.",
 	"meta.focus.name": "Focus",
 	"meta.focus.desc": "+4% critical chance per level.",
-
 	"hud.health": "HP {cur}/{max}",
 	"hud.gold": "Gold {n}",
 	"hud.floor": "Floor {n}",
-
 	"biome.unknown": "Unknown Realm",
 	"biome.greece.name": "The Underworld of Hades",
-
 	"enemy.shade.name": "Wandering Shade",
 	"enemy.skeleton.name": "Restless Skeleton",
 	"enemy.harpy.name": "Harpy",
 	"boss.hydra.name": "Hydra of Lerna",
-
 	"deity.zeus.name": "Zeus",
 	"deity.zeus.identity": "King of Olympus — chain lightning.",
 	"deity.athena.name": "Athena",
@@ -86,7 +78,6 @@
 	"deity.ares.identity": "War — raw damage.",
 	"deity.artemis.name": "Artemis",
 	"deity.artemis.identity": "Hunt — precision and crits.",
-
 	"blessing.zeus_chain.name": "Chain Lightning",
 	"blessing.zeus_chain.desc": "Your hits arc to a nearby foe.",
 	"blessing.athena_deflect.name": "Aegis Guard",
@@ -97,7 +88,6 @@
 	"blessing.ares_might.desc": "+2 attack damage.",
 	"blessing.artemis_focus.name": "Hunter's Focus",
 	"blessing.artemis_focus.desc": "+20% critical chance.",
-
 	"item.swift_sandals.name": "Swift Sandals",
 	"item.swift_sandals.desc": "Hermes' gift. Move faster.",
 	"item.heavy_shot.name": "Bronze Shot",
@@ -108,19 +98,15 @@
 	"item.keen_edge.desc": "+15% critical chance.",
 	"item.rapid_quiver.name": "Rapid Quiver",
 	"item.rapid_quiver.desc": "Fire much faster for slightly less damage.",
-
 	"synergy.executioner.name": "Executioner",
 	"synergy.executioner.desc": "Crit + damage items: critical hits hit far harder.",
 	"synergy.olympic_runner.name": "Olympic Runner",
 	"synergy.olympic_runner.desc": "Swift Sandals + Rapid Quiver: move and fire faster.",
-
 	"biome.bali.name": "Bali — The Cycle of Rebirth",
-
 	"enemy.leyak.name": "Leyak",
 	"enemy.bhuta.name": "Bhuta",
 	"enemy.celuluk.name": "Celuluk",
 	"boss.rangda.name": "Rangda, the Demon Queen",
-
 	"deity.acintya.name": "Acintya",
 	"deity.acintya.identity": "The Supreme — balance across all things.",
 	"deity.barong.name": "Barong",
@@ -131,7 +117,6 @@
 	"deity.dewi_sri.identity": "Rice and fertility — sustain.",
 	"deity.batara_kala.name": "Batara Kala",
 	"deity.batara_kala.identity": "Time and destruction — raw power.",
-
 	"blessing.acintya_harmony.name": "Harmony",
 	"blessing.acintya_harmony.desc": "+1 damage, +10 speed, +1 max HP.",
 	"blessing.barong_ward.name": "Barong's Ward",
@@ -142,7 +127,6 @@
 	"blessing.sri_abundance.desc": "+12% fire rate, +1 max HP.",
 	"blessing.kala_hunger.name": "Kala's Hunger",
 	"blessing.kala_hunger.desc": "+20% damage.",
-
 	"item.kris.name": "Sacred Kris",
 	"item.kris.desc": "A consecrated blade. +2 damage.",
 	"item.canang.name": "Canang Sari",
@@ -151,10 +135,8 @@
 	"item.selendang.desc": "+28 move speed.",
 	"item.barong_mask.name": "Barong Mask",
 	"item.barong_mask.desc": "+1 max HP and +10% crit chance.",
-
 	"synergy.tri_hita_karana.name": "Tri Hita Karana",
 	"synergy.tri_hita_karana.desc": "Damage + life items: harmony grants HP and power.",
-
 	"synergy.pilgrim_soul.name": "Pilgrim Soul",
 	"synergy.pilgrim_soul.desc": "Hermes' speed + a Balinese offering: swift and hardy.",
 	"synergy.twin_blades.name": "Twin Blades of Two Worlds",
@@ -165,14 +147,11 @@
 	"synergy.eternal_rite.desc": "Ankh + Canang Sari: offerings to two afterlives, +3 max HP.",
 	"synergy.pharaohs_wrath.name": "Pharaoh's Wrath",
 	"synergy.pharaohs_wrath.desc": "Crit + power items: devastating critical strikes.",
-
 	"biome.egypt.name": "The Duat — Realm of Osiris",
-
 	"enemy.scarab.name": "Scarab Swarm",
 	"enemy.shabti.name": "Shabti",
 	"enemy.mummy.name": "Bandaged Mummy",
 	"boss.apophis.name": "Apophis, Serpent of Chaos",
-
 	"deity.ra.name": "Ra",
 	"deity.ra.identity": "The sun — solar fire.",
 	"deity.osiris.name": "Osiris",
@@ -185,7 +164,6 @@
 	"deity.set.identity": "Chaos — overwhelming, reckless power.",
 	"deity.sekhmet.name": "Sekhmet",
 	"deity.sekhmet.identity": "The lioness — fury and speed.",
-
 	"blessing.ra_solar.name": "Solar Fire",
 	"blessing.ra_solar.desc": "+2 attack damage.",
 	"blessing.osiris_life.name": "Enduring Life",
@@ -198,7 +176,6 @@
 	"blessing.set_chaos.desc": "+20% damage.",
 	"blessing.sekhmet_fury.name": "Lioness Fury",
 	"blessing.sekhmet_fury.desc": "+15% fire rate, +1 damage.",
-
 	"item.ankh.name": "Ankh",
 	"item.ankh.desc": "Key of life. +2 max HP.",
 	"item.eye_horus.name": "Eye of Horus",
@@ -207,7 +184,6 @@
 	"item.scarab_khepri.desc": "+1 max HP and +10% fire rate.",
 	"item.was_scepter.name": "Was Scepter",
 	"item.was_scepter.desc": "Scepter of power. +2 damage.",
-
 	"biome.norse.name": "Helheim — Beneath Yggdrasil",
 	"enemy.helhound.name": "Helhound",
 	"enemy.draugr.name": "Draugr",
@@ -247,7 +223,6 @@
 	"item.runestone.desc": "+20% fire rate.",
 	"synergy.allfathers_storm.name": "Allfather's Storm",
 	"synergy.allfathers_storm.desc": "Thunder + runes: more damage and fire rate.",
-
 	"biome.japan.name": "Yomi — Land of the Dead",
 	"enemy.onibi.name": "Onibi",
 	"enemy.kappa.name": "Kappa",
@@ -287,7 +262,6 @@
 	"item.fox_mask.desc": "+20% fire rate.",
 	"synergy.way_of_the_blade.name": "Way of the Blade",
 	"synergy.way_of_the_blade.desc": "Blade + crit items: devastating critical strikes.",
-
 	"biome.aztec.name": "Mictlan — Nine Trials of the Dead",
 	"enemy.obsidian.name": "Obsidian Shard",
 	"enemy.jaguar.name": "Jaguar Warrior",
@@ -327,7 +301,6 @@
 	"item.turquoise_mask.desc": "+15% critical chance.",
 	"synergy.obsidian_edge.name": "Obsidian Edge",
 	"synergy.obsidian_edge.desc": "Obsidian + crit: brutal critical strikes.",
-
 	"enemy.hydra_head.name": "Hydra Head",
 	"miniboss.cyclops.name": "Cyclops",
 	"miniboss.bhuta_lord.name": "Bhuta Lord",
@@ -335,19 +308,41 @@
 	"miniboss.troll.name": "Mountain Troll",
 	"miniboss.tengu.name": "Tengu",
 	"miniboss.jaguar_lord.name": "Jaguar Lord",
-
 	"enemy.minotaur.name": "Minotaur",
 	"enemy.naga.name": "Naga",
 	"enemy.anubis_guard.name": "Anubis Guard",
 	"enemy.ulfhednar.name": "Ulfhednar",
 	"enemy.kitsune.name": "Kitsune",
 	"enemy.eagle_warrior.name": "Eagle Warrior",
-
 	"room.miniboss": "Champion",
 	"room.cursed": "Cursed",
 	"room.combat": "Combat",
 	"room.reward": "Reward",
 	"room.shop": "Shop",
 	"room.altar": "Altar",
-	"room.boss": "Boss"
+	"room.boss": "Boss",
+	"blessing.zeus_olympian.name": "Olympian Authority",
+	"blessing.zeus_olympian.desc": "+15% damage, +15% fire rate, +1 max HP.",
+	"item.charon_obol.name": "Charon's Obol",
+	"item.charon_obol.desc": "The ferryman's coin. +2 max HP, +10 speed.",
+	"blessing.acintya_unity.name": "Unity of All",
+	"blessing.acintya_unity.desc": "+1 damage, +12 speed, +1 max HP, +8% crit.",
+	"item.tridatu_thread.name": "Tridatu Thread",
+	"item.tridatu_thread.desc": "The sacred three-coloured cord. +10% damage, +1 max HP.",
+	"blessing.osiris_eternal.name": "Eternal Reign",
+	"blessing.osiris_eternal.desc": "+2 max HP and +10% damage.",
+	"item.feather_maat.name": "Feather of Ma'at",
+	"item.feather_maat.desc": "Truth weighed light. +20% crit chance.",
+	"blessing.odin_allfather.name": "Allfather's Wisdom",
+	"blessing.odin_allfather.desc": "+1.5 damage, +10% crit, +10% projectile speed.",
+	"item.huginn_muninn.name": "Huginn & Muninn",
+	"item.huginn_muninn.desc": "Thought and memory. +20% projectile speed, +10% crit.",
+	"blessing.amaterasu_dawn.name": "Light of Dawn",
+	"blessing.amaterasu_dawn.desc": "+20% fire rate and +1 damage.",
+	"item.omamori.name": "Omamori Charm",
+	"item.omamori.desc": "A protective talisman. +2 max HP, +10% fire rate.",
+	"blessing.mictlantecuhtli_tribute.name": "Tribute of Bone",
+	"blessing.mictlantecuhtli_tribute.desc": "+20% damage and +1 max HP.",
+	"item.sun_stone.name": "Sun Stone",
+	"item.sun_stone.desc": "The calendar of suns. +1.5 damage."
 }

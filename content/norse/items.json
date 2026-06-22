@@ -2,24 +2,78 @@
 	"type": "item",
 	"entries": [
 		{
-			"id": "norse_mjolnir", "name_key": "item.mjolnir.name", "desc_key": "item.mjolnir.desc",
-			"pantheon": "norse", "rarity": "rare", "color": "#9fb4c8",
-			"modifiers": {"damage_add": 2.5}, "tags": ["damage", "thunder"]
+			"id": "norse_mjolnir",
+			"name_key": "item.mjolnir.name",
+			"desc_key": "item.mjolnir.desc",
+			"pantheon": "norse",
+			"rarity": "rare",
+			"color": "#9fb4c8",
+			"modifiers": {
+				"damage_add": 2.5
+			},
+			"tags": [
+				"damage",
+				"thunder"
+			]
 		},
 		{
-			"id": "norse_gungnir", "name_key": "item.gungnir.name", "desc_key": "item.gungnir.desc",
-			"pantheon": "norse", "rarity": "rare", "color": "#d8d2b0",
-			"modifiers": {"crit_chance_add": 0.15}, "tags": ["crit", "precision"]
+			"id": "norse_gungnir",
+			"name_key": "item.gungnir.name",
+			"desc_key": "item.gungnir.desc",
+			"pantheon": "norse",
+			"rarity": "rare",
+			"color": "#d8d2b0",
+			"modifiers": {
+				"crit_chance_add": 0.15
+			},
+			"tags": [
+				"crit",
+				"precision"
+			]
 		},
 		{
-			"id": "norse_brisingamen", "name_key": "item.brisingamen.name", "desc_key": "item.brisingamen.desc",
-			"pantheon": "norse", "rarity": "common", "color": "#e0b860",
-			"modifiers": {"max_health_add": 2.0}, "tags": ["life"]
+			"id": "norse_brisingamen",
+			"name_key": "item.brisingamen.name",
+			"desc_key": "item.brisingamen.desc",
+			"pantheon": "norse",
+			"rarity": "common",
+			"color": "#e0b860",
+			"modifiers": {
+				"max_health_add": 2.0
+			},
+			"tags": [
+				"life"
+			]
 		},
 		{
-			"id": "norse_runestone", "name_key": "item.runestone.name", "desc_key": "item.runestone.desc",
-			"pantheon": "norse", "rarity": "common", "color": "#8a9bb0",
-			"modifiers": {"fire_rate_mult": 1.2}, "tags": ["runes", "magic"]
+			"id": "norse_runestone",
+			"name_key": "item.runestone.name",
+			"desc_key": "item.runestone.desc",
+			"pantheon": "norse",
+			"rarity": "common",
+			"color": "#8a9bb0",
+			"modifiers": {
+				"fire_rate_mult": 1.2
+			},
+			"tags": [
+				"runes",
+				"magic"
+			]
+		},
+		{
+			"id": "norse_huginn_muninn",
+			"name_key": "item.huginn_muninn.name",
+			"desc_key": "item.huginn_muninn.desc",
+			"pantheon": "norse",
+			"rarity": "relic",
+			"color": "#bfd0ff",
+			"modifiers": {
+				"projectile_speed_mult": 1.2,
+				"crit_chance_add": 0.1
+			},
+			"tags": [
+				"norse"
+			]
 		}
 	]
 }

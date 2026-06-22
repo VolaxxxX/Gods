@@ -8,8 +8,13 @@
 			"pantheon": "bali",
 			"rarity": "rare",
 			"color": "#cfc6a8",
-			"modifiers": {"damage_add": 2.0},
-			"tags": ["damage", "kris"]
+			"modifiers": {
+				"damage_add": 2.0
+			},
+			"tags": [
+				"damage",
+				"kris"
+			]
 		},
 		{
 			"id": "bali_canang",
@@ -18,8 +23,13 @@
 			"pantheon": "bali",
 			"rarity": "common",
 			"color": "#7fc77f",
-			"modifiers": {"max_health_add": 2.0},
-			"tags": ["life", "offering"]
+			"modifiers": {
+				"max_health_add": 2.0
+			},
+			"tags": [
+				"life",
+				"offering"
+			]
 		},
 		{
 			"id": "bali_selendang",
@@ -28,8 +38,12 @@
 			"pantheon": "bali",
 			"rarity": "common",
 			"color": "#d4af37",
-			"modifiers": {"move_speed_add": 28.0},
-			"tags": ["speed"]
+			"modifiers": {
+				"move_speed_add": 28.0
+			},
+			"tags": [
+				"speed"
+			]
 		},
 		{
 			"id": "bali_barong_mask",
@@ -38,8 +52,30 @@
 			"pantheon": "bali",
 			"rarity": "rare",
 			"color": "#c0392b",
-			"modifiers": {"max_health_add": 1.0, "crit_chance_add": 0.1},
-			"tags": ["guard", "crit"]
+			"modifiers": {
+				"max_health_add": 1.0,
+				"crit_chance_add": 0.1
+			},
+			"tags": [
+				"guard",
+				"crit"
+			]
+		},
+		{
+			"id": "bali_tridatu_thread",
+			"name_key": "item.tridatu_thread.name",
+			"desc_key": "item.tridatu_thread.desc",
+			"pantheon": "bali",
+			"rarity": "relic",
+			"color": "#e8b86a",
+			"modifiers": {
+				"damage_mult": 1.1,
+				"max_health_add": 1.0
+			},
+			"tags": [
+				"bali",
+				"balance"
+			]
 		}
 	]
 }
