@@ -105,6 +105,15 @@ func _build() -> void:
 	sel.add_child(seed_l)
 	_seed_edit = LineEdit.new()
 	_seed_edit.custom_minimum_size = Vector2(180, 0)
+	_seed_edit.placeholder_text = "random"
+	var ss := StyleBoxFlat.new()
+	ss.bg_color = Color(0.05, 0.05, 0.08)
+	ss.set_corner_radius_all(4)
+	ss.set_border_width_all(1)
+	ss.border_color = Color(0.5, 0.42, 0.24)
+	ss.set_content_margin_all(6)
+	_seed_edit.add_theme_stylebox_override("normal", ss)
+	_seed_edit.add_theme_stylebox_override("focus", ss)
 	sel.add_child(_seed_edit)
 
 	# Character (starting kit) selector.
