@@ -9,7 +9,10 @@
 			"color": "#6cb8e8",
 			"weapon_kind": "ranged",
 			"projectile_count": 1,
-			"modifiers": {}
+			"modifiers": {
+				"max_health_add": 1.0,
+				"damage_add": 0.5
+			}
 		},
 		{
 			"id": "char_warrior",
@@ -17,7 +20,10 @@
 			"desc_key": "char.warrior.desc",
 			"color": "#e07a4a",
 			"weapon_kind": "melee",
-			"modifiers": {"max_health_add": 3.0, "move_speed_add": 15.0}
+			"modifiers": {
+				"max_health_add": 3.0,
+				"move_speed_add": 15.0
+			}
 		},
 		{
 			"id": "char_hunter",
@@ -27,7 +33,11 @@
 			"weapon_kind": "ranged",
 			"projectile_count": 1,
 			"pierce": true,
-			"modifiers": {"damage_add": 2.0, "crit_chance_add": 0.2, "fire_rate_mult": 0.7}
+			"modifiers": {
+				"damage_add": 2.0,
+				"crit_chance_add": 0.2,
+				"fire_rate_mult": 0.7
+			}
 		},
 		{
 			"id": "char_swift",
@@ -37,7 +47,11 @@
 			"weapon_kind": "ranged",
 			"projectile_count": 3,
 			"spread_deg": 18.0,
-			"modifiers": {"fire_rate_mult": 1.1, "damage_mult": 0.7, "move_speed_add": 30.0}
+			"modifiers": {
+				"fire_rate_mult": 1.1,
+				"damage_mult": 0.85,
+				"move_speed_add": 30.0
+			}
 		}
 	]
 }

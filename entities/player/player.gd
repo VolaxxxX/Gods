@@ -16,7 +16,7 @@ const DASH_COOLDOWN := 0.85 # seconds before you can dash again
 # Base stats before items/blessings/synergies. Everything stacks on top via
 # StatBlock (see _recompute_stats).
 const BASE_STATS := {
-	"max_health": 6.0,
+	"max_health": 8.0,
 	"move_speed": 200.0,
 	"damage": 2.0,
 	"fire_rate": 4.0,

@@ -12,7 +12,7 @@
 				"wall": "#4a3b2a",
 				"accent": "#d4af37"
 			},
-			"room_count": 9,
+			"room_count": 7,
 			"enemy_pool": [
 				"bali_leyak",
 				"bali_bhuta",

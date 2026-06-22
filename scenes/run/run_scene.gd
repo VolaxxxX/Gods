@@ -167,6 +167,12 @@ func _on_room_cleared(pos: Vector2i, type: String) -> void:
 		# Clearing a fight unscathed reads as a cautious soul.
 		if type in ["combat", "boss", "miniboss"] and not _room_damage_taken:
 			RunManager.add_style("cautious")
+		# Lingering vigor: clearing a combat room sometimes restores a little health
+		# (Isaac-style heart drop) so a floor isn't pure attrition.
+		if type == "combat" and player != null and player.health.fraction() < 1.0 \
+				and RNG.stream("heal").randf() < 0.33:
+			player.health.heal(2.0)
+			Audio.play_sfx("pickup")
 	_cleared[pos] = true
 	Events.emit_signal("room_cleared", current_room)
 
