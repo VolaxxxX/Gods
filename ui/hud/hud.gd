@@ -18,6 +18,7 @@ var _boss_plate: Control
 var _boss_name: Label
 var _boss_bar: ProgressBar
 var _boss: Node      # the tracked boss/miniboss (its HealthComponent drives the bar)
+var _boss_target: float = 1.0   # target fill; the bar eases toward it (juice)
 
 func _ready() -> void:
 	layer = 10
@@ -29,6 +30,8 @@ func _ready() -> void:
 	_biome_label = Label.new()
 	_biome_label.position = Vector2(24, 16)
 	_biome_label.add_theme_font_size_override("font_size", 24)
+	_biome_label.add_theme_color_override("font_color", Color(0.95, 0.84, 0.5))
+	_outline(_biome_label, 5)
 	UITheme.title(_biome_label)
 	root.add_child(_biome_label)
 
@@ -46,6 +49,7 @@ func _ready() -> void:
 	_hp_text.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_hp_text.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_hp_text.add_theme_font_size_override("font_size", 16)
+	_outline(_hp_text, 4)
 	root.add_child(_hp_text)
 
 	# Gold (optional coin icon + amount).
@@ -60,6 +64,8 @@ func _ready() -> void:
 		gold_row.add_child(coin)
 	_gold_label = Label.new()
 	_gold_label.add_theme_font_size_override("font_size", 22)
+	_gold_label.add_theme_color_override("font_color", Color(0.96, 0.88, 0.6))
+	_outline(_gold_label, 4)
 	gold_row.add_child(_gold_label)
 
 	# Big centered realm banner, shown briefly on entering a zone.
@@ -69,6 +75,8 @@ func _ready() -> void:
 	_banner.size = Vector2(800, 60)
 	_banner.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_banner.add_theme_font_size_override("font_size", 46)
+	_banner.add_theme_color_override("font_color", Color(0.97, 0.9, 0.7))
+	_outline(_banner, 6)
 	_banner.modulate.a = 0.0
 	UITheme.title(_banner)
 	root.add_child(_banner)
@@ -92,8 +100,9 @@ func _ready() -> void:
 	_boss_plate = plate_wrap
 	_boss_name = Label.new()
 	_boss_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_boss_name.add_theme_font_size_override("font_size", 24)
-	_boss_name.add_theme_color_override("font_color", Color(0.92, 0.5, 0.42))
+	_boss_name.add_theme_font_size_override("font_size", 26)
+	_boss_name.add_theme_color_override("font_color", Color(1.0, 0.78, 0.5))
+	_outline(_boss_name, 5)
 	UITheme.title(_boss_name)
 	_boss_box.add_child(_boss_name)
 	_boss_bar = ProgressBar.new()
@@ -121,18 +130,24 @@ func _process(delta: float) -> void:
 	if _banner_t > 0.0:
 		_banner_t -= delta
 		_banner.modulate.a = clampf(_banner_t, 0.0, 1.0)
-	# Track the boss's health each frame (its bar lives on its own HealthComponent).
+	# Track the boss's health each frame; the bar eases toward it and the plate
+	# fades in (juice). Its bar lives on the boss's own HealthComponent.
 	if _boss_plate.visible:
 		if is_instance_valid(_boss) and _boss.health != null:
-			_boss_bar.value = _boss.health.fraction()
+			_boss_target = _boss.health.fraction()
 		else:
 			_boss_plate.visible = false
+		_boss_bar.value = lerpf(_boss_bar.value, _boss_target, clampf(delta * 8.0, 0.0, 1.0))
+		_boss_plate.modulate.a = minf(1.0, _boss_plate.modulate.a + delta * 4.0)
 
 func _on_boss_spawned(entity, name_key: String) -> void:
 	_boss = entity
 	_boss_name.text = Loc.t(name_key)
+	_boss_target = 1.0
 	_boss_bar.value = 1.0
+	_boss_plate.modulate.a = 0.0   # fade in
 	_boss_plate.visible = true
+	_banner_t = 0.0                # don't let the realm banner overlap the boss bar
 
 func _on_boss_despawned() -> void:
 	_boss = null
@@ -154,3 +169,8 @@ func _on_health(current: float, maximum: float) -> void:
 
 func _on_gold(total: int) -> void:
 	_gold_label.text = Loc.t("hud.gold", {"n": total})
+
+## Give a label a dark outline so light text stays readable on any floor.
+func _outline(label: Label, size: int) -> void:
+	label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.85))
+	label.add_theme_constant_override("outline_size", size)
