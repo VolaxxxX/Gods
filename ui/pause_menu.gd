@@ -35,16 +35,30 @@ func _build_panel() -> void:
 	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_panel.add_child(dim)
 
+	# Centered card so the options sit on a defined panel (consistent with the hub).
+	var center := CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_panel.add_child(center)
+	var card := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.09, 0.09, 0.13, 0.98)
+	sb.set_corner_radius_all(8)
+	sb.set_border_width_all(2)
+	sb.border_color = Color(0.55, 0.45, 0.24)
+	sb.set_content_margin_all(22)
+	card.add_theme_stylebox_override("panel", sb)
+	center.add_child(card)
+
 	var box := VBoxContainer.new()
-	box.set_anchors_preset(Control.PRESET_CENTER)
-	box.position = Vector2(-180, -170)
 	box.custom_minimum_size = Vector2(360, 0)
 	box.add_theme_constant_override("separation", 16)
-	_panel.add_child(box)
+	card.add_child(box)
 
 	var title := Label.new()
 	title.text = Loc.t("ui.paused")
 	title.add_theme_font_size_override("font_size", 34)
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	UITheme.title(title)
 	box.add_child(title)
 
 	var aim := CheckButton.new()
