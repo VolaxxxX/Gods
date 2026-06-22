@@ -83,12 +83,20 @@ func _ready() -> void:
 	var nameplate := Label.new()
 	nameplate.text = _speaker
 	nameplate.add_theme_font_size_override("font_size", 26)
-	nameplate.modulate = Color(0.95, 0.85, 0.5)
+	# Dark bronze + a soft outline so the name reads on the light parchment panel
+	# (pale gold washed out against it).
+	nameplate.add_theme_color_override("font_color", Color(0.32, 0.18, 0.06))
+	nameplate.add_theme_color_override("font_outline_color", Color(1, 0.94, 0.78, 0.9))
+	nameplate.add_theme_constant_override("outline_size", 4)
 	UITheme.title(nameplate)
 	col.add_child(nameplate)
 	_text = Label.new()
 	_text.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_text.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	# Dark ink on the parchment, readable regardless of the panel's shade.
+	_text.add_theme_color_override("font_color", Color(0.16, 0.11, 0.07))
+	_text.add_theme_color_override("font_outline_color", Color(1, 0.96, 0.85, 0.7))
+	_text.add_theme_constant_override("outline_size", 3)
 	col.add_child(_text)
 
 	_show_line()

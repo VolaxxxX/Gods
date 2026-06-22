@@ -29,6 +29,7 @@ func _build() -> void:
 	var title := Label.new()
 	title.text = Loc.t("hub.title")
 	title.add_theme_font_size_override("font_size", 40)
+	UITheme.title(title)
 	v.add_child(title)
 
 	_karma_label = Label.new()
@@ -43,6 +44,7 @@ func _build() -> void:
 	var descent_h := Label.new()
 	descent_h.text = Loc.t("hub.new_descent")
 	descent_h.add_theme_font_size_override("font_size", 26)
+	UITheme.title(descent_h)
 	v.add_child(descent_h)
 
 	# Realm + seed selectors.
@@ -103,6 +105,7 @@ func _build() -> void:
 	var header := Label.new()
 	header.text = Loc.t("hub.reincarnation")
 	header.add_theme_font_size_override("font_size", 26)
+	UITheme.title(header)
 	v.add_child(header)
 
 	for up in GameData.meta_upgrades.values():
