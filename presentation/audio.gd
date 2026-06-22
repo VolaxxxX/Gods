@@ -72,7 +72,12 @@ func play_music(id: String) -> void:
 	if stream == null:
 		_music.stop()
 		return
-	if stream is AudioStreamOggVorbis or stream is AudioStreamWAV:
+	# Seamless looping. WAV uses loop_mode (no `.loop`); Ogg uses `.loop`.
+	if stream is AudioStreamWAV:
+		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		stream.loop_begin = 0
+		stream.loop_end = stream.data.size() / 2  # 16-bit mono -> 2 bytes/frame
+	elif stream is AudioStreamOggVorbis or stream is AudioStreamMP3:
 		stream.loop = true
 	_music.stream = stream
 	_music.volume_db = _to_db(_music_vol)
