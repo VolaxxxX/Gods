@@ -96,6 +96,7 @@ func _build() -> void:
 	v.add_child(buttons)
 	buttons.add_child(_make_button(Loc.t("ui.play"), _on_play))
 	buttons.add_child(_make_button(Loc.t("ui.daily"), _on_daily))
+	buttons.add_child(_make_button(Loc.t("ui.codex_btn"), _on_codex))
 	if SaveManager.has_run():
 		buttons.add_child(_make_button(Loc.t("ui.resume"), _on_resume))
 
@@ -214,6 +215,9 @@ func _on_daily() -> void:
 	RNG.seed_from_string("daily-" + Time.get_date_string_from_system())
 	RunManager.start_run(RNG.get_seed(), _selected_biome(), _selected_character())
 	SceneRouter.goto_run()
+
+func _on_codex() -> void:
+	add_child(Codex.new())
 
 func _on_resume() -> void:
 	var snap := SaveManager.load_run()

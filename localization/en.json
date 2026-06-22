@@ -344,5 +344,11 @@
 	"blessing.mictlantecuhtli_tribute.name": "Tribute of Bone",
 	"blessing.mictlantecuhtli_tribute.desc": "+20% damage and +1 max HP.",
 	"item.sun_stone.name": "Sun Stone",
-	"item.sun_stone.desc": "The calendar of suns. +1.5 damage."
+	"item.sun_stone.desc": "The calendar of suns. +1.5 damage.",
+	"ui.codex": "Book of the Dead",
+	"ui.codex_btn": "Book of the Dead",
+	"ui.close": "Close",
+	"ui.codex_locked": "??? (not yet learned)",
+	"ui.codex_progress": "Lore discovered: {n}/{t}",
+	"ui.codex_empty": "You have learned nothing yet. Descend, and the dead will teach you."
 }

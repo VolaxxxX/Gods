@@ -1,0 +1,113 @@
+{
+	"type": "codex",
+	"entries": [
+		{
+			"id": "realm_greece", "category": "realm", "order": 1,
+			"title": "The Underworld of Hades", "unlock_flag": "lore_greece",
+			"body": [
+				"The Greek land of the dead, ruled by Hades and his queen Persephone.",
+				"Souls are ferried across the river Styx by the boatman Charon — and only the dead buried with a coin can pay his fare. The unburied wander the near shore for a hundred years.",
+				"The shades drink from the river Lethe and forget their living lives. Most dwell forever in the grey Asphodel Meadows; the rare just soul reaches Elysium, the wicked the pit of Tartarus."
+			]
+		},
+		{
+			"id": "lord_greece", "category": "lord", "order": 1,
+			"title": "The Hydra of Lerna", "unlock_realm": "greece",
+			"body": [
+				"A serpentine water-beast of the Lernaean swamp, with many venomous heads.",
+				"Cut one head away and two grew in its place. Heracles, in his second labour, overcame it only when his nephew Iolaus seared each stump with fire so no new head could sprout.",
+				"Its blood was so poisonous that Heracles later dipped his arrows in it — a venom that would one day bring about his own death."
+			]
+		},
+		{
+			"id": "realm_bali", "category": "realm", "order": 2,
+			"title": "Niskala — The Unseen", "unlock_flag": "lore_bali",
+			"body": [
+				"In Balinese belief the world has two halves: sekala, the seen, and niskala, the unseen — home to spirits, ancestors and demons.",
+				"Existence rests on rwa bhineda, the balance of opposites. Good and ill, order and chaos, are not at war to be won but held in tension.",
+				"This is a living tradition, still honoured in temple and dance today — treated here with respect, not as a dead myth."
+			]
+		},
+		{
+			"id": "lord_bali", "category": "lord", "order": 2,
+			"title": "Rangda, the Demon Queen", "unlock_realm": "bali",
+			"body": [
+				"Rangda is the dreaded queen of the leyak — witches and devouring spirits of the night.",
+				"She is the eternal counterpart of Barong, the protective lion-spirit. Their struggle is enacted in a sacred masked dance.",
+				"Crucially, the dance has no final victor. Neither Rangda nor Barong is destroyed; the performance ends in restored balance, not conquest — for that balance is the point."
+			]
+		},
+		{
+			"id": "realm_egypt", "category": "realm", "order": 3,
+			"title": "The Duat", "unlock_flag": "lore_egypt",
+			"body": [
+				"The Egyptian underworld and night-sky, the realm the sun-god Ra sails through each night to be reborn at dawn.",
+				"The dead pass through twelve gates, one for each hour of night. In the Hall of Two Truths the heart is weighed on a scale against the feather of Ma'at, goddess of truth and order.",
+				"A heart heavy with wrongdoing is devoured by Ammit — part lion, hippo and crocodile — and the soul perishes utterly. A light heart passes on to the Field of Reeds. Osiris presides as judge."
+			]
+		},
+		{
+			"id": "lord_egypt", "category": "lord", "order": 3,
+			"title": "Apophis, Serpent of Chaos", "unlock_realm": "egypt",
+			"body": [
+				"Apophis (Apep) is the vast serpent of chaos and the great enemy of Ra.",
+				"Each night, as the sun-barque crosses the Duat, Apophis attacks to swallow the sun and end the cycle of day. The gods — and the storm-god Set at the prow — fight him back so dawn can come.",
+				"He is never truly slain. Defeated nightly, he returns the next night: chaos held at bay, but never gone."
+			]
+		},
+		{
+			"id": "realm_norse", "category": "realm", "order": 4,
+			"title": "Helheim", "unlock_flag": "lore_norse",
+			"body": [
+				"One of the Nine Worlds, lying beneath a root of the world-tree Yggdrasil. Not the warriors' hall of Valhalla — Helheim receives those who die of sickness or old age.",
+				"The dead travel the long road Helvegr downward and northward into cold and mist, past the blood-stained hound Garmr who guards the gate.",
+				"It is ruled by Hel, a daughter of Loki, described as half-living woman and half-corpse. The hall is grim but not a place of torment — simply the quiet end of the strawdeath."
+			]
+		},
+		{
+			"id": "lord_norse", "category": "lord", "order": 4,
+			"title": "Fenrir, the Bound Wolf", "unlock_realm": "norse",
+			"body": [
+				"A monstrous wolf, child of Loki, who grew so vast and fierce the gods feared him.",
+				"They could bind him only with Gleipnir, a fetter forged of impossible things — the sound of a cat's step, a woman's beard, a mountain's roots. The god Tyr placed his hand in the wolf's jaws as a pledge, and lost it when the trick was sprung.",
+				"Prophecy says that at Ragnarök, the doom of the gods, Fenrir will break free and devour Odin himself."
+			]
+		},
+		{
+			"id": "realm_japan", "category": "realm", "order": 5,
+			"title": "Yomi-no-kuni", "unlock_flag": "lore_japan",
+			"body": [
+				"The shadowed Japanese land of the dead, into which the creator-goddess Izanami descended after dying in childbirth.",
+				"Her husband Izanagi followed to bring her back, but saw her rotting form and fled in horror. He sealed the entrance with a great boulder, dividing the living from the dead.",
+				"A central rule is yomotsu-hegui: to eat the food of Yomi is to belong to it forever. Izanami had already eaten, and so could never leave."
+			]
+		},
+		{
+			"id": "lord_japan", "category": "lord", "order": 5,
+			"title": "Yamata-no-Orochi", "unlock_realm": "japan",
+			"body": [
+				"A colossal serpent with eight heads and eight tails, vast enough to span eight hills and valleys.",
+				"It demanded a maiden in sacrifice each year. The storm-god Susanoo, exiled from heaven, set out eight vats of strong sake; the beast drank, fell asleep, and Susanoo hewed it apart.",
+				"In its tail he found the sword Kusanagi-no-Tsurugi — one of the three sacred treasures of Japan."
+			]
+		},
+		{
+			"id": "realm_aztec", "category": "realm", "order": 6,
+			"title": "Mictlan", "unlock_flag": "lore_aztec",
+			"body": [
+				"The lowest and most common of the Aztec afterlives, reached by those who died ordinary deaths — not the chosen of sun, storm or childbirth.",
+				"The journey down has nine levels and takes four years. The soul crosses a wide river on the back of a small red dog, passes between clashing mountains, and endures a wind of obsidian knives.",
+				"At the bottom reign Mictlantecuhtli and Mictecacihuatl, the skeletal lord and lady of the dead."
+			]
+		},
+		{
+			"id": "lord_aztec", "category": "lord", "order": 6,
+			"title": "Cipactli, the Devourer", "unlock_realm": "aztec",
+			"body": [
+				"A primordial sea-monster of the first age — part crocodile, part fish, part toad — with gnashing mouths at every joint, devouring all it met.",
+				"To make the world, the gods Quetzalcoatl and Tezcatlipoca seized and tore it apart. From its body they raised the earth and the sky.",
+				"In return, the earth-monster's hunger had to be fed — a debt the Aztecs believed was repaid in sacrifice."
+			]
+		}
+	]
+}
