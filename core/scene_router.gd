@@ -5,9 +5,13 @@ extends Node
 const BOOT := "res://scenes/boot/boot.tscn"
 const HUB := "res://scenes/hub/hub.tscn"
 const RUN := "res://scenes/run/run_scene.tscn"
+const ENDING := "res://scenes/ending/ending.tscn"
 
 func goto_hub() -> void:
 	_change(HUB)
+
+func goto_ending() -> void:
+	_change(ENDING)
 
 func goto_run() -> void:
 	_change(RUN)

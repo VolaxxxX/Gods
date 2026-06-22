@@ -350,5 +350,7 @@
 	"ui.close": "Close",
 	"ui.codex_locked": "??? (not yet learned)",
 	"ui.codex_progress": "Lore discovered: {n}/{t}",
-	"ui.codex_empty": "You have learned nothing yet. Descend, and the dead will teach you."
+	"ui.codex_empty": "You have learned nothing yet. Descend, and the dead will teach you.",
+	"ui.tap_continue": "Tap to continue",
+	"ending.title": "The cycle is broken."
 }

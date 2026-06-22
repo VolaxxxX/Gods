@@ -263,6 +263,14 @@ func _complete_biome() -> void:
 		_after_boss()
 
 func _after_boss() -> void:
+	# The true ending: all six underworlds have now been conquered (ever). Play the
+	# cinematic once, instead of the ordinary victory return.
+	if SaveManager.has_flag("all_six") and not SaveManager.has_flag("ending_played"):
+		SaveManager.set_flag("ending_played")
+		_ended = true
+		RunManager.end_run(true)
+		SceneRouter.goto_ending()
+		return
 	if RunManager.is_final_biome():
 		_end_run(true)
 		return
