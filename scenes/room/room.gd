@@ -143,6 +143,18 @@ func _build_floor_tilemap() -> void:
 	_floor_layer = TileMapLayer.new()
 	_floor_layer.tile_set = ts
 	_floor_layer.z_index = -2  # under the walls/vignette drawn by _draw()
+	# Calm the busy base motif: slightly desaturate + dim the floor so the strong
+	# per-tile borders recede and the (full-colour) entities/projectiles pop.
+	var sh := Shader.new()
+	sh.code = "shader_type canvas_item;\n" \
+		+ "void fragment() {\n" \
+		+ "\tvec4 c = texture(TEXTURE, UV);\n" \
+		+ "\tfloat g = dot(c.rgb, vec3(0.299, 0.587, 0.114));\n" \
+		+ "\tc.rgb = mix(vec3(g), c.rgb, 0.72) * 0.84;\n" \
+		+ "\tCOLOR = c;\n}"
+	var mat := ShaderMaterial.new()
+	mat.shader = sh
+	_floor_layer.material = mat
 	add_child(_floor_layer)
 
 	var cols := int(ceil(_size.x / TILE))
