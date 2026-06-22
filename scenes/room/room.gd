@@ -284,47 +284,61 @@ func _spawn_pickups(priced: bool) -> void:
 		p.position = anchors[i]
 		add_child(p)
 
-## Scatter a few non-colliding decorative props from the biome's prop pool.
+## Scatter a FEW relevant decorative props (hugging walls/corners). Capped per
+## room so maps stay readable — quality over quantity.
 ## Inert until the biome lists props AND the prop PNGs exist.
 func _scatter_props() -> void:
 	_prop_marks.clear()
 	if biome == null or biome.props.is_empty():
 		return
-	# 1) Prefer HAND-PLACED decor: 'D' anchors authored in the template are
-	#    symmetric and designed — never random.
-	var anchors: Array[Vector2] = []
-	if template != null:
-		anchors = template.decor_anchors()
-	if not anchors.is_empty():
-		var di := 0
-		for pos in anchors:
-			if not _prop_ok(pos):  # never over a door, spawn, obstacle, or another prop
-				continue
-			_place_prop(biome.props[di % biome.props.size()], pos, TILE * 1.15)
-			di += 1
-		return
-	# 2) Fallback (templates without 'D'): tidy rows flush to the walls.
-	var ins := WALL_THICK + 14.0
-	var step := 110.0
+	# Keep it sparse: a few in small rooms, a few more in large arenas.
+	var cells := (_size.x / TILE) * (_size.y / TILE)
+	var cap := 3 if cells < 150.0 else (4 if cells < 220.0 else 6)
+
+	# Candidate spots: authored 'D' anchors if present (designed/symmetric), else a
+	# tidy ring of spots flush to the walls.
 	var spots: Array[Vector2] = []
-	# Top & bottom walls: an evenly spaced ROW of props, flush to the wall.
-	var lx := ins + 30.0
-	while lx < _size.x - ins - 20.0:
-		spots.append(Vector2(lx, ins + 34.0))
-		spots.append(Vector2(lx, _size.y - ins))
-		lx += step
-	# Left & right walls: an evenly spaced COLUMN of props.
-	var ly := ins + 50.0
-	while ly < _size.y - ins - 30.0:
-		spots.append(Vector2(ins + 18.0, ly))
-		spots.append(Vector2(_size.x - ins - 18.0, ly))
-		ly += step
-	var i := 0
+	if template != null:
+		spots = template.decor_anchors()
+	if spots.is_empty():
+		var ins := WALL_THICK + 16.0
+		var step := 150.0
+		var lx := ins + 40.0
+		while lx < _size.x - ins - 30.0:
+			spots.append(Vector2(lx, ins + 30.0))
+			spots.append(Vector2(lx, _size.y - ins))
+			lx += step
+		var ly := ins + 70.0
+		while ly < _size.y - ins - 40.0:
+			spots.append(Vector2(ins + 16.0, ly))
+			spots.append(Vector2(_size.x - ins - 16.0, ly))
+			ly += step
+
+	# Keep only valid spots, then prefer the ones nearest a corner (the most
+	# "pertinent" prop spots — big columns/braziers frame the room), up to the cap.
+	var valid: Array[Vector2] = []
 	for pos in spots:
-		if not _prop_ok(pos):  # never block a passage, spawn, obstacle, or overlap
+		if _prop_ok(pos):
+			valid.append(pos)
+	valid.sort_custom(func(a, b): return _corner_dist(a) < _corner_dist(b))
+
+	var n: int = mini(cap, valid.size())
+	for i in n:
+		# Re-check vs already-placed props (a prop just placed updates _prop_marks).
+		if not _prop_ok(valid[i]):
 			continue
-		_place_prop(biome.props[i % biome.props.size()], pos, TILE * 1.05)
-		i += 1
+		var big: bool = _corner_dist(valid[i]) < TILE * 1.2  # corner pieces read larger
+		_place_prop(biome.props[i % biome.props.size()], valid[i], TILE * (1.2 if big else 1.05))
+
+## Distance from a point to the nearest interior room corner.
+func _corner_dist(pos: Vector2) -> float:
+	var m := WALL_THICK
+	var corners := [Vector2(m, m), Vector2(_size.x - m, m),
+		Vector2(m, _size.y - m), Vector2(_size.x - m, _size.y - m)]
+	var best := 1e20
+	for c in corners:
+		best = minf(best, pos.distance_to(c))
+	return best
 
 ## Instantiate one decorative prop: foot-anchored, scaled, with a shadow mark.
 func _place_prop(id: String, pos: Vector2, target: float) -> void:
