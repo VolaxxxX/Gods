@@ -219,6 +219,12 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		count = 1
 	elif room_type == "cursed":
 		count += 1  # a curse: an extra foe guards the free loot
+	# Cap simultaneous mobs by room size so small rooms never get swarmed (keeps
+	# space to dodge). Bosses/minibosses are exempt (always 1).
+	if room_type in ["combat", "cursed"]:
+		var cells := (_size.x / TILE) * (_size.y / TILE)
+		var cap := 4 if cells < 130.0 else (6 if cells < 200.0 else 8)
+		count = mini(count, cap)
 
 	for i in count:
 		var id = RNG.pick("spawn", pool_ids)  # untyped: pick() may return null

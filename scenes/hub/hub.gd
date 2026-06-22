@@ -20,37 +20,71 @@ func _ready() -> void:
 	Dialogue.on_enter_hub()
 
 func _build() -> void:
+	# Dark backdrop so the parchment panels read like a real menu screen.
+	var bg := ColorRect.new()
+	bg.color = Color(0.04, 0.04, 0.07)
+	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(bg)
+
+	var margin := MarginContainer.new()
+	margin.set_anchors_preset(Control.PRESET_FULL_RECT)
+	for s in ["left", "right"]:
+		margin.add_theme_constant_override("margin_" + s, 80)
+	margin.add_theme_constant_override("margin_top", 24)
+	margin.add_theme_constant_override("margin_bottom", 20)
+	add_child(margin)
+
 	var v := VBoxContainer.new()
-	v.position = Vector2(40, 28)
-	v.custom_minimum_size = Vector2(700, 0)
-	v.add_theme_constant_override("separation", 10)
-	add_child(v)
+	v.add_theme_constant_override("separation", 12)
+	margin.add_child(v)
 
 	var title := Label.new()
 	title.text = Loc.t("hub.title")
-	title.add_theme_font_size_override("font_size", 40)
+	title.add_theme_font_size_override("font_size", 44)
 	UITheme.title(title)
 	v.add_child(title)
 
+	# Info strip: karma · objective · souls guided.
+	var info := HBoxContainer.new()
+	info.add_theme_constant_override("separation", 28)
+	v.add_child(info)
 	_karma_label = Label.new()
 	_karma_label.add_theme_font_size_override("font_size", 22)
-	v.add_child(_karma_label)
-
+	info.add_child(_karma_label)
 	var objective := Label.new()
 	objective.text = Loc.t("hub.objective", {"n": SaveManager.realms_cleared().size()})
 	objective.modulate = Color(0.85, 0.8, 0.6)
-	v.add_child(objective)
+	info.add_child(objective)
+	var runs := Label.new()
+	runs.text = Loc.t("hub.runs", {"n": int(SaveManager.meta.get("runs_completed", 0))})
+	runs.modulate = Color(0.7, 0.7, 0.75)
+	info.add_child(runs)
+	var verdict_key: String = SaveManager.meta.get("last_verdict", "")
+	if verdict_key != "":
+		var verdict := Label.new()
+		verdict.text = Loc.t("hub.last_verdict", {"v": Loc.t(verdict_key)})
+		verdict.modulate = Color(0.7, 0.7, 0.75)
+		info.add_child(verdict)
+
+	# --- Panel 1: New Descent ---
+	var dpanel := _card()
+	v.add_child(dpanel)
+	var dv := VBoxContainer.new()
+	dv.add_theme_constant_override("separation", 10)
+	dpanel.add_child(dv)
 
 	var descent_h := Label.new()
 	descent_h.text = Loc.t("hub.new_descent")
 	descent_h.add_theme_font_size_override("font_size", 26)
+	descent_h.add_theme_color_override("font_color", Color(0.9, 0.76, 0.42))
 	UITheme.title(descent_h)
-	v.add_child(descent_h)
+	dv.add_child(descent_h)
 
 	# Realm + seed selectors.
 	var sel := HBoxContainer.new()
 	sel.add_theme_constant_override("separation", 12)
-	v.add_child(sel)
+	dv.add_child(sel)
 	var realm_l := Label.new()
 	realm_l.text = Loc.t("ui.realm")
 	sel.add_child(realm_l)
@@ -76,7 +110,7 @@ func _build() -> void:
 	# Character (starting kit) selector.
 	var hero := HBoxContainer.new()
 	hero.add_theme_constant_override("separation", 12)
-	v.add_child(hero)
+	dv.add_child(hero)
 	var hero_l := Label.new()
 	hero_l.text = Loc.t("ui.character")
 	hero.add_child(hero_l)
@@ -95,23 +129,31 @@ func _build() -> void:
 	# Action buttons.
 	var buttons := HBoxContainer.new()
 	buttons.add_theme_constant_override("separation", 12)
-	v.add_child(buttons)
+	dv.add_child(buttons)
 	buttons.add_child(_make_button(Loc.t("ui.play"), _on_play))
 	buttons.add_child(_make_button(Loc.t("ui.daily"), _on_daily))
 	buttons.add_child(_make_button(Loc.t("ui.codex_btn"), _on_codex))
 	if SaveManager.has_run():
 		buttons.add_child(_make_button(Loc.t("ui.resume"), _on_resume))
 
+	# --- Panel 2: Reincarnation (permanent upgrades) ---
+	var mpanel := _card()
+	v.add_child(mpanel)
+	var mv := VBoxContainer.new()
+	mv.add_theme_constant_override("separation", 8)
+	mpanel.add_child(mv)
+
 	var header := Label.new()
 	header.text = Loc.t("hub.reincarnation")
 	header.add_theme_font_size_override("font_size", 26)
+	header.add_theme_color_override("font_color", Color(0.9, 0.76, 0.42))
 	UITheme.title(header)
-	v.add_child(header)
+	mv.add_child(header)
 
 	for up in GameData.meta_upgrades.values():
 		var row := HBoxContainer.new()
 		row.add_theme_constant_override("separation", 12)
-		v.add_child(row)
+		mv.add_child(row)
 		var name_l := Label.new()
 		name_l.custom_minimum_size = Vector2(220, 0)
 		name_l.tooltip_text = Loc.t(up.desc_key)
@@ -125,17 +167,20 @@ func _build() -> void:
 		row.add_child(buy)
 		_rows[up.id] = {"name": name_l, "level": level_l, "buy": buy, "up": up}
 
-	var runs := Label.new()
-	runs.text = Loc.t("hub.runs", {"n": int(SaveManager.meta.get("runs_completed", 0))})
-	v.add_child(runs)
-
-	var verdict_key: String = SaveManager.meta.get("last_verdict", "")
-	if verdict_key != "":
-		var verdict := Label.new()
-		verdict.text = Loc.t("hub.last_verdict", {"v": Loc.t(verdict_key)})
-		v.add_child(verdict)
-
 	_refresh()
+
+## A clean, opaque dark "card" panel with a gold border — crisper for large hub
+## sections than stretching the small textured panel (which goes murky).
+func _card() -> PanelContainer:
+	var pc := PanelContainer.new()
+	var sb := StyleBoxFlat.new()
+	sb.bg_color = Color(0.09, 0.09, 0.13, 0.98)
+	sb.set_corner_radius_all(8)
+	sb.set_border_width_all(2)
+	sb.border_color = Color(0.55, 0.45, 0.24)
+	sb.set_content_margin_all(18)
+	pc.add_theme_stylebox_override("panel", sb)
+	return pc
 
 func _make_button(text: String, cb: Callable) -> Button:
 	var b := Button.new()
