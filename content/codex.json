@@ -2,8 +2,11 @@
 	"type": "codex",
 	"entries": [
 		{
-			"id": "realm_greece", "category": "realm", "order": 1,
-			"title": "The Underworld of Hades", "unlock_flag": "lore_greece",
+			"id": "realm_greece",
+			"category": "realm",
+			"order": 1,
+			"title": "The Underworld of Hades",
+			"unlock_flag": "lore_greece",
 			"body": [
 				"The Greek land of the dead, ruled by Hades and his queen Persephone.",
 				"Souls are ferried across the river Styx by the boatman Charon — and only the dead buried with a coin can pay his fare. The unburied wander the near shore for a hundred years.",
@@ -11,8 +14,11 @@
 			]
 		},
 		{
-			"id": "lord_greece", "category": "lord", "order": 1,
-			"title": "The Hydra of Lerna", "unlock_realm": "greece",
+			"id": "lord_greece",
+			"category": "lord",
+			"order": 1,
+			"title": "The Hydra of Lerna",
+			"unlock_realm": "greece",
 			"body": [
 				"A serpentine water-beast of the Lernaean swamp, with many venomous heads.",
 				"Cut one head away and two grew in its place. Heracles, in his second labour, overcame it only when his nephew Iolaus seared each stump with fire so no new head could sprout.",
@@ -20,8 +26,11 @@
 			]
 		},
 		{
-			"id": "realm_bali", "category": "realm", "order": 2,
-			"title": "Niskala — The Unseen", "unlock_flag": "lore_bali",
+			"id": "realm_bali",
+			"category": "realm",
+			"order": 2,
+			"title": "Niskala — The Unseen",
+			"unlock_flag": "lore_bali",
 			"body": [
 				"In Balinese belief the world has two halves: sekala, the seen, and niskala, the unseen — home to spirits, ancestors and demons.",
 				"Existence rests on rwa bhineda, the balance of opposites. Good and ill, order and chaos, are not at war to be won but held in tension.",
@@ -29,8 +38,11 @@
 			]
 		},
 		{
-			"id": "lord_bali", "category": "lord", "order": 2,
-			"title": "Rangda, the Demon Queen", "unlock_realm": "bali",
+			"id": "lord_bali",
+			"category": "lord",
+			"order": 2,
+			"title": "Rangda, the Demon Queen",
+			"unlock_realm": "bali",
 			"body": [
 				"Rangda is the dreaded queen of the leyak — witches and devouring spirits of the night.",
 				"She is the eternal counterpart of Barong, the protective lion-spirit. Their struggle is enacted in a sacred masked dance.",
@@ -38,8 +50,11 @@
 			]
 		},
 		{
-			"id": "realm_egypt", "category": "realm", "order": 3,
-			"title": "The Duat", "unlock_flag": "lore_egypt",
+			"id": "realm_egypt",
+			"category": "realm",
+			"order": 3,
+			"title": "The Duat",
+			"unlock_flag": "lore_egypt",
 			"body": [
 				"The Egyptian underworld and night-sky, the realm the sun-god Ra sails through each night to be reborn at dawn.",
 				"The dead pass through twelve gates, one for each hour of night. In the Hall of Two Truths the heart is weighed on a scale against the feather of Ma'at, goddess of truth and order.",
@@ -47,8 +62,11 @@
 			]
 		},
 		{
-			"id": "lord_egypt", "category": "lord", "order": 3,
-			"title": "Apophis, Serpent of Chaos", "unlock_realm": "egypt",
+			"id": "lord_egypt",
+			"category": "lord",
+			"order": 3,
+			"title": "Apophis, Serpent of Chaos",
+			"unlock_realm": "egypt",
 			"body": [
 				"Apophis (Apep) is the vast serpent of chaos and the great enemy of Ra.",
 				"Each night, as the sun-barque crosses the Duat, Apophis attacks to swallow the sun and end the cycle of day. The gods — and the storm-god Set at the prow — fight him back so dawn can come.",
@@ -56,8 +74,11 @@
 			]
 		},
 		{
-			"id": "realm_norse", "category": "realm", "order": 4,
-			"title": "Helheim", "unlock_flag": "lore_norse",
+			"id": "realm_norse",
+			"category": "realm",
+			"order": 4,
+			"title": "Helheim",
+			"unlock_flag": "lore_norse",
 			"body": [
 				"One of the Nine Worlds, lying beneath a root of the world-tree Yggdrasil. Not the warriors' hall of Valhalla — Helheim receives those who die of sickness or old age.",
 				"The dead travel the long road Helvegr downward and northward into cold and mist, past the blood-stained hound Garmr who guards the gate.",
@@ -65,8 +86,11 @@
 			]
 		},
 		{
-			"id": "lord_norse", "category": "lord", "order": 4,
-			"title": "Fenrir, the Bound Wolf", "unlock_realm": "norse",
+			"id": "lord_norse",
+			"category": "lord",
+			"order": 4,
+			"title": "Fenrir, the Bound Wolf",
+			"unlock_realm": "norse",
 			"body": [
 				"A monstrous wolf, child of Loki, who grew so vast and fierce the gods feared him.",
 				"They could bind him only with Gleipnir, a fetter forged of impossible things — the sound of a cat's step, a woman's beard, a mountain's roots. The god Tyr placed his hand in the wolf's jaws as a pledge, and lost it when the trick was sprung.",
@@ -74,8 +98,11 @@
 			]
 		},
 		{
-			"id": "realm_japan", "category": "realm", "order": 5,
-			"title": "Yomi-no-kuni", "unlock_flag": "lore_japan",
+			"id": "realm_japan",
+			"category": "realm",
+			"order": 5,
+			"title": "Yomi-no-kuni",
+			"unlock_flag": "lore_japan",
 			"body": [
 				"The shadowed Japanese land of the dead, into which the creator-goddess Izanami descended after dying in childbirth.",
 				"Her husband Izanagi followed to bring her back, but saw her rotting form and fled in horror. He sealed the entrance with a great boulder, dividing the living from the dead.",
@@ -83,8 +110,11 @@
 			]
 		},
 		{
-			"id": "lord_japan", "category": "lord", "order": 5,
-			"title": "Yamata-no-Orochi", "unlock_realm": "japan",
+			"id": "lord_japan",
+			"category": "lord",
+			"order": 5,
+			"title": "Yamata-no-Orochi",
+			"unlock_realm": "japan",
 			"body": [
 				"A colossal serpent with eight heads and eight tails, vast enough to span eight hills and valleys.",
 				"It demanded a maiden in sacrifice each year. The storm-god Susanoo, exiled from heaven, set out eight vats of strong sake; the beast drank, fell asleep, and Susanoo hewed it apart.",
@@ -92,8 +122,11 @@
 			]
 		},
 		{
-			"id": "realm_aztec", "category": "realm", "order": 6,
-			"title": "Mictlan", "unlock_flag": "lore_aztec",
+			"id": "realm_aztec",
+			"category": "realm",
+			"order": 6,
+			"title": "Mictlan",
+			"unlock_flag": "lore_aztec",
 			"body": [
 				"The lowest and most common of the Aztec afterlives, reached by those who died ordinary deaths — not the chosen of sun, storm or childbirth.",
 				"The journey down has nine levels and takes four years. The soul crosses a wide river on the back of a small red dog, passes between clashing mountains, and endures a wind of obsidian knives.",
@@ -101,12 +134,389 @@
 			]
 		},
 		{
-			"id": "lord_aztec", "category": "lord", "order": 6,
-			"title": "Cipactli, the Devourer", "unlock_realm": "aztec",
+			"id": "lord_aztec",
+			"category": "lord",
+			"order": 6,
+			"title": "Cipactli, the Devourer",
+			"unlock_realm": "aztec",
 			"body": [
 				"A primordial sea-monster of the first age — part crocodile, part fish, part toad — with gnashing mouths at every joint, devouring all it met.",
 				"To make the world, the gods Quetzalcoatl and Tezcatlipoca seized and tore it apart. From its body they raised the earth and the sky.",
 				"In return, the earth-monster's hunger had to be fed — a debt the Aztecs believed was repaid in sacrifice."
+			]
+		},
+		{
+			"id": "deity_greece_zeus",
+			"category": "deity",
+			"order": 1,
+			"title": "Zeus",
+			"unlock_flag": "met_greece_zeus",
+			"body": [
+				"King of the Olympian gods, wielder of the thunderbolt and lord of sky and storm.",
+				"Though he reigns over the living world above, even the dead feel the weight of his judgment."
+			]
+		},
+		{
+			"id": "deity_greece_athena",
+			"category": "deity",
+			"order": 2,
+			"title": "Athena",
+			"unlock_flag": "met_greece_athena",
+			"body": [
+				"Goddess of wisdom, strategic warfare and craft, born fully armed from the head of Zeus.",
+				"Her aegis turns aside the blows of those who fight without thought."
+			]
+		},
+		{
+			"id": "deity_greece_hermes",
+			"category": "deity",
+			"order": 3,
+			"title": "Hermes",
+			"unlock_flag": "met_greece_hermes",
+			"body": [
+				"The swift messenger god, patron of travellers, merchants and thieves.",
+				"As Psychopomp, it is Hermes who guides the souls of the dead down into the Underworld."
+			]
+		},
+		{
+			"id": "deity_greece_ares",
+			"category": "deity",
+			"order": 4,
+			"title": "Ares",
+			"unlock_flag": "met_greece_ares",
+			"body": [
+				"God of war in its rawest form — bloodlust, slaughter and the fury of the battlefield.",
+				"Where Athena brings strategy, Ares brings only the red joy of carnage."
+			]
+		},
+		{
+			"id": "deity_greece_artemis",
+			"category": "deity",
+			"order": 5,
+			"title": "Artemis",
+			"unlock_flag": "met_greece_artemis",
+			"body": [
+				"Goddess of the hunt, the wilderness and the moon, twin sister of Apollo.",
+				"Her arrows fly true; she is patron of all who strike from afar."
+			]
+		},
+		{
+			"id": "deity_bali_acintya",
+			"category": "deity",
+			"order": 6,
+			"title": "Acintya",
+			"unlock_flag": "met_bali_acintya",
+			"body": [
+				"Sang Hyang Widhi Wasa, the supreme and 'unimaginable' godhead of Balinese Hinduism.",
+				"All other gods are seen as His manifestations; He is the silent source of all balance."
+			]
+		},
+		{
+			"id": "deity_bali_barong",
+			"category": "deity",
+			"order": 7,
+			"title": "Barong",
+			"unlock_flag": "met_bali_barong",
+			"body": [
+				"The benevolent lion-spirit, king of good spirits and protector of villages.",
+				"He is the eternal opponent of the demon-queen Rangda — their struggle holds the world in balance."
+			]
+		},
+		{
+			"id": "deity_bali_dewi_danu",
+			"category": "deity",
+			"order": 8,
+			"title": "Dewi Danu",
+			"unlock_flag": "met_bali_dewi_danu",
+			"body": [
+				"Goddess of the lakes and waters, especially the sacred crater lake of Batur.",
+				"She grants the irrigation on which Bali's terraced rice fields depend."
+			]
+		},
+		{
+			"id": "deity_bali_dewi_sri",
+			"category": "deity",
+			"order": 9,
+			"title": "Dewi Sri",
+			"unlock_flag": "met_bali_dewi_sri",
+			"body": [
+				"Goddess of rice, fertility and the abundance of the harvest.",
+				"Revered across the islands as the giver of sustenance and life itself."
+			]
+		},
+		{
+			"id": "deity_bali_batara_kala",
+			"category": "deity",
+			"order": 10,
+			"title": "Batara Kala",
+			"unlock_flag": "met_bali_batara_kala",
+			"body": [
+				"God of time, the underworld and destruction, born of the sea.",
+				"He devours the unwary; the purification rite ruwatan is performed to escape his hunger."
+			]
+		},
+		{
+			"id": "deity_egypt_ra",
+			"category": "deity",
+			"order": 11,
+			"title": "Ra",
+			"unlock_flag": "met_egypt_ra",
+			"body": [
+				"The sun god, who sails his solar barque across the sky by day and the Duat by night.",
+				"Each dawn is his rebirth, won by repelling the chaos-serpent Apophis."
+			]
+		},
+		{
+			"id": "deity_egypt_osiris",
+			"category": "deity",
+			"order": 12,
+			"title": "Osiris",
+			"unlock_flag": "met_egypt_osiris",
+			"body": [
+				"Lord of the dead and judge of the Duat, god of resurrection and the afterlife.",
+				"Murdered by his brother Set and restored by Isis, he rose to rule the realm of the dead."
+			]
+		},
+		{
+			"id": "deity_egypt_anubis",
+			"category": "deity",
+			"order": 13,
+			"title": "Anubis",
+			"unlock_flag": "met_egypt_anubis",
+			"body": [
+				"The jackal-headed god of embalming and the guardian of graves.",
+				"He tends the scales that weigh each heart against the feather of Ma'at."
+			]
+		},
+		{
+			"id": "deity_egypt_horus",
+			"category": "deity",
+			"order": 14,
+			"title": "Horus",
+			"unlock_flag": "met_egypt_horus",
+			"body": [
+				"The falcon-headed god of kingship and the sky, son of Osiris and Isis.",
+				"He avenged his father against Set; the pharaohs ruled as his living embodiment."
+			]
+		},
+		{
+			"id": "deity_egypt_set",
+			"category": "deity",
+			"order": 15,
+			"title": "Set",
+			"unlock_flag": "met_egypt_set",
+			"body": [
+				"God of chaos, storms, the desert and disorder.",
+				"Murderer of Osiris — yet also the one who stands at Ra's prow to spear Apophis each night."
+			]
+		},
+		{
+			"id": "deity_egypt_sekhmet",
+			"category": "deity",
+			"order": 16,
+			"title": "Sekhmet",
+			"unlock_flag": "met_egypt_sekhmet",
+			"body": [
+				"The lioness goddess of war and plague, the burning Eye of Ra.",
+				"Her fury once nearly destroyed humankind; she is both destroyer and healer."
+			]
+		},
+		{
+			"id": "deity_norse_odin",
+			"category": "deity",
+			"order": 17,
+			"title": "Odin",
+			"unlock_flag": "met_norse_odin",
+			"body": [
+				"The Allfather — god of war, wisdom, poetry and death.",
+				"He hung nine nights upon the world-tree, pierced by his own spear, to win the runes of magic."
+			]
+		},
+		{
+			"id": "deity_norse_thor",
+			"category": "deity",
+			"order": 18,
+			"title": "Thor",
+			"unlock_flag": "met_norse_thor",
+			"body": [
+				"God of thunder, defender of gods and men, wielder of the hammer Mjolnir.",
+				"His hammer-strikes are the lightning; he is the great bulwark against the giants."
+			]
+		},
+		{
+			"id": "deity_norse_freyja",
+			"category": "deity",
+			"order": 19,
+			"title": "Freyja",
+			"unlock_flag": "met_norse_freyja",
+			"body": [
+				"Goddess of love, fertility, war and the magic of seidr.",
+				"Half of those slain in battle go to her hall Folkvangr, the other half to Odin."
+			]
+		},
+		{
+			"id": "deity_norse_tyr",
+			"category": "deity",
+			"order": 20,
+			"title": "Tyr",
+			"unlock_flag": "met_norse_tyr",
+			"body": [
+				"God of war, law and honour.",
+				"He alone dared place his hand in Fenrir's jaws to bind the wolf — and lost it for his courage."
+			]
+		},
+		{
+			"id": "deity_norse_heimdall",
+			"category": "deity",
+			"order": 21,
+			"title": "Heimdall",
+			"unlock_flag": "met_norse_heimdall",
+			"body": [
+				"The ever-watchful guardian of Bifrost, the rainbow bridge to Asgard.",
+				"His sight and hearing miss nothing; his horn Gjallarhorn will sound at Ragnarok."
+			]
+		},
+		{
+			"id": "deity_norse_loki",
+			"category": "deity",
+			"order": 22,
+			"title": "Loki",
+			"unlock_flag": "met_norse_loki",
+			"body": [
+				"The trickster god, shape-shifter and father of monsters — among them Hel and Fenrir.",
+				"His cunning saves the gods as often as it dooms them."
+			]
+		},
+		{
+			"id": "deity_japan_amaterasu",
+			"category": "deity",
+			"order": 23,
+			"title": "Amaterasu",
+			"unlock_flag": "met_japan_amaterasu",
+			"body": [
+				"The sun goddess and ruler of the heavens, ancestress of the imperial line.",
+				"Born of her father's purification after he fled Yomi; when she hid in a cave, the world went dark."
+			]
+		},
+		{
+			"id": "deity_japan_susanoo",
+			"category": "deity",
+			"order": 24,
+			"title": "Susanoo",
+			"unlock_flag": "met_japan_susanoo",
+			"body": [
+				"The storm god, wild and unruly brother of Amaterasu.",
+				"Exiled from heaven, he slew the eight-headed serpent Orochi and found the sword Kusanagi."
+			]
+		},
+		{
+			"id": "deity_japan_raijin",
+			"category": "deity",
+			"order": 25,
+			"title": "Raijin",
+			"unlock_flag": "met_japan_raijin",
+			"body": [
+				"God of thunder and lightning, who beats a ring of drums to make the storm.",
+				"He is often depicted beside Fujin, the wind god."
+			]
+		},
+		{
+			"id": "deity_japan_fujin",
+			"category": "deity",
+			"order": 26,
+			"title": "Fujin",
+			"unlock_flag": "met_japan_fujin",
+			"body": [
+				"God of the wind, who carries a great bag of gales upon his shoulders.",
+				"One of the oldest kami, said to have been present at the world's making."
+			]
+		},
+		{
+			"id": "deity_japan_tsukuyomi",
+			"category": "deity",
+			"order": 27,
+			"title": "Tsukuyomi",
+			"unlock_flag": "met_japan_tsukuyomi",
+			"body": [
+				"The moon god, who rules the night.",
+				"He slew the food goddess and was banished forever from Amaterasu's side — so sun and moon never meet."
+			]
+		},
+		{
+			"id": "deity_japan_inari",
+			"category": "deity",
+			"order": 28,
+			"title": "Inari",
+			"unlock_flag": "met_japan_inari",
+			"body": [
+				"Kami of rice, prosperity and foxes (kitsune), who serve as divine messengers.",
+				"One of the most widely worshipped deities in all of Japan."
+			]
+		},
+		{
+			"id": "deity_aztec_huitzilopochtli",
+			"category": "deity",
+			"order": 29,
+			"title": "Huitzilopochtli",
+			"unlock_flag": "met_aztec_huitzilopochtli",
+			"body": [
+				"God of the sun and war, patron of the Mexica, who led them to found Tenochtitlan.",
+				"He wages nightly war to keep the sun rising, sustained by offerings."
+			]
+		},
+		{
+			"id": "deity_aztec_quetzalcoatl",
+			"category": "deity",
+			"order": 30,
+			"title": "Quetzalcoatl",
+			"unlock_flag": "met_aztec_quetzalcoatl",
+			"body": [
+				"The Feathered Serpent — god of wind, wisdom and the morning star.",
+				"He helped create humankind and gave them maize; a bringer of civilization."
+			]
+		},
+		{
+			"id": "deity_aztec_tlaloc",
+			"category": "deity",
+			"order": 31,
+			"title": "Tlaloc",
+			"unlock_flag": "met_aztec_tlaloc",
+			"body": [
+				"God of rain, water and fertility — life-giving and terrible.",
+				"Those who died by water or storm passed to his green paradise, Tlalocan."
+			]
+		},
+		{
+			"id": "deity_aztec_tezcatlipoca",
+			"category": "deity",
+			"order": 32,
+			"title": "Tezcatlipoca",
+			"unlock_flag": "met_aztec_tezcatlipoca",
+			"body": [
+				"God of the night sky, sorcery, destiny and discord — the 'Smoking Mirror'.",
+				"Quetzalcoatl's great rival; together they tore Cipactli apart to make the world."
+			]
+		},
+		{
+			"id": "deity_aztec_mictlantecuhtli",
+			"category": "deity",
+			"order": 33,
+			"title": "Mictlantecuhtli",
+			"unlock_flag": "met_aztec_mictlantecuhtli",
+			"body": [
+				"Skeletal lord of Mictlan, the lowest underworld, with his queen Mictecacihuatl.",
+				"All who die ordinary deaths complete the four-year journey to his throne of bone."
+			]
+		},
+		{
+			"id": "deity_aztec_xochipilli",
+			"category": "deity",
+			"order": 34,
+			"title": "Xochipilli",
+			"unlock_flag": "met_aztec_xochipilli",
+			"body": [
+				"Prince of flowers — god of art, song, dance, love and beauty.",
+				"A patron of pleasure and the sacred, bringing colour to a world of sacrifice."
 			]
 		}
 	]

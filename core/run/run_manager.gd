@@ -159,6 +159,9 @@ func add_blessing(id: String) -> void:
 	# Syncretism: mixing a rival deity's boon angers the jealous gods → a curse.
 	var b = GameData.blessings.get(id, null)
 	var deity: String = b.deity_id if b != null else ""
+	# Permanently remember meeting this god (unlocks their Codex entry).
+	if deity != "":
+		SaveManager.set_flag("met_" + deity)
 	var angers_rival: bool = deity != "" and is_rival_of_owned(deity)
 	chosen_blessings.append(id)
 	if angers_rival:

@@ -4,7 +4,7 @@ extends CanvasLayer
 ## learns them in play (realms by entering them, lords by defeating them). Locked
 ## entries are listed but masked. Opened from the hub; presentation only.
 
-const CAT_TITLE := {"realm": "Realms of the Dead", "lord": "Lords of the Dead"}
+const CAT_TITLE := {"realm": "Realms of the Dead", "lord": "Lords of the Dead", "deity": "Gods of the Realms"}
 
 var _body_title: Label
 var _body_text: RichTextLabel
@@ -78,7 +78,7 @@ func _ready() -> void:
 
 	var unlocked_total := 0
 	var first: CodexData = null
-	for cat in ["realm", "lord"]:
+	for cat in ["realm", "lord", "deity"]:
 		var entries := _entries_for(cat)
 		if entries.is_empty():
 			continue
