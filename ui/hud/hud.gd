@@ -19,6 +19,12 @@ var _boss_name: Label
 var _boss_bar: ProgressBar
 var _boss: Node      # the tracked boss/miniboss (its HealthComponent drives the bar)
 var _boss_target: float = 1.0   # target fill; the bar eases toward it (juice)
+var player: Node                # set by the run scene, for the dash indicator
+var _dash_bar: ProgressBar
+var _vignette: Control
+var _t: float = 0.0
+var _hp_frac: float = 1.0
+var _danger: float = 0.0        # eased low-HP vignette intensity
 
 func _ready() -> void:
 	layer = 10
@@ -67,6 +73,36 @@ func _ready() -> void:
 	_gold_label.add_theme_color_override("font_color", Color(0.96, 0.88, 0.6))
 	_outline(_gold_label, 4)
 	gold_row.add_child(_gold_label)
+
+	# Dash indicator: a slim bar that fills as the dash comes off cooldown (gold
+	# when ready). Sits just under the gold row.
+	_dash_bar = ProgressBar.new()
+	_dash_bar.position = Vector2(24, 120)
+	_dash_bar.custom_minimum_size = Vector2(120, 8)
+	_dash_bar.size = Vector2(120, 8)
+	_dash_bar.show_percentage = false
+	_dash_bar.min_value = 0.0
+	_dash_bar.max_value = 1.0
+	_dash_bar.value = 1.0
+	var dfill := StyleBoxFlat.new()
+	dfill.bg_color = Color(0.55, 0.85, 0.95)
+	dfill.set_corner_radius_all(3)
+	_dash_bar.add_theme_stylebox_override("fill", dfill)
+	root.add_child(_dash_bar)
+	var dash_l := Label.new()
+	dash_l.position = Vector2(150, 112)
+	dash_l.text = Loc.t("hud.dash")
+	dash_l.add_theme_font_size_override("font_size", 14)
+	dash_l.add_theme_color_override("font_color", Color(0.7, 0.85, 0.95))
+	_outline(dash_l, 3)
+	root.add_child(dash_l)
+
+	# Low-HP danger vignette (red, pulses) — drawn at the screen edges.
+	_vignette = Control.new()
+	_vignette.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_vignette.draw.connect(_draw_vignette)
+	root.add_child(_vignette)
 
 	# Big centered realm banner, shown briefly on entering a zone.
 	_banner = Label.new()
@@ -127,9 +163,20 @@ func _ready() -> void:
 	_on_gold(RunManager.gold)
 
 func _process(delta: float) -> void:
+	_t += delta
 	if _banner_t > 0.0:
 		_banner_t -= delta
 		_banner.modulate.a = clampf(_banner_t, 0.0, 1.0)
+	# Dash indicator: fill = readiness; gold + brighter the instant it's ready.
+	if is_instance_valid(player):
+		var df: float = player.dash_ready_fraction()
+		_dash_bar.value = df
+		_dash_bar.modulate = Color(1, 0.85, 0.4) if df >= 1.0 else Color(0.7, 0.7, 0.75)
+	# Low-HP danger vignette: ease intensity in/out and pulse.
+	var target := clampf((0.34 - _hp_frac) / 0.34, 0.0, 1.0) if _hp_frac < 0.34 else 0.0
+	_danger = lerpf(_danger, target, clampf(delta * 4.0, 0.0, 1.0))
+	if _vignette != null:
+		_vignette.queue_redraw()
 	# Track the boss's health each frame; the bar eases toward it and the plate
 	# fades in (juice). Its bar lives on the boss's own HealthComponent.
 	if _boss_plate.visible:
@@ -166,6 +213,20 @@ func _on_health(current: float, maximum: float) -> void:
 	_hp_bar.max_value = maxf(1.0, maximum)
 	_hp_bar.value = current
 	_hp_text.text = Loc.t("hud.health", {"cur": int(ceil(current)), "max": int(maximum)})
+	_hp_frac = current / maxf(1.0, maximum)
+
+## Red danger vignette at the screen edges; intensifies + pulses as HP drops low.
+func _draw_vignette() -> void:
+	if _danger <= 0.02:
+		return
+	var vp := _vignette.get_viewport_rect().size
+	var pulse := 0.6 + 0.4 * sin(_t * 6.5)
+	var a := _danger * pulse
+	for i in 7:
+		var inset := i * 16.0
+		var alpha := a * (1.0 - float(i) / 7.0) * 0.5
+		_vignette.draw_rect(Rect2(inset, inset, vp.x - 2 * inset, vp.y - 2 * inset),
+			Color(0.75, 0.06, 0.06, alpha), false, 16.0)
 
 func _on_gold(total: int) -> void:
 	_gold_label.text = Loc.t("hud.gold", {"n": total})

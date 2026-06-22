@@ -308,6 +308,10 @@ func _on_died() -> void:
 func _emit_health() -> void:
 	Events.emit_signal("player_health_changed", health.health, health.max_health)
 
+## Dash readiness for the HUD indicator: 0 just after dashing -> 1 when ready.
+func dash_ready_fraction() -> float:
+	return 1.0 - clampf(_dash_cd / DASH_COOLDOWN, 0.0, 1.0)
+
 func _draw() -> void:
 	# Soft contact shadow under the feet so the player stays readable on any floor.
 	draw_set_transform(Vector2(0, RADIUS * 1.2), 0.0, Vector2(1.0, 0.42))

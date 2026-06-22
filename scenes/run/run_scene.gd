@@ -58,7 +58,9 @@ func _ready() -> void:
 	Events.entity_died.connect(_on_entity_died)
 
 	# UI overlays (screen space).
-	add_child(HUD.new())
+	var hud := HUD.new()
+	hud.player = player   # for the dash indicator
+	add_child(hud)
 	var ui_layer := CanvasLayer.new()
 	ui_layer.layer = 5
 	add_child(ui_layer)
