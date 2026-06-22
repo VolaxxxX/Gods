@@ -156,7 +156,9 @@ func _build_obstacles() -> void:
 func _is_solid_cell(row: String, x: int, y: int) -> bool:
 	var c := row[x]
 	if c == "O":
-		return true
+		# Never let an obstacle seal a door mouth (would trap/soft-lock the player).
+		var center := Vector2(x + 0.5, y + 0.5) * TILE
+		return not _near_open_door(center, DOOR_HALF + TILE * 0.6)
 	return c == "#" and x > 0 and x < row.length() - 1 and y > 0 and y < template.grid.size() - 1
 
 func _build_doors() -> void:
@@ -253,9 +255,14 @@ func spawn_wave(target: Node2D, pool: ProjectilePool, ids: Array, n: int) -> voi
 func _random_floor_point() -> Vector2:
 	var margin := WALL_THICK + 48.0
 	var rng := RNG.stream("spawn")
-	return Vector2(
-		rng.randf_range(margin, _size.x - margin),
-		rng.randf_range(margin, _size.y - margin))
+	var p := _size * 0.5
+	# Retry a few times so a spawn never lands inside an obstacle or a door mouth.
+	for _i in 8:
+		p = Vector2(rng.randf_range(margin, _size.x - margin),
+			rng.randf_range(margin, _size.y - margin))
+		if not _solid_at_px(p) and not _near_open_door(p, DOOR_HALF + 24.0):
+			break
+	return p
 
 func _spawn_pickups(priced: bool) -> void:
 	if biome == null:
@@ -291,8 +298,10 @@ func _scatter_props() -> void:
 	if not anchors.is_empty():
 		var di := 0
 		for pos in anchors:
-			di += 1
+			if not _prop_ok(pos):  # never over a door, spawn, obstacle, or another prop
+				continue
 			_place_prop(biome.props[di % biome.props.size()], pos, TILE * 1.15)
+			di += 1
 		return
 	# 2) Fallback (templates without 'D'): tidy rows flush to the walls.
 	var ins := WALL_THICK + 14.0
@@ -312,10 +321,10 @@ func _scatter_props() -> void:
 		ly += step
 	var i := 0
 	for pos in spots:
-		i += 1
-		if _near_open_door(pos):
-			continue   # never block a passage
+		if not _prop_ok(pos):  # never block a passage, spawn, obstacle, or overlap
+			continue
 		_place_prop(biome.props[i % biome.props.size()], pos, TILE * 1.05)
+		i += 1
 
 ## Instantiate one decorative prop: foot-anchored, scaled, with a shadow mark.
 func _place_prop(id: String, pos: Vector2, target: float) -> void:
@@ -339,12 +348,43 @@ func _place_prop(id: String, pos: Vector2, target: float) -> void:
 		l.position = pos + Vector2(0, -target * 0.25)
 		add_child(l)
 
-## True if a point sits in front of an OPEN door (so we don't decorate over it).
-func _near_open_door(pos: Vector2) -> bool:
+## True if a point sits in front of an OPEN door (so we don't decorate/block it).
+func _near_open_door(pos: Vector2, radius: float = DOOR_HALF + 40.0) -> bool:
 	for side in open_sides:
-		if pos.distance_to(_door_position(side)) < DOOR_HALF + 40.0:
+		if pos.distance_to(_door_position(side)) < radius:
 			return true
 	return false
+
+## Is this world point inside a solid obstacle/carved-wall cell?
+func _solid_at_px(pos: Vector2) -> bool:
+	if template == null:
+		return false
+	var cx := int(pos.x / TILE)
+	var cy := int(pos.y / TILE)
+	if cy < 0 or cy >= template.grid.size():
+		return false
+	var row: String = template.grid[cy]
+	if cx < 0 or cx >= row.length():
+		return false
+	return _is_solid_cell(row, cx, cy)
+
+## Too close to an enemy or the player spawn (props must never cover a spawn).
+func _near_spawn(pos: Vector2) -> bool:
+	if template == null:
+		return false
+	for s in template.enemy_spawns():
+		if pos.distance_to(s) < TILE * 0.85:
+			return true
+	return pos.distance_to(template.player_spawn()) < TILE * 0.85
+
+## A prop may sit here: clear of doors, solid cells, spawns, and other props.
+func _prop_ok(pos: Vector2) -> bool:
+	if _near_open_door(pos) or _solid_at_px(pos) or _near_spawn(pos):
+		return false
+	for m in _prop_marks:
+		if pos.distance_to(m[0]) < TILE * 0.8:
+			return false
+	return true
 
 func _spawn_sacrifice() -> void:
 	var anchors: Array[Vector2] = []
@@ -408,6 +448,7 @@ func _draw() -> void:
 	# Per-cell tint variation breaks the "one flat repeated texture" look. Cheap and
 	# deterministic (no RNG) so it's stable per cell.
 	_draw_floor_variation(w, h)
+	_draw_floor_grid(w, h)  # crisp grout seams = a real tiled floor
 	# Soft shadows under perimeter props (props are child sprites drawn after this).
 	for mark in _prop_marks:
 		draw_set_transform(mark[0], 0.0, Vector2(1.0, 0.4))
@@ -433,6 +474,18 @@ func _draw() -> void:
 			Rect2(WALL_THICK, WALL_THICK, 12.0, h - 2 * WALL_THICK),             # right of W
 			Rect2(w - WALL_THICK - 12.0, WALL_THICK, 12.0, h - 2 * WALL_THICK)]: # left of E
 		draw_rect(sh, Color(0, 0, 0, 0.14))
+	# A lit lip along the wall's inner edge (where wall meets floor) reads as the
+	# top surface of a raised wall, all the way around.
+	var lip := Color(1, 1, 1, 0.12)
+	draw_rect(Rect2(WALL_THICK, WALL_THICK - 3.0, w - 2 * WALL_THICK, 3.0), lip)        # N
+	draw_rect(Rect2(WALL_THICK, h - WALL_THICK, w - 2 * WALL_THICK, 3.0), lip)          # S
+	draw_rect(Rect2(WALL_THICK - 3.0, WALL_THICK, 3.0, h - 2 * WALL_THICK), lip)        # W
+	draw_rect(Rect2(w - WALL_THICK, WALL_THICK, 3.0, h - 2 * WALL_THICK), lip)          # E
+	# Darker corner blocks for a built, masonry feel.
+	var corner := _dim(_wall_color, 0.4)
+	var cs := WALL_THICK
+	for cpos in [Vector2(0, 0), Vector2(w - cs, 0), Vector2(0, h - cs), Vector2(w - cs, h - cs)]:
+		draw_rect(Rect2(cpos, Vector2(cs, cs)), Color(corner.r, corner.g, corner.b, 0.5))
 	# Obstacles ('O') and carved interior walls ('#') — both full cells, with a top
 	# bevel + drop shadow so they read as solid blocks, not flat squares.
 	var ob := _tile("obstacle", _accent_color)
@@ -444,16 +497,19 @@ func _draw() -> void:
 				if not _is_solid_cell(row, x, y):
 					continue
 				var cell := Rect2(x * TILE, y * TILE, TILE, TILE)
-				draw_rect(Rect2(cell.position + Vector2(3, TILE - 2), Vector2(TILE, 8)),
-					Color(0, 0, 0, 0.22))  # drop shadow below the block
+				draw_rect(Rect2(cell.position + Vector2(4, TILE - 1), Vector2(TILE, 9)),
+					Color(0, 0, 0, 0.26))  # drop shadow below the block
 				var is_wall_cell := row[x] == "#"
 				var t: Array = wl if is_wall_cell else ob
-				var mod: Color = _dim(t[1], 0.55) if is_wall_cell else _dim(t[1], 0.92)
+				var mod: Color = _dim(t[1], 0.55) if is_wall_cell else _dim(t[1], 0.9)
 				if t[0] != null:
 					draw_texture_rect(t[0], cell, true, mod)
 				else:
 					draw_rect(cell, mod)
-				draw_rect(Rect2(cell.position, Vector2(TILE, 3)), Color(1, 1, 1, 0.10))
+				# Raised look: lit top third + dark base edge.
+				draw_rect(Rect2(cell.position, Vector2(TILE, TILE * 0.34)), Color(1, 1, 1, 0.10))
+				draw_rect(Rect2(cell.position, Vector2(TILE, 2.5)), Color(1, 1, 1, 0.18))
+				draw_rect(Rect2(cell.position + Vector2(0, TILE - 4.0), Vector2(TILE, 4.0)), Color(0, 0, 0, 0.28))
 	# Inner shadow band -> depth + focuses the eye on the centre (cheap vignette).
 	for band in [[0.0, 0.22], [9.0, 0.13], [18.0, 0.07], [30.0, 0.04]]:
 		var o: float = WALL_THICK + band[0]
@@ -481,6 +537,22 @@ func _draw_secret_door(rect: Rect2, horizontal: bool) -> void:
 	draw_line(c + Vector2(-2, 2), c + Vector2(6, -4), crack, 1.5)
 	draw_line(c + Vector2(6, -4), c + Vector2(12, 6), crack, 1.5)
 	draw_line(c + Vector2(2, 0), c + Vector2(4, 10), crack, 1.0)
+
+## Thin grout seams on the tile grid + a faint highlight, so the floor reads as
+## laid tiles (matching the reference look) rather than one stretched texture.
+func _draw_floor_grid(w: float, h: float) -> void:
+	var seam := Color(0, 0, 0, 0.11)
+	var lip := Color(1, 1, 1, 0.04)
+	var x := WALL_THICK + TILE
+	while x < w - WALL_THICK:
+		draw_line(Vector2(x, WALL_THICK), Vector2(x, h - WALL_THICK), seam, 1.0)
+		draw_line(Vector2(x + 1, WALL_THICK), Vector2(x + 1, h - WALL_THICK), lip, 1.0)
+		x += TILE
+	var y := WALL_THICK + TILE
+	while y < h - WALL_THICK:
+		draw_line(Vector2(WALL_THICK, y), Vector2(w - WALL_THICK, y), seam, 1.0)
+		draw_line(Vector2(WALL_THICK, y + 1), Vector2(w - WALL_THICK, y + 1), lip, 1.0)
+		y += TILE
 
 ## Deterministic faint light/dark patches over the floor cells (anti-repetition).
 func _draw_floor_variation(w: float, h: float) -> void:

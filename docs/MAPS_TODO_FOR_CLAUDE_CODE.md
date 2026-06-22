@@ -4,6 +4,25 @@ Le joueur veut des maps qui "donnent envie". J'ai poussé ce qui se fait **sans
 moteur** (assets + contenu, validé au parseur gdtoolkit mais **jamais lancé dans
 Godot**). Le reste exige l'éditeur + des allers-retours visuels : ton terrain.
 
+> ## ✅ FAIT (Claude Code, 2e passe — lancé dans Godot 4.3 + rendu xvfb)
+> - **Placement pertinent + au sol** (`scenes/room/room.gd`) : props placés
+>   UNIQUEMENT s'ils sont clairs de porte / spawn / obstacle / autre prop
+>   (`_prop_ok`) → le long des murs et coins, jamais devant une porte ni sur un
+>   spawn ; ancrage par le bas de la boîte opaque (déjà le cas props ET entités) +
+>   ombre de contact. Un obstacle `O` qui tomberait dans une bouche de porte est
+>   retiré auto (`_is_solid_cell` → anti-soft-lock). Spawns aléatoires évitent les
+>   solides/portes. Vérifié au rendu (courtyard + octagon).
+> - **Beauté des sols (en moteur, sans atlas)** : **joints (grout)** sur la grille
+>   de tuiles → vrai sol carrelé ; **relief des murs** (lèvre éclairée tout autour +
+>   blocs de coin) ; **obstacles en relief** (dessus éclairé, base sombre, ombre
+>   portée). S'ajoute à variation/vignette/lighting/particules déjà en place.
+> - **Export Web RÉPARÉ** : la compression VRAM ETC2/ASTC bloquait l'export (erreur
+>   de config muette en headless). Désactivée pour le preset Web (inutile en
+>   renderer GL Compatibility) → `--export-release "Web"` produit wasm+pck+PWA.
+>   **39/39 tests** passent.
+> - RESTE bloqué sur de l'art : un **vrai TileMapLayer autotile** (atlas bords/coins)
+>   et des portes-sprites par royaume. Le code-drawn atteint déjà le look des refs.
+
 ## 0. DÉCISIONS / RETOURS DU JOUEUR (à respecter)
 - **Branchement : 2 PORTES façon Hades** (déjà commencé : `ui/door_choice.gd`). À
   la fin de chaque étage palier, 2 portes au choix avec **aperçu** (icône+nom+desc)
