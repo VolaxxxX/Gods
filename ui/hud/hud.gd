@@ -13,6 +13,11 @@ var _hp_text: Label
 var _gold_label: Label
 var _banner: Label
 var _banner_t: float = 0.0
+var _boss_box: VBoxContainer
+var _boss_plate: Control
+var _boss_name: Label
+var _boss_bar: ProgressBar
+var _boss: Node      # the tracked boss/miniboss (its HealthComponent drives the bar)
 
 func _ready() -> void:
 	layer = 10
@@ -68,6 +73,42 @@ func _ready() -> void:
 	UITheme.title(_banner)
 	root.add_child(_banner)
 
+	# Boss health bar — a wide crimson bar with the boss name on a dark plate,
+	# pinned to the top centre, shown only while a boss/miniboss lives.
+	var plate := StyleBoxFlat.new()
+	plate.bg_color = Color(0.04, 0.04, 0.06, 0.72)
+	plate.set_corner_radius_all(6)
+	plate.set_content_margin_all(8)
+	var plate_wrap := PanelContainer.new()
+	plate_wrap.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	plate_wrap.position = Vector2(-318, 10)
+	plate_wrap.add_theme_stylebox_override("panel", plate)
+	plate_wrap.visible = false
+	root.add_child(plate_wrap)
+	_boss_box = VBoxContainer.new()
+	_boss_box.custom_minimum_size = Vector2(620, 0)
+	_boss_box.add_theme_constant_override("separation", 4)
+	plate_wrap.add_child(_boss_box)
+	_boss_plate = plate_wrap
+	_boss_name = Label.new()
+	_boss_name.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_boss_name.add_theme_font_size_override("font_size", 24)
+	_boss_name.add_theme_color_override("font_color", Color(0.92, 0.5, 0.42))
+	UITheme.title(_boss_name)
+	_boss_box.add_child(_boss_name)
+	_boss_bar = ProgressBar.new()
+	_boss_bar.custom_minimum_size = Vector2(600, 18)
+	_boss_bar.show_percentage = false
+	_boss_bar.min_value = 0.0
+	_boss_bar.max_value = 1.0
+	var fill := StyleBoxFlat.new()
+	fill.bg_color = Color(0.75, 0.16, 0.18)
+	fill.set_corner_radius_all(3)
+	_boss_bar.add_theme_stylebox_override("fill", fill)
+	_boss_box.add_child(_boss_bar)
+
+	Events.boss_spawned.connect(_on_boss_spawned)
+	Events.boss_despawned.connect(_on_boss_despawned)
 	Events.player_health_changed.connect(_on_health)
 	Events.gold_changed.connect(_on_gold)
 	Events.biome_changed.connect(func(_id): _refresh_biome(); _show_banner())
@@ -80,6 +121,22 @@ func _process(delta: float) -> void:
 	if _banner_t > 0.0:
 		_banner_t -= delta
 		_banner.modulate.a = clampf(_banner_t, 0.0, 1.0)
+	# Track the boss's health each frame (its bar lives on its own HealthComponent).
+	if _boss_plate.visible:
+		if is_instance_valid(_boss) and _boss.health != null:
+			_boss_bar.value = _boss.health.fraction()
+		else:
+			_boss_plate.visible = false
+
+func _on_boss_spawned(entity, name_key: String) -> void:
+	_boss = entity
+	_boss_name.text = Loc.t(name_key)
+	_boss_bar.value = 1.0
+	_boss_plate.visible = true
+
+func _on_boss_despawned() -> void:
+	_boss = null
+	_boss_plate.visible = false
 
 func _show_banner() -> void:
 	_banner.text = _biome_label.text

@@ -242,6 +242,10 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		add_child(e)
 		_alive_enemies += 1
 		e.tree_exited.connect(_on_enemy_gone)
+		# Bosses/minibosses drive the on-screen boss health bar.
+		if room_type in ["boss", "miniboss"]:
+			Events.emit_signal("boss_spawned", e, ed.name_key)
+			e.tree_exited.connect(func(): Events.emit_signal("boss_despawned"))
 
 ## Spawn an extra wave into an already-cleared room and re-lock the doors (used
 ## by a god's "wrath" encounter). Clearing it emits `cleared` again.

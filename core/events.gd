@@ -18,6 +18,8 @@ signal room_cleared(room)
 signal entity_damaged(target, amount: float)
 signal entity_died(entity)
 signal player_health_changed(current: float, maximum: float)
+signal boss_spawned(entity, name_key: String)   # a boss/miniboss appeared
+signal boss_despawned                             # it died / room left
 
 # --- Pickups / progression ---
 signal item_picked_up(item_id: String)

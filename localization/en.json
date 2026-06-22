@@ -352,5 +352,6 @@
 	"ui.codex_progress": "Lore discovered: {n}/{t}",
 	"ui.codex_empty": "You have learned nothing yet. Descend, and the dead will teach you.",
 	"ui.tap_continue": "Tap to continue",
-	"ending.title": "The cycle is broken."
+	"ending.title": "The cycle is broken.",
+	"game.tagline": "Six underworlds. One soul. Break the cycle."
 }
