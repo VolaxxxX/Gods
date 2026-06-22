@@ -57,15 +57,48 @@ func _make_door(kind: String) -> Button:
 	var meta: Array = DOORS.get(kind, ["ui.door_boon", "ui.door_boon_desc", "?"])
 	var btn := Button.new()
 	btn.custom_minimum_size = Vector2(300, 300)
-	btn.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	btn.text = "%s\n\n%s" % [Loc.t(meta[0]), Loc.t(meta[1])]
+	# Centered card content: icon (or glyph) on top, name, then the reward preview.
+	var vb := VBoxContainer.new()
+	vb.set_anchors_preset(Control.PRESET_FULL_RECT)
+	vb.alignment = BoxContainer.ALIGNMENT_CENTER
+	vb.add_theme_constant_override("separation", 10)
+	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	btn.add_child(vb)
+
 	var ic := Sprites.icon("door_" + kind)  # optional bespoke art (icons/door_*.png)
 	if ic != null:
-		btn.icon = ic
-		btn.expand_icon = true
-		btn.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+		var tr := TextureRect.new()
+		tr.texture = ic
+		tr.custom_minimum_size = Vector2(96, 96)
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		vb.add_child(tr)
 	else:
-		btn.text = "%s\n%s\n\n%s" % [meta[2], Loc.t(meta[0]), Loc.t(meta[1])]
+		var glyph := Label.new()
+		glyph.text = String(meta[2])
+		glyph.add_theme_font_size_override("font_size", 72)
+		glyph.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		vb.add_child(glyph)
+
+	var name_l := Label.new()
+	name_l.text = Loc.t(meta[0])
+	name_l.add_theme_font_size_override("font_size", 24)
+	name_l.add_theme_color_override("font_color", Color(0.9, 0.76, 0.42))
+	name_l.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	UITheme.title(name_l)
+	vb.add_child(name_l)
+
+	var desc := Label.new()
+	desc.text = Loc.t(meta[1])
+	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	desc.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	desc.custom_minimum_size = Vector2(252, 0)
+	desc.modulate = Color(0.85, 0.85, 0.9)
+	desc.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vb.add_child(desc)
+
 	btn.pressed.connect(_on_pick.bind(kind))
 	return btn
 
