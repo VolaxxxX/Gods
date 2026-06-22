@@ -109,17 +109,26 @@ func entry_point_for(side: String) -> Vector2:
 ## function bails and _draw() falls back to the greybox/single-tile floor.
 func _build_floor_tilemap() -> void:
 	var v2: bool = RunManager.floor_in_biome > 1
-	var variants: Array = []
-	for k in ["floor", "floor_b", "floor_c"]:
+	# Base tile (the corrupted _alt on floor 2 if it exists, else the plain floor).
+	var base: Texture2D = null
+	if v2:
+		base = Sprites.tile(_pantheon, "floor_alt")
+	if base == null:
+		base = Sprites.tile(_pantheon, "floor")
+	if base == null:
+		return  # no floor art -> greybox fallback in _draw()
+	var variants: Array = [base]
+	# Accent variants — used SPARINGLY (occasional wear, not a rash). On floor 2 we
+	# only accept an accent that has its own _alt so it matches the corrupted base
+	# (no plain-tile-on-ornate mismatch); otherwise that floor stays the uniform alt.
+	for k in ["floor_b", "floor_c"]:
 		var t: Texture2D = null
 		if v2:
-			t = Sprites.tile(_pantheon, k + "_alt")
-		if t == null:
+			t = Sprites.tile(_pantheon, k + "_alt")  # usually absent -> skip on floor 2
+		else:
 			t = Sprites.tile(_pantheon, k)
 		if t != null:
 			variants.append(t)
-	if variants.is_empty():
-		return  # no floor art -> greybox fallback in _draw()
 
 	var ts := TileSet.new()
 	ts.tile_size = Vector2i(TILE, TILE)
@@ -140,12 +149,12 @@ func _build_floor_tilemap() -> void:
 	var rows := int(ceil(_size.y / TILE))
 	for cy in rows:
 		for cx in cols:
-			var h := ((cx * 73856093) ^ (cy * 19349663)) & 255
-			var vi := 0
+			var hsh := ((cx * 73856093) ^ (cy * 19349663)) & 255
+			var vi := 0  # base ~90%; accents are rare, tasteful wear (~6% / ~4%)
 			if src_ids.size() >= 3:
-				vi = 0 if h < 184 else (1 if h < 226 else 2)  # ~72% / 16% / 12%
+				vi = 1 if (hsh >= 230 and hsh < 245) else (2 if hsh >= 245 else 0)
 			elif src_ids.size() == 2:
-				vi = 0 if h < 205 else 1
+				vi = 1 if hsh >= 236 else 0
 			_floor_layer.set_cell(Vector2i(cx, cy), src_ids[vi], Vector2i.ZERO)
 	_use_tilemap_floor = true
 
