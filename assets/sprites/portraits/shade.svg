@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+<defs><radialGradient id="aura" cx="50%" cy="40%" r="60%">
+<stop offset="0%" stop-color="#23304a"/><stop offset="100%" stop-color="#0a0d14"/></radialGradient></defs>
+<rect width="160" height="160" fill="url(#aura)"/>
+<path d="M80 28 C58 28 50 48 50 70 C50 86 44 96 38 132 L122 132 C116 96 110 86 110 70 C110 48 102 28 80 28 Z" fill="#121620"/>
+<path d="M80 34 C64 34 58 50 58 68 C58 74 56 78 54 84 C66 76 72 84 80 84 C88 84 94 76 106 84 C104 78 102 74 102 68 C102 50 96 34 80 34 Z" fill="#05070b"/>
+<circle cx="72" cy="66" r="4" fill="#5fd1e6"/><circle cx="88" cy="66" r="4" fill="#5fd1e6"/>
+</svg>
