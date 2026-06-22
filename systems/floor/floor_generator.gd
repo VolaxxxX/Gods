@@ -77,7 +77,9 @@ func _assign_special_rooms(g: FloorGraph, rng: RandomNumberGenerator) -> void:
 	var rest: Array = dead_ends.duplicate()
 	rest.erase(boss)
 	_shuffle(rng, rest)
-	var specials := ["reward", "shop", "altar", "challenge", "cursed"]
+	# "secret" is last: it only appears on floors with enough dead-ends, making it a
+	# rare bonus. Its entrance is rendered as a cracked wall (see Room) — find it.
+	var specials := ["reward", "shop", "altar", "challenge", "secret", "cursed"]
 	for i in rest.size():
 		if i < specials.size():
 			g.get_node(rest[i])["type"] = specials[i]

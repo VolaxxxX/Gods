@@ -111,8 +111,12 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 
 	var node := graph.get_node(pos)
 	var open: Array[String] = []
+	var secret: Array[String] = []   # sides whose neighbour is a hidden secret room
 	for side in node["neighbors"].keys():
 		open.append(side)
+		var npos: Vector2i = node["neighbors"][side]
+		if graph.has(npos) and graph.get_node(npos)["type"] == "secret":
+			secret.append(side)
 
 	var template: RoomTemplate = null
 	if node["template_id"] != "":
@@ -128,6 +132,7 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 
 	# Build. If already cleared, treat as a safe room (no respawn).
 	var build_type: String = node["type"] if not already else "reward"
+	current_room.secret_sides = secret
 	current_room.build(template, biome, open, build_type, player, pool)
 
 	# Place the player: at the door we came through, else the room's spawn.

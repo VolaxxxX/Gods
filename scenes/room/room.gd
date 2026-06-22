@@ -17,6 +17,7 @@ signal door_taken(side: String)
 var template: RoomTemplate
 var biome: BiomeData
 var open_sides: Array[String] = []   # sides that connect to a neighbor
+var secret_sides: Array[String] = [] # open sides whose neighbour is a secret room
 var room_type: String = "combat"
 var locked: bool = false
 
@@ -57,8 +58,8 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 			add_child(pf)
 
 	# Room-type contents.
-	if room_type == "reward" or room_type == "shop":
-		_spawn_pickups(room_type == "shop")
+	if room_type == "reward" or room_type == "shop" or room_type == "secret":
+		_spawn_pickups(room_type == "shop")  # secret rooms = free loot for finding them
 	elif room_type == "challenge":
 		_spawn_sacrifice()
 	elif room_type == "cursed":
@@ -461,6 +462,26 @@ func _draw() -> void:
 	for side in open_sides:
 		_draw_doorway(side)
 
+## Camouflage a secret room's entrance as a cracked wall segment: it fills the
+## doorway like wall (the gap is still walkable), with faint cracks as a hint that
+## an observant player can spot and walk through.
+func _draw_secret_door(rect: Rect2, horizontal: bool) -> void:
+	var wcol := _dim(_wall_color, 0.55)
+	var wr := _tile("wall", _wall_color)
+	if wr[0] != null:
+		draw_texture_rect(wr[0], rect, true, _dim(wr[1], 0.55))
+	else:
+		draw_rect(rect, wcol)
+	draw_rect(Rect2(rect.position, Vector2(rect.size.x, 3) if horizontal else Vector2(3, rect.size.y)),
+		Color(1, 1, 1, 0.08))  # faint top/edge bevel like the rest of the wall
+	# A few hairline cracks (subtle hint).
+	var c := rect.get_center()
+	var crack := Color(0.0, 0.0, 0.0, 0.35)
+	draw_line(c + Vector2(-10, -8), c + Vector2(-2, 2), crack, 1.5)
+	draw_line(c + Vector2(-2, 2), c + Vector2(6, -4), crack, 1.5)
+	draw_line(c + Vector2(6, -4), c + Vector2(12, 6), crack, 1.5)
+	draw_line(c + Vector2(2, 0), c + Vector2(4, 10), crack, 1.0)
+
 ## Deterministic faint light/dark patches over the floor cells (anti-repetition).
 func _draw_floor_variation(w: float, h: float) -> void:
 	var cols := int(ceil(w / TILE))
@@ -481,15 +502,19 @@ func _draw_floor_variation(w: float, h: float) -> void:
 				draw_rect(cell, Color(1, 1, 1, 0.05))
 
 ## A doorway frame in the wall gap: an arched opening (accent), red gate if locked.
+## A side leading to a SECRET room is camouflaged as a cracked wall instead.
 func _draw_doorway(side: String) -> void:
 	var p := _door_position(side)
-	var col := _accent_color if not locked else Color(0.55, 0.32, 0.30)
 	var horizontal := side == "N" or side == "S"
 	var rect: Rect2
 	if horizontal:
 		rect = Rect2(p.x - DOOR_HALF, p.y - WALL_THICK * 0.5, DOOR_HALF * 2.0, WALL_THICK)
 	else:
 		rect = Rect2(p.x - WALL_THICK * 0.5, p.y - DOOR_HALF, WALL_THICK, DOOR_HALF * 2.0)
+	if side in secret_sides:
+		_draw_secret_door(rect, horizontal)
+		return
+	var col := _accent_color if not locked else Color(0.55, 0.32, 0.30)
 	# Dark threshold, bright frame.
 	draw_rect(rect, Color(0.05, 0.04, 0.06, 0.9))
 	draw_rect(rect, Color(col.r, col.g, col.b, 0.9), false, 3.0)
