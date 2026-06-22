@@ -18,6 +18,7 @@ var _ended: bool = false
 var _room_damage_taken: bool = false  # for the "cautious" play-style tally
 var _wrath_active: bool = false       # a god's wrath wave is in progress
 var _canvas_mod: CanvasModulate       # per-realm mood lighting
+var _minimap: Minimap
 
 func _ready() -> void:
 	# Start a fresh run if one isn't already active (e.g. launched directly).
@@ -63,6 +64,12 @@ func _ready() -> void:
 	add_child(ui_layer)
 	ui_layer.add_child(TouchControls.new())
 	add_child(PauseMenu.new())
+	# Floor minimap (top-right), refreshed on each room entry.
+	var map_layer := CanvasLayer.new()
+	map_layer.layer = 11
+	add_child(map_layer)
+	_minimap = Minimap.new()
+	map_layer.add_child(_minimap)
 
 	_setup_biome(RunManager.resuming)
 
@@ -153,6 +160,8 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	player.velocity = Vector2.ZERO
 
 	Events.emit_signal("room_entered", current_room)
+	if _minimap != null:
+		_minimap.set_map(graph, current_pos, _cleared)
 	_save_progress()
 
 	# Altars offer a divine pact on first visit.
@@ -199,6 +208,8 @@ func _on_room_cleared(pos: Vector2i, type: String) -> void:
 			player.health.heal(2.0)
 			Audio.play_sfx("pickup")
 	_cleared[pos] = true
+	if _minimap != null:
+		_minimap.set_map(graph, current_pos, _cleared)
 	Events.emit_signal("room_cleared", current_room)
 
 	if type == "boss" and not _ended:
