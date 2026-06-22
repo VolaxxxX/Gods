@@ -81,6 +81,10 @@ func player_spawn_point() -> Vector2:
 		return template.player_spawn()
 	return _size * 0.5
 
+## World-space size of this room (for camera clamping).
+func room_size() -> Vector2:
+	return _size
+
 ## Position just inside the given door (used when arriving from a neighbor).
 ## Pushed well past the door trigger area so arriving doesn't instantly re-trigger
 ## a transition.

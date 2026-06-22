@@ -135,6 +135,16 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	current_room.secret_sides = secret
 	current_room.build(template, biome, open, build_type, player, pool)
 
+	# Clamp the camera to the room so it never pans into the black void at the
+	# walls. Rooms sit at the origin, spanning (0,0)..room_size.
+	if camera != null:
+		var rs := current_room.room_size()
+		camera.limit_left = 0
+		camera.limit_top = 0
+		camera.limit_right = int(rs.x)
+		camera.limit_bottom = int(rs.y)
+		camera.reset_smoothing()
+
 	# Place the player: at the door we came through, else the room's spawn.
 	if from_side != "":
 		player.global_position = current_room.entry_point_for(from_side)

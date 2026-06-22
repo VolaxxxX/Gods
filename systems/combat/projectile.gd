@@ -89,8 +89,12 @@ func _on_body_entered(_body: Node) -> void:
 	_deactivate()
 
 func _draw() -> void:
-	if active and _spr != null and not _spr.visible:
+	# Only the greybox look (no bespoke sprite). A dark outline + bright core makes
+	# shots read clearly on ANY floor, light marble included.
+	if active and (_spr == null or not _spr.visible):
+		draw_circle(Vector2.ZERO, radius + 2.5, Color(0, 0, 0, 0.55))
 		draw_circle(Vector2.ZERO, radius, color)
+		draw_circle(Vector2.ZERO, radius * 0.5, Color(1, 1, 1, 0.92))
 
 func _activate() -> void:
 	active = true
