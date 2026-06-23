@@ -22,6 +22,7 @@ var _boss_target: float = 1.0   # target fill; the bar eases toward it (juice)
 var player: Node                # set by the run scene, for the dash indicator
 var _dash_bar: ProgressBar
 var _vignette: Control
+var _items_row: HFlowContainer
 var _t: float = 0.0
 var _hp_frac: float = 1.0
 var _danger: float = 0.0        # eased low-HP vignette intensity
@@ -97,6 +98,14 @@ func _ready() -> void:
 	_outline(dash_l, 3)
 	root.add_child(dash_l)
 
+	# Owned build at a glance: a wrapping row of boon icons + item chips.
+	_items_row = HFlowContainer.new()
+	_items_row.position = Vector2(24, 140)
+	_items_row.custom_minimum_size = Vector2(320, 0)
+	_items_row.add_theme_constant_override("h_separation", 4)
+	_items_row.add_theme_constant_override("v_separation", 4)
+	root.add_child(_items_row)
+
 	# Low-HP danger vignette (red, pulses) — drawn at the screen edges.
 	_vignette = Control.new()
 	_vignette.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -157,10 +166,13 @@ func _ready() -> void:
 	Events.player_health_changed.connect(_on_health)
 	Events.gold_changed.connect(_on_gold)
 	Events.biome_changed.connect(func(_id): _refresh_biome(); _show_banner())
+	Events.item_picked_up.connect(func(_id): _refresh_build())
+	Events.blessing_chosen.connect(func(_id): _refresh_build())
 	_refresh_biome()
 	_show_banner()
 	_on_health(RunManager.player_health, RunManager.player_max_health)
 	_on_gold(RunManager.gold)
+	_refresh_build()
 
 func _process(delta: float) -> void:
 	_t += delta
@@ -230,6 +242,33 @@ func _draw_vignette() -> void:
 
 func _on_gold(total: int) -> void:
 	_gold_label.text = Loc.t("hud.gold", {"n": total})
+
+## Rebuild the owned-build row: a boon icon per blessing, a coloured chip per
+## relic (relics have no art yet). Tooltips name each one.
+func _refresh_build() -> void:
+	if _items_row == null:
+		return
+	for c in _items_row.get_children():
+		c.queue_free()
+	for bid in RunManager.chosen_blessings:
+		var b = GameData.blessings.get(bid, null)
+		var ic := Sprites.icon(bid)
+		if ic != null:
+			var tr := TextureRect.new()
+			tr.texture = ic
+			tr.custom_minimum_size = Vector2(26, 26)
+			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			if b != null:
+				tr.tooltip_text = Loc.t(b.name_key)
+			_items_row.add_child(tr)
+	for iid in RunManager.owned_items:
+		var it = GameData.items.get(iid, null)
+		var chip := ColorRect.new()
+		chip.custom_minimum_size = Vector2(22, 22)
+		chip.color = it.color if it != null else Color(0.7, 0.7, 0.75)
+		if it != null:
+			chip.tooltip_text = Loc.t(it.name_key)
+		_items_row.add_child(chip)
 
 ## Give a label a dark outline so light text stays readable on any floor.
 func _outline(label: Label, size: int) -> void:

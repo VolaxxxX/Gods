@@ -90,6 +90,10 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 	health.setup(data.max_health)
 	health.died.connect(_on_died)
 	health.damaged.connect(func(_a, _c, _m): _flash = 0.07)
+	# Floating damage number (juice). Spawned into the room (world space).
+	health.damaged.connect(func(a, _c, _m): FloatingText.spawn(
+		get_parent(), global_position + Vector2(randf_range(-6, 6), -_radius - 8),
+		str(int(round(a))), Color(1.0, 0.93, 0.65)))
 
 	hurtbox = HurtboxComponent.new()
 	hurtbox.health = health
