@@ -35,6 +35,9 @@ func _physics_process(delta: float) -> void:
 		var id := area.get_instance_id()
 		if _cooldowns.has(id):
 			continue
+		if not area.can_hit(self):  # piercing shot that already hit us this shot
+			continue
 		health.apply(area.damage)
 		area.report_hit(self)
+		area.mark_hit(self)
 		_cooldowns[id] = area.retrigger_interval

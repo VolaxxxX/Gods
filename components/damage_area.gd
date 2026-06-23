@@ -20,3 +20,13 @@ func setup(p_damage: Damage, pierce_through: bool = false, p_retrigger: float = 
 
 func report_hit(hurtbox: HurtboxComponent) -> void:
 	hit.emit(hurtbox)
+
+## Whether this area may damage `hurtbox` right now. Base areas always may (the
+## hurtbox's per-source cooldown throttles ticking contact). Projectiles override
+## this to hit each target at most once per shot, so a piercing shot can't
+## re-damage a large target every frame while it overlaps.
+func can_hit(_hurtbox: HurtboxComponent) -> bool:
+	return true
+
+func mark_hit(_hurtbox: HurtboxComponent) -> void:
+	pass

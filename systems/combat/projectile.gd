@@ -16,6 +16,7 @@ var on_hit_extra: Callable = Callable()
 
 var _shape: CollisionShape2D
 var _spr: Sprite2D  # optional projectile texture; greybox disc when absent
+var _hit_ids: Dictionary = {}  # hurtboxes already hit this shot (pierce: once each)
 
 func _ready() -> void:
 	_shape = CollisionShape2D.new()
@@ -41,6 +42,7 @@ func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool
 	_max_life = life
 	_life = 0.0
 	on_hit_extra = Callable()  # reset; weapon re-assigns per shot if needed
+	_hit_ids.clear()           # fresh per shot (pierce hits each target once)
 	setup(dmg, pierce_through, 0.0)  # projectiles are single-hit
 	(_shape.shape as CircleShape2D).radius = radius
 	# Player projectiles hit enemy hurtboxes (+ walls); enemy projectiles hit
@@ -76,6 +78,14 @@ func _physics_process(delta: float) -> void:
 	_life += delta
 	if _life >= _max_life:
 		_deactivate()
+
+## Each target is damaged at most once per shot — so a piercing projectile that
+## lingers inside a big hurtbox can't re-hit it every frame.
+func can_hit(hurtbox: HurtboxComponent) -> bool:
+	return not _hit_ids.has(hurtbox.get_instance_id())
+
+func mark_hit(hurtbox: HurtboxComponent) -> void:
+	_hit_ids[hurtbox.get_instance_id()] = true
 
 func _on_hit(hurtbox: HurtboxComponent) -> void:
 	if on_hit_extra.is_valid():
