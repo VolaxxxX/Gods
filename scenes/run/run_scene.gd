@@ -19,6 +19,7 @@ var _room_damage_taken: bool = false  # for the "cautious" play-style tally
 var _wrath_active: bool = false       # a god's wrath wave is in progress
 var _char_intro_done: bool = false    # the chosen character's intro line (once per run)
 var _canvas_mod: CanvasModulate       # per-realm mood lighting
+var _post_fx: PostFX                  # full-screen grade + vignette + grain
 var _minimap: Minimap
 
 func _ready() -> void:
@@ -49,11 +50,12 @@ func _ready() -> void:
 	player.add_child(camera)
 	camera.make_current()
 
-	# Mood lighting: a per-realm CanvasModulate tints the world; a soft warm light
-	# follows the player so they're always readable in the gloom. Pure code.
+	# Mood lighting: a per-realm CanvasModulate tints the world; a warm light pools
+	# around the player so the hero is lit (a focal spotlight) and always readable
+	# in the gloom. Pure code.
 	_canvas_mod = CanvasModulate.new()
 	add_child(_canvas_mod)
-	var glow := Atmosphere.point_light(Color(1.0, 0.95, 0.86), 0.6, 240.0)
+	var glow := Atmosphere.point_light(Color(1.0, 0.92, 0.78), 0.95, 300.0)
 	player.add_child(glow)
 
 	Events.entity_died.connect(_on_entity_died)
@@ -74,6 +76,10 @@ func _ready() -> void:
 	_minimap = Minimap.new()
 	map_layer.add_child(_minimap)
 
+	# Full-screen post-processing (sits above the world, below the HUD/touch UI).
+	_post_fx = PostFX.new()
+	add_child(_post_fx)
+
 	_setup_biome(RunManager.resuming)
 
 ## (Re)build the floor for the current biome and enter its start room. Called on
@@ -84,7 +90,9 @@ func _setup_biome(from_resume: bool) -> void:
 		push_error("RunScene: unknown biome '%s'" % RunManager.biome_id)
 		return
 	if _canvas_mod != null:
-		_canvas_mod.color = biome.ambient
+		_canvas_mod.color = biome.ambient.darkened(0.14)
+	if _post_fx != null:
+		_post_fx.grade(RunManager.biome_id)
 
 	_cleared.clear()
 	if pool != null:

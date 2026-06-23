@@ -150,7 +150,8 @@ func _build_floor_tilemap() -> void:
 		+ "void fragment() {\n" \
 		+ "\tvec4 c = texture(TEXTURE, UV);\n" \
 		+ "\tfloat g = dot(c.rgb, vec3(0.299, 0.587, 0.114));\n" \
-		+ "\tc.rgb = mix(vec3(g), c.rgb, 0.72) * 0.84;\n" \
+		+ "\tc.rgb = mix(vec3(g), c.rgb, 0.64);\n" \
+		+ "\tc.rgb = pow(c.rgb, vec3(1.22)) * 0.64;\n" \
 		+ "\tCOLOR = c;\n}"
 	var mat := ShaderMaterial.new()
 	mat.shader = sh
