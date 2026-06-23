@@ -59,6 +59,10 @@ func attempt(origin: Vector2, direction: Vector2) -> bool:
 			projectile_color, projectile_life, pierce, projectile_sprite)
 		if faction_player and not on_hit_effects.is_empty():
 			p.on_hit_extra = _on_projectile_hit
+	# Audio: heavier (bigger) projectiles get a lower-pitched report, so each
+	# weapon/mob reads distinctly.
+	var pitch: float = clampf(1.45 - projectile_radius * 0.05, 0.7, 1.5)
+	Events.shot_fired.emit(faction_player, pitch)
 	return true
 
 ## Applies on-hit blessing/synergy effects when a player projectile lands.

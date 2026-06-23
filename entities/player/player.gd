@@ -221,6 +221,7 @@ func _physics_process(delta: float) -> void:
 			_dash_cd = DASH_COOLDOWN
 			_invuln_t = DASH_TIME + 0.05
 			Fx.play("muzzle", global_position, 22.0)
+			Events.player_dashed.emit()
 	if _dash_t > 0.0:
 		_dash_t -= delta
 		velocity = _dash_dir * DASH_SPEED
@@ -252,6 +253,7 @@ func _update_melee(delta: float) -> void:
 		_swing_t = 0.16
 		_attack_t = 0.22
 		Fx.play("slash", global_position + _last_aim * MELEE_OFFSET, 60.0)
+		Events.melee_swung.emit()
 		_melee.position = _last_aim * MELEE_OFFSET
 		var rng := RNG.stream("combat")
 		var rolled := Damage.compute(_melee_damage, {

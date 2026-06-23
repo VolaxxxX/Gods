@@ -20,6 +20,11 @@ signal entity_died(entity)
 signal player_health_changed(current: float, maximum: float)
 signal boss_spawned(entity, name_key: String)   # a boss/miniboss appeared
 signal boss_despawned                             # it died / room left
+# Audio cues (decoupled so the presentation layer can voice them). `pitch` lets
+# a weapon/mob sound be tuned per-source (big/heavy = lower).
+signal shot_fired(by_player: bool, pitch: float)
+signal melee_swung
+signal player_dashed
 
 # --- Pickups / progression ---
 signal item_picked_up(item_id: String)
