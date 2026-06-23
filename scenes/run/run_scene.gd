@@ -17,6 +17,7 @@ var _cleared: Dictionary = {}   # Vector2i -> true
 var _ended: bool = false
 var _room_damage_taken: bool = false  # for the "cautious" play-style tally
 var _wrath_active: bool = false       # a god's wrath wave is in progress
+var _char_intro_done: bool = false    # the chosen character's intro line (once per run)
 var _canvas_mod: CanvasModulate       # per-realm mood lighting
 var _minimap: Minimap
 
@@ -107,6 +108,11 @@ func _setup_biome(from_resume: bool) -> void:
 	# its lord greets you. Plays in the safe start room; lore is told once, then a
 	# short flavour line on later visits. Skipped on floor regen and on resume.
 	if not from_resume and RunManager.floor_in_biome == 1:
+		# On the very first descent of the run, the Ferryman sizes up the chosen
+		# soul (queues before the realm's lore, so it plays first).
+		if not _char_intro_done:
+			_char_intro_done = true
+			Dialogue.speak("narrator", RunManager.character_id)
 		var b := RunManager.biome_id
 		Dialogue.speak("narrator", "enter_" + b)
 		var god: String = REALM_LORDS.get(b, "")
@@ -165,6 +171,17 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	if _minimap != null:
 		_minimap.set_map(graph, current_pos, _cleared)
 	_save_progress()
+
+	# First-visit flavour for the special rooms (toasts, so they never block the
+	# shopping / pact UI). `build_type` is "reward" once a room is cleared, so these
+	# only fire the first time the room is its true self.
+	match build_type:
+		"shop":
+			Dialogue.speak("shade", "shop")
+		"challenge":
+			Dialogue.speak("narrator", "sacrifice")
+		"altar":
+			Dialogue.speak("narrator", "altar")
 
 	# Altars offer a divine pact on first visit.
 	if build_type == "altar":
@@ -244,12 +261,29 @@ func _offer_boon() -> void:
 	var opts := _blessing_options(2)
 	if opts.is_empty():
 		return
+	# Stage it: the Ferryman announces the god's appearance, THEN the gift is
+	# offered (the chosen god then speaks via the normal "boon" line).
+	if Dialogue.speak("narrator", "god_encounter"):
+		Dialogue.queue_empty.connect(_show_boon_offer.bind(opts), CONNECT_ONE_SHOT)
+	else:
+		_show_boon_offer(opts)
+
+func _show_boon_offer(opts: Array) -> void:
 	var ui := BlessingChoice.new()
 	ui.setup(opts, "ui.god_favor")
 	ui.chosen.connect(func(id): RunManager.add_blessing(id))
 	add_child(ui)
 
 func _trigger_wrath() -> void:
+	if current_room == null:
+		return
+	# A god's patience snaps: announce it, then unleash the wave.
+	if Dialogue.speak("narrator", "wrath"):
+		Dialogue.queue_empty.connect(_spawn_wrath_wave, CONNECT_ONE_SHOT)
+	else:
+		_spawn_wrath_wave()
+
+func _spawn_wrath_wave() -> void:
 	if current_room == null:
 		return
 	_wrath_active = true
@@ -318,6 +352,19 @@ func _on_realm_chosen(next_biome: String) -> void:
 ## Palier boss down: present TWO doors (Hades-style) previewing their reward; the
 ## chosen reward is applied, then descend into a fresh map of the SAME zone.
 func _offer_doors() -> void:
+	# The palier (mini-boss) has fallen: narrator + realm god mark it, THEN the
+	# two reward doors appear.
+	var b := RunManager.biome_id
+	var shown := Dialogue.speak("narrator", "miniboss_" + b)
+	var god: String = REALM_LORDS.get(b, "")
+	if god != "":
+		shown = Dialogue.speak(god, "miniboss_" + b) or shown
+	if shown:
+		Dialogue.queue_empty.connect(_show_doors, CONNECT_ONE_SHOT)
+	else:
+		_show_doors()
+
+func _show_doors() -> void:
 	var kinds := ["treasure", "boon", "vigor"]
 	RNG.shuffle("door", kinds)
 	var ui := DoorChoice.new()

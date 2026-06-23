@@ -52,6 +52,7 @@
 		"res://content/dialogue_bosses.json",
 		"res://content/dialogue_realms.json",
 		"res://content/dialogue_story.json",
+		"res://content/dialogue_events.json",
 		"res://content/codex.json"
 	]
 }

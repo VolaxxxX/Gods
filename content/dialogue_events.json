@@ -1,0 +1,79 @@
+{
+	"_comment": "Run-event dialogue: palier (miniboss) falls, roaming god encounters, a god's wrath, and flavour for shops / sacrifice altars / pact altars / the chosen character. Triggers: miniboss_<biome>, god_encounter, wrath, shop, sacrifice, altar, char_<id>.",
+	"type": "dialogue",
+	"entries": [
+		{"id": "mb_greece_narr", "speaker": "narrator", "trigger": "miniboss_greece", "modal": true,
+		 "lines": ["The Cyclops crashes down, its single eye gone dark. The way deeper into Hades lies open."]},
+		{"id": "mb_greece_god", "speaker": "greece_zeus", "trigger": "miniboss_greece", "modal": true,
+		 "lines": ["One of the old earth-born brutes, felled by a soul. Hah! Keep this up, little spark."]},
+
+		{"id": "mb_bali_narr", "speaker": "narrator", "trigger": "miniboss_bali", "modal": true,
+		 "lines": ["The Bhuta Lord dissolves into smoke and ash. The unseen road sinks deeper still."]},
+		{"id": "mb_bali_god", "speaker": "bali_acintya", "trigger": "miniboss_bali", "modal": true,
+		 "lines": ["A lesser darkness, unmade. But the deeper dark of Rangda waits below. Steady yourself."]},
+
+		{"id": "mb_egypt_narr", "speaker": "narrator", "trigger": "miniboss_egypt", "modal": true,
+		 "lines": ["The Sphinx falls silent, its riddle forever unanswered now. The night-road opens onward."]},
+		{"id": "mb_egypt_god", "speaker": "egypt_osiris", "trigger": "miniboss_egypt", "modal": true,
+		 "lines": ["The guardian of the gate is overcome. But Apophis, the true terror, coils far below. Press on."]},
+
+		{"id": "mb_norse_narr", "speaker": "narrator", "trigger": "miniboss_norse", "modal": true,
+		 "lines": ["The Troll topples into the frost with a sound like a falling mountain. The Helvegr leads ever down."]},
+		{"id": "mb_norse_god", "speaker": "norse_odin", "trigger": "miniboss_norse", "modal": true,
+		 "lines": ["A jotunn's kin, broken upon the ice. Good. But the wolf still waits below, and the wolf is patient."]},
+
+		{"id": "mb_japan_narr", "speaker": "narrator", "trigger": "miniboss_japan", "modal": true,
+		 "lines": ["The Tengu's wings fold and still. Deeper into Yomi's gloom the road descends."]},
+		{"id": "mb_japan_god", "speaker": "japan_amaterasu", "trigger": "miniboss_japan", "modal": true,
+		 "lines": ["The mountain-spirit yields to you. But Orochi's eight shadows still gather below. Carry my light onward."]},
+
+		{"id": "mb_aztec_narr", "speaker": "narrator", "trigger": "miniboss_aztec", "modal": true,
+		 "lines": ["The Jaguar Lord sinks to the bone-floor, its hunt ended. The nine levels open further down."]},
+		{"id": "mb_aztec_god", "speaker": "aztec_mictlantecuhtli", "trigger": "miniboss_aztec", "modal": true,
+		 "lines": ["One of my hunters, hunted in turn. Curious. Cipactli waits at the bottom — go and meet it."]},
+
+		{"id": "enc_a", "speaker": "narrator", "trigger": "god_encounter", "modal": true,
+		 "lines": ["A god of this realm stays your path — not in wrath, but with a gift held out in open hands.",
+			"Such favor is rarely given freely. Choose, and choose well."]},
+		{"id": "enc_b", "speaker": "narrator", "trigger": "god_encounter", "modal": true,
+		 "lines": ["The air turns heavy with presence. One of the dead's own gods has come to test you — and to tempt you.",
+			"Take what is offered, if you dare."]},
+
+		{"id": "wrath_a", "speaker": "narrator", "trigger": "wrath", "modal": true,
+		 "lines": ["You have lingered too long, and a god's patience is a thin and brittle thing.",
+			"It breaks now — and the dead rise at its fury. Survive them, and the spoils are yours."]},
+		{"id": "wrath_b", "speaker": "narrator", "trigger": "wrath", "modal": true,
+		 "lines": ["Pride, was it? Or simple greed? Either way, a god has taken offense at you.",
+			"Its wrath floods this room. Endure it — and be rewarded."]},
+
+		{"id": "shop_a", "speaker": "shade", "trigger": "shop", "modal": false,
+		 "lines": ["Coin still spends, even down here. Heh — especially down here. Take a look, friend."]},
+		{"id": "shop_b", "speaker": "shade", "trigger": "shop", "modal": false,
+		 "lines": ["Everything has its price in the land of the dead, and I do mean everything. Go on, browse."]},
+		{"id": "shop_c", "speaker": "shade", "trigger": "shop", "modal": false,
+		 "lines": ["Don't be shy. Dead men's gold still buys living men's miracles. What'll it be?"]},
+
+		{"id": "sac_a", "speaker": "narrator", "trigger": "sacrifice", "modal": false,
+		 "lines": ["The altar thirsts. It offers power — but only blood pays for it, and the blood it craves is yours."]},
+		{"id": "sac_b", "speaker": "narrator", "trigger": "sacrifice", "modal": false,
+		 "lines": ["Here you may trade life for strength. The dead struck such bargains often. Few ever profited."]},
+
+		{"id": "altar_a", "speaker": "narrator", "trigger": "altar", "modal": false,
+		 "lines": ["A shrine to one of this realm's gods stands open. Kneel, and a divine pact may be struck."]},
+		{"id": "altar_b", "speaker": "narrator", "trigger": "altar", "modal": false,
+		 "lines": ["The gods of the dead are listening, here. Offer your devotion, and a boon will answer."]},
+
+		{"id": "char_wanderer", "speaker": "narrator", "trigger": "char_wanderer", "modal": true,
+		 "lines": ["You come as you are — no blade favored, no single art mastered. A wanderer, then; the most honest kind of soul to walk this road.",
+			"We shall see what you make of yourself in the dark."]},
+		{"id": "char_warrior", "speaker": "narrator", "trigger": "char_warrior", "modal": true,
+		 "lines": ["You carry yourself like one who died with a sword still in hand. The dead respect a warrior — right up until they drag one down.",
+			"Let us see whether your steel outlasts your pride."]},
+		{"id": "char_hunter", "speaker": "narrator", "trigger": "char_hunter", "modal": true,
+		 "lines": ["A hunter's eyes — always measuring the distance. You will need them; nothing in these realms wishes to be caught.",
+			"Aim true, and even the dark may learn to fear you."]},
+		{"id": "char_swift", "speaker": "narrator", "trigger": "char_swift", "modal": true,
+		 "lines": ["Light on your feet, and quick to flee — there is no shame in that. The swift are the ones who live to walk the road again.",
+			"Run well, then. The dead are patient, but they are slow."]}
+	]
+}
