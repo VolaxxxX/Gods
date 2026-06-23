@@ -17,10 +17,14 @@ const TOAST_BASE := 1.6       # toast: minimum seconds a fully-typed line linger
 const TOAST_PER_CHAR := 0.045 # toast: extra linger per character (so long lines stay)
 const BOB_AMPL := 4.0         # portrait idle breathing, pixels
 
+const VOICE_STRIDE := 3       # play a voice blip every Nth revealed character
+
 var _speaker := ""
+var _speaker_id := ""
 var _portrait: Texture2D
 var _lines: Array = []
 var _modal := false
+var _voiced_upto := 0         # last character index we played a blip for
 
 var _i := 0
 var _text: Label
@@ -37,8 +41,10 @@ var _base_top := -210.0
 var _base_bottom := -30.0
 var _pic_base_y := 0.0
 
-func setup(speaker_name: String, portrait: Texture2D, lines: Array, modal: bool) -> void:
+func setup(speaker_name: String, portrait: Texture2D, lines: Array, modal: bool,
+		speaker_id: String = "") -> void:
 	_speaker = speaker_name
+	_speaker_id = speaker_id
 	_portrait = portrait
 	_lines = lines
 	_modal = modal
@@ -123,17 +129,20 @@ func _ready() -> void:
 	_text.add_theme_constant_override("outline_size", 3)
 	col.add_child(_text)
 
-	# A blinking "tap to continue" cue, modal only (toasts auto-advance).
+	# A blinking "tap to continue" cue at the panel's right edge, modal only
+	# (toasts auto-advance and need no prompt).
 	if _modal:
 		_arrow = Label.new()
 		_arrow.text = "▼"
-		_arrow.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-		_arrow.add_theme_font_size_override("font_size", 20)
+		_arrow.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+		_arrow.size_flags_vertical = Control.SIZE_SHRINK_END
+		_arrow.custom_minimum_size = Vector2(28, 0)
+		_arrow.add_theme_font_size_override("font_size", 24)
 		_arrow.add_theme_color_override("font_color", Color(0.32, 0.18, 0.06))
-		_arrow.add_theme_color_override("font_outline_color", Color(1, 0.94, 0.78, 0.8))
+		_arrow.add_theme_color_override("font_outline_color", Color(1, 0.94, 0.78, 0.85))
 		_arrow.add_theme_constant_override("outline_size", 3)
 		_arrow.visible = false
-		col.add_child(_arrow)
+		row.add_child(_arrow)
 
 	_panel.modulate.a = 0.0
 	_show_line()
@@ -159,6 +168,7 @@ func _show_line() -> void:
 	_full_len = _text.text.length()
 	_reveal = 0.0
 	_hold = 0.0
+	_voiced_upto = 0
 	_text.visible_characters = 0
 	if _arrow != null:
 		_arrow.visible = false
@@ -185,17 +195,32 @@ func _process(delta: float) -> void:
 		_panel.offset_bottom = _base_bottom + drop
 		_panel.modulate.a = e
 
-	# Portrait breathing + entrance rise (only once the panel has arrived).
+	var talking := _intro_t > 0.4 and not _fully_revealed()
+
+	# Portrait breathing + entrance rise (only once the panel has arrived). While
+	# the line is still typing the bob is quicker and deeper, so the speaker looks
+	# animated/"talking"; it settles to a slow idle breath once done.
 	if _pic != null:
 		var rise := (1.0 - _ease_out(_intro_t)) * 18.0
-		var bob := sin(_anim_t * 2.2) * BOB_AMPL * _intro_t
+		var rate := 7.0 if talking else 2.2
+		var ampl := (BOB_AMPL + 1.5) if talking else BOB_AMPL
+		var bob := sin(_anim_t * rate) * ampl * _intro_t
 		_pic.position.y = _pic_base_y - rise + bob
 		_pic.modulate.a = _intro_t
 
 	# Typewriter reveal, gated until the panel is mostly in.
-	if _intro_t > 0.4 and not _fully_revealed():
+	if talking:
 		_reveal = minf(float(_full_len), _reveal + CHARS_PER_SEC * delta)
 		_text.visible_characters = int(_reveal)
+		# A voice blip every few characters, skipping whitespace, so the speaker
+		# "talks" as the line types out.
+		var shown := int(_reveal)
+		while _voiced_upto < shown:
+			_voiced_upto += 1
+			if _voiced_upto % VOICE_STRIDE == 0 and _voiced_upto <= _full_len:
+				var ch := _text.text.substr(_voiced_upto - 1, 1)
+				if ch.strip_edges() != "":
+					Audio.play_voice(_speaker_id)
 
 	if _fully_revealed():
 		_text.visible_characters = -1

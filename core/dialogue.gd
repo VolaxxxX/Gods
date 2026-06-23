@@ -96,7 +96,7 @@ func _pump() -> void:
 	for f in d.set_flags:
 		SaveManager.set_flag(f)
 	var box := DialogueBox.new()
-	box.setup(_speaker_name(d.speaker), Sprites.portrait(d.speaker), d.lines, d.modal)
+	box.setup(_speaker_name(d.speaker), Sprites.portrait(d.speaker), d.lines, d.modal, d.speaker)
 	box.finished.connect(_on_finished, CONNECT_ONE_SHOT)
 	var host := get_tree().current_scene
 	if host != null:

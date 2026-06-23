@@ -25,6 +25,13 @@ var _sfx_vol: float = 0.9
 var _current_music: String = ""
 var _last_hp: float = -1.0
 
+# Procedural "voice" for dialogue: a short synth blip, pitched per speaker, played
+# as each word is typed (Animal-Crossing / VN style). Synthesized at runtime so it
+# needs no audio files and works on Web. A bespoke voice WAV (assets/audio/sfx/
+# voice.*) overrides the synth if the maintainer drops one in.
+var _voice_player: AudioStreamPlayer
+var _voice_stream: AudioStream
+
 func _ready() -> void:
 	_music = AudioStreamPlayer.new()
 	add_child(_music)
@@ -34,6 +41,11 @@ func _ready() -> void:
 		_voices.append(p)
 	for key in SFX_KEYS:
 		_sfx_cache[key] = _find_stream(SFX_DIR, key)
+
+	_voice_player = AudioStreamPlayer.new()
+	add_child(_voice_player)
+	var bespoke = _find_stream(SFX_DIR, "voice")
+	_voice_stream = bespoke if bespoke != null else _make_voice_blip()
 
 	_connect_events()
 	load_volumes()
@@ -50,6 +62,49 @@ func _connect_events() -> void:
 	Events.run_ended.connect(func(_v): play_music("hub"))
 
 # --- Public API ---
+## A short voice blip for the dialogue typewriter, pitched for `speaker` so each
+## god sounds distinct (deterministic, no audio files needed). No-op if muted.
+func play_voice(speaker: String) -> void:
+	if _voice_stream == null or _voice_player == null or _sfx_vol <= 0.001:
+		return
+	_voice_player.stream = _voice_stream
+	_voice_player.pitch_scale = voice_pitch(speaker)
+	_voice_player.volume_db = _to_db(_sfx_vol * 0.45)  # softer than gameplay SFX
+	_voice_player.play()
+
+## A stable pitch per speaker: the Ferryman is low and grave, gods are spread
+## across a tuneful range by a hash of their id (so each has its own timbre).
+func voice_pitch(speaker: String) -> float:
+	if speaker == "narrator":
+		return 0.72
+	if speaker == "shade":
+		return 0.95
+	var semis := [-5, -3, -2, 0, 2, 3, 5, 7]
+	var st: int = semis[absi(hash(speaker)) % semis.size()]
+	return pow(2.0, float(st) / 12.0)
+
+## A ~55ms decaying two-tone blip rendered to a 16-bit mono WAV. Pitched at play
+## time via pitch_scale, so one stream serves every speaker.
+func _make_voice_blip() -> AudioStreamWAV:
+	var rate := 22050
+	var frames := int(0.055 * rate)
+	var bytes := PackedByteArray()
+	bytes.resize(frames * 2)
+	var f0 := 330.0
+	for i in frames:
+		var t := float(i) / float(rate)
+		var env: float = exp(-t * 42.0)            # quick percussive decay
+		var w := sin(TAU * f0 * t) * 0.7 + sin(TAU * f0 * 2.0 * t) * 0.3
+		var s: int = int(clampf(w * env, -1.0, 1.0) * 14000.0)
+		bytes[i * 2] = s & 0xFF
+		bytes[i * 2 + 1] = (s >> 8) & 0xFF
+	var wav := AudioStreamWAV.new()
+	wav.format = AudioStreamWAV.FORMAT_16_BITS
+	wav.mix_rate = rate
+	wav.stereo = false
+	wav.data = bytes
+	return wav
+
 func play_sfx(key: String) -> void:
 	var stream = _sfx_cache.get(key, null)
 	if stream == null:
