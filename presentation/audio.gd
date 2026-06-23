@@ -30,6 +30,17 @@ var _sfx_vol: float = 0.9
 var _current_music: String = ""
 var _last_hp: float = -1.0
 
+# Boss battle music: swapped in over the realm theme while a boss/mini-boss lives,
+# then reverted. A real track (assets/audio/music/<realm>_boss.ogg, or a generic
+# boss_battle.ogg) wins; otherwise an epic loop is synthesized once and transposed
+# per realm so each fight has its own key. Per-realm transpose (semitone ratios):
+const BOSS_TRANSPOSE := {
+	"greece": 1.0, "bali": 1.189, "egypt": 1.122,
+	"norse": 0.891, "japan": 1.059, "aztec": 0.944,
+}
+var _in_boss: bool = false
+var _boss_synth: AudioStream
+
 # Procedural "voice" for dialogue: a short synth blip, pitched per speaker, played
 # as each word is typed. A bespoke voice WAV (assets/audio/sfx/voice.*) overrides it.
 var _voice_player: AudioStreamPlayer
@@ -52,6 +63,12 @@ func _ready() -> void:
 	var bespoke = _find_stream(SFX_DIR, "voice")
 	_voice_stream = bespoke if bespoke != null else _make_voice_blip()
 
+	# Pre-build the synthesized boss loop now (behind the loading screen) so the
+	# first boss never causes a mid-fight hitch. A real boss track still overrides
+	# it at play time; this only fires the fallback synth once.
+	if _find_stream(MUSIC_DIR, "boss_battle") == null:
+		_boss_synth = _make_boss_music()
+
 	_connect_events()
 	load_volumes()
 	play_music("hub")  # silent until a hub track exists; harmless
@@ -64,7 +81,8 @@ func _connect_events() -> void:
 	Events.gold_changed.connect(_on_gold)
 	Events.player_health_changed.connect(_on_player_hp)
 	Events.biome_changed.connect(func(id): play_music(id))
-	Events.boss_spawned.connect(func(_e, _k): play_sfx("boss"))
+	Events.boss_spawned.connect(_on_boss_appeared)
+	Events.boss_despawned.connect(_on_boss_gone)
 	Events.shot_fired.connect(func(by_p, pitch): play_sfx("shoot" if by_p else "enemy_shoot", pitch))
 	Events.melee_swung.connect(func(): play_sfx("melee"))
 	Events.player_dashed.connect(func(): play_sfx("dash"))
@@ -126,8 +144,55 @@ func play_music(id: String) -> void:
 	elif stream is AudioStreamOggVorbis or stream is AudioStreamMP3:
 		stream.loop = true
 	_music.stream = stream
+	_music.pitch_scale = 1.0  # boss music may have transposed it; reset for realm/hub
 	_music.volume_db = _to_db(_music_vol)
 	_music.play()
+
+# --- Boss battle music ---
+func _on_boss_appeared(_entity, _name_key: String) -> void:
+	play_sfx("boss")  # the impact stinger
+	_enter_boss_music()
+
+func _on_boss_gone() -> void:
+	_exit_boss_music()
+
+func _enter_boss_music() -> void:
+	if _in_boss:
+		return
+	_in_boss = true
+	var realm := RunManager.biome_id
+	# A real boss track wins; else a generic one; else the synthesized loop.
+	var stream = _find_stream(MUSIC_DIR, realm + "_boss")
+	if stream == null:
+		stream = _find_stream(MUSIC_DIR, "boss_battle")
+	var transpose := 1.0
+	if stream == null:
+		if _boss_synth == null:
+			_boss_synth = _make_boss_music()  # generated once, then cached
+		stream = _boss_synth
+		transpose = float(BOSS_TRANSPOSE.get(realm, 1.0))
+	_current_music = "@boss"
+	if stream is AudioStreamWAV:
+		stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		stream.loop_begin = 0
+		stream.loop_end = stream.data.size() / 2
+	elif stream is AudioStreamOggVorbis or stream is AudioStreamMP3:
+		stream.loop = true
+	_music.stream = stream
+	_music.pitch_scale = transpose
+	_music.volume_db = _to_db(_music_vol)
+	_music.play()
+
+func _exit_boss_music() -> void:
+	if not _in_boss:
+		return
+	_in_boss = false
+	_music.pitch_scale = 1.0
+	# Only resume the realm theme if a run is still live; if the run ended, the
+	# run_ended handler already switched to the hub track — don't fight it.
+	if RunManager.active:
+		_current_music = "@left_boss"  # force play_music to switch
+		play_music(RunManager.biome_id)
 
 # --- Volume settings (persisted in SaveManager.meta.options) ---
 func load_volumes() -> void:
@@ -290,6 +355,52 @@ func _render(buf: PackedFloat32Array) -> AudioStreamWAV:
 	wav.stereo = false
 	wav.data = bytes
 	return wav
+
+## A driving, minor-key, 4-bar epic boss loop (kick + sub-bass ostinato + snare
+## backbeat + minor chord stabs + a tense arpeggio lead), rendered to a seamless
+## looping WAV. Built once and transposed per realm at play time. ~6.4s @ 150 BPM.
+func _make_boss_music() -> AudioStreamWAV:
+	var bpm := 150.0
+	var beat := 60.0 / bpm
+	var beats := 16                      # 4 bars of 4
+	var b := _buf(beat * float(beats))
+	var root := 110.0                    # A2
+	# Natural-minor ratios from the root: 1, 2, b3, 4, 5, b6, b7, 8
+	var minor := [1.0, 1.122, 1.189, 1.335, 1.498, 1.587, 1.782, 2.0]
+
+	for i in beats:
+		var tb := float(i) * beat
+		_tone(b, tb, 130.0, 46.0, 0.13, 0.62, "sine", 30.0)             # kick, every beat
+		if i % 4 == 1 or i % 4 == 3:
+			_tone(b, tb, 1.0, 1.0, 0.13, 0.30, "sine", 20.0, 1.0)       # snare backbeat (noise)
+		_tone(b, tb, root * 0.5, root * 0.5, 0.22, 0.34, "saw", 7.0)    # sub-bass eighths
+		_tone(b, tb + beat * 0.5, root * 0.5, root * 0.5, 0.22, 0.34, "saw", 7.0)
+
+	# Minor triad stab + low drone fifth at the head of each bar.
+	var bar := 0
+	while bar < beats:
+		var tb := float(bar) * beat
+		_tone(b, tb, root, root, beat * 3.2, 0.15, "saw", 2.2)
+		_tone(b, tb, root * minor[2], root * minor[2], beat * 3.2, 0.13, "saw", 2.2)
+		_tone(b, tb, root * minor[4], root * minor[4], beat * 3.2, 0.13, "saw", 2.2)
+		_tone(b, tb, root * 0.5, root * 0.5, beat * 3.8, 0.10, "sine", 1.0)
+		bar += 4
+
+	# Tense arpeggio lead in eighth notes, one octave up.
+	var arp := [minor[0], minor[2], minor[4], minor[7], minor[4], minor[2]]
+	var step := 0
+	var npos := 0.0
+	var dur := beat * float(beats)
+	while npos < dur - 0.01:
+		var f: float = root * 2.0 * float(arp[step % arp.size()])
+		_tone(b, npos, f, f, beat * 0.45, 0.12, "square", 12.0)
+		npos += beat * 0.5
+		step += 1
+
+	# Soft master scale so the dense layering doesn't hard-clip.
+	for i in b.size():
+		b[i] *= 0.62
+	return _render(b)
 
 ## A ~55ms decaying two-tone blip for dialogue (pitched per speaker at play time).
 func _make_voice_blip() -> AudioStreamWAV:
