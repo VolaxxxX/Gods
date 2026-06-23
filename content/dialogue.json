@@ -1,5 +1,5 @@
 {
-	"_comment": "Hades-style evolving dialogue. Lines are raw English (pass through Loc). speaker = deity id, 'narrator' (Ferryman), or 'shade' (hub NPC). trigger = hub|boon|death|victory.",
+	"_comment": "Hades-style evolving dialogue. Lines are raw English (pass through Loc). speaker = deity id, 'narrator' (Ferryman), or 'shade' (hub NPC). trigger = hub|boon|death|victory. Modal beats pause + tap to advance; toasts auto-advance.",
 	"type": "dialogue",
 	"entries": [
 		{
@@ -9,10 +9,10 @@
 			"once": true,
 			"modal": true,
 			"lines": [
-				"You are a soul, lost in the lands of the dead.",
-				"Six underworlds bar your road to the light.",
-				"Cast down the lord of each realm, and the cycle may break.",
-				"Death is no ending here. It is only the road. Walk it again."
+				"You are a soul, wanderer — lost in the lands of the dead.",
+				"Six underworlds lie between you and the light above, and the lord of each will not yield his realm freely.",
+				"Cast them down, one by one, and the cycle that binds you here may finally break.",
+				"Death is no ending in this place. It is only the road. So walk it — and when it kills you, rise, and walk it again."
 			]
 		},
 		{
@@ -23,7 +23,7 @@
 			"min_meet": 1,
 			"max_stage": 0,
 			"lines": [
-				"Another descent awaits. The dead do not rest — and neither shall you."
+				"Another descent awaits. The dead do not rest, wanderer — and so neither shall you."
 			]
 		},
 		{
@@ -34,7 +34,7 @@
 			"min_meet": 1,
 			"max_stage": 0,
 			"lines": [
-				"The gates stand open, wanderer. Six thrones of death still wait."
+				"The gates stand open, as they always stand. Six thrones of death still wait beyond them."
 			]
 		},
 		{
@@ -45,7 +45,7 @@
 			"min_stage": 1,
 			"max_stage": 2,
 			"lines": [
-				"A realm has fallen to you. The other lords take notice."
+				"A realm has fallen to you, and word of it travels fast among the dead. The other lords take notice now — and they will not greet you so kindly as the first."
 			]
 		},
 		{
@@ -56,7 +56,7 @@
 			"min_stage": 3,
 			"max_stage": 5,
 			"lines": [
-				"Realm upon realm lies broken behind you. The light feels nearer now."
+				"Realm upon realm lies broken behind you, and the light above feels nearer than it has any right to. Do not slow now — the dead remember every name that nearly escaped them."
 			]
 		},
 		{
@@ -66,8 +66,8 @@
 			"modal": false,
 			"min_stage": 6,
 			"lines": [
-				"All six lords are vanquished. The cycle... it breaks.",
-				"Step into the light, wanderer. You have earned the dawn."
+				"All six lords are vanquished. The cycle... I feel it breaking, here, around you.",
+				"Nothing bars your road any longer. Step into the light, wanderer — you have more than earned the dawn."
 			]
 		},
 		{
@@ -77,7 +77,8 @@
 			"modal": true,
 			"min_meet": 0,
 			"lines": [
-				"Back so soon? The river always returns the drowned."
+				"Back so soon? The river always returns the drowned.",
+				"Rest a moment, then. The dead are patient teachers — and you have lessons left to learn."
 			]
 		},
 		{
@@ -87,7 +88,8 @@
 			"modal": true,
 			"min_meet": 6,
 			"lines": [
-				"Death again. You wear it like a familiar cloak now."
+				"Death again. You wear it like a familiar cloak now, hardly even shivering.",
+				"Up you get. The road is exactly where you left it."
 			]
 		},
 		{
@@ -97,7 +99,19 @@
 			"modal": true,
 			"min_meet": 14,
 			"lines": [
-				"I have ferried you more times than I can count — yet still you rise. Why?"
+				"I have ferried you more times than my ledger can hold — and still you rise.",
+				"Why is that, I wonder? What is it in you that simply will not stay dead?"
+			]
+		},
+		{
+			"id": "narr_death_d",
+			"speaker": "narrator",
+			"trigger": "death",
+			"modal": true,
+			"min_meet": 24,
+			"lines": [
+				"You and your dying — we have made a strange ritual of it, you and I.",
+				"But I begin to think the river fears you more than you ever feared it. Go on. Again."
 			]
 		},
 		{
@@ -107,7 +121,8 @@
 			"modal": true,
 			"min_meet": 0,
 			"lines": [
-				"A realm bows to you. The light draws one step nearer."
+				"A realm bows to you. Feel that? The light above draws one step nearer.",
+				"Savor it, wanderer — the next lord will have heard you coming."
 			]
 		},
 		{
@@ -117,7 +132,19 @@
 			"modal": true,
 			"min_meet": 6,
 			"lines": [
-				"Another lord cast down. The cycle thins around you, wanderer."
+				"Another lord cast down. The cycle thins around you, like mist burning off at dawn.",
+				"You are becoming something the dead did not plan for."
+			]
+		},
+		{
+			"id": "narr_victory_c",
+			"speaker": "narrator",
+			"trigger": "victory",
+			"modal": true,
+			"min_meet": 12,
+			"lines": [
+				"Again you stand where a god of death once ruled. The underworlds are running short of thrones.",
+				"Soon there will be only the road left — and the light waiting at the end of it."
 			]
 		},
 		{
@@ -127,7 +154,7 @@
 			"modal": false,
 			"min_meet": 0,
 			"lines": [
-				"Another newcomer? Heh. We all think we'll be the one to escape."
+				"Another newcomer? Heh. We all think we'll be the one to escape. Stick around — you'll learn the river's name soon enough."
 			]
 		},
 		{
@@ -137,7 +164,7 @@
 			"modal": false,
 			"min_meet": 2,
 			"lines": [
-				"Still here? So am I. Misery loves company, friend."
+				"Still here? So am I. Misery loves company, friend — and down here, company is about all there is."
 			]
 		},
 		{
@@ -147,7 +174,7 @@
 			"modal": false,
 			"min_stage": 3,
 			"lines": [
-				"You've beaten realms I never reached. Maybe it really is possible..."
+				"You've beaten realms I never even reached. Gods. Maybe it really is possible... If you make it out, think of us down here, would you?"
 			]
 		},
 		{
@@ -157,7 +184,7 @@
 			"modal": false,
 			"min_stage": 6,
 			"lines": [
-				"You did it. You actually... go. Go, and don't look back."
+				"You did it. You actually... you're going to go. Go on, then — and don't look back at us. Don't you dare look back."
 			]
 		},
 		{
@@ -166,7 +193,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"So — a mortal soul dares borrow my thunder. Use it well."
+				"So — a mortal soul dares borrow my thunder.",
+				"Wield it well, little spark, and do not shame the sky that lent it."
 			]
 		},
 		{
@@ -175,16 +203,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Again, Olympus answers you. Do not grow proud."
-			]
-		},
-		{
-			"id": "greece_zeus_boon_3",
-			"speaker": "greece_zeus",
-			"trigger": "boon",
-			"min_meet": 6,
-			"lines": [
-				"You wield my lightning like an old friend now, little soul."
+				"Again Olympus answers you. Do not grow proud — lightning forgets no arrogance."
 			]
 		},
 		{
@@ -193,7 +212,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Wisdom shields those who think. Bear my aegis."
+				"Wisdom shields those who think before they strike.",
+				"Bear my aegis, and let no careless blow ever find you."
 			]
 		},
 		{
@@ -202,7 +222,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You learn. Good — few souls ever do."
+				"You learn. Good — few souls ever do, and fewer still live to use it."
 			]
 		},
 		{
@@ -211,7 +231,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Quick feet, quicker wit — try to keep up!"
+				"Quick feet, quicker wit — try to keep up, little soul!",
+				"Speed is its own kind of mercy down here. Take mine."
 			]
 		},
 		{
@@ -220,7 +241,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Still running, little soul? Then run faster."
+				"Still running? Then run faster — the dead are slow, but they are many."
 			]
 		},
 		{
@@ -229,7 +250,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Blood and fury! Spill them in my name."
+				"Blood and fury! Spill them in my name.",
+				"Let every shade you meet learn the weight of my favor."
 			]
 		},
 		{
@@ -238,7 +260,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Yes — again! Let them dread your coming."
+				"Yes — again! Let them dread the very sound of your coming."
 			]
 		},
 		{
@@ -247,7 +269,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Aim true. The hunt rewards the patient."
+				"Aim true. The hunt rewards the patient and punishes the rash.",
+				"Loose your shot only when it cannot miss."
 			]
 		},
 		{
@@ -256,7 +279,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"A clean shot. The wild is proud of you."
+				"A clean kill. The wild is proud of you, hunter."
 			]
 		},
 		{
@@ -265,7 +288,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"All things in balance, traveler. I grant you wholeness."
+				"All things in balance, traveler — light and dark, life and ash.",
+				"I grant you wholeness. Spend it wisely."
 			]
 		},
 		{
@@ -274,7 +298,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You walk the middle path well."
+				"You walk the middle path well. Few keep their footing upon it."
 			]
 		},
 		{
@@ -283,7 +307,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Stand firm. My mane will guard you from the dark."
+				"Stand firm. My mane will guard you from the dark that bites.",
+				"Where Rangda's children gather, let them break against you."
 			]
 		},
 		{
@@ -292,7 +317,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Rangda's shadow fears you now. Good."
+				"Rangda's shadow fears you now. Good. Let it fear."
 			]
 		},
 		{
@@ -301,7 +326,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Drink deep of the lake's life, child."
+				"Drink deep of the lake's life, child.",
+				"Its waters have fed these valleys since before the gods were named."
 			]
 		},
 		{
@@ -310,7 +336,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"The waters remember your face."
+				"The waters remember your face now. You may always return to them."
 			]
 		},
 		{
@@ -319,7 +345,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"From the rice, abundance. Be nourished."
+				"From the rice, abundance; from abundance, strength.",
+				"Be nourished, and carry the harvest with you into the dark."
 			]
 		},
 		{
@@ -328,7 +355,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You flourish. Carry the harvest onward."
+				"You flourish even here. Carry the harvest onward."
 			]
 		},
 		{
@@ -337,7 +364,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"All falls to ruin in time. Borrow my hunger."
+				"All falls to ruin in time — that is no cruelty, only truth.",
+				"Borrow my hunger, and hasten what must come."
 			]
 		},
 		{
@@ -346,7 +374,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Time devours all — but not you. Not yet."
+				"Time devours all things. All but you, it seems — not yet."
 			]
 		},
 		{
@@ -355,7 +383,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"The sun's fire is yours. Burn away the dark."
+				"The sun's own fire is yours to carry into the night-road.",
+				"Burn away the dark, mortal, as I burn it back each dawn."
 			]
 		},
 		{
@@ -364,7 +393,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You blaze brightly, mortal. Take care you are not consumed."
+				"You blaze brightly. Take care you are not consumed by your own light."
 			]
 		},
 		{
@@ -373,7 +402,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Death is not the end. Endure, and live."
+				"Death is not the end — I, of all gods, should know it.",
+				"Endure as I endured, traveler, and you will live again."
 			]
 		},
 		{
@@ -382,7 +412,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Risen again. The Duat cannot keep you."
+				"Risen again. The Duat cannot keep what it cannot hold."
 			]
 		},
 		{
@@ -391,7 +421,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"I weigh every heart. Yours is heavy with resolve."
+				"I weigh every heart against the feather of truth.",
+				"Yours is heavy — not with sin, but with resolve. Carry it onward."
 			]
 		},
 		{
@@ -400,7 +431,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Send them to me. I will judge what remains."
+				"Send them to me. I will judge whatever remains when you are done."
 			]
 		},
 		{
@@ -409,7 +440,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Strike like the falcon — swift and sure."
+				"Strike like the falcon — swift, certain, and from above.",
+				"My eye misses nothing. See that yours misses nothing either."
 			]
 		},
 		{
@@ -418,7 +450,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Your eye is keen now. Strike."
+				"Your aim is keen now. Strike, and do not hesitate."
 			]
 		},
 		{
@@ -427,7 +459,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Chaos is power, if you dare to wield it."
+				"Chaos is power — if you have the nerve to wield it.",
+				"Take mine, and let the orderly dead tremble."
 			]
 		},
 		{
@@ -436,7 +469,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Reckless? Yes. Effective? Also yes."
+				"Reckless? Yes. Effective? Also yes. I approve."
 			]
 		},
 		{
@@ -445,7 +478,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Roar, little lion. Bathe in their blood."
+				"Roar, little lion. The hunt is a prayer, and blood the offering.",
+				"Bathe in it, and grow strong."
 			]
 		},
 		{
@@ -454,7 +488,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"The lioness is pleased. Hunt on."
+				"The lioness is pleased. Hunt on — do not stop to rest."
 			]
 		},
 		{
@@ -463,7 +497,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Knowledge has a price. Pay it, and grow wise."
+				"All knowledge has its price. I gave an eye for mine.",
+				"Pay yours, and grow wise enough to walk back out of Hel."
 			]
 		},
 		{
@@ -472,7 +507,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"The runes whisper your name in the halls of the slain."
+				"The runes whisper your name now, even in the halls of the slain."
 			]
 		},
 		{
@@ -481,7 +516,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Swing as I do — let nothing stand!"
+				"Swing as I swing — let nothing in the nine worlds stand before you!",
+				"Ha! This will make a tale worth the telling."
 			]
 		},
 		{
@@ -490,7 +526,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"HA! Again! Crush them, friend!"
+				"HA! Again! Crush them, friend — and crush them well!"
 			]
 		},
 		{
@@ -499,7 +535,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Beauty and war are one. Take my seidr."
+				"Beauty and war are one blade with two edges.",
+				"Take my seidr, and learn to wield them both."
 			]
 		},
 		{
@@ -508,7 +545,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You please me. The fallen will be yours to claim."
+				"You please me. Half the fallen will be yours to claim."
 			]
 		},
 		{
@@ -517,7 +554,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Hold the line, even at cost. That is honor."
+				"Hold the line, even at cost — especially at cost.",
+				"That is honor, and honor is the one thing the dead still respect."
 			]
 		},
 		{
@@ -526,7 +564,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Steadfast. Few keep their oath as you do."
+				"Steadfast. Few keep their oath as faithfully as you do."
 			]
 		},
 		{
@@ -535,7 +573,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"I see all roads. Walk yours with open eyes."
+				"I see every road from where I stand at the world's edge.",
+				"Walk yours with open eyes, and nothing will catch you unaware."
 			]
 		},
 		{
@@ -544,7 +583,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Nothing surprises you now. Stay watchful."
+				"Nothing surprises you now. Stay watchful — the dark is patient."
 			]
 		},
 		{
@@ -553,7 +592,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Oh, this will be fun. Take a little chaos, friend."
+				"Oh, this will be fun. Here — a little chaos, just for you.",
+				"Try not to lose a hand with it. Or do. I'd laugh either way."
 			]
 		},
 		{
@@ -562,7 +602,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Back again? You and I, we understand each other."
+				"Back again? You and I, friend — we understand each other."
 			]
 		},
 		{
@@ -571,7 +611,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Let my light drive back the shadows of Yomi."
+				"Let my light drive back the shadows of Yomi.",
+				"Even in the land of rot, the sun may still shine — through you."
 			]
 		},
 		{
@@ -580,7 +621,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You shine, even here in the dark. Beautiful."
+				"You shine, even here in the dark. It is a beautiful thing to see."
 			]
 		},
 		{
@@ -589,7 +630,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Ride the storm! Let the seas rage with you."
+				"Ride the storm! Let the seas rage and the sky split open with you!",
+				"My sister keeps her light. I keep the tempest. Take a share of it."
 			]
 		},
 		{
@@ -598,7 +640,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"The tempest knows you now. Good."
+				"The tempest knows you now, and answers when you call. Good."
 			]
 		},
 		{
@@ -607,7 +649,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Thunder answers the bold. Take it."
+				"Thunder answers only the bold — and you are bold enough.",
+				"Take it, and let the drums of the storm follow your every step."
 			]
 		},
 		{
@@ -616,7 +659,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"BOOM! Louder each time, little one!"
+				"BOOM! Louder each time, little one! I can scarcely hear myself!"
 			]
 		},
 		{
@@ -625,7 +668,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Swift as the wind — go, before they blink."
+				"Swift as the wind from my bag of gales — go, before they even blink.",
+				"Let no shade in Yomi ever lay a hand upon you."
 			]
 		},
 		{
@@ -634,7 +678,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You move like a gale now."
+				"You move like a gale now. They cannot strike what they cannot catch."
 			]
 		},
 		{
@@ -643,7 +687,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Strike from the moonlit shadow."
+				"Strike from the moonlit shadow, where the light does not reach.",
+				"The night is long, and patient, and yours."
 			]
 		},
 		{
@@ -652,7 +697,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"The night hides you well, hunter."
+				"The night hides you well, hunter. Use it."
 			]
 		},
 		{
@@ -661,7 +706,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Fox-fire and fortune favor the clever."
+				"Fox-fire and fortune favor the clever over the strong.",
+				"Take both, and be cunning enough to keep them."
 			]
 		},
 		{
@@ -670,7 +716,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"The fox smiles on you. Be cunning."
+				"The fox smiles upon you. Stay clever, and the smile will hold."
 			]
 		},
 		{
@@ -679,7 +725,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"War feeds the sun. Fight, and let it rise."
+				"War feeds the sun, and the sun feeds the world.",
+				"Fight, mortal, and let the dawn rise upon your offering."
 			]
 		},
 		{
@@ -688,7 +735,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"The sun burns hotter for your battles."
+				"The sun burns hotter for every battle you give it."
 			]
 		},
 		{
@@ -697,7 +744,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Ride the feathered wind, wise one."
+				"Ride the feathered wind, wise one, high above the bone-roads.",
+				"I gave mankind its arts long ago. Let me give you this."
 			]
 		},
 		{
@@ -706,7 +754,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You learn the old wisdom. Soar."
+				"You learn the old wisdom well. Soar with it."
 			]
 		},
 		{
@@ -715,7 +763,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Let the storm-rain fall upon your foes."
+				"Let the storm-rain fall upon your foes, sweet and pitiless.",
+				"I drown gardens and I feed them, both with the same water. Choose well."
 			]
 		},
 		{
@@ -724,7 +773,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"The rains come when you call now."
+				"The rains come when you call them now. Spend them sparingly."
 			]
 		},
 		{
@@ -733,7 +782,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Look into the smoking mirror... and take what you see."
+				"Look into the smoking mirror... and take what you see there.",
+				"Even if what you see is only yourself, sharpened to an edge."
 			]
 		},
 		{
@@ -742,7 +792,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"Trickster to trickster — well played."
+				"Trickster to trickster — well played, little smoke."
 			]
 		},
 		{
@@ -751,7 +801,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"All roads end in Mictlan. I lend you death's hand."
+				"All roads end at my throne of bone, soul. Yours among them, in time.",
+				"Until that day, I lend you death's own hand. Do not waste it."
 			]
 		},
 		{
@@ -760,7 +811,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You send many to my realm. I remember each."
+				"You send so many down to me. I remember every face you bring."
 			]
 		},
 		{
@@ -769,7 +820,8 @@
 			"trigger": "boon",
 			"min_meet": 0,
 			"lines": [
-				"Feast, dance, bloom! Even the dead may live."
+				"Feast, dance, bloom! Even the dead may yet live a little!",
+				"Take my joy — down here it cuts sharper than any blade."
 			]
 		},
 		{
@@ -778,7 +830,7 @@
 			"trigger": "boon",
 			"min_meet": 3,
 			"lines": [
-				"You flourish in the dark. How delightful."
+				"You flourish in the dark. How utterly delightful you are."
 			]
 		}
 	]

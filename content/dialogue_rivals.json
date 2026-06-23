@@ -1,25 +1,39 @@
 {
-	"_comment": "Jealous-rival reactions: the OFFENDED god speaks when you take a boon from their rival (syncretism). trigger 'rival', toast.",
+	"_comment": "Jealous-rival reactions: the OFFENDED god speaks when you take a boon from their rival (syncretism). trigger 'rival', toast (auto-advances).",
 	"type": "dialogue",
 	"entries": [
-		{"id": "greece_athena_rival", "speaker": "greece_athena", "trigger": "rival", "lines": ["Ares' gift? After all my counsel? Foolish, soul."]},
-		{"id": "greece_ares_rival", "speaker": "greece_ares", "trigger": "rival", "lines": ["Athena's schemes? Bah! War needs no clever tricks."]},
+		{"id": "greece_athena_rival", "speaker": "greece_athena", "trigger": "rival",
+		 "lines": ["Ares' gift? After all the counsel I have given you?", "Foolish, soul. Muscle without a mind is only a slower death."]},
+		{"id": "greece_ares_rival", "speaker": "greece_ares", "trigger": "rival",
+		 "lines": ["Athena's clever little tricks? Bah!", "War needs no schemes — only a strong arm and a short temper."]},
 
-		{"id": "bali_dewi_sri_rival", "speaker": "bali_dewi_sri", "trigger": "rival", "lines": ["You court destruction's hand? The harvest weeps for you."]},
-		{"id": "bali_batara_kala_rival", "speaker": "bali_batara_kala", "trigger": "rival", "lines": ["Life's bounty? It only delays the ruin I will bring."]},
+		{"id": "bali_dewi_sri_rival", "speaker": "bali_dewi_sri", "trigger": "rival",
+		 "lines": ["You court the hand of destruction? The harvest weeps for you.", "What I grow, Batara Kala only waits to devour."]},
+		{"id": "bali_batara_kala_rival", "speaker": "bali_batara_kala", "trigger": "rival",
+		 "lines": ["Life's bounty, is it? Enjoy it while it lasts.", "It only delays, by a single breath, the ruin I bring to all of it."]},
 
-		{"id": "egypt_osiris_rival", "speaker": "egypt_osiris", "trigger": "rival", "lines": ["You take Set's chaos — he who slew me? Tread carefully."]},
-		{"id": "egypt_horus_rival", "speaker": "egypt_horus", "trigger": "rival", "lines": ["Set's gift? You honor my father's murderer. Beware."]},
-		{"id": "egypt_set_rival", "speaker": "egypt_set", "trigger": "rival", "lines": ["Siding with my brother's kin? You wound me, mortal."]},
+		{"id": "egypt_osiris_rival", "speaker": "egypt_osiris", "trigger": "rival",
+		 "lines": ["You take Set's gift — Set, who murdered me and scattered my body across the sands?", "Tread very carefully with that one's favor, traveler."]},
+		{"id": "egypt_horus_rival", "speaker": "egypt_horus", "trigger": "rival",
+		 "lines": ["Set's power? You honor my father's murderer.", "Beware, soul. The falcon does not forget who tried to take his eye."]},
+		{"id": "egypt_set_rival", "speaker": "egypt_set", "trigger": "rival",
+		 "lines": ["Siding with my brother's pious little kin?", "You wound me, mortal — and here I thought we understood chaos, you and I."]},
 
-		{"id": "norse_tyr_rival", "speaker": "norse_tyr", "trigger": "rival", "lines": ["You trust the trickster's gift? Honor forbids it."]},
-		{"id": "norse_heimdall_rival", "speaker": "norse_heimdall", "trigger": "rival", "lines": ["I see Loki's hand upon you now. I will be watching."]},
-		{"id": "norse_loki_rival", "speaker": "norse_loki", "trigger": "rival", "lines": ["Running to the watchmen now? How terribly dull of you."]},
+		{"id": "norse_tyr_rival", "speaker": "norse_tyr", "trigger": "rival",
+		 "lines": ["You would trust the trickster's gift?", "Honor forbids it. Loki's gifts always come with a second, sharper edge."]},
+		{"id": "norse_heimdall_rival", "speaker": "norse_heimdall", "trigger": "rival",
+		 "lines": ["I see Loki's hand upon you now, plain as daylight on the rainbow road.", "I will be watching you, soul. I watch everything."]},
+		{"id": "norse_loki_rival", "speaker": "norse_loki", "trigger": "rival",
+		 "lines": ["Running to the watchmen and the oath-keepers now?", "How terribly, terribly dull of you. I expected far better."]},
 
-		{"id": "japan_amaterasu_rival", "speaker": "japan_amaterasu", "trigger": "rival", "lines": ["My brother's storm? You wound me, little soul."]},
-		{"id": "japan_susanoo_rival", "speaker": "japan_susanoo", "trigger": "rival", "lines": ["The sun's light? Tch. The sea bows to no one."]},
+		{"id": "japan_amaterasu_rival", "speaker": "japan_amaterasu", "trigger": "rival",
+		 "lines": ["My brother's storm? After I lit your path through all that dark?", "You wound me, little soul."]},
+		{"id": "japan_susanoo_rival", "speaker": "japan_susanoo", "trigger": "rival",
+		 "lines": ["The sun's prim little light? Tch.", "The sea bows to no one — least of all to my sister. Remember that."]},
 
-		{"id": "aztec_quetzalcoatl_rival", "speaker": "aztec_quetzalcoatl", "trigger": "rival", "lines": ["The smoking mirror's lies? I expected better of you."]},
-		{"id": "aztec_tezcatlipoca_rival", "speaker": "aztec_tezcatlipoca", "trigger": "rival", "lines": ["The feathered serpent's wisdom? Ha. We shall see."]}
+		{"id": "aztec_quetzalcoatl_rival", "speaker": "aztec_quetzalcoatl", "trigger": "rival",
+		 "lines": ["The smoking mirror's lies, woven into your very soul?", "I expected better of you, wise one. Tezcatlipoca gives nothing freely."]},
+		{"id": "aztec_tezcatlipoca_rival", "speaker": "aztec_tezcatlipoca", "trigger": "rival",
+		 "lines": ["The feathered serpent's borrowed wisdom?", "Ha. We shall see how far that carries you in the dark."]}
 	]
 }

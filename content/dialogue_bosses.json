@@ -1,35 +1,47 @@
 {
-	"_comment": "Per-boss fall commentary. trigger 'boss_<biome>'. Narrator + that realm's god. Modal beats, played in sequence by the dialogue queue.",
+	"_comment": "Per-boss fall commentary. trigger 'boss_<biome>'. Narrator + that realm's god, both modal, played in sequence by the dialogue queue.",
 	"type": "dialogue",
 	"entries": [
 		{"id": "boss_greece_narr", "speaker": "narrator", "trigger": "boss_greece", "modal": true,
-		 "lines": ["The Hydra of Lerna lies still — its many heads silenced at last."]},
+		 "lines": ["The Hydra of Lerna lies still at last, its many heads silenced.",
+			"Where one was struck down, no two have risen to take its place. Not this time."]},
 		{"id": "boss_greece_god", "speaker": "greece_zeus", "trigger": "boss_greece", "modal": true,
-		 "lines": ["The Hydra, dead? Even Olympus did not foresee that. Well struck, soul."]},
+		 "lines": ["The Hydra, dead — and by a mortal soul? Even Olympus did not foresee that.",
+			"Well struck, little spark. The sky will remember it."]},
 
 		{"id": "boss_bali_narr", "speaker": "narrator", "trigger": "boss_bali", "modal": true,
-		 "lines": ["Rangda is unmade. The demon queen's curse lifts from this realm."]},
+		 "lines": ["Rangda is unmade. The demon queen's curse loosens its grip upon this realm.",
+			"Her leyak scatter back into the dark from which they crawled."]},
 		{"id": "boss_bali_god", "speaker": "bali_acintya", "trigger": "boss_bali", "modal": true,
-		 "lines": ["Balance returns by your hand. The cycle turns cleaner now."]},
+		 "lines": ["Balance returns by your hand, traveler. The cycle turns the cleaner for it.",
+			"But remember — Rangda is never truly gone. Nor is Barong. That is the order of things."]},
 
 		{"id": "boss_egypt_narr", "speaker": "narrator", "trigger": "boss_egypt", "modal": true,
-		 "lines": ["Apophis, the chaos serpent, is undone. The Duat steadies."]},
+		 "lines": ["Apophis, the serpent of chaos, is undone. The Duat steadies on its course.",
+			"The sun's barque may sail the night-road unswallowed once more."]},
 		{"id": "boss_egypt_god", "speaker": "egypt_osiris", "trigger": "boss_egypt", "modal": true,
-		 "lines": ["The serpent devours the sun no more. You have my gratitude, traveler."]},
+		 "lines": ["The serpent devours the sun no longer. You have the gratitude of the risen dead.",
+			"Few who enter my realm leave it having mended something. You are one."]},
 
 		{"id": "boss_norse_narr", "speaker": "narrator", "trigger": "boss_norse", "modal": true,
-		 "lines": ["Fenrir falls, its chains scattered. Helheim trembles at your name."]},
+		 "lines": ["Fenrir falls, its broken chains scattered across the frost.",
+			"Helheim itself seems to hold its breath at the sound of your name."]},
 		{"id": "boss_norse_god", "speaker": "norse_odin", "trigger": "boss_norse", "modal": true,
-		 "lines": ["The wolf felled before Ragnarok. The runes did not foresee you, mortal."]},
+		 "lines": ["The wolf fated to swallow me whole at Ragnarok — felled early, and by you.",
+			"The runes did not foresee this. I scarce know whether to thank you or to fear you, mortal."]},
 
 		{"id": "boss_japan_narr", "speaker": "narrator", "trigger": "boss_japan", "modal": true,
-		 "lines": ["Orochi's eight heads are severed. Yomi falls quiet."]},
+		 "lines": ["Orochi's eight heads lie severed in the gloom. Yomi falls quiet.",
+			"The great serpent will flood these shadows no more."]},
 		{"id": "boss_japan_god", "speaker": "japan_amaterasu", "trigger": "boss_japan", "modal": true,
-		 "lines": ["Orochi's shadow lifts. My light reaches even into Yomi now."]},
+		 "lines": ["Orochi's shadow lifts, and my light reaches even here, into Yomi.",
+			"My brother slew this beast once, long ago. You have done it again — and for that I thank you."]},
 
 		{"id": "boss_aztec_narr", "speaker": "narrator", "trigger": "boss_aztec", "modal": true,
-		 "lines": ["Cipactli, the devourer, is slain. Mictlan bows before you."]},
+		 "lines": ["Cipactli, the great devourer, is slain. Mictlan bows its bony head before you.",
+			"The earth-beast the world was built upon will swallow no more souls."]},
 		{"id": "boss_aztec_god", "speaker": "aztec_mictlantecuhtli", "trigger": "boss_aztec", "modal": true,
-		 "lines": ["The devourer falls — and even I, lord of Mictlan, take note of you."]}
+		 "lines": ["The devourer falls — and even I, lord of all the dead, take note of you.",
+			"You walk my nine levels as though you mean to walk out of them. Curious. Continue."]}
 	]
 }
