@@ -11,8 +11,15 @@ var _last_hp: float = -1.0
 
 func _ready() -> void:
 	Events.entity_died.connect(_on_death)
+	Events.entity_damaged.connect(_on_entity_damaged)
 	Events.player_health_changed.connect(_on_player_hp)
 	Events.run_started.connect(func(_seed): _last_hp = -1.0)
+
+## A light kick of screenshake when the player lands a hit, for crunch (the
+## enemy already flashes white + sparks). Player hits are filtered out.
+func _on_entity_damaged(target, _amount: float) -> void:
+	if target != null and is_instance_valid(target) and not target.is_in_group("player"):
+		add_trauma(0.06)
 
 func _process(delta: float) -> void:
 	var cam := get_viewport().get_camera_2d()

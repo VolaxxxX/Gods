@@ -404,7 +404,13 @@ func _next_floor() -> void:
 
 func _on_entity_died(entity) -> void:
 	if entity == player and not _ended:
-		_end_run(false)
+		_ended = true
+		# The death beat: a full-screen epitaph, then back to the shore (hub).
+		var ds := DeathScreen.new()
+		ds.continued.connect(func():
+			RunManager.end_run(false)
+			SceneRouter.goto_hub())
+		add_child(ds)
 
 func _end_run(victory: bool) -> void:
 	_ended = true
