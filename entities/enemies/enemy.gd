@@ -181,9 +181,9 @@ func _physics_process(delta: float) -> void:
 	if not _phase2_done and not data.phase2_abilities.is_empty() \
 			and health.fraction() <= data.phase2_at:
 		_enter_phase2()
-	# Bespoke ability patterns; fire faster when enraged (below 40% HP).
+	# Bespoke ability patterns; fire faster when enraged (below 45% HP).
 	if not _abilities.is_empty() and is_instance_valid(_target):
-		var enrage := 1.6 if health.fraction() < 0.4 else 1.0
+		var enrage := 1.9 if health.fraction() < 0.45 else 1.0
 		for i in _abilities.size():
 			_ability_cd[i] -= delta * enrage
 			if _ability_cd[i] <= 0.0:
