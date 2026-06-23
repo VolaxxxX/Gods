@@ -11,7 +11,7 @@ extends CanvasLayer
 # contrast, saturation. Tuned to give each underworld its own colour identity.
 const REALM_GRADE := {
 	"greece": {"lift": Vector3(-0.012, -0.004, 0.022), "gain": Vector3(0.97, 1.0, 1.07), "contrast": 1.11, "sat": 1.02},
-	"bali":   {"lift": Vector3(-0.006, 0.010, 0.004),  "gain": Vector3(0.97, 1.05, 1.0),  "contrast": 1.07, "sat": 1.12},
+	"bali":   {"lift": Vector3(0.026, 0.040, 0.030),   "gain": Vector3(1.06, 1.14, 1.06), "contrast": 1.04, "sat": 1.12},
 	"egypt":  {"lift": Vector3(0.022, 0.008, -0.014),  "gain": Vector3(1.07, 1.0, 0.90),  "contrast": 1.09, "sat": 1.09},
 	"norse":  {"lift": Vector3(-0.006, 0.0, 0.018),    "gain": Vector3(0.94, 0.99, 1.09), "contrast": 1.06, "sat": 0.90},
 	"japan":  {"lift": Vector3(-0.010, 0.006, 0.006),  "gain": Vector3(0.95, 1.04, 1.02), "contrast": 1.08, "sat": 0.98},
