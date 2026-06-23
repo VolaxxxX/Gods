@@ -313,9 +313,13 @@ func dash_ready_fraction() -> float:
 	return 1.0 - clampf(_dash_cd / DASH_COOLDOWN, 0.0, 1.0)
 
 func _draw() -> void:
-	# Soft contact shadow under the feet so the player stays readable on any floor.
+	# Soft contact shadow + a class-coloured marker ring under the feet, so the
+	# player is instantly recognisable in a crowded melee.
 	draw_set_transform(Vector2(0, RADIUS * 1.2), 0.0, Vector2(1.0, 0.42))
 	draw_circle(Vector2.ZERO, RADIUS * 1.15, Color(0, 0, 0, 0.34))
+	var ring := Color(_body_color.r, _body_color.g, _body_color.b).lightened(0.25)
+	ring.a = 0.7
+	draw_arc(Vector2.ZERO, RADIUS * 1.4, 0.0, TAU, 28, ring, 2.5, true)
 	draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 	if _sprite == null and _anim == null:  # greybox body only when no sprite/anim
 		var body_color := _body_color
