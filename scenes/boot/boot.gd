@@ -14,13 +14,16 @@ func _ready() -> void:
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(bg)
 
+	var vp := get_viewport_rect().size
+	var cx := vp.x * 0.5
+	var cy := vp.y * 0.5
+
 	var title := Label.new()
 	title.text = Loc.t("game.title")
 	title.add_theme_font_size_override("font_size", 96)
 	title.add_theme_color_override("font_color", Color(0.9, 0.78, 0.42))
-	title.set_anchors_preset(Control.PRESET_CENTER)
-	title.position = Vector2(-300, -120)
-	title.size = Vector2(600, 110)
+	title.position = Vector2(cx - 400, cy - 170)
+	title.size = Vector2(800, 110)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	UITheme.title(title)
 	add_child(title)
@@ -29,16 +32,14 @@ func _ready() -> void:
 	tagline.text = Loc.t("game.tagline")
 	tagline.add_theme_font_size_override("font_size", 22)
 	tagline.modulate = Color(0.75, 0.75, 0.82)
-	tagline.set_anchors_preset(Control.PRESET_CENTER)
-	tagline.position = Vector2(-300, -16)
-	tagline.size = Vector2(600, 30)
+	tagline.position = Vector2(cx - 400, cy - 36)
+	tagline.size = Vector2(800, 30)
 	tagline.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	add_child(tagline)
 
 	var btn := Button.new()
 	btn.text = Loc.t("ui.tap_to_start")
-	btn.set_anchors_preset(Control.PRESET_CENTER)
-	btn.position = Vector2(-140, 60)
+	btn.position = Vector2(cx - 140, cy + 50)
 	btn.size = Vector2(280, 64)
 	btn.pressed.connect(_on_start)
 	add_child(btn)

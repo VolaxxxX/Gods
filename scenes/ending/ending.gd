@@ -51,21 +51,24 @@ func _ready() -> void:
 		_soul = s
 		add_child(_soul)
 
+	var vp := get_viewport_rect().size
 	_label = Label.new()
-	_label.set_anchors_preset(Control.PRESET_CENTER)
+	# Absolute, full-width centered strip in the upper third (no anchor presets,
+	# so autowrap gets the real width and the text truly centers).
+	_label.position = Vector2(60, 130)
+	_label.custom_minimum_size = Vector2(vp.x - 120, 0)
+	_label.size = Vector2(vp.x - 120, 200)
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_label.custom_minimum_size = Vector2(820, 0)
-	_label.position = Vector2(-410, 150)
 	_label.add_theme_font_size_override("font_size", 30)
 	UITheme.title(_label)
 	add_child(_label)
 
 	_hint = Label.new()
-	_hint.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	_hint.position = Vector2(60, vp.y - 72)
+	_hint.custom_minimum_size = Vector2(vp.x - 120, 0)
+	_hint.size = Vector2(vp.x - 120, 40)
 	_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_hint.position = Vector2(-120, -52)
-	_hint.custom_minimum_size = Vector2(240, 0)
 	_hint.modulate = Color(0.85, 0.82, 0.7, 0.0)
 	_hint.text = Loc.t("ui.tap_continue")
 	add_child(_hint)

@@ -186,8 +186,27 @@ grants (via `SynergyEngine`). The player rebuilds a `StatBlock` from
 `BASE_STATS` + these modifiers on `item_picked_up` / `blessing_chosen`. New stats
 need no code — just use the stat name (with `_add`/`_mult`) in data.
 
-### Known limitation
-The dev container has **no Godot binary**, so the editor, the headless tests, and
-the Web export have **not been run** here. All code is written to Godot 4.3
-GDScript syntax. First action on a machine with Godot: open the project (let it
-import), run `tests/test_runner.gd` headless, then test the Web export.
+### Phase 4–5 — Art, audio & feel (COMPLETE in-engine)
+Godot 4.3 now runs in the container (headless + `xvfb`/`llvmpipe` for renders),
+so everything below is verified in-engine, not just parsed:
+- **Art wired**: real TileMapLayer floor (weighted variants) + wall-face/corner +
+  door-arch sprites per realm, greybox fallback; sprites/portraits/FX/icons in.
+- **Dialogue alive**: animated dialogue box (panel slide, portrait breathe,
+  typewriter, blinking advance cue), **per-god synth voices**, clean short
+  speaker names. Writing lengthened across every beat (death/victory tiers,
+  boss falls, richer boons, rivals) + **run-event staging** (palier falls, god
+  encounters, wrath, shop/altar flavour, per-character intros).
+- **Rendering**: full-screen PostFX (per-realm colour grade + vignette + grain +
+  subtle aberration) + warm pooled hero light + calmer floor → cinematic look.
+- **Audio pro**: procedural SFX for every cue (pitched per weapon/mob), real
+  files override; music mix rebalanced; **epic per-realm boss battle music**
+  (synth, transposed per realm; real `<realm>_boss.ogg` overrides).
+- **Feel/flow**: scene **fade transitions**, a **death screen** (epitaph + run
+  tally), hit crunch. Boot & ending centring bugs fixed.
+- **Build**: `--export-release "Web"` produces wasm+pck+PWA; tests **39/39**
+  (canonical `godot --headless res://tests/test_main.tscn`).
+
+The game is **feature-complete**. Remaining work is external/optional: sourcing
+recorded VO or orchestral boss tracks (the synth stands in and is overridable),
+balance tuning from real playtests, and actual store publishing (Phase 5 presets
+exist and the Web build is verified).
