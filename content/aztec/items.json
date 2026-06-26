@@ -1,77 +1,78 @@
 {
-	"type": "item",
-	"entries": [
-		{
-			"id": "aztec_obsidian_blade",
-			"name_key": "item.obsidian_blade.name",
-			"desc_key": "item.obsidian_blade.desc",
-			"pantheon": "aztec",
-			"rarity": "rare",
-			"color": "#2a2a3a",
-			"modifiers": {
-				"damage_add": 2.5
-			},
-			"tags": [
-				"damage",
-				"obsidian"
-			]
-		},
-		{
-			"id": "aztec_jade_skull",
-			"name_key": "item.jade_skull.name",
-			"desc_key": "item.jade_skull.desc",
-			"pantheon": "aztec",
-			"rarity": "common",
-			"color": "#3aa07a",
-			"modifiers": {
-				"max_health_add": 2.0
-			},
-			"tags": [
-				"life"
-			]
-		},
-		{
-			"id": "aztec_quetzal_feather",
-			"name_key": "item.quetzal_feather.name",
-			"desc_key": "item.quetzal_feather.desc",
-			"pantheon": "aztec",
-			"rarity": "common",
-			"color": "#2ac0a0",
-			"modifiers": {
-				"move_speed_add": 28.0
-			},
-			"tags": [
-				"speed"
-			]
-		},
-		{
-			"id": "aztec_turquoise_mask",
-			"name_key": "item.turquoise_mask.name",
-			"desc_key": "item.turquoise_mask.desc",
-			"pantheon": "aztec",
-			"rarity": "rare",
-			"color": "#37c7c0",
-			"modifiers": {
-				"crit_chance_add": 0.15
-			},
-			"tags": [
-				"crit"
-			]
-		},
-		{
-			"id": "aztec_sun_stone",
-			"name_key": "item.sun_stone.name",
-			"desc_key": "item.sun_stone.desc",
-			"pantheon": "aztec",
-			"rarity": "relic",
-			"color": "#ffc060",
-			"modifiers": {
-				"damage_add": 1.5
-			},
-			"tags": [
-				"aztec",
-				"solar"
-			]
-		}
-	]
+  "type": "item",
+  "entries": [
+    {
+      "id": "aztec_obsidian_blade",
+      "name_key": "item.obsidian_blade.name",
+      "desc_key": "item.obsidian_blade.desc",
+      "pantheon": "aztec",
+      "rarity": "rare",
+      "color": "#2a2a3a",
+      "modifiers": {
+        "damage_add": 2.5
+      },
+      "tags": [
+        "damage",
+        "obsidian"
+      ]
+    },
+    {
+      "id": "aztec_jade_skull",
+      "name_key": "item.jade_skull.name",
+      "desc_key": "item.jade_skull.desc",
+      "pantheon": "aztec",
+      "rarity": "common",
+      "color": "#3aa07a",
+      "modifiers": {
+        "max_health_add": 2.0
+      },
+      "tags": [
+        "life"
+      ]
+    },
+    {
+      "id": "aztec_quetzal_feather",
+      "name_key": "item.quetzal_feather.name",
+      "desc_key": "item.quetzal_feather.desc",
+      "pantheon": "aztec",
+      "rarity": "common",
+      "color": "#2ac0a0",
+      "modifiers": {
+        "move_speed_add": 28.0
+      },
+      "tags": [
+        "speed"
+      ]
+    },
+    {
+      "id": "aztec_turquoise_mask",
+      "name_key": "item.turquoise_mask.name",
+      "desc_key": "item.turquoise_mask.desc",
+      "pantheon": "aztec",
+      "rarity": "rare",
+      "color": "#37c7c0",
+      "modifiers": {
+        "crit_chance_add": 0.15
+      },
+      "tags": [
+        "crit"
+      ]
+    },
+    {
+      "id": "aztec_sun_stone",
+      "name_key": "item.sun_stone.name",
+      "desc_key": "item.sun_stone.desc",
+      "pantheon": "aztec",
+      "rarity": "relic",
+      "color": "#ffc060",
+      "modifiers": {
+        "damage_add": 2.0,
+        "crit_chance_add": 0.08
+      },
+      "tags": [
+        "aztec",
+        "solar"
+      ]
+    }
+  ]
 }

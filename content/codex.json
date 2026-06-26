@@ -21,7 +21,7 @@
 			"unlock_realm": "greece",
 			"body": [
 				"A serpentine water-beast of the Lernaean swamp, with many venomous heads.",
-				"Cut one head away and two grew in its place. Heracles, in his second labour, overcame it only when his nephew Iolaus seared each stump with fire so no new head could sprout.",
+				"Cut one head away and two grew in its place. Heracles, in his second labor, overcame it only when his nephew Iolaus seared each stump with fire so no new head could sprout.",
 				"Its blood was so poisonous that Heracles later dipped his arrows in it — a venom that would one day bring about his own death."
 			]
 		},
@@ -34,7 +34,7 @@
 			"body": [
 				"In Balinese belief the world has two halves: sekala, the seen, and niskala, the unseen — home to spirits, ancestors and demons.",
 				"Existence rests on rwa bhineda, the balance of opposites. Good and ill, order and chaos, are not at war to be won but held in tension.",
-				"This is a living tradition, still honoured in temple and dance today — treated here with respect, not as a dead myth."
+				"This is a living tradition, still honored in temple and dance today — treated here with respect, not as a dead myth."
 			]
 		},
 		{
@@ -58,7 +58,7 @@
 			"body": [
 				"The Egyptian underworld and night-sky, the realm the sun-god Ra sails through each night to be reborn at dawn.",
 				"The dead pass through twelve gates, one for each hour of night. In the Hall of Two Truths the heart is weighed on a scale against the feather of Ma'at, goddess of truth and order.",
-				"A heart heavy with wrongdoing is devoured by Ammit — part lion, hippo and crocodile — and the soul perishes utterly. A light heart passes on to the Field of Reeds. Osiris presides as judge."
+				"A heart heavy with wrongdoing is devoured by Ammit — part lion, part hippo, part crocodile — and the soul perishes utterly. A light heart passes on to the Field of Reeds. Osiris presides as judge."
 			]
 		},
 		{
@@ -82,7 +82,7 @@
 			"body": [
 				"One of the Nine Worlds, lying beneath a root of the world-tree Yggdrasil. Not the warriors' hall of Valhalla — Helheim receives those who die of sickness or old age.",
 				"The dead travel the long road Helvegr downward and northward into cold and mist, past the blood-stained hound Garmr who guards the gate.",
-				"It is ruled by Hel, a daughter of Loki, described as half-living woman and half-corpse. The hall is grim but not a place of torment — simply the quiet end of the strawdeath."
+				"It is ruled by Hel, a daughter of Loki, described as half-living woman and half-corpse. The hall is grim but not a place of torment — simply the quiet end of the straw-death."
 			]
 		},
 		{
@@ -174,7 +174,7 @@
 			"title": "Hermes",
 			"unlock_flag": "met_greece_hermes",
 			"body": [
-				"The swift messenger god, patron of travellers, merchants and thieves.",
+				"The swift messenger god, patron of travelers, merchants and thieves.",
 				"As Psychopomp, it is Hermes who guides the souls of the dead down into the Underworld."
 			]
 		},
@@ -361,7 +361,7 @@
 			"title": "Tyr",
 			"unlock_flag": "met_norse_tyr",
 			"body": [
-				"God of war, law and honour.",
+				"God of war, law and honor.",
 				"He alone dared place his hand in Fenrir's jaws to bind the wolf — and lost it for his courage."
 			]
 		},
@@ -373,7 +373,7 @@
 			"unlock_flag": "met_norse_heimdall",
 			"body": [
 				"The ever-watchful guardian of Bifrost, the rainbow bridge to Asgard.",
-				"His sight and hearing miss nothing; his horn Gjallarhorn will sound at Ragnarok."
+				"His sight and hearing miss nothing; his horn Gjallarhorn will sound at Ragnarök."
 			]
 		},
 		{

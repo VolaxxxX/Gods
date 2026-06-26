@@ -163,7 +163,9 @@ func _recompute_stats() -> void:
 	weapon.base_damage = sb.value("damage")
 	weapon.fire_rate = sb.value("fire_rate")
 	weapon.projectile_speed = sb.value("projectile_speed")
-	weapon.crit_chance = sb.value("crit_chance")
+	# Cap crit chance so stacking crit boons can't reach guaranteed crits (which
+	# would turn crit_mult into a flat global damage multiplier).
+	weapon.crit_chance = minf(sb.value("crit_chance"), 0.9)
 	weapon.crit_mult = sb.value("crit_mult")
 	# Melee hits harder but swings slower than shots (close-range risk).
 	_melee_damage = sb.value("damage") * 2.4

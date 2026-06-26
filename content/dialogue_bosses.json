@@ -27,7 +27,7 @@
 		 "lines": ["Fenrir falls, its broken chains scattered across the frost.",
 			"Helheim itself seems to hold its breath at the sound of your name."]},
 		{"id": "boss_norse_god", "speaker": "norse_odin", "trigger": "boss_norse", "modal": true,
-		 "lines": ["The wolf fated to swallow me whole at Ragnarok — felled early, and by you.",
+		 "lines": ["The wolf fated to swallow me whole at Ragnarök — felled early, and by you.",
 			"The runes did not foresee this. I scarce know whether to thank you or to fear you, mortal."]},
 
 		{"id": "boss_japan_narr", "speaker": "narrator", "trigger": "boss_japan", "modal": true,

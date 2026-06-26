@@ -1,114 +1,114 @@
 {
-	"type": "blessing",
-	"entries": [
-		{
-			"id": "egypt_ra_solar",
-			"name_key": "blessing.ra_solar.name",
-			"desc_key": "blessing.ra_solar.desc",
-			"deity_id": "egypt_ra",
-			"pantheon": "egypt",
-			"rarity": "common",
-			"color": "#f2c14a",
-			"modifiers": {
-				"damage_add": 2.0
-			},
-			"tags": [
-				"fire",
-				"solar"
-			]
-		},
-		{
-			"id": "egypt_osiris_life",
-			"name_key": "blessing.osiris_life.name",
-			"desc_key": "blessing.osiris_life.desc",
-			"deity_id": "egypt_osiris",
-			"pantheon": "egypt",
-			"rarity": "common",
-			"color": "#3fae6a",
-			"modifiers": {
-				"max_health_add": 2.0
-			},
-			"tags": [
-				"life"
-			]
-		},
-		{
-			"id": "egypt_anubis_judgment",
-			"name_key": "blessing.anubis_judgment.name",
-			"desc_key": "blessing.anubis_judgment.desc",
-			"deity_id": "egypt_anubis",
-			"pantheon": "egypt",
-			"rarity": "rare",
-			"color": "#9aa0a8",
-			"modifiers": {
-				"damage_mult": 1.15,
-				"crit_chance_add": 0.05
-			},
-			"tags": [
-				"death"
-			]
-		},
-		{
-			"id": "egypt_horus_strike",
-			"name_key": "blessing.horus_strike.name",
-			"desc_key": "blessing.horus_strike.desc",
-			"deity_id": "egypt_horus",
-			"pantheon": "egypt",
-			"rarity": "common",
-			"color": "#5fa8d4",
-			"modifiers": {
-				"crit_chance_add": 0.2
-			},
-			"tags": [
-				"precision"
-			]
-		},
-		{
-			"id": "egypt_set_chaos",
-			"name_key": "blessing.set_chaos.name",
-			"desc_key": "blessing.set_chaos.desc",
-			"deity_id": "egypt_set",
-			"pantheon": "egypt",
-			"rarity": "rare",
-			"color": "#b24a2a",
-			"modifiers": {
-				"damage_mult": 1.2
-			},
-			"tags": [
-				"chaos"
-			]
-		},
-		{
-			"id": "egypt_sekhmet_fury",
-			"name_key": "blessing.sekhmet_fury.name",
-			"desc_key": "blessing.sekhmet_fury.desc",
-			"deity_id": "egypt_sekhmet",
-			"pantheon": "egypt",
-			"rarity": "common",
-			"color": "#d4694a",
-			"modifiers": {
-				"fire_rate_mult": 1.15,
-				"damage_add": 1.0
-			},
-			"tags": [
-				"fury"
-			]
-		},
-		{
-			"id": "egypt_osiris_eternal",
-			"name_key": "blessing.osiris_eternal.name",
-			"desc_key": "blessing.osiris_eternal.desc",
-			"deity_id": "egypt_osiris",
-			"pantheon": "egypt",
-			"rarity": "epic",
-			"color": "#7ad0a0",
-			"modifiers": {
-				"max_health_add": 2.0,
-				"damage_mult": 1.1
-			},
-			"tags": [
-				"life"
-			]
-		}
-	]
+  "type": "blessing",
+  "entries": [
+    {
+      "id": "egypt_ra_solar",
+      "name_key": "blessing.ra_solar.name",
+      "desc_key": "blessing.ra_solar.desc",
+      "deity_id": "egypt_ra",
+      "pantheon": "egypt",
+      "rarity": "common",
+      "color": "#f2c14a",
+      "modifiers": {
+        "damage_add": 2.0
+      },
+      "tags": [
+        "fire",
+        "solar"
+      ]
+    },
+    {
+      "id": "egypt_osiris_life",
+      "name_key": "blessing.osiris_life.name",
+      "desc_key": "blessing.osiris_life.desc",
+      "deity_id": "egypt_osiris",
+      "pantheon": "egypt",
+      "rarity": "common",
+      "color": "#3fae6a",
+      "modifiers": {
+        "max_health_add": 2.0
+      },
+      "tags": [
+        "life"
+      ]
+    },
+    {
+      "id": "egypt_anubis_judgment",
+      "name_key": "blessing.anubis_judgment.name",
+      "desc_key": "blessing.anubis_judgment.desc",
+      "deity_id": "egypt_anubis",
+      "pantheon": "egypt",
+      "rarity": "rare",
+      "color": "#9aa0a8",
+      "modifiers": {
+        "damage_mult": 1.15,
+        "crit_chance_add": 0.05
+      },
+      "tags": [
+        "death"
+      ]
+    },
+    {
+      "id": "egypt_horus_strike",
+      "name_key": "blessing.horus_strike.name",
+      "desc_key": "blessing.horus_strike.desc",
+      "deity_id": "egypt_horus",
+      "pantheon": "egypt",
+      "rarity": "common",
+      "color": "#5fa8d4",
+      "modifiers": {
+        "crit_chance_add": 0.13
+      },
+      "tags": [
+        "precision"
+      ]
+    },
+    {
+      "id": "egypt_set_chaos",
+      "name_key": "blessing.set_chaos.name",
+      "desc_key": "blessing.set_chaos.desc",
+      "deity_id": "egypt_set",
+      "pantheon": "egypt",
+      "rarity": "rare",
+      "color": "#b24a2a",
+      "modifiers": {
+        "damage_mult": 1.2
+      },
+      "tags": [
+        "chaos"
+      ]
+    },
+    {
+      "id": "egypt_sekhmet_fury",
+      "name_key": "blessing.sekhmet_fury.name",
+      "desc_key": "blessing.sekhmet_fury.desc",
+      "deity_id": "egypt_sekhmet",
+      "pantheon": "egypt",
+      "rarity": "common",
+      "color": "#d4694a",
+      "modifiers": {
+        "fire_rate_mult": 1.15,
+        "damage_add": 1.0
+      },
+      "tags": [
+        "fury"
+      ]
+    },
+    {
+      "id": "egypt_osiris_eternal",
+      "name_key": "blessing.osiris_eternal.name",
+      "desc_key": "blessing.osiris_eternal.desc",
+      "deity_id": "egypt_osiris",
+      "pantheon": "egypt",
+      "rarity": "epic",
+      "color": "#7ad0a0",
+      "modifiers": {
+        "max_health_add": 2.0,
+        "damage_mult": 1.1
+      },
+      "tags": [
+        "life"
+      ]
+    }
+  ]
 }

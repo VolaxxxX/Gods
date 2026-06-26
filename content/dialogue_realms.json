@@ -7,7 +7,7 @@
 			"lines": [
 				"The Underworld of Hades. The dead are ferried across the river Styx by Charon — and only those buried with a coin may pay his fare.",
 				"Drink from the river Lethe and you forget all you ever were. Most shades do.",
-				"Hades rules these halls; the gods above only watch. Cross it, wanderer — and do not look back."
+				"Hades rules these halls; the gods above only watch. Cross the Styx, wanderer — and do not look back."
 			]
 		},
 		{
@@ -30,7 +30,7 @@
 			"lines": [
 				"Beyond the seen world lies niskala — the unseen, where spirits and demons dwell.",
 				"Here walks Rangda, queen of the leyak, locked in endless balance with the lion Barong. Neither truly wins; that is the order of things.",
-				"Tread with respect, soul. To those who still honour it, this realm is no mere myth."
+				"Tread with respect, soul. To those who still honor it, this realm is no mere myth."
 			]
 		},
 		{
@@ -66,7 +66,7 @@
 			"once": true, "modal": true,
 			"lines": [
 				"I am Osiris, who died and rose again to judge the dead.",
-				"Let your heart be light, traveller — or feed the Devourer."
+				"Let your heart be light, traveler — or feed the Devourer."
 			]
 		},
 

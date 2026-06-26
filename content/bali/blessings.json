@@ -1,104 +1,104 @@
 {
-	"type": "blessing",
-	"entries": [
-		{
-			"id": "bali_acintya_harmony",
-			"name_key": "blessing.acintya_harmony.name",
-			"desc_key": "blessing.acintya_harmony.desc",
-			"deity_id": "bali_acintya",
-			"pantheon": "bali",
-			"rarity": "rare",
-			"color": "#f5e6a8",
-			"modifiers": {
-				"damage_add": 1.0,
-				"move_speed_add": 10.0,
-				"max_health_add": 1.0
-			},
-			"tags": [
-				"balance"
-			]
-		},
-		{
-			"id": "bali_barong_ward",
-			"name_key": "blessing.barong_ward.name",
-			"desc_key": "blessing.barong_ward.desc",
-			"deity_id": "bali_barong",
-			"pantheon": "bali",
-			"rarity": "common",
-			"color": "#e0b03a",
-			"effect": {
-				"kind": "passive",
-				"effect": "deflect_chance",
-				"value": 0.2
-			},
-			"tags": [
-				"guard"
-			]
-		},
-		{
-			"id": "bali_danu_tide",
-			"name_key": "blessing.danu_tide.name",
-			"desc_key": "blessing.danu_tide.desc",
-			"deity_id": "bali_dewi_danu",
-			"pantheon": "bali",
-			"rarity": "common",
-			"color": "#5fb6d4",
-			"modifiers": {
-				"max_health_add": 2.0
-			},
-			"tags": [
-				"water",
-				"life"
-			]
-		},
-		{
-			"id": "bali_sri_abundance",
-			"name_key": "blessing.sri_abundance.name",
-			"desc_key": "blessing.sri_abundance.desc",
-			"deity_id": "bali_dewi_sri",
-			"pantheon": "bali",
-			"rarity": "common",
-			"color": "#7fc77f",
-			"modifiers": {
-				"fire_rate_mult": 1.12,
-				"max_health_add": 1.0
-			},
-			"tags": [
-				"life"
-			]
-		},
-		{
-			"id": "bali_kala_hunger",
-			"name_key": "blessing.kala_hunger.name",
-			"desc_key": "blessing.kala_hunger.desc",
-			"deity_id": "bali_batara_kala",
-			"pantheon": "bali",
-			"rarity": "rare",
-			"color": "#7a4a8a",
-			"modifiers": {
-				"damage_mult": 1.2
-			},
-			"tags": [
-				"decay"
-			]
-		},
-		{
-			"id": "bali_acintya_unity",
-			"name_key": "blessing.acintya_unity.name",
-			"desc_key": "blessing.acintya_unity.desc",
-			"deity_id": "bali_acintya",
-			"pantheon": "bali",
-			"rarity": "epic",
-			"color": "#e8d36a",
-			"modifiers": {
-				"damage_add": 1.0,
-				"move_speed_add": 12.0,
-				"max_health_add": 1.0,
-				"crit_chance_add": 0.08
-			},
-			"tags": [
-				"balance"
-			]
-		}
-	]
+  "type": "blessing",
+  "entries": [
+    {
+      "id": "bali_acintya_harmony",
+      "name_key": "blessing.acintya_harmony.name",
+      "desc_key": "blessing.acintya_harmony.desc",
+      "deity_id": "bali_acintya",
+      "pantheon": "bali",
+      "rarity": "rare",
+      "color": "#f5e6a8",
+      "modifiers": {
+        "damage_add": 1.0,
+        "move_speed_add": 10.0,
+        "max_health_add": 1.0
+      },
+      "tags": [
+        "balance"
+      ]
+    },
+    {
+      "id": "bali_barong_ward",
+      "name_key": "blessing.barong_ward.name",
+      "desc_key": "blessing.barong_ward.desc",
+      "deity_id": "bali_barong",
+      "pantheon": "bali",
+      "rarity": "common",
+      "color": "#e0b03a",
+      "effect": {
+        "kind": "passive",
+        "effect": "deflect_chance",
+        "value": 0.18
+      },
+      "tags": [
+        "guard"
+      ]
+    },
+    {
+      "id": "bali_danu_tide",
+      "name_key": "blessing.danu_tide.name",
+      "desc_key": "blessing.danu_tide.desc",
+      "deity_id": "bali_dewi_danu",
+      "pantheon": "bali",
+      "rarity": "common",
+      "color": "#5fb6d4",
+      "modifiers": {
+        "max_health_add": 2.0
+      },
+      "tags": [
+        "water",
+        "life"
+      ]
+    },
+    {
+      "id": "bali_sri_abundance",
+      "name_key": "blessing.sri_abundance.name",
+      "desc_key": "blessing.sri_abundance.desc",
+      "deity_id": "bali_dewi_sri",
+      "pantheon": "bali",
+      "rarity": "common",
+      "color": "#7fc77f",
+      "modifiers": {
+        "fire_rate_mult": 1.12,
+        "max_health_add": 1.0
+      },
+      "tags": [
+        "life"
+      ]
+    },
+    {
+      "id": "bali_kala_hunger",
+      "name_key": "blessing.kala_hunger.name",
+      "desc_key": "blessing.kala_hunger.desc",
+      "deity_id": "bali_batara_kala",
+      "pantheon": "bali",
+      "rarity": "rare",
+      "color": "#7a4a8a",
+      "modifiers": {
+        "damage_mult": 1.2
+      },
+      "tags": [
+        "decay"
+      ]
+    },
+    {
+      "id": "bali_acintya_unity",
+      "name_key": "blessing.acintya_unity.name",
+      "desc_key": "blessing.acintya_unity.desc",
+      "deity_id": "bali_acintya",
+      "pantheon": "bali",
+      "rarity": "epic",
+      "color": "#e8d36a",
+      "modifiers": {
+        "damage_add": 1.0,
+        "move_speed_add": 12.0,
+        "max_health_add": 1.0,
+        "crit_chance_add": 0.08
+      },
+      "tags": [
+        "balance"
+      ]
+    }
+  ]
 }
