@@ -14,6 +14,7 @@ var _finished := false  # past the last line -> waiting for the return tap
 var _label: Label
 var _hint: Label
 var _soul: Node2D
+var _bg: Texture2D                      # optional bespoke per-realm backdrop
 var _warm := Color(0.95, 0.78, 0.42)   # realm-tinted mid colour of the rising light
 var _bright := Color(1.0, 0.98, 0.92)  # realm-tinted light the soul ascends into
 
@@ -39,6 +40,11 @@ func _ready() -> void:
 	var light: Dictionary = REALM_LIGHT.get(realm, REALM_LIGHT["greece"])
 	_warm = light["warm"]
 	_bright = light["bright"]
+	# A bespoke per-realm backdrop overrides the procedural gradient if present
+	# (assets/sprites/endings/<realm>.png); else the gradient draws (always works).
+	var bgp := "res://assets/sprites/endings/%s.png" % realm
+	if ResourceLoader.exists(bgp):
+		_bg = load(bgp)
 	var grand: bool = SaveManager.has_flag("all_six")
 	var key: String = "narr_ending" if grand else "ending_" + realm
 	var dd = GameData.dialogues.get(key, null)
@@ -132,16 +138,22 @@ func _process(delta: float) -> void:
 
 func _draw() -> void:
 	var vp := get_viewport_rect().size
-	# Vertical gradient: deep underworld dark at the bottom -> warm gold -> bright
-	# light at the top. The light "floods down" as _light rises.
-	var bands := 40
-	for i in bands:
-		var f := float(i) / float(bands - 1)        # 0 top .. 1 bottom
-		var lift: float = clampf(_light * 1.2 - (1.0 - f) * 0.2, 0.0, 1.0)
-		var dark := Color(0.05, 0.05, 0.09)
-		var top_col := _warm.lerp(_bright, _light)
-		var col := dark.lerp(top_col, clampf((1.0 - f) + lift, 0.0, 1.0))
-		draw_rect(Rect2(0, f * vp.y, vp.x, vp.y / bands + 1.0), col)
+	if _bg != null:
+		# Bespoke backdrop: dim at the start, brightening as the soul ascends, so the
+		# "rising into light" reveal still reads.
+		var b := lerpf(0.55, 1.12, _light)
+		draw_texture_rect(_bg, Rect2(Vector2.ZERO, vp), false, Color(b, b, b, 1.0))
+	else:
+		# Procedural vertical gradient: deep underworld dark at the bottom -> warm ->
+		# bright light at the top. The light "floods down" as _light rises.
+		var bands := 40
+		for i in bands:
+			var f := float(i) / float(bands - 1)        # 0 top .. 1 bottom
+			var lift: float = clampf(_light * 1.2 - (1.0 - f) * 0.2, 0.0, 1.0)
+			var dark := Color(0.05, 0.05, 0.09)
+			var top_col := _warm.lerp(_bright, _light)
+			var col := dark.lerp(top_col, clampf((1.0 - f) + lift, 0.0, 1.0))
+			draw_rect(Rect2(0, f * vp.y, vp.x, vp.y / bands + 1.0), col)
 	# A growing doorway of light at the top centre.
 	var lt := Atmosphere.light_texture()
 	var r := 140.0 + 360.0 * _light
