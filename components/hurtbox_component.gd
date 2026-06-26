@@ -13,8 +13,10 @@ extends Area2D
 var _cooldowns: Dictionary = {}  # area instance_id -> seconds until it can hit again
 
 func _ready() -> void:
-	monitoring = true
-	monitorable = true
+	# Deferred so it's safe even when the hurtbox is created during a physics flush
+	# (e.g. an enemy spawned while building a room reached via a door trigger).
+	set_deferred("monitoring", true)
+	set_deferred("monitorable", true)
 
 func _physics_process(delta: float) -> void:
 	if health == null or health.is_dead():

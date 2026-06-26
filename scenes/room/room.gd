@@ -262,7 +262,10 @@ func _door_position(side: String) -> Vector2:
 
 func _on_door_entered(_body: Node, side: String) -> void:
 	if not locked:
-		emit_signal("door_taken", side)
+		# Deferred: this fires inside the physics query flush (Area2D body_entered).
+		# The handler rebuilds the room — creating Area2Ds whose monitoring state
+		# can't be set mid-flush — so hand it off to idle time.
+		emit_signal.call_deferred("door_taken", side)
 
 func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 	if biome == null:
