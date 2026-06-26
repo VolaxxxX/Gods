@@ -14,15 +14,39 @@ var _finished := false  # past the last line -> waiting for the return tap
 var _label: Label
 var _hint: Label
 var _soul: Node2D
+var _warm := Color(0.95, 0.78, 0.42)   # realm-tinted mid colour of the rising light
+var _bright := Color(1.0, 0.98, 0.92)  # realm-tinted light the soul ascends into
+
+# The light each realm's soul rises into has its own colour identity.
+const REALM_LIGHT := {
+	"greece": {"warm": Color(0.86, 0.80, 0.55), "bright": Color(1.0, 1.0, 0.97), "mote": Color(1.0, 0.92, 0.70)},
+	"bali":   {"warm": Color(0.52, 0.74, 0.48), "bright": Color(0.96, 1.0, 0.94), "mote": Color(0.80, 1.0, 0.70)},
+	"egypt":  {"warm": Color(0.93, 0.74, 0.36), "bright": Color(1.0, 0.98, 0.90), "mote": Color(1.0, 0.90, 0.58)},
+	"norse":  {"warm": Color(0.56, 0.74, 0.95), "bright": Color(0.96, 0.99, 1.0), "mote": Color(0.82, 0.92, 1.0)},
+	"japan":  {"warm": Color(0.88, 0.50, 0.52), "bright": Color(1.0, 0.96, 0.95), "mote": Color(1.0, 0.80, 0.82)},
+	"aztec":  {"warm": Color(0.84, 0.62, 0.34), "bright": Color(1.0, 0.97, 0.87), "mote": Color(1.0, 0.85, 0.54)},
+}
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	Audio.play_music("hub")  # the calm threshold theme
 
-	var dd = GameData.dialogues.get("narr_ending", null)
-	_lines = (dd.lines.duplicate() if dd != null else ["The cycle is broken."])
-	SaveManager.mark_line_seen("narr_ending")  # consumed here; don't repeat at the hub
+	# The ending is themed by the realm the cycle was broken in. The grand finale
+	# (all six conquered, ever) keeps its own closing words; a single-run victory
+	# gets that realm's epilogue. Both are tinted to the realm's light.
+	var realm: String = RunManager.biome_id
+	var light: Dictionary = REALM_LIGHT.get(realm, REALM_LIGHT["greece"])
+	_warm = light["warm"]
+	_bright = light["bright"]
+	var grand: bool = SaveManager.has_flag("all_six")
+	var key: String = "narr_ending" if grand else "ending_" + realm
+	var dd = GameData.dialogues.get(key, null)
+	if dd == null:
+		dd = GameData.dialogues.get("narr_ending", null)
+	_lines = (dd.lines.duplicate() if dd != null else ["The cycle turns on."])
+	if grand:
+		SaveManager.mark_line_seen("narr_ending")  # consumed here; don't repeat at the hub
 
 	# Rising golden motes.
 	var motes := CPUParticles2D.new()
@@ -37,7 +61,9 @@ func _ready() -> void:
 	motes.initial_velocity_max = 26.0
 	motes.scale_amount_min = 1.5
 	motes.scale_amount_max = 3.5
-	motes.color = Color(1.0, 0.92, 0.7, 0.85)
+	var mote: Color = REALM_LIGHT.get(RunManager.biome_id, REALM_LIGHT["greece"])["mote"]
+	mote.a = 0.85
+	motes.color = mote
 	add_child(motes)
 
 	# The soul: the player sprite if present, else a soft greybox orb (drawn).
@@ -113,9 +139,7 @@ func _draw() -> void:
 		var f := float(i) / float(bands - 1)        # 0 top .. 1 bottom
 		var lift: float = clampf(_light * 1.2 - (1.0 - f) * 0.2, 0.0, 1.0)
 		var dark := Color(0.05, 0.05, 0.09)
-		var warm := Color(0.95, 0.78, 0.42)
-		var bright := Color(1.0, 0.98, 0.92)
-		var top_col := warm.lerp(bright, _light)
+		var top_col := _warm.lerp(_bright, _light)
 		var col := dark.lerp(top_col, clampf((1.0 - f) + lift, 0.0, 1.0))
 		draw_rect(Rect2(0, f * vp.y, vp.x, vp.y / bands + 1.0), col)
 	# A growing doorway of light at the top centre.

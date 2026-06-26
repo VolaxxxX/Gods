@@ -1,41 +1,42 @@
 {
-	"type": "biome",
-	"entries": [
-		{
-			"id": "bali",
-			"name_key": "biome.bali.name",
-			"pantheon": "bali",
-			"_note": "Balinese Hinduism is a LIVING tradition. Barong & Rangda embody rwa bhineda (cosmic balance), not simple good vs evil. Acintya/Dewi Sri/Dewi Danu are revered figures. Depiction here is reverent and simplified for play; revise if a knowledgeable maintainer flags anything.",
-			"palette": {
-				"bg": "#0a0c0a",
-				"floor": "#241f1a",
-				"wall": "#4a3b2a",
-				"accent": "#d4af37"
-			},
-			"room_count": 7,
-			"enemy_pool": [
-				"bali_leyak",
-				"bali_bhuta",
-				"bali_celuluk",
-				"bali_naga"
-			],
-			"elite_pool": [
-				"bali_celuluk"
-			],
-			"boss_id": "bali_rangda",
-			"miniboss_id": "bali_bhuta_lord",
-			"enemies_per_room_min": 3,
-			"enemies_per_room_max": 5,
-			"props": [
-				"bali_shrine",
-				"bali_offering",
-				"bali_demon_statue",
-				"bali_lantern",
-				"bali_fruit_offering",
-				"bali_skull_pile"
-			],
-			"ambient": "#fad1a8",
-			"ambient_particle": "ember"
-		}
-	]
+  "type": "biome",
+  "entries": [
+    {
+      "id": "bali",
+      "name_key": "biome.bali.name",
+      "pantheon": "bali",
+      "_note": "Balinese Hinduism is a LIVING tradition. Barong & Rangda embody rwa bhineda (cosmic balance), not simple good vs evil. Acintya/Dewi Sri/Dewi Danu are revered figures. Depiction here is reverent and simplified for play; revise if a knowledgeable maintainer flags anything.",
+      "palette": {
+        "bg": "#0a0c0a",
+        "floor": "#241f1a",
+        "wall": "#4a3b2a",
+        "accent": "#d4af37"
+      },
+      "room_count": 7,
+      "enemy_pool": [
+        "bali_leyak",
+        "bali_bhuta",
+        "bali_celuluk",
+        "bali_naga"
+      ],
+      "elite_pool": [
+        "bali_celuluk"
+      ],
+      "boss_id": "bali_rangda",
+      "miniboss_id": "bali_bhuta_lord",
+      "enemies_per_room_min": 3,
+      "enemies_per_room_max": 5,
+      "props": [
+        "bali_shrine",
+        "bali_offering",
+        "bali_demon_statue",
+        "bali_lantern",
+        "bali_fruit_offering",
+        "bali_skull_pile"
+      ],
+      "ambient": "#fad1a8",
+      "ambient_particle": "ember",
+      "difficulty": 1.06
+    }
+  ]
 }

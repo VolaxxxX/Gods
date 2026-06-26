@@ -337,7 +337,7 @@ func _after_boss() -> void:
 		SceneRouter.goto_ending()
 		return
 	if RunManager.is_final_biome():
-		_end_run(true)
+		_victory_ending()
 		return
 	var opts: Array = []
 	for id in RunManager.realms_remaining():
@@ -345,7 +345,7 @@ func _after_boss() -> void:
 		if b != null:
 			opts.append(b)
 	if opts.is_empty():
-		_end_run(true)
+		_victory_ending()
 		return
 	var ui := RealmChoice.new()
 	ui.setup(opts)
@@ -411,6 +411,13 @@ func _on_entity_died(entity) -> void:
 			RunManager.end_run(false)
 			SceneRouter.goto_hub())
 		add_child(ds)
+
+## A won run ends on a realm-themed ending cinematic (the realm the cycle was
+## broken in colours it), then back to the hub.
+func _victory_ending() -> void:
+	_ended = true
+	RunManager.end_run(true)
+	SceneRouter.goto_ending()
 
 func _end_run(victory: bool) -> void:
 	_ended = true

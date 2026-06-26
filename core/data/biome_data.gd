@@ -25,6 +25,11 @@ var miniboss_id: String = ""         # EntityData id spawned in miniboss rooms
 var enemies_per_room_min: int = 2
 var enemies_per_room_max: int = 4
 
+# Per-realm difficulty multiplier (data-driven). Scales regular-enemy HP and ALL
+# enemy damage (contact + ranged); boss/mini-boss HP stays hand-tuned. Kept in a
+# gentle 1.0–1.25 band so every realm stays playable. 1.0 = the Greek prototype.
+var difficulty: float = 1.0
+
 # Decorative prop ids scattered (non-colliding) in rooms; sprites live at
 # assets/sprites/props/<id>.png. Empty = none.
 var props: Array[String] = []
@@ -51,4 +56,5 @@ static func from_dict(d: Dictionary) -> BiomeData:
 	b.enemies_per_room_min = int(d.get("enemies_per_room_min", 2))
 	b.enemies_per_room_max = int(d.get("enemies_per_room_max", 4))
 	b.props = DataUtil.to_string_array(d.get("props", []))
+	b.difficulty = float(d.get("difficulty", 1.0))
 	return b

@@ -306,7 +306,7 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		if ed == null:
 			continue
 		var e := Enemy.new()
-		e.setup(ed, target, pool)
+		e.setup(ed, target, pool, biome.difficulty if biome != null else 1.0)
 		if i < spawns.size():
 			e.position = spawns[i]
 		else:
@@ -330,7 +330,7 @@ func spawn_wave(target: Node2D, pool: ProjectilePool, ids: Array, n: int) -> voi
 		if ed == null:
 			continue
 		var e := Enemy.new()
-		e.setup(ed, target, pool)
+		e.setup(ed, target, pool, biome.difficulty if biome != null else 1.0)
 		e.position = _random_floor_point()
 		add_child(e)
 		_alive_enemies += 1

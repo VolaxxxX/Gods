@@ -1,40 +1,41 @@
 {
-	"type": "biome",
-	"entries": [
-		{
-			"id": "greece",
-			"name_key": "biome.greece.name",
-			"pantheon": "greece",
-			"palette": {
-				"bg": "#0b0d14",
-				"floor": "#1b2230",
-				"wall": "#3a4a5a",
-				"accent": "#d8b25a"
-			},
-			"room_count": 7,
-			"enemy_pool": [
-				"greece_shade",
-				"greece_skeleton",
-				"greece_harpy",
-				"greece_minotaur"
-			],
-			"elite_pool": [
-				"greece_skeleton"
-			],
-			"boss_id": "greece_hydra",
-			"miniboss_id": "greece_cyclops",
-			"enemies_per_room_min": 3,
-			"enemies_per_room_max": 5,
-			"props": [
-				"greece_column",
-				"greece_brazier",
-				"greece_vase",
-				"greece_statue",
-				"greece_scrolls",
-				"greece_broken_column"
-			],
-			"ambient": "#ccd1f2",
-			"ambient_particle": "dust"
-		}
-	]
+  "type": "biome",
+  "entries": [
+    {
+      "id": "greece",
+      "name_key": "biome.greece.name",
+      "pantheon": "greece",
+      "palette": {
+        "bg": "#0b0d14",
+        "floor": "#1b2230",
+        "wall": "#3a4a5a",
+        "accent": "#d8b25a"
+      },
+      "room_count": 7,
+      "enemy_pool": [
+        "greece_shade",
+        "greece_skeleton",
+        "greece_harpy",
+        "greece_minotaur"
+      ],
+      "elite_pool": [
+        "greece_skeleton"
+      ],
+      "boss_id": "greece_hydra",
+      "miniboss_id": "greece_cyclops",
+      "enemies_per_room_min": 3,
+      "enemies_per_room_max": 5,
+      "props": [
+        "greece_column",
+        "greece_brazier",
+        "greece_vase",
+        "greece_statue",
+        "greece_scrolls",
+        "greece_broken_column"
+      ],
+      "ambient": "#ccd1f2",
+      "ambient_particle": "dust",
+      "difficulty": 1.0
+    }
+  ]
 }

@@ -1,41 +1,42 @@
 {
-	"type": "biome",
-	"entries": [
-		{
-			"id": "aztec",
-			"name_key": "biome.aztec.name",
-			"pantheon": "aztec",
-			"_note": "Mesoamerican beliefs and Nahua descendants are living cultures. Sacrifice is treated with historical distance, not glorified. Revise if a knowledgeable maintainer flags anything.",
-			"palette": {
-				"bg": "#08100c",
-				"floor": "#16241c",
-				"wall": "#2a6b5a",
-				"accent": "#e0c040"
-			},
-			"room_count": 7,
-			"enemy_pool": [
-				"aztec_obsidian",
-				"aztec_jaguar",
-				"aztec_tzitzimitl",
-				"aztec_eagle_warrior"
-			],
-			"elite_pool": [
-				"aztec_tzitzimitl"
-			],
-			"boss_id": "aztec_cipactli",
-			"miniboss_id": "aztec_jaguar_lord",
-			"enemies_per_room_min": 3,
-			"enemies_per_room_max": 5,
-			"props": [
-				"aztec_skullrack",
-				"aztec_brazier",
-				"aztec_glyphstone",
-				"aztec_sun_idol",
-				"aztec_serpent_head",
-				"aztec_treasure"
-			],
-			"ambient": "#ebb8a8",
-			"ambient_particle": "ember"
-		}
-	]
+  "type": "biome",
+  "entries": [
+    {
+      "id": "aztec",
+      "name_key": "biome.aztec.name",
+      "pantheon": "aztec",
+      "_note": "Mesoamerican beliefs and Nahua descendants are living cultures. Sacrifice is treated with historical distance, not glorified. Revise if a knowledgeable maintainer flags anything.",
+      "palette": {
+        "bg": "#08100c",
+        "floor": "#16241c",
+        "wall": "#2a6b5a",
+        "accent": "#e0c040"
+      },
+      "room_count": 7,
+      "enemy_pool": [
+        "aztec_obsidian",
+        "aztec_jaguar",
+        "aztec_tzitzimitl",
+        "aztec_eagle_warrior"
+      ],
+      "elite_pool": [
+        "aztec_tzitzimitl"
+      ],
+      "boss_id": "aztec_cipactli",
+      "miniboss_id": "aztec_jaguar_lord",
+      "enemies_per_room_min": 3,
+      "enemies_per_room_max": 5,
+      "props": [
+        "aztec_skullrack",
+        "aztec_brazier",
+        "aztec_glyphstone",
+        "aztec_sun_idol",
+        "aztec_serpent_head",
+        "aztec_treasure"
+      ],
+      "ambient": "#ebb8a8",
+      "ambient_particle": "ember",
+      "difficulty": 1.25
+    }
+  ]
 }

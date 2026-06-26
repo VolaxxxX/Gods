@@ -21,6 +21,7 @@ var _phase2_done: bool = false
 
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
+var _difficulty: float = 1.0  # per-realm enemy-damage multiplier
 var _flash: float = 0.0
 var _sprite: Sprite2D  # set if a static texture exists for this entity id
 var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
@@ -33,12 +34,18 @@ var _charge_speed: float = 420.0
 var _charge_vanish: bool = false  # fade out while dashing (Sand Veil Dash)
 var _melee_swing_cd: float = 0.0  # melee mobs: throttle the attack animation
 
-func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> void:
+func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
+		difficulty: float = 1.0) -> void:
 	data = p_data
 	_target = target
 	_pool = pool
 	_radius = data.radius
 	_color = data.color
+	# Per-realm difficulty: regular enemies get more HP; bosses/minibosses are
+	# already hand-tuned so their HP is left alone. ALL enemy damage scales, so a
+	# harder realm hits harder without fights dragging.
+	var hp_mult: float = 1.0 if data.role in ["boss", "miniboss"] else difficulty
+	_difficulty = difficulty
 
 	# Visuals, in priority order: animated sheets > bespoke static sprite >
 	# generic monster tinted by colour > greybox circle. Bosses also load a sheet
@@ -87,7 +94,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 
 	health = HealthComponent.new()
 	add_child(health)
-	health.setup(data.max_health)
+	health.setup(data.max_health * hp_mult)
 	health.died.connect(_on_died)
 	health.damaged.connect(func(_a, _c, _m): _flash = 0.07)
 	# Floating damage number (juice). Spawned into the room (world space).
@@ -120,7 +127,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 	contact = DamageArea.new()
 	contact.collision_layer = Collision.ENEMY_DMG
 	contact.collision_mask = Collision.PLAYER_HURT
-	contact.setup(Damage.new(data.contact_damage, ["contact"], self), false, CONTACT_INTERVAL)
+	contact.setup(Damage.new(data.contact_damage * _difficulty, ["contact"], self), false, CONTACT_INTERVAL)
 	var cshape := CollisionShape2D.new()
 	var ccircle := CircleShape2D.new()
 	ccircle.radius = _radius
@@ -133,7 +140,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null) -> v
 		weapon = WeaponComponent.new()
 		weapon.faction_player = false
 		weapon.pool = pool
-		weapon.base_damage = data.range_damage
+		weapon.base_damage = data.range_damage * _difficulty
 		weapon.fire_rate = data.range_rate
 		weapon.projectile_speed = data.range_speed
 		weapon.projectile_color = Color(1.0, 0.45, 0.4)

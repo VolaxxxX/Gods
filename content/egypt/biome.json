@@ -1,40 +1,41 @@
 {
-	"type": "biome",
-	"entries": [
-		{
-			"id": "egypt",
-			"name_key": "biome.egypt.name",
-			"pantheon": "egypt",
-			"palette": {
-				"bg": "#0c0a06",
-				"floor": "#2a2418",
-				"wall": "#6b5a2a",
-				"accent": "#37c7c0"
-			},
-			"room_count": 7,
-			"enemy_pool": [
-				"egypt_scarab",
-				"egypt_shabti",
-				"egypt_mummy",
-				"egypt_anubis_guard"
-			],
-			"elite_pool": [
-				"egypt_mummy"
-			],
-			"boss_id": "egypt_apophis",
-			"miniboss_id": "egypt_sphinx",
-			"enemies_per_room_min": 3,
-			"enemies_per_room_max": 5,
-			"props": [
-				"egypt_sarcophagus",
-				"egypt_pillar",
-				"egypt_canopic_jar",
-				"egypt_torch",
-				"egypt_treasure",
-				"egypt_bones"
-			],
-			"ambient": "#f2dc9e",
-			"ambient_particle": "dust"
-		}
-	]
+  "type": "biome",
+  "entries": [
+    {
+      "id": "egypt",
+      "name_key": "biome.egypt.name",
+      "pantheon": "egypt",
+      "palette": {
+        "bg": "#0c0a06",
+        "floor": "#2a2418",
+        "wall": "#6b5a2a",
+        "accent": "#37c7c0"
+      },
+      "room_count": 7,
+      "enemy_pool": [
+        "egypt_scarab",
+        "egypt_shabti",
+        "egypt_mummy",
+        "egypt_anubis_guard"
+      ],
+      "elite_pool": [
+        "egypt_mummy"
+      ],
+      "boss_id": "egypt_apophis",
+      "miniboss_id": "egypt_sphinx",
+      "enemies_per_room_min": 3,
+      "enemies_per_room_max": 5,
+      "props": [
+        "egypt_sarcophagus",
+        "egypt_pillar",
+        "egypt_canopic_jar",
+        "egypt_torch",
+        "egypt_treasure",
+        "egypt_bones"
+      ],
+      "ambient": "#f2dc9e",
+      "ambient_particle": "dust",
+      "difficulty": 1.12
+    }
+  ]
 }
