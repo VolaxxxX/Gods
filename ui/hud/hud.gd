@@ -252,23 +252,25 @@ func _refresh_build() -> void:
 		c.queue_free()
 	for bid in RunManager.chosen_blessings:
 		var b = GameData.blessings.get(bid, null)
-		var ic := Sprites.icon(bid)
-		if ic != null:
-			var tr := TextureRect.new()
-			tr.texture = ic
-			tr.custom_minimum_size = Vector2(26, 26)
-			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-			if b != null:
-				tr.tooltip_text = Loc.t(b.name_key)
-			_items_row.add_child(tr)
+		var accent := Color(0.85, 0.72, 0.38)
+		if b != null:
+			var dd = GameData.deities.get(b.deity_id, null)
+			if dd != null:
+				accent = dd.color
+		var med := Medallion.new()
+		med.custom_minimum_size = Vector2(34, 34)
+		med.setup(Sprites.icon(bid), accent, b.rarity if b != null else "common")
+		if b != null:
+			med.tooltip_text = Loc.t(b.name_key)
+		_items_row.add_child(med)
 	for iid in RunManager.owned_items:
 		var it = GameData.items.get(iid, null)
-		var chip := ColorRect.new()
-		chip.custom_minimum_size = Vector2(22, 22)
-		chip.color = it.color if it != null else Color(0.7, 0.7, 0.75)
+		var gem := Medallion.new()
+		gem.custom_minimum_size = Vector2(30, 30)
+		gem.setup(Sprites.icon(iid), it.color if it != null else Color(0.7, 0.7, 0.75), "common")
 		if it != null:
-			chip.tooltip_text = Loc.t(it.name_key)
-		_items_row.add_child(chip)
+			gem.tooltip_text = Loc.t(it.name_key)
+		_items_row.add_child(gem)
 
 ## Give a label a dark outline so light text stays readable on any floor.
 func _outline(label: Label, size: int) -> void:

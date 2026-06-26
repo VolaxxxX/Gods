@@ -14,6 +14,11 @@ const DOORS := {
 	"boon": ["ui.door_boon", "ui.door_boon_desc", "✦"],
 	"vigor": ["ui.door_vigor", "ui.door_vigor_desc", "✚"],
 }
+const DOOR_ACCENT := {
+	"treasure": Color(0.90, 0.76, 0.36),  # gold
+	"boon": Color(0.74, 0.55, 0.92),      # divine violet
+	"vigor": Color(0.86, 0.40, 0.42),     # life crimson
+}
 
 var _kinds: Array = []
 
@@ -65,21 +70,14 @@ func _make_door(kind: String) -> Button:
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	btn.add_child(vb)
 
-	var ic := Sprites.icon("door_" + kind)  # optional bespoke art (icons/door_*.png)
-	if ic != null:
-		var tr := TextureRect.new()
-		tr.texture = ic
-		tr.custom_minimum_size = Vector2(96, 96)
-		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		vb.add_child(tr)
-	else:
-		var glyph := Label.new()
-		glyph.text = String(meta[2])
-		glyph.add_theme_font_size_override("font_size", 72)
-		glyph.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		vb.add_child(glyph)
+	# An ornate medallion frames the door's icon (or a greybox gem if absent).
+	var accent: Color = DOOR_ACCENT.get(kind, Color(0.85, 0.72, 0.38))
+	var med := Medallion.new()
+	med.custom_minimum_size = Vector2(132, 132)
+	med.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	med.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	med.setup(Sprites.icon("door_" + kind), accent, "rare")
+	vb.add_child(med)
 
 	var name_l := Label.new()
 	name_l.text = Loc.t(meta[0])
