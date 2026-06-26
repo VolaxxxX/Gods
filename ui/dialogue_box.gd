@@ -63,10 +63,18 @@ func _ready() -> void:
 		dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(dim)
 
+	# In-run toasts are a slim, centered banner so they never cover the battlefield;
+	# modal (hub/story) beats keep the full wide box.
+	var inset := 40.0
+	if not _modal:
+		inset = 270.0
+		_base_top = -118.0
+		_base_bottom = -22.0
+
 	_panel = PanelContainer.new()
 	_panel.set_anchors_preset(Control.PRESET_BOTTOM_WIDE)
-	_panel.offset_left = 40
-	_panel.offset_right = -40
+	_panel.offset_left = inset
+	_panel.offset_right = -inset
 	_panel.offset_top = _base_top
 	_panel.offset_bottom = _base_bottom
 	# Dedicated dialogue frame if provided, else the global themed panel.
@@ -98,7 +106,8 @@ func _ready() -> void:
 		# A plain Control wrapper reserves the layout slot; the picture floats
 		# inside it so we can bob/rise it without the container snapping it back.
 		var slot := Control.new()
-		slot.custom_minimum_size = Vector2(140, 140)
+		slot.custom_minimum_size = Vector2(140, 140) if _modal else Vector2(74, 74)
+		slot.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		row.add_child(slot)
 		_pic = TextureRect.new()
 		_pic.texture = _portrait
@@ -112,7 +121,7 @@ func _ready() -> void:
 	row.add_child(col)
 	var nameplate := Label.new()
 	nameplate.text = _speaker
-	nameplate.add_theme_font_size_override("font_size", 26)
+	nameplate.add_theme_font_size_override("font_size", 26 if _modal else 20)
 	# Dark bronze + a soft outline so the name reads on the light parchment panel
 	# (pale gold washed out against it).
 	nameplate.add_theme_color_override("font_color", Color(0.32, 0.18, 0.06))

@@ -57,6 +57,11 @@ func _ready() -> void:
 	add_child(_canvas_mod)
 	var glow := Atmosphere.point_light(Color(1.0, 0.92, 0.78), 0.95, 300.0)
 	player.add_child(glow)
+	# A wide, dim, cool FILL light (key + fill) lifts the rest of the room out of
+	# pitch black so foes on the far side stay readable, without flattening the
+	# warm focal pool or the cinematic mood.
+	var fill := Atmosphere.point_light(Color(0.62, 0.68, 0.82), 0.32, 720.0)
+	player.add_child(fill)
 
 	Events.entity_died.connect(_on_entity_died)
 
