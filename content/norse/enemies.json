@@ -1,101 +1,148 @@
 {
-	"type": "entity",
-	"entries": [
-		{
-			"id": "norse_ulfhednar",
-			"name_key": "enemy.ulfhednar.name",
-			"role": "enemy",
-			"pantheon": "norse",
-			"max_health": 16,
-			"move_speed": 98,
-			"contact_damage": 1,
-			"radius": 13,
-			"ai": "chase",
-			"gold": 3,
-			"color": "#6a6a7a"
-		},
-		{
-			"id": "norse_helhound",
-			"name_key": "enemy.helhound.name",
-			"role": "enemy",
-			"pantheon": "norse",
-			"max_health": 8,
-			"move_speed": 126,
-			"contact_damage": 1,
-			"radius": 11,
-			"ai": "chase",
-			"gold": 2,
-			"color": "#5a6b7a"
-		},
-		{
-			"id": "norse_draugr",
-			"name_key": "enemy.draugr.name",
-			"role": "enemy",
-			"pantheon": "norse",
-			"max_health": 18,
-			"move_speed": 58,
-			"contact_damage": 1,
-			"radius": 14,
-			"ai": "chase",
-			"gold": 3,
-			"color": "#8fa07f"
-		},
-		{
-			"id": "norse_jotunn",
-			"name_key": "enemy.jotunn.name",
-			"role": "enemy",
-			"pantheon": "norse",
-			"max_health": 32,
-			"move_speed": 44,
-			"contact_damage": 2,
-			"radius": 18,
-			"ai": "chase",
-			"gold": 5,
-			"color": "#6a7a9a"
-		},
-		{
-			"id": "norse_fenrir",
-			"name_key": "boss.fenrir.name",
-			"role": "boss",
-			"pantheon": "norse",
-			"max_health": 292,
-			"move_speed": 64,
-			"contact_damage": 3,
-			"radius": 34,
-			"ai": "chase",
-			"gold": 42,
-			"color": "#7a6a5a",
-			"ranged": true,
-			"range_damage": 1,
-			"range_rate": 1.3,
-			"range_speed": 240,
-			"abilities": [
-				{"kind": "summon", "anim": "pack_howl", "entity": "norse_helhound", "count": 4, "cooldown": 4.9},
-				{"kind": "charge", "anim": "frost_bite_dash", "speed": 540, "duration": 0.45, "cooldown": 4.2},
-				{"kind": "nova", "anim": "gleipnir_snap", "count": 12, "speed": 200, "damage": 1, "cooldown": 4.5}
-			],
-			"phase2_at": 0.55,
-			"phase2_abilities": [
-				{"kind": "nova", "anim": "gleipnir_snap", "count": 16, "speed": 215, "damage": 1, "cooldown": 2.8},
-				{"kind": "summon", "anim": "pack_howl", "entity": "norse_helhound", "count": 5, "cooldown": 4.2}
-			]
-		},
-		{
-			"id": "norse_troll",
-			"name_key": "miniboss.troll.name",
-			"role": "miniboss",
-			"pantheon": "norse",
-			"max_health": 97,
-			"move_speed": 48,
-			"contact_damage": 2,
-			"radius": 25,
-			"ai": "chase",
-			"gold": 16,
-			"ranged": false,
-			"abilities": [
-				{"kind": "barrage", "anim": "rock_throw", "count": 2, "spread": 0, "speed": 165, "damage": 2, "cooldown": 3.2},
-				{"kind": "nova", "anim": "quake_slam", "count": 9, "speed": 190, "damage": 1, "cooldown": 4.4}
-			]
-		}
-	]
+  "type": "entity",
+  "entries": [
+    {
+      "id": "norse_ulfhednar",
+      "name_key": "enemy.ulfhednar.name",
+      "role": "enemy",
+      "pantheon": "norse",
+      "max_health": 16,
+      "move_speed": 98,
+      "contact_damage": 1,
+      "radius": 13,
+      "ai": "chase",
+      "gold": 3,
+      "color": "#6a6a7a"
+    },
+    {
+      "id": "norse_helhound",
+      "name_key": "enemy.helhound.name",
+      "role": "enemy",
+      "pantheon": "norse",
+      "max_health": 8,
+      "move_speed": 126,
+      "contact_damage": 1,
+      "radius": 11,
+      "ai": "chase",
+      "gold": 2,
+      "color": "#5a6b7a"
+    },
+    {
+      "id": "norse_draugr",
+      "name_key": "enemy.draugr.name",
+      "role": "enemy",
+      "pantheon": "norse",
+      "max_health": 18,
+      "move_speed": 58,
+      "contact_damage": 1,
+      "radius": 14,
+      "ai": "chase",
+      "gold": 3,
+      "color": "#8fa07f"
+    },
+    {
+      "id": "norse_jotunn",
+      "name_key": "enemy.jotunn.name",
+      "role": "enemy",
+      "pantheon": "norse",
+      "max_health": 32,
+      "move_speed": 44,
+      "contact_damage": 2,
+      "radius": 18,
+      "ai": "chase",
+      "gold": 5,
+      "color": "#6a7a9a"
+    },
+    {
+      "id": "norse_fenrir",
+      "name_key": "boss.fenrir.name",
+      "role": "boss",
+      "pantheon": "norse",
+      "max_health": 496,
+      "move_speed": 64,
+      "contact_damage": 3,
+      "radius": 34,
+      "ai": "chase",
+      "gold": 42,
+      "color": "#7a6a5a",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.3,
+      "range_speed": 240,
+      "abilities": [
+        {
+          "kind": "summon",
+          "anim": "pack_howl",
+          "entity": "norse_helhound",
+          "count": 4,
+          "cooldown": 4.9
+        },
+        {
+          "kind": "charge",
+          "anim": "frost_bite_dash",
+          "speed": 540,
+          "duration": 0.45,
+          "cooldown": 4.2
+        },
+        {
+          "kind": "nova",
+          "anim": "gleipnir_snap",
+          "count": 12,
+          "speed": 200,
+          "damage": 1,
+          "cooldown": 4.5
+        }
+      ],
+      "phase2_at": 0.55,
+      "phase2_abilities": [
+        {
+          "kind": "nova",
+          "anim": "gleipnir_snap",
+          "count": 16,
+          "speed": 215,
+          "damage": 1,
+          "cooldown": 2.8
+        },
+        {
+          "kind": "summon",
+          "anim": "pack_howl",
+          "entity": "norse_helhound",
+          "count": 5,
+          "cooldown": 4.2
+        }
+      ]
+    },
+    {
+      "id": "norse_troll",
+      "name_key": "miniboss.troll.name",
+      "role": "miniboss",
+      "pantheon": "norse",
+      "max_health": 155,
+      "move_speed": 48,
+      "contact_damage": 2,
+      "radius": 25,
+      "ai": "chase",
+      "gold": 16,
+      "ranged": false,
+      "abilities": [
+        {
+          "kind": "barrage",
+          "anim": "rock_throw",
+          "count": 2,
+          "spread": 0,
+          "speed": 165,
+          "damage": 2,
+          "cooldown": 3.2
+        },
+        {
+          "kind": "nova",
+          "anim": "quake_slam",
+          "count": 9,
+          "speed": 190,
+          "damage": 1,
+          "cooldown": 4.4
+        }
+      ]
+    }
+  ]
 }
