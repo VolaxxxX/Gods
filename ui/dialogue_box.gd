@@ -246,7 +246,9 @@ func _process(delta: float) -> void:
 func _ease_out(t: float) -> float:
 	return 1.0 - pow(1.0 - clampf(t, 0.0, 1.0), 3.0)
 
-func _unhandled_input(event: InputEvent) -> void:
+## Use _input (fires BEFORE the GUI) so a tap ANYWHERE — including directly on
+## the dialogue panel, which would otherwise swallow it — advances/skips the line.
+func _input(event: InputEvent) -> void:
 	if not _modal:
 		return
 	var pressed: bool = event.is_action_pressed("ui_accept") \
