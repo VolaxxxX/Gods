@@ -11,10 +11,10 @@ extends CanvasLayer
 
 signal finished
 
-const CHARS_PER_SEC := 42.0   # typewriter speed
+const CHARS_PER_SEC := 62.0   # typewriter speed (snappy)
 const INTRO_DUR := 0.22       # panel slide / portrait fade-in
-const TOAST_BASE := 1.6       # toast: minimum seconds a fully-typed line lingers
-const TOAST_PER_CHAR := 0.045 # toast: extra linger per character (so long lines stay)
+const TOAST_BASE := 1.2       # toast: minimum seconds a fully-typed line lingers
+const TOAST_PER_CHAR := 0.035 # toast: extra linger per character
 const BOB_AMPL := 4.0         # portrait idle breathing, pixels
 
 const VOICE_STRIDE := 3       # play a voice blip every Nth revealed character
@@ -248,21 +248,30 @@ func _ease_out(t: float) -> float:
 
 ## Use _input (fires BEFORE the GUI) so a tap ANYWHERE — including directly on
 ## the dialogue panel, which would otherwise swallow it — advances/skips the line.
+## Modal: tap anywhere advances/skips. Toast: tap ON the box skips it (so combat
+## taps elsewhere still aim/fire).
 func _input(event: InputEvent) -> void:
-	if not _modal:
-		return
-	var pressed: bool = event.is_action_pressed("ui_accept") \
-		or (event is InputEventScreenTouch and event.pressed) \
+	var key: bool = event.is_action_pressed("ui_accept")
+	var touch: bool = (event is InputEventScreenTouch and event.pressed) \
 		or (event is InputEventMouseButton and event.pressed)
-	if not pressed:
+	if not (key or touch):
 		return
-	# First tap finishes the typewriter; the next advances the line.
-	if not _fully_revealed():
-		_reveal = float(_full_len)
-		_text.visible_characters = -1
+	if _modal:
+		# First tap finishes the typewriter; the next advances. (Skip-spam works.)
+		if not _fully_revealed():
+			_reveal = float(_full_len)
+			_text.visible_characters = -1
+		else:
+			_advance()
+		get_viewport().set_input_as_handled()
 	else:
-		_advance()
-	get_viewport().set_input_as_handled()
+		# Toast: a keyboard accept, or a tap landing ON the toast box, skips it.
+		var on_box := key
+		if touch and _panel != null:
+			on_box = _panel.get_global_rect().has_point(event.position)
+		if on_box:
+			_advance()
+			get_viewport().set_input_as_handled()
 
 func _close() -> void:
 	if _modal:

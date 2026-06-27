@@ -136,8 +136,11 @@ func _build() -> void:
 	_refresh_hero_desc()
 
 	# Action buttons.
-	var buttons := HBoxContainer.new()
-	buttons.add_theme_constant_override("separation", 12)
+	# HFlow so the buttons wrap to a new line on narrow (phone) screens instead
+	# of pushing Options/Resume off the edge.
+	var buttons := HFlowContainer.new()
+	buttons.add_theme_constant_override("h_separation", 12)
+	buttons.add_theme_constant_override("v_separation", 10)
 	dv.add_child(buttons)
 	buttons.add_child(_make_button(Loc.t("ui.play"), _on_play))
 	buttons.add_child(_make_button(Loc.t("ui.daily"), _on_daily))

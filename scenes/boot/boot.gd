@@ -44,6 +44,18 @@ func _ready() -> void:
 	btn.pressed.connect(_on_start)
 	add_child(btn)
 
+	# Sound/options right on the first screen.
+	var opt := Button.new()
+	opt.text = Loc.t("ui.options")
+	opt.position = Vector2(cx - 140, cy + 126)
+	opt.size = Vector2(280, 56)
+	opt.pressed.connect(_on_options)
+	add_child(opt)
+
+func _on_options() -> void:
+	_unlock_audio()  # so volume changes are audible immediately
+	add_child(SettingsPanel.new())
+
 func _on_start() -> void:
 	_unlock_audio()
 	SceneRouter.goto_hub()
