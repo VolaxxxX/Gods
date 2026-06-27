@@ -430,7 +430,10 @@ func _summon(entity_id: String, count: int, regen: bool = false) -> void:
 func _on_regen_add(entity_id: String) -> void:
 	if health == null or health.fraction() <= 0.0:
 		return  # boss is dead — stop regenerating
-	call_deferred("_summon", entity_id, 1, true)
+	# Small delay so a slain head doesn't pop back instantly (telegraphed regrowth).
+	get_tree().create_timer(0.9).timeout.connect(func():
+		if is_instance_valid(self) and health != null and health.fraction() > 0.0:
+			_summon(entity_id, 1, true))
 
 ## The bespoke attack-animation names declared on this entity's abilities, so the
 ## sprite pipeline can load a sheet per attack (<id>_<anim>.png).
