@@ -142,6 +142,7 @@ func _build() -> void:
 	buttons.add_child(_make_button(Loc.t("ui.play"), _on_play))
 	buttons.add_child(_make_button(Loc.t("ui.daily"), _on_daily))
 	buttons.add_child(_make_button(Loc.t("ui.codex_btn"), _on_codex))
+	buttons.add_child(_make_button(Loc.t("ui.options"), _on_options))
 	if SaveManager.has_run():
 		buttons.add_child(_make_button(Loc.t("ui.resume"), _on_resume))
 
@@ -275,6 +276,9 @@ func _on_daily() -> void:
 
 func _on_codex() -> void:
 	add_child(Codex.new())
+
+func _on_options() -> void:
+	add_child(SettingsPanel.new())
 
 func _on_resume() -> void:
 	var snap := SaveManager.load_run()

@@ -25,8 +25,8 @@ var _music: AudioStreamPlayer
 var _voices: Array[AudioStreamPlayer] = []
 var _sfx_cache: Dictionary = {}   # key -> AudioStream
 var _music_cache: Dictionary = {}
-var _music_vol: float = 0.55      # music sits under the SFX so cues cut through
-var _sfx_vol: float = 0.9
+var _music_vol: float = 0.5      # music sits under the SFX so cues cut through
+var _sfx_vol: float = 0.7
 var _current_music: String = ""
 var _last_hp: float = -1.0
 
@@ -217,8 +217,8 @@ func _exit_boss_music() -> void:
 # --- Volume settings (persisted in SaveManager.meta.options) ---
 func load_volumes() -> void:
 	var o: Dictionary = SaveManager.meta.get("options", {})
-	_music_vol = float(o.get("music", 0.55))
-	_sfx_vol = float(o.get("sfx", 0.9))
+	_music_vol = float(o.get("music", 0.5))
+	_sfx_vol = float(o.get("sfx", 0.7))
 	_music.volume_db = _to_db(_music_vol)
 
 func set_music_volume(v: float) -> void:
