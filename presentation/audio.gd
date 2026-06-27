@@ -41,6 +41,13 @@ const BOSS_TRANSPOSE := {
 var _in_boss: bool = false
 var _boss_synth: AudioStream
 
+# Per-track loudness trim (dB, <= 0) so realms feel evenly calm: the supplied
+# tracks vary ~11 dB in RMS, so the loud ones are pulled down toward the rest.
+# Only attenuation (never boost) so we never push a track into clipping.
+const MUSIC_TRIM_DB := {
+	"aztec": -7.0, "norse": -7.0, "bali": -3.0,
+}
+
 # Procedural "voice" for dialogue: a short synth blip, pitched per speaker, played
 # as each word is typed. A bespoke voice WAV (assets/audio/sfx/voice.*) overrides it.
 var _voice_player: AudioStreamPlayer
@@ -145,7 +152,7 @@ func play_music(id: String) -> void:
 		stream.loop = true
 	_music.stream = stream
 	_music.pitch_scale = 1.0  # boss music may have transposed it; reset for realm/hub
-	_music.volume_db = _to_db(_music_vol)
+	_music.volume_db = _to_db(_music_vol) + float(MUSIC_TRIM_DB.get(id, 0.0))
 	_music.play()
 
 # --- Boss battle music ---
@@ -400,6 +407,13 @@ func _make_boss_music() -> AudioStreamWAV:
 	# Soft master scale so the dense layering doesn't hard-clip.
 	for i in b.size():
 		b[i] *= 0.62
+	# Fade the last ~12 ms to zero so the loop point is seamless (no tick): the
+	# kick on beat 1 already attacks from silence, so only the tail needs it.
+	var fade := int(0.012 * RATE)
+	for i in fade:
+		var idx := b.size() - 1 - i
+		if idx >= 0:
+			b[idx] *= float(i) / float(fade)
 	return _render(b)
 
 ## A ~55ms decaying two-tone blip for dialogue (pitched per speaker at play time).
