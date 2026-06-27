@@ -158,18 +158,31 @@ func play_music(id: String) -> void:
 # --- Boss battle music ---
 func _on_boss_appeared(_entity, _name_key: String) -> void:
 	play_sfx("boss")  # the impact stinger
-	_enter_boss_music()
+	var is_mini := false
+	if _entity != null and is_instance_valid(_entity):
+		var d = _entity.get("data")
+		if d != null:
+			is_mini = (String(d.role) == "miniboss")
+	_enter_boss_music(is_mini)
 
 func _on_boss_gone() -> void:
 	_exit_boss_music()
 
-func _enter_boss_music() -> void:
+func _enter_boss_music(is_mini: bool = false) -> void:
 	if _in_boss:
 		return
 	_in_boss = true
 	var realm := RunManager.biome_id
-	# A real boss track wins; else a generic one; else the synthesized loop.
-	var stream = _find_stream(MUSIC_DIR, realm + "_boss")
+	# A real track wins (mini-bosses prefer their own); else a generic one; else
+	# the synthesized loop. Lookup: <realm>_miniboss > miniboss_battle (minis only)
+	# > <realm>_boss > boss_battle > synth.
+	var stream = null
+	if is_mini:
+		stream = _find_stream(MUSIC_DIR, realm + "_miniboss")
+		if stream == null:
+			stream = _find_stream(MUSIC_DIR, "miniboss_battle")
+	if stream == null:
+		stream = _find_stream(MUSIC_DIR, realm + "_boss")
 	if stream == null:
 		stream = _find_stream(MUSIC_DIR, "boss_battle")
 	var transpose := 1.0
@@ -240,16 +253,11 @@ func _on_entity_died(entity) -> void:
 	else:
 		play_sfx("death", _entity_pitch(entity))
 
-## Bigger / tougher entities sound lower; plus a stable per-type offset so two
-## mobs of similar HP (skeleton vs harpy) still read as distinct creatures.
+## Bigger / tougher entities sound lower, so a brute and a swarm read apart.
 func _entity_pitch(e) -> float:
 	var h = e.get("health")
 	var mh: float = h.max_health if h != null else 4.0
-	var base: float = 1.35 - mh * 0.012
-	var d = e.get("data")
-	if d != null and String(d.id) != "":
-		base += (float(absi(hash(d.id)) % 100) / 100.0 - 0.5) * 0.30  # ±0.15 per type
-	return clampf(base, 0.62, 1.5)
+	return clampf(1.35 - mh * 0.012, 0.72, 1.35)
 
 func _on_gold(_total: int) -> void:
 	play_sfx("coin")
@@ -265,14 +273,13 @@ func _on_player_hp(current: float, _maximum: float) -> void:
 func _synth(key: String) -> AudioStreamWAV:
 	var b: PackedFloat32Array
 	match key:
-		"shoot":  # soft, clean descending "pew" (sine/tri, not harsh square)
-			b = _buf(0.14)
-			_tone(b, 0.0, 760.0, 300.0, 0.12, 0.36, "sine", 22.0)
-			_tone(b, 0.0, 1150.0, 520.0, 0.06, 0.14, "tri", 30.0)
-		"enemy_shoot":  # softer, lower pulse
+		"shoot":  # bright player "pew", descending
+			b = _buf(0.13)
+			_tone(b, 0.0, 900.0, 320.0, 0.12, 0.45, "square", 26.0, 0.06)
+			_tone(b, 0.0, 1500.0, 600.0, 0.05, 0.18, "sine", 42.0)
+		"enemy_shoot":  # darker, lower enemy pulse
 			b = _buf(0.18)
-			_tone(b, 0.0, 320.0, 150.0, 0.15, 0.38, "sine", 15.0)
-			_tone(b, 0.0, 200.0, 110.0, 0.10, 0.18, "tri", 20.0)
+			_tone(b, 0.0, 360.0, 150.0, 0.16, 0.5, "saw", 16.0, 0.05)
 		"melee":  # an air "whoosh" (filtered noise sweep)
 			b = _buf(0.16)
 			_tone(b, 0.0, 720.0, 200.0, 0.14, 0.4, "sine", 16.0, 0.85)
