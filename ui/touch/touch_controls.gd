@@ -8,7 +8,7 @@ extends Control
 
 const STICK_RADIUS := 90.0      # px to reach full tilt
 const MOUSE_INDEX := -1
-const DASH_R := 52.0            # dash button radius
+const DASH_R := 64.0            # dash button radius (big = easy thumb target)
 
 var _move_index: int = -99
 var _move_origin: Vector2
@@ -31,7 +31,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_handle_drag(event.index, event.position)
 
 func _dash_center() -> Vector2:
-	return Vector2(size.x - 96.0, size.y - 96.0)  # bottom-right, above the aim thumb rest
+	return Vector2(size.x - 104.0, size.y - 104.0)  # bottom-right, above the aim thumb rest
+
+func _move_rest() -> Vector2:
+	return Vector2(132.0, size.y - 132.0)  # where the MOVE hint sits (lower-left)
 
 func _handle_touch(index: int, pos: Vector2, pressed: bool) -> void:
 	if pressed:
@@ -86,6 +89,13 @@ func _draw() -> void:
 	draw_arc(dc, DASH_R, 0, TAU, 28, Color(0.9, 0.78, 0.45, 0.7), 3.0)
 	draw_string(ThemeDB.fallback_font, dc + Vector2(-DASH_R, 6), "DASH",
 		HORIZONTAL_ALIGNMENT_CENTER, DASH_R * 2.0, 18, Color(0.95, 0.88, 0.6, 0.85))
+	# A faint always-on MOVE hint (lower-left) so you know where to drag to walk.
+	if _move_index == -99:
+		var mr := _move_rest()
+		draw_arc(mr, STICK_RADIUS * 0.7, 0, TAU, 32, Color(0.5, 0.8, 1.0, 0.18), 3.0)
+		draw_circle(mr, 22.0, Color(0.5, 0.8, 1.0, 0.12))
+		draw_string(ThemeDB.fallback_font, mr + Vector2(-STICK_RADIUS, STICK_RADIUS * 0.7 + 22.0),
+			"MOVE", HORIZONTAL_ALIGNMENT_CENTER, STICK_RADIUS * 2.0, 16, Color(0.7, 0.85, 1.0, 0.5))
 	if _move_index != -99:
 		_draw_stick(_move_origin, _move_pos, Color(0.5, 0.8, 1.0, 0.5))
 	if _aim_index != -99:

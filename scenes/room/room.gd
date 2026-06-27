@@ -304,8 +304,8 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 	# space to dodge). Bosses/minibosses are exempt (always 1).
 	if room_type in ["combat", "cursed"]:
 		var cells := (_size.x / TILE) * (_size.y / TILE)
-		var cap := 6 if cells < 130.0 else (8 if cells < 200.0 else 11)
-		count = clampi(count + 2, 5, cap)  # denser rooms, capped by size
+		var cap := 8 if cells < 130.0 else (11 if cells < 200.0 else 14)
+		count = clampi(count + 3, 7, cap)  # denser rooms, capped by size
 	# Arena rooms: some combat rooms become a 2-3 wave fight (doors stay locked
 	# until every wave is cleared). Deterministic per seed.
 	if room_type == "combat":
@@ -322,7 +322,9 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		var e := Enemy.new()
 		e.setup(ed, target, pool, biome.difficulty if biome != null else 1.0)
 		var pos: Vector2 = spawns[i] if i < spawns.size() else _random_floor_point()
-		if _solid_at_px(pos):  # never spawn trapped in a wall/obstacle
+		# Never spawn inside a wall, NOR in/near a doorway (no foe camping the door
+		# you walk in from). _random_floor_point() already keeps clear of doors.
+		if _solid_at_px(pos) or _near_open_door(pos, DOOR_HALF + 120.0):
 			pos = _random_floor_point()
 		# Never spawn right on top of where the player enters — no instant hit at the door.
 		if is_instance_valid(target) and pos.distance_to(target.global_position) < 220.0:
@@ -366,7 +368,7 @@ func _random_floor_point() -> Vector2:
 	for _i in 16:
 		var p := Vector2(rng.randf_range(margin, _size.x - margin),
 			rng.randf_range(margin, _size.y - margin))
-		if not _solid_at_px(p) and not _near_open_door(p, DOOR_HALF + 24.0):
+		if not _solid_at_px(p) and not _near_open_door(p, DOOR_HALF + 120.0):
 			return p
 	# Guaranteed fallback: scan the grid for ANY open floor cell so an enemy can
 	# NEVER spawn trapped in a wall (which would leave the room un-clearable).

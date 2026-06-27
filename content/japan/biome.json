@@ -23,8 +23,8 @@
       ],
       "boss_id": "japan_orochi",
       "miniboss_id": "japan_tengu",
-      "enemies_per_room_min": 4,
-      "enemies_per_room_max": 6,
+      "enemies_per_room_min": 6,
+      "enemies_per_room_max": 9,
       "props": [
         "japan_toro_lantern",
         "japan_paper_lantern",

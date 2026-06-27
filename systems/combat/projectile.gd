@@ -102,6 +102,8 @@ func _physics_process(delta: float) -> void:
 	if _frames > 1:
 		_aframe += delta * ANIM_FPS
 		_atlas.region = Rect2((int(_aframe) % _frames) * _fs, 0, _fs, _fs)
+	elif _spr == null or not _spr.visible:
+		queue_redraw()  # greybox bolt: animate the pulse + comet trail along flight
 	_life += delta
 	if _life >= _max_life:
 		_deactivate()
@@ -126,12 +128,33 @@ func _on_body_entered(_body: Node) -> void:
 	_deactivate()
 
 func _draw() -> void:
-	# Only the greybox look (no bespoke sprite). A dark outline + bright core makes
-	# shots read clearly on ANY floor, light marble included.
-	if active and (_spr == null or not _spr.visible):
-		draw_circle(Vector2.ZERO, radius + 2.5, Color(0, 0, 0, 0.55))
-		draw_circle(Vector2.ZERO, radius, color)
-		draw_circle(Vector2.ZERO, radius * 0.5, Color(1, 1, 1, 0.92))
+	if not active:
+		return
+	var dir := velocity.normalized()
+	if dir == Vector2.ZERO:
+		dir = Vector2.RIGHT
+	# A soft coloured glow halo under EVERYTHING (bespoke sprite OR greybox), so a
+	# shot is always clearly visible on any floor — even a small/dim sprite pops.
+	draw_circle(Vector2.ZERO, radius * 2.6, Color(color.r, color.g, color.b, 0.10))
+	draw_circle(Vector2.ZERO, radius * 1.7, Color(color.r, color.g, color.b, 0.22))
+	if _spr != null and _spr.visible:
+		return  # the bespoke sprite draws the body; the glow above is enough
+	# Greybox comet bolt: fading trail + an elongated body + a hot core, oriented
+	# along the flight direction — reads as a real energy bolt, not an "ugly ball".
+	var back := -dir
+	var pulse := 1.0 + 0.10 * sin(_life * 26.0)
+	var r := radius * pulse
+	for i in range(1, 6):
+		var t := float(i)
+		draw_circle(back * (t * r * 0.8), maxf(r * (1.0 - t * 0.14), 1.0),
+			Color(color.r, color.g, color.b, 0.30 * (1.0 - t / 6.0)))
+	draw_circle(Vector2.ZERO, r + 1.5, Color(0, 0, 0, 0.45))  # dark rim for contrast
+	var perp := dir.orthogonal()
+	draw_colored_polygon(PackedVector2Array([
+		dir * (r * 2.3), perp * r * 0.95, back * r * 0.8, -perp * r * 0.95,
+	]), color)
+	draw_circle(Vector2.ZERO, r * 0.6, Color(1, 1, 1, 0.95))
+	draw_circle(dir * r * 0.5, r * 0.34, Color(1, 1, 1, 1.0))
 
 func _activate() -> void:
 	active = true

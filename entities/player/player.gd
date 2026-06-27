@@ -136,6 +136,7 @@ func _ready() -> void:
 	weapon = WeaponComponent.new()
 	weapon.faction_player = true
 	weapon.projectile_color = Color(0.9, 0.95, 1.0)
+	weapon.projectile_radius = 9.0  # bigger, brighter shots so they're easy to see
 	# Weapon-appropriate shot per character (arrow / bolt / energy …) if its art
 	# exists; falls back to the generic projectile_player, then a greybox bolt.
 	weapon.projectile_sprite = "projectile_player_" + RunManager.character_id
@@ -229,6 +230,8 @@ func _physics_process(delta: float) -> void:
 	_dash_cd = maxf(0.0, _dash_cd - delta)
 	if _invuln_t > 0.0:
 		_invuln_t -= delta
+		if _invuln_t <= 0.0 and hurtbox != null:
+			hurtbox.set_deferred("monitorable", true)  # i-frames over: hittable again
 	# Start a dash on a fresh tap, if off cooldown and not already dashing.
 	if _dash_t <= 0.0 and _dash_cd <= 0.0 and GameInput.consume_dash():
 		var ddir := GameInput.move_vector
@@ -239,6 +242,10 @@ func _physics_process(delta: float) -> void:
 			_dash_t = DASH_TIME
 			_dash_cd = DASH_COOLDOWN
 			_invuln_t = DASH_TIME + 0.05
+			# Phase THROUGH enemy shots/contact during the dash: disabling the
+			# hurtbox lets projectiles pass clean through instead of fizzling on you.
+			if hurtbox != null:
+				hurtbox.set_deferred("monitorable", false)
 			Fx.play("muzzle", global_position, 22.0)
 			Events.player_dashed.emit()
 	if _dash_t > 0.0:
@@ -303,8 +310,10 @@ func _resolve_aim() -> Vector2:
 	# 1) Touch right stick.
 	if GameInput.aim_vector.length() > 0.1:
 		return GameInput.aim_vector
-	# 2) Desktop mouse (when held).
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	# 2) Desktop mouse (when held). Ignored on touch devices — there a finger press
+	# emulates a mouse click, which would aim+fire at every tap and fight the
+	# twin-stick (the cause of "I can only shoot, I can't move" on phone).
+	if _pointer_aim() and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		return get_global_mouse_position() - global_position
 	# 3) Auto-aim at nearest enemy.
 	if GameInput.auto_aim:
@@ -316,7 +325,12 @@ func _resolve_aim() -> Vector2:
 func _wants_fire() -> bool:
 	return GameInput.fire_held \
 		or GameInput.auto_fire \
-		or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+		or (_pointer_aim() and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT))
+
+## True only on a real-mouse device (desktop). On a touchscreen the mouse is
+## emulated from touch, so we ignore it entirely and let the twin-stick rule.
+func _pointer_aim() -> bool:
+	return not DisplayServer.is_touchscreen_available()
 
 func _nearest_enemy() -> Node2D:
 	var best: Node2D = null

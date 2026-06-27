@@ -24,8 +24,8 @@
       ],
       "boss_id": "bali_rangda",
       "miniboss_id": "bali_bhuta_lord",
-      "enemies_per_room_min": 4,
-      "enemies_per_room_max": 6,
+      "enemies_per_room_min": 6,
+      "enemies_per_room_max": 9,
       "props": [
         "bali_shrine",
         "bali_offering",

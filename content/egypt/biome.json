@@ -23,8 +23,8 @@
       ],
       "boss_id": "egypt_apophis",
       "miniboss_id": "egypt_sphinx",
-      "enemies_per_room_min": 4,
-      "enemies_per_room_max": 6,
+      "enemies_per_room_min": 6,
+      "enemies_per_room_max": 9,
       "props": [
         "egypt_sarcophagus",
         "egypt_pillar",
