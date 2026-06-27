@@ -11,7 +11,7 @@
         "wall": "#7a2230",
         "accent": "#e8e0d0"
       },
-      "room_count": 9,
+      "room_count": 11,
       "enemy_pool": [
         "japan_onibi",
         "japan_kappa",

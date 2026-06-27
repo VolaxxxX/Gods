@@ -20,6 +20,7 @@ var open_sides: Array[String] = []   # sides that connect to a neighbor
 var secret_sides: Array[String] = [] # open sides whose neighbour is a secret room
 var room_type: String = "combat"
 var locked: bool = false
+var _stuck_t: float = 0.0  # safety-net timer while a combat room is locked
 
 var _size: Vector2 = Vector2(13 * TILE, 9 * TILE)
 var _alive_enemies: int = 0
@@ -47,7 +48,7 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 	if template != null:
 		_size = template.pixel_size()
 	else:
-		_size = Vector2(13 * TILE, 9 * TILE)
+		_size = Vector2(15 * TILE, 11 * TILE)
 
 	_build_floor_tilemap()  # real TileMapLayer floor w/ variants (else greybox _draw)
 	_build_walls()
@@ -520,6 +521,21 @@ func _on_enemy_gone() -> void:
 	if _alive_enemies <= 0:
 		_unlock()
 		emit_signal("cleared")
+
+## Anti-soft-lock safety net: while a combat room is locked, periodically free
+## any enemy that ended up trapped inside a wall/obstacle (unreachable), so the
+## room can always be cleared and the boss doors can never fail to appear.
+func _physics_process(delta: float) -> void:
+	if not locked or _alive_enemies <= 0:
+		return
+	_stuck_t += delta
+	if _stuck_t < 1.5:
+		return
+	_stuck_t = 0.0
+	for c in get_children():
+		if c is Enemy and is_instance_valid(c) and c.health != null \
+				and not c.health.is_dead() and _solid_at_px(c.position):
+			c.health.take(999999.0)  # trapped & unreachable -> kill to release the lock
 
 # --- Locking ---
 func _lock() -> void:
