@@ -164,8 +164,9 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 
 	_room_damage_taken = false
 
-	# Build. If already cleared, treat as a safe room (no respawn).
-	var build_type: String = node["type"] if not already else "reward"
+	# Build. If already cleared, build it EMPTY ("cleared" matches no content rule)
+	# so re-entering never re-spawns loot (the floating orb bug) or enemies.
+	var build_type: String = node["type"] if not already else "cleared"
 	current_room.secret_sides = secret
 	current_room.build(template, biome, open, build_type, player, pool)
 

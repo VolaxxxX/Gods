@@ -310,10 +310,10 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 			continue
 		var e := Enemy.new()
 		e.setup(ed, target, pool, biome.difficulty if biome != null else 1.0)
-		if i < spawns.size():
-			e.position = spawns[i]
-		else:
-			e.position = _random_floor_point()
+		var pos: Vector2 = spawns[i] if i < spawns.size() else _random_floor_point()
+		if _solid_at_px(pos):  # never spawn trapped in a wall/obstacle
+			pos = _random_floor_point()
+		e.position = pos
 		add_child(e)
 		_alive_enemies += 1
 		e.tree_exited.connect(_on_enemy_gone)
@@ -344,14 +344,24 @@ func spawn_wave(target: Node2D, pool: ProjectilePool, ids: Array, n: int) -> voi
 func _random_floor_point() -> Vector2:
 	var margin := WALL_THICK + 48.0
 	var rng := RNG.stream("spawn")
-	var p := _size * 0.5
-	# Retry a few times so a spawn never lands inside an obstacle or a door mouth.
-	for _i in 8:
-		p = Vector2(rng.randf_range(margin, _size.x - margin),
+	# Retry so a spawn never lands inside an obstacle or a door mouth.
+	for _i in 16:
+		var p := Vector2(rng.randf_range(margin, _size.x - margin),
 			rng.randf_range(margin, _size.y - margin))
 		if not _solid_at_px(p) and not _near_open_door(p, DOOR_HALF + 24.0):
-			break
-	return p
+			return p
+	# Guaranteed fallback: scan the grid for ANY open floor cell so an enemy can
+	# NEVER spawn trapped in a wall (which would leave the room un-clearable).
+	var y := margin
+	while y < _size.y - margin:
+		var x := margin
+		while x < _size.x - margin:
+			var pp := Vector2(x, y)
+			if not _solid_at_px(pp):
+				return pp
+			x += TILE
+		y += TILE
+	return _size * 0.5
 
 func _spawn_pickups(priced: bool) -> void:
 	if biome == null:

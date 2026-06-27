@@ -47,6 +47,12 @@ window/stretch/aspect="expand"
 ; scripts, so the per-class "unused signal" warning is a false positive.
 gdscript/warnings/unused_signal=0
 
+[input_devices]
+
+; Touch must drive the menu Buttons (door/realm/boon picks) on phones — make it
+; explicit so a tap always registers as a click.
+pointing/emulate_mouse_from_touch=true
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

@@ -89,10 +89,11 @@ func _draw() -> void:
 			continue
 		var p := o + _cell_pos(pos, lo)
 		var t: String = _nodes[pos]["type"]
-		var col: Color = TYPE_COL.get(t, Color(0.6, 0.6, 0.65))
 		var seen: bool = _cleared.has(pos) or pos == _current
-		if not seen:
-			col = col.darkened(0.5)  # known but not yet entered
+		# Un-visited rooms show only that they EXIST (neutral grey) — their type is
+		# hidden so the map never spoils what's in the next room. Type colour + pip
+		# are revealed only once you've entered.
+		var col: Color = TYPE_COL.get(t, Color(0.6, 0.6, 0.65)) if seen else Color(0.26, 0.26, 0.32)
 		var cell := StyleBoxFlat.new()
 		cell.bg_color = col
 		cell.set_corner_radius_all(4)
