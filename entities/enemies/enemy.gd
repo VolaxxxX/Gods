@@ -267,6 +267,31 @@ func _execute_ability(ab: Dictionary) -> void:
 				var base := (_target.global_position - global_position).angle()
 				_fire_pattern(int(ab.get("count", 5)), deg_to_rad(float(ab.get("spread", 12.0))),
 					base, float(ab.get("speed", 300.0)), float(ab.get("damage", 1.0)))
+		"breath":
+			_breath(ab)
+
+## A flame/energy BREATH: a dense, fast stream of short-lived projectiles in a
+## tight cone toward the player — reads as a long jet of flame when the projectile
+## art (projectile_<id>) is an animated flame strip. Stays deterministic (seeded).
+func _breath(ab: Dictionary) -> void:
+	if _pool == null or not is_instance_valid(_target):
+		return
+	var rng := RNG.stream("combat")
+	var base := (_target.global_position - global_position).angle()
+	var spread := deg_to_rad(float(ab.get("spread", 34.0)))
+	var dmg := float(ab.get("damage", 1.0))
+	var prad := float(ab.get("radius", 11.0))
+	var life := float(ab.get("life", 1.0))
+	var smax := float(ab.get("speed", 360.0))
+	var col := Color(1.0, 0.55, 0.2)  # tinted only if generic art (themed wins)
+	for k in int(ab.get("count", 16)):
+		var ang := base + (rng.randf() - 0.5) * spread
+		var sp := lerpf(smax * 0.5, smax, rng.randf())
+		var dir := Vector2.from_angle(ang)
+		var d := Damage.new(dmg, ["enemy", "fire"], self)
+		_pool.spawn(global_position + dir * (_radius + 6.0), dir * sp, d, false,
+			prad, col, life, false, "projectile_" + data.id)
+	Fx.play(_burst_fx(), global_position, _radius * 3.0)
 
 ## Themed nova/charge burst for this enemy if its art exists, else the generic ring.
 func _burst_fx() -> String:

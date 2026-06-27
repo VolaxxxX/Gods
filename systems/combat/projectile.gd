@@ -14,9 +14,17 @@ var active: bool = false
 ## Optional on-hit hook (pos, hurtbox) for blessing/synergy effects.
 var on_hit_extra: Callable = Callable()
 
+const ANIM_FPS := 16.0
+
 var _shape: CollisionShape2D
 var _spr: Sprite2D  # optional projectile texture; greybox disc when absent
 var _hit_ids: Dictionary = {}  # hurtboxes already hit this shot (pierce: once each)
+# Animated-projectile state: a sprite whose width > height is a horizontal strip
+# (frames = width/height) — it cycles and faces its velocity (flames, bolts, …).
+var _atlas: AtlasTexture
+var _frames: int = 1
+var _fs: int = 0
+var _aframe: float = 0.0
 
 func _ready() -> void:
 	_shape = CollisionShape2D.new()
@@ -27,6 +35,7 @@ func _ready() -> void:
 	_spr = Sprite2D.new()
 	_spr.visible = false
 	add_child(_spr)
+	_atlas = AtlasTexture.new()
 	hit.connect(_on_hit)
 	# Walls are physics bodies, not areas, so despawn on body contact too.
 	body_entered.connect(_on_body_entered)
@@ -62,19 +71,37 @@ func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool
 		use_name = sprite_name
 	var has_specific := Sprites.has_fx(use_name)
 	var tex := Sprites.fx(use_name)
-	_spr.texture = tex
 	_spr.visible = tex != null
+	_frames = 1
+	_spr.rotation = 0.0
 	if tex != null:
 		_spr.modulate = Color.WHITE if has_specific else color
-		var dim: float = maxf(tex.get_width(), tex.get_height())
-		if dim > 0.0:
-			_spr.scale = Vector2.ONE * (2.0 * radius / dim)
+		var w := tex.get_width()
+		var h := tex.get_height()
+		if w > h and h > 0:
+			# Animated horizontal strip: cycle frames and point along the shot.
+			_frames = maxi(1, int(round(float(w) / float(h))))
+			_fs = h
+			_aframe = 0.0
+			_atlas.atlas = tex
+			_atlas.region = Rect2(0, 0, _fs, _fs)
+			_spr.texture = _atlas
+			_spr.scale = Vector2.ONE * (2.0 * radius / float(_fs))
+			_spr.rotation = velocity.angle()
+		else:
+			_spr.texture = tex
+			var dim: float = maxf(w, h)
+			if dim > 0.0:
+				_spr.scale = Vector2.ONE * (2.0 * radius / dim)
 	_activate()
 
 func _physics_process(delta: float) -> void:
 	if not active:
 		return
 	global_position += velocity * delta
+	if _frames > 1:
+		_aframe += delta * ANIM_FPS
+		_atlas.region = Rect2((int(_aframe) % _frames) * _fs, 0, _fs, _fs)
 	_life += delta
 	if _life >= _max_life:
 		_deactivate()
