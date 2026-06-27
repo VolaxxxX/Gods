@@ -102,13 +102,7 @@ func _ready() -> void:
 	_outline(dash_l, 3)
 	root.add_child(dash_l)
 
-	# Owned build at a glance: a wrapping row of boon icons + item chips.
-	_items_row = HFlowContainer.new()
-	_items_row.position = Vector2(24, 140)
-	_items_row.custom_minimum_size = Vector2(320, 0)
-	_items_row.add_theme_constant_override("h_separation", 4)
-	_items_row.add_theme_constant_override("v_separation", 4)
-	root.add_child(_items_row)
+	# (Owned-build row under the HP bar removed — was visually noisy.)
 
 	# Low-HP danger vignette (red, pulses) — drawn at the screen edges.
 	_vignette = Control.new()
