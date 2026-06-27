@@ -160,7 +160,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 	_abilities = data.abilities
 	for i in _abilities.size():
 		var cd: float = float(_abilities[i].get("cooldown", 4.0))
-		_ability_cd.append(cd * (0.5 + 0.35 * i))
+		_ability_cd.append(cd * (0.15 + 0.3 * i))  # first signature attack fires fast
 
 func _ready() -> void:
 	add_to_group("enemies")
