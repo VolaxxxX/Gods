@@ -33,6 +33,7 @@ var _charge_dir: Vector2 = Vector2.ZERO
 var _charge_speed: float = 420.0
 var _charge_vanish: bool = false  # fade out while dashing (Sand Veil Dash)
 var _melee_swing_cd: float = 0.0  # melee mobs: throttle the attack animation
+var _melee_cd: float = 0.0  # bosses/minibosses: cooldown for the close-range melee strike
 
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 		difficulty: float = 1.0) -> void:
@@ -184,6 +185,15 @@ func _physics_process(delta: float) -> void:
 			if _anim != null and _anim.sprite_frames != null \
 					and _anim.sprite_frames.has_animation("attack"):
 				_anim.play("attack")
+	# Bosses & minibosses: a REAL close-range melee strike (burst hit + swing),
+	# distinct from passive contact damage. Only when the player is right next to
+	# them and not mid-dash, so they never swing at empty air.
+	if not _abilities.is_empty() and is_instance_valid(_target) and _charge_t <= 0.0:
+		_melee_cd -= delta
+		if _melee_cd <= 0.0 \
+				and global_position.distance_to(_target.global_position) <= _radius + 30.0:
+			_melee_cd = 2.2
+			_melee_strike()
 	# Final-boss second phase: unlock new attacks + a burst at the threshold.
 	if not _phase2_done and not data.phase2_abilities.is_empty() \
 			and health.fraction() <= data.phase2_at:
@@ -238,6 +248,42 @@ func _enter_phase2() -> void:
 	_flash = 0.25
 	_fire_pattern(16, TAU, 0.0, 200.0, 1.0)  # dramatic phase-change burst
 	Juice.add_trauma(0.6)
+
+## Length (s) of the named attack sheet for THIS boss, so the swing plays in
+## full and never cuts mid-frame or freezes on the last frame. Falls back to a
+## sane default when the entity has no animation.
+func _attack_anim_duration() -> float:
+	if _anim != null and _anim.sprite_frames != null and _anim.sprite_frames.has_animation(_attack_anim):
+		var fc := _anim.sprite_frames.get_frame_count(_attack_anim)
+		var fps := _anim.sprite_frames.get_animation_speed(_attack_anim)
+		if fps > 0.0:
+			return clampf(float(fc) / fps, 0.3, 0.85)
+	return 0.4
+
+## A real close-range melee STRIKE for bosses/minibosses: a short-lived melee
+## hitbox toward the player (one burst hit), the attack swing animation, and a
+## slash FX. Separate from the always-on contact damage.
+func _melee_strike() -> void:
+	if not is_instance_valid(_target):
+		return
+	var dir := (_target.global_position - global_position).normalized()
+	_attack_anim = "attack"
+	_attack_t = _attack_anim_duration()  # play the full swing for THIS boss (no cut/freeze)
+	var dmg := (data.contact_damage + 1.0) * _difficulty
+	var hitarea := DamageArea.new()
+	hitarea.collision_layer = Collision.ENEMY_DMG
+	hitarea.collision_mask = Collision.PLAYER_HURT
+	hitarea.setup(Damage.new(dmg, ["enemy", "melee"], self), false, 0.0)
+	var cs := CollisionShape2D.new()
+	var cc := CircleShape2D.new()
+	cc.radius = _radius * 0.85
+	cs.shape = cc
+	hitarea.add_child(cs)
+	hitarea.position = dir * (_radius + 14.0)
+	add_child(hitarea)
+	Fx.play("slash", global_position + dir * (_radius + 18.0), _radius * 2.4)
+	Juice.add_trauma(0.3)
+	get_tree().create_timer(0.2).timeout.connect(hitarea.queue_free)
 
 func _execute_ability(ab: Dictionary) -> void:
 	_attack_t = 0.4  # show the attack animation when an ability fires
