@@ -136,6 +136,9 @@ func _ready() -> void:
 	weapon = WeaponComponent.new()
 	weapon.faction_player = true
 	weapon.projectile_color = Color(0.9, 0.95, 1.0)
+	# Weapon-appropriate shot per character (arrow / bolt / energy …) if its art
+	# exists; falls back to the generic projectile_player, then a greybox bolt.
+	weapon.projectile_sprite = "projectile_player_" + RunManager.character_id
 	add_child(weapon)
 
 	# Apply the class's combat style.

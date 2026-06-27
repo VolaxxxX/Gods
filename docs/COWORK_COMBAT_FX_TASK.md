@@ -114,6 +114,12 @@ frames matching the existing sheets:
 - **Projectiles must match the weapon, NOT swords** — the ranged souls fire
   energy/arrows, so make `fx/projectile_player.png` a clean **energy bolt /
   arrow** (animated strip), never a flying sword.
+- **Per-character shot art** (the engine loads `projectile_player_<id>` first,
+  then falls back to `projectile_player`): make each weapon's projectile —
+  `fx/projectile_player_char_wanderer.png` (staff energy),
+  `fx/projectile_player_char_hunter.png` (arrow),
+  `fx/projectile_player_char_swift.png` (twin bolts/daggers). The melee
+  Champion (char_warrior) needs no projectile.
 
 ## 4. Icons — make them pro (square, transparent, readable tiny)
 Regenerate **every existing file** in `assets/sprites/icons/` (keep each filename).

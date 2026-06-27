@@ -2,6 +2,10 @@ extends Control
 ## Boot/splash. Also serves as the Web audio-unlock gate: browsers block audio
 ## until a user gesture, so we require one tap before entering the game.
 
+# Shown on the title screen so you can confirm which build you're running (bump
+# it when shipping). If the APK doesn't show this, it's an OLD build — rebuild.
+const BUILD_TAG := "build 0.9.5 — walk + weapon shots + options + skip"
+
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	# Apply saved control options now that all autoloads are initialized.
@@ -51,6 +55,15 @@ func _ready() -> void:
 	opt.size = Vector2(280, 56)
 	opt.pressed.connect(_on_options)
 	add_child(opt)
+
+	var ver := Label.new()
+	ver.text = BUILD_TAG
+	ver.add_theme_font_size_override("font_size", 13)
+	ver.modulate = Color(0.55, 0.55, 0.62)
+	ver.position = Vector2(cx - 400, vp.y - 28)
+	ver.size = Vector2(800, 20)
+	ver.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	add_child(ver)
 
 func _on_options() -> void:
 	_unlock_audio()  # so volume changes are audible immediately
