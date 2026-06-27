@@ -335,6 +335,8 @@ func _complete_biome() -> void:
 	var god: String = REALM_LORDS.get(b, "")
 	if god != "":
 		shown = Dialogue.speak(god, "boss_" + b) or shown
+	# A mythological reminder + moral, last in the queue.
+	shown = Dialogue.speak("narrator", "moral_" + b) or shown
 	if shown:
 		Dialogue.queue_empty.connect(_after_boss, CONNECT_ONE_SHOT)
 	else:
@@ -380,6 +382,8 @@ func _offer_doors() -> void:
 	var god: String = REALM_LORDS.get(b, "")
 	if god != "":
 		shown = Dialogue.speak(god, "miniboss_" + b) or shown
+	# A mythological reminder + moral for the palier creature, last in the queue.
+	shown = Dialogue.speak("narrator", "moral_mini_" + b) or shown
 	if shown:
 		Dialogue.queue_empty.connect(_show_doors, CONNECT_ONE_SHOT)
 	else:

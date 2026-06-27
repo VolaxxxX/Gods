@@ -54,6 +54,7 @@
 		"res://content/dialogue_story.json",
 		"res://content/dialogue_events.json",
 		"res://content/dialogue_endings.json",
+		"res://content/dialogue_morals.json",
 		"res://content/codex.json"
 	]
 }
