@@ -11,7 +11,7 @@
         "wall": "#3a4a5a",
         "accent": "#d8b25a"
       },
-      "room_count": 7,
+      "room_count": 9,
       "enemy_pool": [
         "greece_shade",
         "greece_skeleton",
@@ -23,8 +23,8 @@
       ],
       "boss_id": "greece_hydra",
       "miniboss_id": "greece_cyclops",
-      "enemies_per_room_min": 3,
-      "enemies_per_room_max": 5,
+      "enemies_per_room_min": 4,
+      "enemies_per_room_max": 6,
       "props": [
         "greece_column",
         "greece_brazier",

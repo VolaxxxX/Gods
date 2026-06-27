@@ -8,6 +8,7 @@ extends Control
 
 const STICK_RADIUS := 90.0      # px to reach full tilt
 const MOUSE_INDEX := -1
+const DASH_R := 52.0            # dash button radius
 
 var _move_index: int = -99
 var _move_origin: Vector2
@@ -29,8 +30,16 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event is InputEventScreenDrag:
 		_handle_drag(event.index, event.position)
 
+func _dash_center() -> Vector2:
+	return Vector2(size.x - 96.0, size.y - 96.0)  # bottom-right, above the aim thumb rest
+
 func _handle_touch(index: int, pos: Vector2, pressed: bool) -> void:
 	if pressed:
+		# Dash button (bottom-right) takes priority over starting an aim stick.
+		if pos.distance_to(_dash_center()) <= DASH_R:
+			GameInput.request_dash()
+			queue_redraw()
+			return
 		var is_left := pos.x < size.x * 0.5
 		if is_left and _move_index == -99:
 			_move_index = index
@@ -71,6 +80,12 @@ func _vector(origin: Vector2, pos: Vector2) -> Vector2:
 	return ((pos - origin) / STICK_RADIUS).limit_length(1.0)
 
 func _draw() -> void:
+	# Always-visible dash button (bottom-right).
+	var dc := _dash_center()
+	draw_circle(dc, DASH_R, Color(0.85, 0.72, 0.38, 0.16))
+	draw_arc(dc, DASH_R, 0, TAU, 28, Color(0.9, 0.78, 0.45, 0.7), 3.0)
+	draw_string(ThemeDB.fallback_font, dc + Vector2(-DASH_R, 6), "DASH",
+		HORIZONTAL_ALIGNMENT_CENTER, DASH_R * 2.0, 18, Color(0.95, 0.88, 0.6, 0.85))
 	if _move_index != -99:
 		_draw_stick(_move_origin, _move_pos, Color(0.5, 0.8, 1.0, 0.5))
 	if _aim_index != -99:

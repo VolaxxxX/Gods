@@ -11,7 +11,7 @@
         "wall": "#3b4a5a",
         "accent": "#c0d6e8"
       },
-      "room_count": 7,
+      "room_count": 9,
       "enemy_pool": [
         "norse_helhound",
         "norse_draugr",
@@ -23,8 +23,8 @@
       ],
       "boss_id": "norse_fenrir",
       "miniboss_id": "norse_troll",
-      "enemies_per_room_min": 3,
-      "enemies_per_room_max": 5,
+      "enemies_per_room_min": 4,
+      "enemies_per_room_max": 6,
       "props": [
         "norse_runestone",
         "norse_banner",

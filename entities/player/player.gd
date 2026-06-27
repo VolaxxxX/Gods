@@ -67,7 +67,8 @@ func _ready() -> void:
 		anim_id = "player"
 	if anim_id != "":
 		_anim = AnimatedSprite2D.new()
-		_anim.sprite_frames = Sprites.build_sprite_frames(anim_id, ["dash"])
+		_anim.sprite_frames = Sprites.build_sprite_frames(anim_id,
+			["dash", "attack_up", "attack_down", "attack_side"])
 		var cs := Sprites.anim_content_size(anim_id)
 		if cs > 0.0:
 			var sc := 3.4 * RADIUS / cs
@@ -274,6 +275,22 @@ func _update_melee(delta: float) -> void:
 		d.is_crit = rolled["is_crit"]
 		_melee.setup(d, false, 0.4)  # each enemy hit at most ~once per swing
 		_melee.set_deferred("monitorable", true)
+		_melee_knockback()
+
+## Shove nearby enemies away from the swing so melee can carve out space and
+## isn't an instant-swarm death. Bosses get a far weaker push.
+func _melee_knockback() -> void:
+	var center := global_position + _last_aim * MELEE_OFFSET
+	for e in get_tree().get_nodes_in_group("enemies"):
+		if not is_instance_valid(e) or not e.has_method("apply_knockback"):
+			continue
+		var to: Vector2 = e.global_position - center
+		if to.length() <= MELEE_RANGE + 26.0:
+			var force := 520.0
+			if "data" in e and e.data != null and e.data.role in ["boss", "miniboss"]:
+				force = 150.0
+			var dir := to.normalized() if to.length() > 0.01 else _last_aim
+			e.apply_knockback(dir * force)
 
 func _resolve_aim() -> Vector2:
 	# 1) Touch right stick.
@@ -361,26 +378,44 @@ func _process(delta: float) -> void:
 		_update_anim()
 	# Attack lunge + pop: punch the visual toward the aim on fire, easing back —
 	# a felt strike even without per-attack sprite frames.
-	if _vis != null:
+	# Lunge only when there's no dedicated attack sheet (static sprite); animated
+	# characters convey the strike with their own attack frames, so a lunge on top
+	# read as janky.
+	var has_attack_anim := _anim != null and _anim.sprite_frames != null \
+		and _anim.sprite_frames.has_animation("attack")
+	if _vis != null and not has_attack_anim:
 		var k: float = clampf(_attack_t / 0.22, 0.0, 1.0)
 		var lunge: Vector2 = _last_aim * (7.0 * k)
 		_vis.position = _vis_base_pos + Vector2(lunge.x, lunge.y * 0.5)
 		_vis.scale = _vis_base_scale * (1.0 + 0.10 * k)
 	queue_redraw()
 
-## Pick walk/attack/idle and face the aim/movement direction.
+## Pick walk/attack/idle and face the aim/movement direction. Attacks prefer a
+## DIRECTIONAL swing sheet by aim (attack_up / attack_down / attack_side) so each
+## character's weapon strike points where you aim; falls back to a single "attack".
 func _update_anim() -> void:
 	var sf := _anim.sprite_frames
 	var st := "idle"
 	if _dash_t > 0.0 and sf.has_animation("dash"):
 		st = "dash"
-	elif _attack_t > 0.0 and sf.has_animation("attack"):
-		st = "attack"
+	elif _attack_t > 0.0:
+		st = _attack_dir_anim(sf)
 	elif velocity.length() > 12.0 and sf.has_animation("walk"):
 		st = "walk"
 	if not sf.has_animation(st):
 		st = "idle"
 	if sf.has_animation(st) and _anim.animation != st:
 		_anim.play(st)
+	# Face the aim horizontally (side sheets/idle); up/down sheets read on their own.
 	if absf(_last_aim.x) > 0.1:
 		_anim.flip_h = _last_aim.x < 0.0
+
+## The best available attack animation for the current aim direction.
+func _attack_dir_anim(sf: SpriteFrames) -> String:
+	if absf(_last_aim.y) > absf(_last_aim.x):
+		var v := "attack_up" if _last_aim.y < 0.0 else "attack_down"
+		if sf.has_animation(v):
+			return v
+	elif sf.has_animation("attack_side"):
+		return "attack_side"
+	return "attack" if sf.has_animation("attack") else "idle"

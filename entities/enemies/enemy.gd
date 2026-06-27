@@ -28,6 +28,7 @@ var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
 var _anim: AnimatedSprite2D  # set if animation sheets exist (takes priority)
 var _attack_t: float = 0.0   # time left showing the attack animation
 var _attack_anim: String = "attack"  # which animation the active ability requests
+var _knockback: Vector2 = Vector2.ZERO  # decaying shove (player melee)
 var _charge_t: float = 0.0   # time left dashing (charge ability)
 var _charge_dir: Vector2 = Vector2.ZERO
 var _charge_speed: float = 420.0
@@ -162,8 +163,17 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 func _ready() -> void:
 	add_to_group("enemies")
 
+## A decaying shove (player melee knockback) so close combat can create space.
+func apply_knockback(v: Vector2) -> void:
+	_knockback = v
+
 func _physics_process(delta: float) -> void:
-	if _charge_t > 0.0:
+	if _knockback.length() > 12.0:
+		# Being shoved — overrides AI/charge briefly so melee actually pushes foes.
+		velocity = _knockback
+		move_and_slide()
+		_knockback = _knockback.lerp(Vector2.ZERO, clampf(delta * 9.0, 0.0, 1.0))
+	elif _charge_t > 0.0:
 		# Dashing toward the player (charge ability) — overrides normal movement.
 		_charge_t -= delta
 		velocity = _charge_dir * _charge_speed

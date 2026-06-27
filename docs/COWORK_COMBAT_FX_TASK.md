@@ -95,6 +95,26 @@ Also remake `fx/projectile_<id>.png` for the ranged minions:
 
 ---
 
+## 3E. PLAYER characters — weapon-appropriate sprites + DIRECTIONAL attack anims
+Right now only the Hunter has its own sprite; the others fall back to a generic
+sword sprite, so a ranged soul looks like it's throwing swords (wrong). Per
+playable character `<id>` in {char_wanderer, char_warrior, char_hunter,
+char_swift}, into `assets/sprites/entities/`, each a horizontal strip of square
+frames matching the existing sheets:
+- `player_<id>.png` (idle), `player_<id>_walk.png`, `player_<id>_death.png`,
+  `player_<id>_dash.png`.
+- **Directional attack swings** (the engine plays these by aim):
+  `player_<id>_attack_side.png`, `player_<id>_attack_up.png`,
+  `player_<id>_attack_down.png` (side art faces right; the engine flips it for
+  left). Make the swing show the character's OWN weapon:
+  - **char_wanderer** (Shade, ranged 1-shot): a staff/wand cast.
+  - **char_warrior** (Champion, MELEE): a sword/axe slash.
+  - **char_hunter** (Oracle, ranged pierce): a bow draw-and-loose.
+  - **char_swift** (Revenant, ranged 3-shot): twin pistols/daggers throw.
+- **Projectiles must match the weapon, NOT swords** — the ranged souls fire
+  energy/arrows, so make `fx/projectile_player.png` a clean **energy bolt /
+  arrow** (animated strip), never a flying sword.
+
 ## 4. Icons — make them pro (square, transparent, readable tiny)
 Regenerate **every existing file** in `assets/sprites/icons/` (keep each filename).
 They cover: per-deity **boons** (e.g. `greece_zeus_chain`, `egypt_horus_strike`…),
