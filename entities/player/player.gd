@@ -45,6 +45,9 @@ var _melee_rate: float = 2.5
 var _swing_t: float = 0.0
 var _sprite: Sprite2D
 var _anim: AnimatedSprite2D
+var _vis: Node2D                 # the active visual (anim or static sprite)
+var _vis_base_pos: Vector2       # its grounded rest position
+var _vis_base_scale: Vector2     # its rest scale (for the attack pop)
 var _attack_t: float = 0.0
 var _dash_t: float = 0.0      # remaining dash time (>0 means dashing)
 var _dash_cd: float = 0.0     # remaining cooldown
@@ -87,6 +90,12 @@ func _ready() -> void:
 				_sprite.scale = Vector2.ONE * sc
 				_sprite.position.y = RADIUS - Sprites.content_bottom(tex) * sc
 			add_child(_sprite)
+	# Track the active visual so attacks can lunge/pop it (gives the static-sprite
+	# player a felt "attack animation").
+	_vis = _anim if _anim != null else _sprite
+	if _vis != null:
+		_vis_base_pos = _vis.position
+		_vis_base_scale = _vis.scale
 	collision_layer = Collision.PLAYER_BODY
 	# Collide with walls only; pass through enemies (contact damage is handled by
 	# areas), which avoids the player getting shoved/stuck by mobs.
@@ -350,6 +359,13 @@ func _process(delta: float) -> void:
 	if _anim != null:
 		_anim.modulate = Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
 		_update_anim()
+	# Attack lunge + pop: punch the visual toward the aim on fire, easing back —
+	# a felt strike even without per-attack sprite frames.
+	if _vis != null:
+		var k: float = clampf(_attack_t / 0.22, 0.0, 1.0)
+		var lunge: Vector2 = _last_aim * (7.0 * k)
+		_vis.position = _vis_base_pos + Vector2(lunge.x, lunge.y * 0.5)
+		_vis.scale = _vis_base_scale * (1.0 + 0.10 * k)
 	queue_redraw()
 
 ## Pick walk/attack/idle and face the aim/movement direction.
