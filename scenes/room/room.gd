@@ -304,8 +304,8 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 	# space to dodge). Bosses/minibosses are exempt (always 1).
 	if room_type in ["combat", "cursed"]:
 		var cells := (_size.x / TILE) * (_size.y / TILE)
-		var cap := 4 if cells < 130.0 else (6 if cells < 200.0 else 8)
-		count = mini(count, cap)
+		var cap := 6 if cells < 130.0 else (8 if cells < 200.0 else 11)
+		count = clampi(count + 2, 5, cap)  # denser rooms, capped by size
 	# Arena rooms: some combat rooms become a 2-3 wave fight (doors stay locked
 	# until every wave is cleared). Deterministic per seed.
 	if room_type == "combat":
@@ -324,6 +324,13 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		var pos: Vector2 = spawns[i] if i < spawns.size() else _random_floor_point()
 		if _solid_at_px(pos):  # never spawn trapped in a wall/obstacle
 			pos = _random_floor_point()
+		# Never spawn right on top of where the player enters — no instant hit at the door.
+		if is_instance_valid(target) and pos.distance_to(target.global_position) < 220.0:
+			for _r in 12:
+				var alt := _random_floor_point()
+				if alt.distance_to(target.global_position) >= 220.0:
+					pos = alt
+					break
 		e.position = pos
 		add_child(e)
 		_alive_enemies += 1
