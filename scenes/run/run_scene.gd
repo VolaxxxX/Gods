@@ -67,6 +67,8 @@ func _ready() -> void:
 	player.add_child(fill)
 
 	Events.entity_died.connect(_on_entity_died)
+	Events.boss_spawned.connect(_on_boss_zoom)
+	Events.boss_despawned.connect(func(): _zoom_to(2.0))
 
 	# UI overlays (screen space).
 	var hud := HUD.new()
@@ -448,3 +450,18 @@ func _save_progress() -> void:
 	if RunManager.active:
 		RunManager.set_room_progress(current_pos, _cleared.keys())
 		SaveManager.save_run(RunManager.to_snapshot())
+
+## Pull the camera back for boss fights (the Hydra especially is huge).
+func _on_boss_zoom(e, _name_key: String) -> void:
+	var z := 1.55
+	if e != null and is_instance_valid(e):
+		var d = e.get("data")
+		if d != null and String(d.id) == "greece_hydra":
+			z = 1.35
+	_zoom_to(z)
+
+func _zoom_to(z: float) -> void:
+	if camera == null or not is_instance_valid(camera):
+		return
+	var tw := create_tween()
+	tw.tween_property(camera, "zoom", Vector2(z, z), 0.6)
