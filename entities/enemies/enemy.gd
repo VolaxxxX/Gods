@@ -148,6 +148,8 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 		weapon.projectile_sprite = "projectile_" + data.id
 		weapon.projectile_radius = 8.0
 		weapon.projectile_life = 2.5
+		# Per-type shot pitch so each ranged mob sounds like its own creature.
+		weapon.pitch_bias = (float(absi(hash(data.id)) % 100) / 100.0 - 0.5) * 0.4
 		add_child(weapon)
 
 	# Bespoke patterns (bosses/minibosses). Stagger initial cooldowns so the

@@ -240,11 +240,16 @@ func _on_entity_died(entity) -> void:
 	else:
 		play_sfx("death", _entity_pitch(entity))
 
-## Bigger / tougher entities sound lower, so a brute and a swarm read apart.
+## Bigger / tougher entities sound lower; plus a stable per-type offset so two
+## mobs of similar HP (skeleton vs harpy) still read as distinct creatures.
 func _entity_pitch(e) -> float:
 	var h = e.get("health")
 	var mh: float = h.max_health if h != null else 4.0
-	return clampf(1.35 - mh * 0.012, 0.72, 1.35)
+	var base: float = 1.35 - mh * 0.012
+	var d = e.get("data")
+	if d != null and String(d.id) != "":
+		base += (float(absi(hash(d.id)) % 100) / 100.0 - 0.5) * 0.30  # ±0.15 per type
+	return clampf(base, 0.62, 1.5)
 
 func _on_gold(_total: int) -> void:
 	play_sfx("coin")

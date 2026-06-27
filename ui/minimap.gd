@@ -1,30 +1,37 @@
 class_name Minimap
 extends Control
-## A top-right minimap of the current floor: every room as a cell, doors as
-## connectors, the current room highlighted, cleared rooms lit, specials colour-
-## coded. Secret rooms stay hidden until found. Fed by the run scene each room.
+## A clean top-right minimap of the current floor: framed panel, rounded room
+## cells, doors as connectors, the current room pulsing gold, specials colour-
+## coded with a bright pip. Secret rooms stay hidden until found.
 
-const CELL := 14.0
-const STEP := 20.0
-const MARGIN := 18.0
+const CELL := 16.0
+const STEP := 23.0
+const PAD := 12.0
+const MARGIN := 16.0
 
-# Room-type -> colour.
 const TYPE_COL := {
-	"start": Color(0.55, 0.7, 0.95),
-	"combat": Color(0.62, 0.62, 0.68),
-	"reward": Color(0.5, 0.85, 0.5),
-	"shop": Color(0.95, 0.82, 0.4),
-	"altar": Color(0.6, 0.85, 0.95),
-	"challenge": Color(0.95, 0.6, 0.35),
-	"cursed": Color(0.7, 0.45, 0.85),
-	"miniboss": Color(0.9, 0.45, 0.4),
-	"boss": Color(0.95, 0.3, 0.3),
-	"secret": Color(0.8, 0.8, 0.85),
+	"start": Color(0.55, 0.70, 0.95),
+	"combat": Color(0.60, 0.62, 0.70),
+	"reward": Color(0.46, 0.82, 0.50),
+	"shop": Color(0.96, 0.82, 0.40),
+	"altar": Color(0.58, 0.86, 0.96),
+	"challenge": Color(0.95, 0.58, 0.34),
+	"cursed": Color(0.72, 0.46, 0.88),
+	"miniboss": Color(0.92, 0.50, 0.42),
+	"boss": Color(0.96, 0.32, 0.32),
+	"secret": Color(0.82, 0.82, 0.88),
 }
+# Specials get a bright centre pip so they stand out at a glance.
+const PIP := {"boss": true, "miniboss": true, "shop": true, "altar": true,
+	"reward": true, "challenge": true, "cursed": true, "secret": true}
 
 var _nodes: Dictionary = {}
 var _current: Vector2i = Vector2i.ZERO
 var _cleared: Dictionary = {}
+var _t := 0.0
+
+func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func set_map(graph, current_pos: Vector2i, cleared: Dictionary) -> void:
 	_nodes = graph.nodes if graph != null else {}
@@ -33,7 +40,12 @@ func set_map(graph, current_pos: Vector2i, cleared: Dictionary) -> void:
 	_layout()
 	queue_redraw()
 
-## Size + pin to the top-right of the screen from the grid bounds.
+func _process(delta: float) -> void:
+	if _nodes.is_empty():
+		return
+	_t += delta
+	queue_redraw()  # gentle current-room pulse
+
 func _layout() -> void:
 	if _nodes.is_empty():
 		return
@@ -42,47 +54,62 @@ func _layout() -> void:
 	for pos: Vector2i in _nodes:
 		lo.x = mini(lo.x, pos.x); lo.y = mini(lo.y, pos.y)
 		hi.x = maxi(hi.x, pos.x); hi.y = maxi(hi.y, pos.y)
-	var w: float = (hi.x - lo.x + 1) * STEP
-	var h: float = (hi.y - lo.y + 1) * STEP
-	size = Vector2(w, h)
-	position = Vector2(1280.0 - w - MARGIN, 78.0)
+	var w: float = (hi.x - lo.x + 1) * STEP - (STEP - CELL)
+	var h: float = (hi.y - lo.y + 1) * STEP - (STEP - CELL)
+	size = Vector2(w + PAD * 2.0, h + PAD * 2.0)
+	position = Vector2(1280.0 - size.x - MARGIN, 74.0)
 	set_meta("lo", lo)
 
 func _draw() -> void:
 	if _nodes.is_empty() or not has_meta("lo"):
 		return
 	var lo: Vector2i = get_meta("lo")
-	# Backing plate.
-	draw_rect(Rect2(-8, -8, size.x + 16, size.y + 16), Color(0.04, 0.04, 0.06, 0.6))
-	# Door connectors first (under the cells).
+	# Framed panel (dark glass + a thin gold trim), rounded.
+	var plate := StyleBoxFlat.new()
+	plate.bg_color = Color(0.05, 0.05, 0.08, 0.82)
+	plate.set_corner_radius_all(8)
+	plate.set_border_width_all(2)
+	plate.border_color = Color(0.55, 0.46, 0.24, 0.85)
+	draw_style_box(plate, Rect2(Vector2.ZERO, size))
+
+	var o := Vector2(PAD, PAD)
+	# Door connectors under the cells.
 	for pos: Vector2i in _nodes:
 		if _hidden(pos):
 			continue
-		var a := _cell_center(pos, lo)
+		var a := o + _cell_pos(pos, lo) + Vector2(CELL, CELL) * 0.5
 		for side in _nodes[pos]["neighbors"].keys():
 			var npos: Vector2i = _nodes[pos]["neighbors"][side]
 			if _nodes.has(npos) and not _hidden(npos):
-				draw_line(a, _cell_center(npos, lo), Color(0.5, 0.5, 0.55, 0.7), 2.0)
-	# Cells.
+				draw_line(a, o + _cell_pos(npos, lo) + Vector2(CELL, CELL) * 0.5,
+					Color(0.55, 0.50, 0.40, 0.6), 2.0)
+
 	for pos: Vector2i in _nodes:
 		if _hidden(pos):
 			continue
-		var gx: float = (pos.x - lo.x) * STEP
-		var gy: float = (pos.y - lo.y) * STEP
-		var r := Rect2(gx, gy, CELL, CELL)
+		var p := o + _cell_pos(pos, lo)
 		var t: String = _nodes[pos]["type"]
 		var col: Color = TYPE_COL.get(t, Color(0.6, 0.6, 0.65))
-		if not _cleared.has(pos) and pos != _current:
-			col = col.darkened(0.45)  # known but not yet visited
-		draw_rect(r, col)
-		if t in ["boss", "miniboss", "shop", "altar", "secret"]:
-			draw_rect(r, col.lightened(0.4), false, 1.5)  # marker ring for specials
+		var seen: bool = _cleared.has(pos) or pos == _current
+		if not seen:
+			col = col.darkened(0.5)  # known but not yet entered
+		var cell := StyleBoxFlat.new()
+		cell.bg_color = col
+		cell.set_corner_radius_all(4)
+		draw_style_box(cell, Rect2(p, Vector2(CELL, CELL)))
+		if seen and PIP.has(t):
+			draw_circle(p + Vector2(CELL, CELL) * 0.5, 3.0, col.lightened(0.55))
 		if pos == _current:
-			draw_rect(Rect2(gx - 2, gy - 2, CELL + 4, CELL + 4), Color(1, 0.92, 0.6), false, 2.0)
+			var pulse: float = 0.55 + 0.45 * (0.5 + 0.5 * sin(_t * 4.0))
+			var hl := StyleBoxFlat.new()
+			hl.bg_color = Color(0, 0, 0, 0)
+			hl.set_corner_radius_all(5)
+			hl.set_border_width_all(2)
+			hl.border_color = Color(1.0, 0.9, 0.55, pulse)
+			draw_style_box(hl, Rect2(p - Vector2(2, 2), Vector2(CELL + 4, CELL + 4)))
 
-func _cell_center(pos: Vector2i, lo: Vector2i) -> Vector2:
-	return Vector2((pos.x - lo.x) * STEP + CELL * 0.5, (pos.y - lo.y) * STEP + CELL * 0.5)
+func _cell_pos(pos: Vector2i, lo: Vector2i) -> Vector2:
+	return Vector2((pos.x - lo.x) * STEP, (pos.y - lo.y) * STEP)
 
-## Secret rooms stay off the map until the player has found (entered) them.
 func _hidden(pos: Vector2i) -> bool:
 	return _nodes[pos]["type"] == "secret" and not _cleared.has(pos) and pos != _current

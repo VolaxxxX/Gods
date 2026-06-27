@@ -12,6 +12,8 @@ extends Node
 @export var faction_player: bool = true
 ## Optional themed projectile art (e.g. "projectile_greece_hydra"); "" = faction default.
 var projectile_sprite: String = ""
+## Added to the shot's audio pitch so each mob type sounds distinct (set per enemy).
+var pitch_bias: float = 0.0
 
 # Synergy hooks (read by the damage model / Phase 2).
 var damage_tags: Array[String] = ["projectile"]
@@ -61,7 +63,7 @@ func attempt(origin: Vector2, direction: Vector2) -> bool:
 			p.on_hit_extra = _on_projectile_hit
 	# Audio: heavier (bigger) projectiles get a lower-pitched report, so each
 	# weapon/mob reads distinctly.
-	var pitch: float = clampf(1.45 - projectile_radius * 0.05, 0.7, 1.5)
+	var pitch: float = clampf(1.45 - projectile_radius * 0.05 + pitch_bias, 0.6, 1.6)
 	Events.shot_fired.emit(faction_player, pitch)
 	return true
 

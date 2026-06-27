@@ -66,8 +66,12 @@ func _ready() -> void:
 	if ResourceLoader.exists(COIN):
 		var coin := TextureRect.new()
 		coin.texture = load(COIN)
-		coin.custom_minimum_size = Vector2(24, 24)
+		# IGNORE_SIZE so a big coin.png is constrained to a small, mobile-friendly
+		# icon (else the TextureRect grows to the texture's natural size).
+		coin.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		coin.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		coin.custom_minimum_size = Vector2(26, 26)
+		coin.size = Vector2(26, 26)
 		gold_row.add_child(coin)
 	_gold_label = Label.new()
 	_gold_label.add_theme_font_size_override("font_size", 22)

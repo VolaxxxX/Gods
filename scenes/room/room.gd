@@ -382,7 +382,7 @@ func _scatter_props() -> void:
 		return
 	# Keep it sparse: a few in small rooms, a few more in large arenas.
 	var cells := (_size.x / TILE) * (_size.y / TILE)
-	var cap := 3 if cells < 150.0 else (4 if cells < 220.0 else 6)
+	var cap := 5 if cells < 150.0 else (7 if cells < 220.0 else 9)
 
 	# Candidate spots: authored 'D' anchors if present (designed/symmetric), else a
 	# tidy ring of spots flush to the walls.

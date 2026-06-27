@@ -46,7 +46,10 @@ func _ready() -> void:
 	# Zoom in so the arena fills the screen instead of floating small in the
 	# 1280x720 viewport. At 1.6x the camera is tight: you DON'T see the whole
 	# (now larger) room at once — you move to explore it. More immersive on phones.
-	camera.zoom = Vector2(1.7, 1.7)
+	# Tight zoom (mobile): the player is big and dead-centre, the view stays full
+	# of action (not "creux"), and combat rooms are larger than the view so the
+	# centred camera shows no void.
+	camera.zoom = Vector2(2.0, 2.0)
 	player.add_child(camera)
 	camera.make_current()
 
@@ -98,6 +101,9 @@ func _setup_biome(from_resume: bool) -> void:
 		_canvas_mod.color = biome.ambient.darkened(0.14)
 	if _post_fx != null:
 		_post_fx.grade(RunManager.biome_id)
+	# Deep realm-tinted background so the area beyond the room walls (now visible
+	# with the player kept centred) reads as surrounding darkness, not black void.
+	RenderingServer.set_default_clear_color(biome.ambient.darkened(0.80))
 
 	_cleared.clear()
 	if pool != null:
@@ -163,14 +169,15 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	current_room.secret_sides = secret
 	current_room.build(template, biome, open, build_type, player, pool)
 
-	# Clamp the camera to the room so it never pans into the black void at the
-	# walls. Rooms sit at the origin, spanning (0,0)..room_size.
+	# Mobile-friendly framing: keep the player dead-centre and let the camera
+	# follow them everywhere (no room clamp). The deep realm-dark clear colour
+	# (set per biome) makes the area beyond the walls read as surrounding
+	# darkness rather than a void.
 	if camera != null:
-		var rs := current_room.room_size()
-		camera.limit_left = 0
-		camera.limit_top = 0
-		camera.limit_right = int(rs.x)
-		camera.limit_bottom = int(rs.y)
+		camera.limit_left = -10000000
+		camera.limit_top = -10000000
+		camera.limit_right = 10000000
+		camera.limit_bottom = 10000000
 		camera.reset_smoothing()
 
 	# Place the player: at the door we came through, else the room's spawn.
