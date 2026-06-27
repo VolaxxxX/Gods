@@ -11,7 +11,7 @@
         "wall": "#6b5a2a",
         "accent": "#37c7c0"
       },
-      "room_count": 11,
+      "room_count": 14,
       "enemy_pool": [
         "egypt_scarab",
         "egypt_shabti",

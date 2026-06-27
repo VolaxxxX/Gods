@@ -11,7 +11,7 @@
         "wall": "#3b4a5a",
         "accent": "#c0d6e8"
       },
-      "room_count": 11,
+      "room_count": 14,
       "enemy_pool": [
         "norse_helhound",
         "norse_draugr",

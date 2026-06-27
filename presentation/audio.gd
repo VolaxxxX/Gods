@@ -20,6 +20,11 @@ const RATE := 22050
 # Logical SFX names. Each maps to a synthesizer in _synth() (or a same-named file).
 const SFX_KEYS := ["shoot", "enemy_shoot", "melee", "dash", "hit", "death",
 	"hurt", "pickup", "coin", "blessing", "boss", "door", "ui"]
+# Per-cue relative gain: the rapid-fire cues are quieter so constant shooting
+# isn't fatiguing; impactful cues stay full.
+const SFX_GAIN := {
+	"shoot": 0.50, "enemy_shoot": 0.55, "melee": 0.6, "ui": 0.6, "dash": 0.7,
+}
 
 var _music: AudioStreamPlayer
 var _voices: Array[AudioStreamPlayer] = []
@@ -103,11 +108,12 @@ func play_sfx(key: String, pitch: float = 1.0) -> void:
 		return
 	# A touch of random detune keeps repeated shots/hits from sounding robotic.
 	var p: float = clampf(pitch * randf_range(0.96, 1.04), 0.4, 2.4)
+	var gain: float = _sfx_vol * float(SFX_GAIN.get(key, 1.0))
 	for v in _voices:
 		if not v.playing:
 			v.stream = stream
 			v.pitch_scale = p
-			v.volume_db = _to_db(_sfx_vol)
+			v.volume_db = _to_db(gain)
 			v.play()
 			return
 

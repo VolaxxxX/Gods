@@ -11,7 +11,7 @@
         "wall": "#3a4a5a",
         "accent": "#d8b25a"
       },
-      "room_count": 11,
+      "room_count": 14,
       "enemy_pool": [
         "greece_shade",
         "greece_skeleton",
