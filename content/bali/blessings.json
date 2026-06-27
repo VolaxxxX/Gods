@@ -99,6 +99,24 @@
       "tags": [
         "balance"
       ]
+    },
+    {
+      "id": "bali_batara_kala_rot",
+      "name_key": "blessing.kala_rot.name",
+      "desc_key": "blessing.kala_rot.desc",
+      "deity_id": "bali_batara_kala",
+      "pantheon": "bali",
+      "rarity": "rare",
+      "color": "#8ad06a",
+      "effect": {
+        "kind": "on_hit",
+        "effect": "poison",
+        "value": 1.0,
+        "duration": 4.0
+      },
+      "tags": [
+        "poison"
+      ]
     }
   ]
 }

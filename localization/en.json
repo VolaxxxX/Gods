@@ -359,5 +359,12 @@
   "ui.tap_continue": "Tap to continue",
   "ending.title": "The cycle is broken.",
   "game.tagline": "Six underworlds. One soul. Break the cycle.",
-  "hud.dash": "Dash"
+  "hud.dash": "Dash",
+  "ui.next_wave": "Wave!",
+  "blessing.ra_burn.name": "Solar Flame",
+  "blessing.ra_burn.desc": "Your hits set foes ablaze — burning damage over time.",
+  "blessing.odin_frost.name": "Hel's Frost",
+  "blessing.odin_frost.desc": "Your hits chill foes, slowing them.",
+  "blessing.kala_rot.name": "Kala's Rot",
+  "blessing.kala_rot.desc": "Your hits poison foes — damage over time."
 }

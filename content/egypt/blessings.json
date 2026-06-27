@@ -109,6 +109,24 @@
       "tags": [
         "life"
       ]
+    },
+    {
+      "id": "egypt_ra_burn",
+      "name_key": "blessing.ra_burn.name",
+      "desc_key": "blessing.ra_burn.desc",
+      "deity_id": "egypt_ra",
+      "pantheon": "egypt",
+      "rarity": "rare",
+      "color": "#ff8a3a",
+      "effect": {
+        "kind": "on_hit",
+        "effect": "burn",
+        "value": 1.0,
+        "duration": 3.0
+      },
+      "tags": [
+        "fire"
+      ]
     }
   ]
 }

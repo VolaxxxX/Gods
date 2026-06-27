@@ -155,6 +155,10 @@ func _ready() -> void:
 		_melee.add_child(msh)
 		add_child(_melee)
 		_melee.monitorable = false  # gated to the swing window
+		# Melee swings also carry on-hit effects (chain lightning, burn/poison/chill).
+		_melee.hit.connect(func(hb):
+			if weapon != null and hb != null:
+				weapon.apply_on_hit_effects(hb.global_position, hb.get_parent()))
 
 	# Recompute stats whenever the build changes during the run.
 	Events.item_picked_up.connect(func(_id): _recompute_stats())

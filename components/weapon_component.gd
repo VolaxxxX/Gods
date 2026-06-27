@@ -70,9 +70,18 @@ func attempt(origin: Vector2, direction: Vector2) -> bool:
 ## Applies on-hit blessing/synergy effects when a player projectile lands.
 func _on_projectile_hit(pos: Vector2, hurtbox) -> void:
 	var struck = hurtbox.get_parent() if hurtbox != null else null
+	apply_on_hit_effects(pos, struck)
+
+## Shared by ranged and melee: chain lightning + elemental statuses on the struck
+## enemy. `struck` is the hit Enemy (may be null).
+func apply_on_hit_effects(pos: Vector2, struck) -> void:
 	for fx in on_hit_effects:
-		if fx.get("effect", "") == "chain_lightning":
+		var kind: String = fx.get("effect", "")
+		if kind == "chain_lightning":
 			_chain_lightning(pos, struck, float(fx.get("value", 3.0)))
+		elif kind in ["burn", "poison", "chill"] and struck != null \
+				and struck.has_method("apply_status"):
+			struck.apply_status(kind, float(fx.get("duration", 3.0)), float(fx.get("value", 1.0)))
 
 func _chain_lightning(from: Vector2, exclude, amount: float) -> void:
 	var best = null  # untyped for dynamic .health access (Enemy)

@@ -29,6 +29,8 @@ var _anim: AnimatedSprite2D  # set if animation sheets exist (takes priority)
 var _attack_t: float = 0.0   # time left showing the attack animation
 var _attack_anim: String = "attack"  # which animation the active ability requests
 var _knockback: Vector2 = Vector2.ZERO  # decaying shove (player melee)
+var _statuses: Dictionary = {}  # kind -> {"t": seconds_left, "mag": per-tick}
+var _dot_t: float = 0.0         # shared damage-over-time tick accumulator
 var _charge_t: float = 0.0   # time left dashing (charge ability)
 var _charge_dir: Vector2 = Vector2.ZERO
 var _charge_speed: float = 420.0
@@ -167,7 +169,41 @@ func _ready() -> void:
 func apply_knockback(v: Vector2) -> void:
 	_knockback = v
 
+## Apply an elemental status: burn/poison deal per-tick damage; chill slows. The
+## stronger magnitude and longer duration win when refreshed.
+func apply_status(kind: String, duration: float, magnitude: float) -> void:
+	var cur = _statuses.get(kind, {})
+	_statuses[kind] = {
+		"t": maxf(float(cur.get("t", 0.0)), duration),
+		"mag": maxf(float(cur.get("mag", 0.0)), magnitude),
+	}
+
+func _tick_statuses(delta: float) -> void:
+	_dot_t += delta
+	var do_tick := _dot_t >= 0.5
+	if do_tick:
+		_dot_t = 0.0
+	for kind in _statuses.keys():
+		_statuses[kind]["t"] -= delta
+		if _statuses[kind]["t"] <= 0.0:
+			_statuses.erase(kind)
+			continue
+		if do_tick and health != null and (kind == "burn" or kind == "poison"):
+			health.take(float(_statuses[kind]["mag"]))
+
+## A tint blended onto the sprite to show the active status at a glance.
+func _status_tint() -> Color:
+	if _statuses.has("burn"):
+		return Color(1.6, 0.7, 0.4)
+	if _statuses.has("poison"):
+		return Color(0.7, 1.5, 0.6)
+	if _statuses.has("chill"):
+		return Color(0.6, 0.9, 1.6)
+	return Color.WHITE
+
 func _physics_process(delta: float) -> void:
+	if not _statuses.is_empty():
+		_tick_statuses(delta)
 	if _knockback.length() > 12.0:
 		# Being shoved — overrides AI/charge briefly so melee actually pushes foes.
 		velocity = _knockback
@@ -181,6 +217,8 @@ func _physics_process(delta: float) -> void:
 	elif ai != null:
 		var dir := ai.desired_direction(global_position)
 		velocity = movement.compute(velocity, dir, delta)
+		if _statuses.has("chill"):
+			velocity *= 0.5  # frozen/chilled enemies move at half speed
 		move_and_slide()
 	# Ranged entities fire at the player (the weapon throttles via fire_rate).
 	if weapon != null and is_instance_valid(_target):
@@ -224,12 +262,15 @@ func _physics_process(delta: float) -> void:
 	if _attack_t > 0.0:
 		_attack_t -= delta
 	var fade := 0.3 if (_charge_t > 0.0 and _charge_vanish) else 1.0  # Sand Veil Dash
+	var tint := _status_tint() if (_flash <= 0.0 and not _statuses.is_empty()) else Color.WHITE
 	if _sprite != null:
 		var m := Color(1.8, 1.8, 1.8) if _flash > 0.0 else (_color if _sprite_tinted else Color.WHITE)
+		m = Color(m.r * tint.r, m.g * tint.g, m.b * tint.b)
 		m.a = fade
 		_sprite.modulate = m
 	if _anim != null:
 		var m2 := Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
+		m2 = Color(m2.r * tint.r, m2.g * tint.g, m2.b * tint.b)
 		m2.a = fade
 		_anim.modulate = m2
 		_update_anim()

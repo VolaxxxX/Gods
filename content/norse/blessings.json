@@ -114,6 +114,24 @@
         "runes",
         "war"
       ]
+    },
+    {
+      "id": "norse_odin_frost",
+      "name_key": "blessing.odin_frost.name",
+      "desc_key": "blessing.odin_frost.desc",
+      "deity_id": "norse_odin",
+      "pantheon": "norse",
+      "rarity": "rare",
+      "color": "#8ad0f0",
+      "effect": {
+        "kind": "on_hit",
+        "effect": "chill",
+        "value": 0.0,
+        "duration": 2.0
+      },
+      "tags": [
+        "ice"
+      ]
     }
   ]
 }

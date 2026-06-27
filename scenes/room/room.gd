@@ -21,6 +21,9 @@ var secret_sides: Array[String] = [] # open sides whose neighbour is a secret ro
 var room_type: String = "combat"
 var locked: bool = false
 var _stuck_t: float = 0.0  # safety-net timer while a combat room is locked
+var _waves: int = 0        # extra enemy waves left (arena rooms)
+var _target: Node2D        # kept for spawning later waves
+var _pool: ProjectilePool
 
 var _size: Vector2 = Vector2(13 * TILE, 9 * TILE)
 var _alive_enemies: int = 0
@@ -39,6 +42,8 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 	biome = p_biome
 	open_sides = p_open_sides
 	room_type = p_type
+	_target = target
+	_pool = pool
 	if biome:
 		_pantheon = biome.pantheon
 		_floor_color = biome.palette_color("floor", _floor_color)
@@ -301,6 +306,11 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		var cells := (_size.x / TILE) * (_size.y / TILE)
 		var cap := 4 if cells < 130.0 else (6 if cells < 200.0 else 8)
 		count = mini(count, cap)
+	# Arena rooms: some combat rooms become a 2-3 wave fight (doors stay locked
+	# until every wave is cleared). Deterministic per seed.
+	if room_type == "combat":
+		var r := RNG.stream("spawn").randf()
+		_waves = 2 if r < 0.12 else (1 if r < 0.40 else 0)
 
 	for i in count:
 		var id = RNG.pick("spawn", pool_ids)  # untyped: pick() may return null
@@ -518,9 +528,19 @@ func _price_for(item: ItemData) -> int:
 
 func _on_enemy_gone() -> void:
 	_alive_enemies -= 1
-	if _alive_enemies <= 0:
-		_unlock()
-		emit_signal("cleared")
+	if _alive_enemies > 0:
+		return
+	# Arena: send the next wave instead of opening, until the waves run out.
+	if _waves > 0 and biome != null and not biome.enemy_pool.is_empty():
+		_waves -= 1
+		FloatingText.spawn(self, _size * 0.5 + Vector2(0, -40),
+			Loc.t("ui.next_wave"), Color(1.0, 0.5, 0.4))
+		Juice.add_trauma(0.25)
+		var n := RNG.stream("spawn").randi_range(3, 4)
+		spawn_wave(_target, _pool, biome.enemy_pool, n)
+		return
+	_unlock()
+	emit_signal("cleared")
 
 ## Anti-soft-lock safety net: while a combat room is locked, periodically free
 ## any enemy that ended up trapped inside a wall/obstacle (unreachable), so the
