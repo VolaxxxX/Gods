@@ -59,3 +59,6 @@ renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 textures/canvas_textures/default_texture_filter=0
 environment/defaults/default_clear_color=Color(0.05, 0.05, 0.08, 1)
+; Android export requires ETC2/ASTC VRAM-compressed textures; enable the import
+; so the APK export stops erroring ("La plateforme cible nécessite ETC2/ASTC").
+textures/vram_compression/import_etc2_astc=true
