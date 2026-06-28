@@ -38,7 +38,18 @@
       "radius": 14,
       "ai": "chase",
       "gold": 3,
-      "color": "#d8d2c0"
+      "color": "#d8d2c0",
+      "abilities": [
+        {
+          "kind": "spread",
+          "anim": "attack",
+          "count": 5,
+          "spread": 36,
+          "speed": 210,
+          "damage": 1,
+          "cooldown": 3.8
+        }
+      ]
     },
     {
       "id": "greece_harpy",
@@ -182,7 +193,18 @@
       "ranged": true,
       "range_damage": 1,
       "range_rate": 1.3,
-      "range_speed": 200
+      "range_speed": 200,
+      "abilities": [
+        {
+          "kind": "beam",
+          "anim": "attack",
+          "speed": 560,
+          "damage": 1,
+          "radius": 5,
+          "life": 1.1,
+          "cooldown": 3.0
+        }
+      ]
     },
     {
       "id": "greece_satyr",
@@ -195,7 +217,16 @@
       "radius": 12,
       "ai": "zigzag",
       "gold": 3,
-      "color": "#a07a45"
+      "color": "#a07a45",
+      "abilities": [
+        {
+          "kind": "charge",
+          "anim": "attack",
+          "speed": 390,
+          "duration": 0.4,
+          "cooldown": 3.6
+        }
+      ]
     }
   ]
 }
