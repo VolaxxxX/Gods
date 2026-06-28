@@ -648,28 +648,8 @@ func _tentacle_slam(pos: Vector2, ab: Dictionary) -> void:
 		Fx.play(_burst_fx(), pos, rad * 3.0)
 		Juice.add_trauma(0.45)
 		if data.background_boss:
-			# tentacle-arm whip — colossus signature
-			var tent := Line2D.new()
-			tent.width = 26.0
-			tent.default_color = Color(0.18, 0.55, 0.45, 0.95)
-			tent.joint_mode = Line2D.LINE_JOINT_ROUND
-			tent.begin_cap_mode = Line2D.LINE_CAP_ROUND
-			tent.end_cap_mode = Line2D.LINE_CAP_ROUND
-			tent.z_index = 6
-			var src := global_position
-			var perp := (pos - src).orthogonal().normalized()
-			var tp := PackedVector2Array()
-			for j in 7:
-				var f := float(j) / 6.0
-				tp.append(src.lerp(pos, f) + perp * sin(f * PI * 2.0) * 30.0 * (1.0 - f))
-			tent.points = tp
-			parent.add_child(tent)
-			var ttw := tent.create_tween()
-			ttw.tween_property(tent, "width", 32.0, 0.06)
-			ttw.tween_property(tent, "modulate:a", 0.0, 0.5)
-			get_tree().create_timer(0.6).timeout.connect(func() -> void:
-				if is_instance_valid(tent):
-					tent.queue_free())
+			# A real pixel-art tentacle ERUPTS at the struck spot (PixelLab art).
+			Fx.play("burst_cthulhu_tentacle" if Fx.has("burst_cthulhu_tentacle") else _burst_fx(), pos, rad * 4.0)
 		if _pool != null:
 			for k in shock_n:
 				var dir := Vector2.from_angle(TAU * float(k) / float(maxi(1, shock_n)))
