@@ -577,14 +577,28 @@ func _eye_beam(ab: Dictionary) -> void:
 	get_tree().create_timer(0.5).timeout.connect(func() -> void:
 		if is_instance_valid(warn):
 			warn.queue_free()
-		var beam := Line2D.new()
-		beam.width = 28.0
-		beam.default_color = Color(1.0, 0.28, 0.22, 0.95)
-		beam.begin_cap_mode = Line2D.LINE_CAP_ROUND
-		beam.end_cap_mode = Line2D.LINE_CAP_ROUND
-		beam.points = PackedVector2Array([origin, endp])
-		beam.z_index = 7
-		parent.add_child(beam)
+		# The beam itself: a stretched pixel-art beam sprite (PixelLab) along the ray.
+		var beam: Node2D
+		if ResourceLoader.exists("res://assets/sprites/fx/beam_cthulhu.png"):
+			var bs := Sprite2D.new()
+			bs.texture = load("res://assets/sprites/fx/beam_cthulhu.png")
+			bs.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			bs.global_position = origin + dir * (length * 0.5)
+			bs.rotation = dir.angle()
+			bs.scale = Vector2(length / float(bs.texture.get_width()), 34.0 / float(bs.texture.get_height()))
+			bs.z_index = 7
+			parent.add_child(bs)
+			beam = bs
+		else:
+			var bl := Line2D.new()
+			bl.width = 28.0
+			bl.default_color = Color(1.0, 0.28, 0.22, 0.95)
+			bl.begin_cap_mode = Line2D.LINE_CAP_ROUND
+			bl.end_cap_mode = Line2D.LINE_CAP_ROUND
+			bl.points = PackedVector2Array([origin, endp])
+			bl.z_index = 7
+			parent.add_child(bl)
+			beam = bl
 		var area := DamageArea.new()
 		area.collision_layer = Collision.ENEMY_DMG
 		area.collision_mask = Collision.PLAYER_HURT
