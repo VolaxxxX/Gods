@@ -69,6 +69,14 @@ static func ambient_particles(kind: String, size: Vector2) -> CPUParticles2D:
 			p.scale_amount_max = 4.0
 			p.initial_velocity_min = 8.0
 			p.initial_velocity_max = 18.0
+		"rain":
+			p.amount = 90
+			p.gravity = Vector2(0, 320)            # heavy fast rain
+			p.color = Color(0.62, 0.74, 0.9, 0.5)
+			p.scale_amount_min = 1.0
+			p.scale_amount_max = 2.2
+			p.initial_velocity_min = 130.0
+			p.initial_velocity_max = 200.0
 		"petal":
 			p.gravity = Vector2(0, 22)
 			p.color = Color(1.0, 0.7, 0.85, 0.85)
