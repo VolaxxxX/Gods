@@ -68,6 +68,8 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 		var cs := Sprites.anim_content_size(data.id)
 		if cs > 0.0:
 			var sc := 3.0 * _radius / cs
+			if data.background_boss:
+				sc *= 1.5  # colossus: looms larger than its hurtbox
 			_anim.scale = Vector2.ONE * sc
 			_anim.position.y = _radius - Sprites.anim_content_bottom(data.id) * sc
 		add_child(_anim)
@@ -147,6 +149,10 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 	cshape.shape = ccircle
 	contact.add_child(cshape)
 	add_child(contact)
+	if data.background_boss:
+		contact.monitoring = false   # the colossus never deals CONTACT damage
+		contact.monitorable = false
+		z_index = 2                  # sits behind the player/projectiles (background)
 
 	# Optional ranged attack (bosses/casters fire at the player).
 	if data.ranged and pool != null:
@@ -221,7 +227,9 @@ func _physics_process(delta: float) -> void:
 		return
 	if not _statuses.is_empty():
 		_tick_statuses(delta)
-	if _knockback.length() > 12.0:
+	if data.background_boss:
+		velocity = Vector2.ZERO  # pinned colossus — looms, never walks the arena
+	elif _knockback.length() > 12.0:
 		# Being shoved — overrides AI/charge briefly so melee actually pushes foes.
 		velocity = _knockback
 		move_and_slide()
@@ -255,7 +263,8 @@ func _physics_process(delta: float) -> void:
 	# Bosses & minibosses: a REAL close-range melee strike (burst hit + swing),
 	# distinct from passive contact damage. Only when the player is right next to
 	# them and not mid-dash, so they never swing at empty air.
-	if not _abilities.is_empty() and is_instance_valid(_target) and _charge_t <= 0.0:
+	if not _abilities.is_empty() and is_instance_valid(_target) and _charge_t <= 0.0 \
+			and not data.background_boss:
 		_melee_cd -= delta
 		if _melee_cd <= 0.0 \
 				and global_position.distance_to(_target.global_position) <= _radius + 30.0:
