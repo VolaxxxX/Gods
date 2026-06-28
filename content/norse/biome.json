@@ -16,7 +16,9 @@
         "norse_helhound",
         "norse_draugr",
         "norse_jotunn",
-        "norse_ulfhednar"
+        "norse_ulfhednar",
+        "norse_frost_archer",
+        "norse_vargr"
       ],
       "elite_pool": [
         "norse_jotunn"

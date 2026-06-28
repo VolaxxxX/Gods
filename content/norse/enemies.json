@@ -143,6 +143,36 @@
           "cooldown": 4.4
         }
       ]
+    },
+    {
+      "id": "norse_frost_archer",
+      "name_key": "enemy.frost_archer.name",
+      "role": "enemy",
+      "pantheon": "norse",
+      "max_health": 13,
+      "move_speed": 78,
+      "contact_damage": 1,
+      "radius": 13,
+      "ai": "orbit",
+      "gold": 4,
+      "color": "#8fc8e0",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.2,
+      "range_speed": 210
+    },
+    {
+      "id": "norse_vargr",
+      "name_key": "enemy.vargr.name",
+      "role": "enemy",
+      "pantheon": "norse",
+      "max_health": 12,
+      "move_speed": 118,
+      "contact_damage": 2,
+      "radius": 12,
+      "ai": "zigzag",
+      "gold": 3,
+      "color": "#6a7a88"
     }
   ]
 }
