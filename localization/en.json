@@ -366,5 +366,17 @@
   "blessing.odin_frost.name": "Hel's Frost",
   "blessing.odin_frost.desc": "Your hits chill foes, slowing them.",
   "blessing.kala_rot.name": "Kala's Rot",
-  "blessing.kala_rot.desc": "Your hits poison foes — damage over time."
+  "blessing.kala_rot.desc": "Your hits poison foes — damage over time.",
+  "enemy.gorgon.name": "Gorgon",
+  "enemy.satyr.name": "Satyr Raider",
+  "enemy.sandwraith.name": "Sand Wraith",
+  "enemy.serpopard.name": "Serpopard",
+  "enemy.frost_archer.name": "Frost-Bound Archer",
+  "enemy.vargr.name": "Vargr Stalker",
+  "enemy.yurei.name": "Yurei",
+  "enemy.tsuchigumo.name": "Tsuchigumo",
+  "enemy.garuda.name": "Garuda Talon",
+  "enemy.macan.name": "Macan Gadungan",
+  "enemy.atlatl.name": "Atlatl Slinger",
+  "enemy.xolotl.name": "Xolotl Hound"
 }
