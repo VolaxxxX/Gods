@@ -185,47 +185,47 @@
         {
           "kind": "spread",
           "anim": "tentacle_sweep",
-          "count": 12,
-          "spread": 72,
+          "count": 10,
+          "spread": 64,
           "speed": 205,
           "damage": 1,
-          "cooldown": 3.0
+          "cooldown": 3.2
+        },
+        {
+          "kind": "slam",
+          "anim": "maddening_rush",
+          "damage": 2,
+          "radius": 95,
+          "shock_count": 18,
+          "shock_speed": 210,
+          "cooldown": 4.6
         },
         {
           "kind": "summon",
           "anim": "spawn_brood",
           "entity": "hell_spawn",
           "count": 3,
-          "cooldown": 6.2
-        },
-        {
-          "kind": "barrage",
-          "anim": "maddening_rush",
-          "count": 5,
-          "spread": 18,
-          "speed": 250,
-          "damage": 2,
-          "cooldown": 4.0
+          "cooldown": 6.5
         }
       ],
       "phase2_at": 0.5,
       "phase2_abilities": [
         {
-          "kind": "nova",
-          "anim": "void_implosion",
-          "count": 22,
-          "speed": 215,
-          "damage": 1,
-          "cooldown": 2.6
+          "kind": "gaze",
+          "anim": "eldritch_bolts",
+          "count": 3,
+          "spread": 16,
+          "speed": 545,
+          "damage": 2,
+          "cooldown": 3.0
         },
         {
-          "kind": "barrage",
-          "anim": "eldritch_bolts",
-          "count": 4,
-          "spread": 14,
-          "speed": 245,
-          "damage": 2,
-          "cooldown": 3.2
+          "kind": "nova",
+          "anim": "void_implosion",
+          "count": 24,
+          "speed": 215,
+          "damage": 1,
+          "cooldown": 2.8
         },
         {
           "kind": "breath",
@@ -235,6 +235,15 @@
           "speed": 190,
           "damage": 1,
           "cooldown": 4.0
+        },
+        {
+          "kind": "slam",
+          "anim": "void_implosion",
+          "damage": 2,
+          "radius": 120,
+          "shock_count": 24,
+          "shock_speed": 230,
+          "cooldown": 4.8
         }
       ],
       "phase2_replace": true,
