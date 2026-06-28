@@ -55,7 +55,18 @@
       "radius": 16,
       "ai": "chase",
       "gold": 4,
-      "color": "#9b8f6b"
+      "color": "#9b8f6b",
+      "abilities": [
+        {
+          "kind": "spread",
+          "anim": "attack",
+          "count": 5,
+          "spread": 36,
+          "speed": 210,
+          "damage": 1,
+          "cooldown": 3.8
+        }
+      ]
     },
     {
       "id": "bali_rangda",
@@ -170,7 +181,18 @@
       "ranged": true,
       "range_damage": 1,
       "range_rate": 1.2,
-      "range_speed": 210
+      "range_speed": 210,
+      "abilities": [
+        {
+          "kind": "beam",
+          "anim": "attack",
+          "speed": 560,
+          "damage": 1,
+          "radius": 5,
+          "life": 1.1,
+          "cooldown": 3.0
+        }
+      ]
     },
     {
       "id": "bali_macan",
@@ -183,7 +205,16 @@
       "radius": 13,
       "ai": "zigzag",
       "gold": 3,
-      "color": "#c08040"
+      "color": "#c08040",
+      "abilities": [
+        {
+          "kind": "charge",
+          "anim": "attack",
+          "speed": 390,
+          "duration": 0.4,
+          "cooldown": 3.6
+        }
+      ]
     }
   ]
 }
