@@ -55,7 +55,17 @@
       "radius": 17,
       "ai": "chase",
       "gold": 5,
-      "color": "#9a3a5a"
+      "color": "#9a3a5a",
+      "abilities": [
+        {
+          "kind": "nova",
+          "anim": "attack",
+          "count": 10,
+          "speed": 190,
+          "damage": 1,
+          "cooldown": 4.6
+        }
+      ]
     },
     {
       "id": "aztec_cipactli",
@@ -168,7 +178,18 @@
       "ranged": true,
       "range_damage": 1,
       "range_rate": 1.2,
-      "range_speed": 205
+      "range_speed": 205,
+      "abilities": [
+        {
+          "kind": "beam",
+          "anim": "attack",
+          "speed": 560,
+          "damage": 1,
+          "radius": 5,
+          "life": 1.1,
+          "cooldown": 3.0
+        }
+      ]
     },
     {
       "id": "aztec_xolotl",
@@ -181,7 +202,16 @@
       "radius": 12,
       "ai": "zigzag",
       "gold": 3,
-      "color": "#5a4a55"
+      "color": "#5a4a55",
+      "abilities": [
+        {
+          "kind": "charge",
+          "anim": "attack",
+          "speed": 390,
+          "duration": 0.4,
+          "cooldown": 3.6
+        }
+      ]
     }
   ]
 }
