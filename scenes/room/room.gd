@@ -335,6 +335,8 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 				if alt.distance_to(target.global_position) >= 220.0:
 					pos = alt
 					break
+		if ed.background_boss:
+			pos = Vector2(_size.x * 0.5, _size.y * 0.15)  # pinned top-centre (Typhon framing)
 		e.position = pos
 		add_child(e)
 		_alive_enemies += 1
