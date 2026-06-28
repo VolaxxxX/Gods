@@ -291,6 +291,8 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 	if room_type == "boss":
 		# Palier boss on earlier floors, the true boss on the final floor.
 		var bid := RunManager.current_boss_id()
+		if RunManager.debug_boss_test != "":
+			bid = RunManager.debug_boss_test  # hidden boss-test override
 		if bid != "":
 			pool_ids = [bid]
 		count = 1
