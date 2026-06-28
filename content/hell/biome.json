@@ -25,15 +25,15 @@
       ],
       "boss_id": "hell_cthulhu",
       "miniboss_id": "hell_dagon",
-      "enemies_per_room_min": 7,
-      "enemies_per_room_max": 10,
+      "enemies_per_room_min": 4,
+      "enemies_per_room_max": 6,
       "props": [
         "greece_column",
         "greece_brazier"
       ],
       "ambient": "#8fe6d0",
       "ambient_particle": "rain",
-      "difficulty": 1.6
+      "difficulty": 1.0
     }
   ]
 }
