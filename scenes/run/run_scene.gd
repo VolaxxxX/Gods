@@ -531,6 +531,12 @@ func _cthulhu_intro(e) -> void:
 		player.velocity = Vector2.ZERO
 		player.set_physics_process(false)
 		player.set_process(false)
+	# Silence the boss's CONTACT damage during the cinematic — the player is frozen
+	# and the Old God is huge, so otherwise contact ticks would kill them on spawn.
+	var c = e.get("contact")
+	if c != null:
+		c.set_deferred("monitoring", false)
+		c.set_deferred("monitorable", false)
 	# Storm overlay: a dark veil + a white lightning flash, above the world and
 	# below the HUD. Removed when the intro ends.
 	var storm := CanvasLayer.new()
@@ -603,6 +609,10 @@ func _cthulhu_intro(e) -> void:
 		storm.queue_free()
 	if e != null and is_instance_valid(e):
 		e.set("intro_lock", false)
+		var c2 = e.get("contact")
+		if c2 != null:
+			c2.set_deferred("monitoring", true)
+			c2.set_deferred("monitorable", true)
 	if player != null and is_instance_valid(player):
 		player.set_physics_process(true)
 		player.set_process(true)
