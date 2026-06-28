@@ -295,6 +295,9 @@ func _update_anim() -> void:
 
 func _enter_phase2() -> void:
 	_phase2_done = true
+	if data.phase2_replace:
+		_abilities.clear()  # phase 2 is a wholly new moveset, not additive
+		_ability_cd.clear()
 	for ab in data.phase2_abilities:
 		_abilities.append(ab)
 		_ability_cd.append(0.6)  # the new attacks come online almost at once
