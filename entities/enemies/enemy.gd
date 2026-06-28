@@ -421,6 +421,27 @@ func _execute_ability(ab: Dictionary) -> void:
 					float(ab.get("radius", 5.0)), Color(0.6, 1.0, 0.9),
 					float(ab.get("life", 1.1)), true, "projectile_" + data.id)
 				Fx.play(_burst_fx(), global_position, _radius * 2.5)
+		"gaze":
+			# Ancient-god gaze: a fan of fast PIERCING eye-beams toward the player.
+			if is_instance_valid(_target) and _pool != null:
+				var gbase := (_target.global_position - global_position).angle()
+				var gn := int(ab.get("count", 3))
+				var gspr := deg_to_rad(float(ab.get("spread", 16.0)))
+				for k in gn:
+					var gt := 0.0 if gn == 1 else (float(k) / (gn - 1) - 0.5)
+					var gdir := Vector2.from_angle(gbase + gt * gspr)
+					var gd := Damage.new(float(ab.get("damage", 1.0)), ["enemy", "beam"], self)
+					_pool.spawn(global_position + gdir * (_radius + 8.0),
+						gdir * float(ab.get("speed", 540.0)), gd, false,
+						float(ab.get("radius", 6.0)), Color(1.0, 0.2, 0.2),
+						float(ab.get("life", 1.4)), true, "projectile_" + data.id)
+				_eye_target = maxf(_eye_target, 2.6)  # eyes blaze as they fire
+				Fx.play(_burst_fx(), global_position, _radius * 2.5)
+		"slam":
+			# A giant tentacle hammers the ground where the player stands, then a
+			# shockwave ring bursts out from the impact.
+			if is_instance_valid(_target):
+				_tentacle_slam(_target.global_position, ab)
 
 ## A flame/energy BREATH: a dense, fast stream of short-lived projectiles in a
 ## tight cone toward the player — reads as a long jet of flame when the projectile
@@ -538,6 +559,59 @@ func play_scream() -> void:
 func play_intro_emerge() -> void:
 	if _anim != null and _anim.sprite_frames != null and _anim.sprite_frames.has_animation("emerge"):
 		_anim.play("emerge")
+
+## A telegraphed tentacle SLAM: a marker grows on the floor, then a tentacle
+## crashes down (impact damage) and a shockwave ring of projectiles bursts out.
+func _tentacle_slam(pos: Vector2, ab: Dictionary) -> void:
+	var parent := get_parent()
+	if parent == null:
+		return
+	var dmg := float(ab.get("damage", 2.0)) * _difficulty
+	var rad := float(ab.get("radius", 95.0))
+	var shock_n := int(ab.get("shock_count", 18))
+	var shock_sp := float(ab.get("shock_speed", 210.0))
+	# Telegraph marker (a dark ring that swells), no damage yet.
+	var root := Node2D.new()
+	root.global_position = pos
+	root.z_index = 5
+	parent.add_child(root)
+	var disk := Polygon2D.new()
+	var pts := PackedVector2Array()
+	for i in 22:
+		pts.append(Vector2.from_angle(TAU * float(i) / 22.0) * rad)
+	disk.polygon = pts
+	disk.color = Color(0.5, 0.08, 0.12, 0.0)
+	disk.scale = Vector2(0.4, 0.4)
+	root.add_child(disk)
+	var tele := create_tween()
+	tele.set_parallel(true)
+	tele.tween_property(disk, "color:a", 0.5, 0.55)
+	tele.tween_property(disk, "scale", Vector2.ONE, 0.55)
+	# Impact after the telegraph: damage zone + burst FX + shockwave ring + shake.
+	get_tree().create_timer(0.55).timeout.connect(func() -> void:
+		if not is_instance_valid(root):
+			return
+		var area := DamageArea.new()
+		area.collision_layer = Collision.ENEMY_DMG
+		area.collision_mask = Collision.PLAYER_HURT
+		area.setup(Damage.new(dmg, ["enemy", "slam"], self), false, 0.4)
+		var cs := CollisionShape2D.new()
+		var circ := CircleShape2D.new()
+		circ.radius = rad
+		cs.shape = circ
+		area.add_child(cs)
+		root.add_child(area)
+		Fx.play(_burst_fx(), pos, rad * 3.0)
+		Juice.add_trauma(0.45)
+		if _pool != null:
+			for k in shock_n:
+				var dir := Vector2.from_angle(TAU * float(k) / float(maxi(1, shock_n)))
+				var sd := Damage.new(dmg * 0.5, ["enemy"], self)
+				_pool.spawn(pos + dir * (rad * 0.4), dir * shock_sp, sd, false,
+					8.0, Color(1.0, 0.4, 0.4), 2.2, false, "projectile_" + data.id)
+		get_tree().create_timer(0.45).timeout.connect(func() -> void:
+			if is_instance_valid(root):
+				root.queue_free()))
 
 ## Phase-2 arena hazard: a telegraphed pool of void that erupts under the player,
 ## then ticks damage for a few seconds. A dark disk + a purple glow read it clearly.
