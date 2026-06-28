@@ -19,7 +19,7 @@ const RATE := 22050
 
 # Logical SFX names. Each maps to a synthesizer in _synth() (or a same-named file).
 const SFX_KEYS := ["shoot", "enemy_shoot", "melee", "dash", "hit", "death",
-	"hurt", "pickup", "coin", "blessing", "boss", "door", "ui"]
+	"hurt", "pickup", "coin", "blessing", "boss", "door", "ui", "roar", "thunder"]
 # Per-cue relative gain: the rapid-fire cues are quieter so constant shooting
 # isn't fatiguing; impactful cues stay full.
 const SFX_GAIN := {
@@ -323,6 +323,17 @@ func _synth(key: String) -> AudioStreamWAV:
 			_tone(b, 0.0, 70.0, 110.0, 0.80, 0.5, "saw", 2.2)
 			_tone(b, 0.0, 140.0, 165.0, 0.70, 0.25, "sine", 2.5)
 			_tone(b, 0.0, 60.0, 60.0, 0.60, 0.2, "sine", 1.5, 0.5)
+		"roar":  # colossal Old-God bellow: detuned low saws + growl + noise
+			b = _buf(1.6)
+			_tone(b, 0.0, 130.0, 46.0, 1.5, 0.62, "saw", 1.6, 0.18)
+			_tone(b, 0.0, 86.0, 38.0, 1.45, 0.5, "square", 1.5, 0.12)
+			_tone(b, 0.06, 220.0, 70.0, 1.0, 0.32, "saw", 2.2, 0.45)
+			_tone(b, 0.0, 40.0, 30.0, 1.5, 0.4, "sine", 1.2, 0.0)
+		"thunder":  # a sharp crack into a rolling rumble tail
+			b = _buf(0.9)
+			_tone(b, 0.0, 320.0, 60.0, 0.10, 0.6, "square", 22.0, 1.0)
+			_tone(b, 0.02, 130.0, 40.0, 0.85, 0.42, "saw", 2.6, 0.7)
+			_tone(b, 0.0, 55.0, 35.0, 0.8, 0.3, "sine", 2.0, 0.2)
 		"door":  # heavy stone slide
 			b = _buf(0.26)
 			_tone(b, 0.0, 220.0, 110.0, 0.24, 0.4, "saw", 8.0, 0.85)
