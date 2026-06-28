@@ -16,7 +16,9 @@
         "greece_shade",
         "greece_skeleton",
         "greece_harpy",
-        "greece_minotaur"
+        "greece_minotaur",
+        "greece_gorgon",
+        "greece_satyr"
       ],
       "elite_pool": [
         "greece_skeleton"
