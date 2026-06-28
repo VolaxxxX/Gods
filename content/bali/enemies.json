@@ -154,6 +154,36 @@
           "cooldown": 4.0
         }
       ]
+    },
+    {
+      "id": "bali_garuda",
+      "name_key": "enemy.garuda.name",
+      "role": "enemy",
+      "pantheon": "bali",
+      "max_health": 13,
+      "move_speed": 88,
+      "contact_damage": 1,
+      "radius": 13,
+      "ai": "orbit",
+      "gold": 4,
+      "color": "#e0b15a",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.2,
+      "range_speed": 210
+    },
+    {
+      "id": "bali_macan",
+      "name_key": "enemy.macan.name",
+      "role": "enemy",
+      "pantheon": "bali",
+      "max_health": 15,
+      "move_speed": 106,
+      "contact_damage": 2,
+      "radius": 13,
+      "ai": "zigzag",
+      "gold": 3,
+      "color": "#c08040"
     }
   ]
 }

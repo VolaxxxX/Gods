@@ -17,7 +17,9 @@
         "bali_leyak",
         "bali_bhuta",
         "bali_celuluk",
-        "bali_naga"
+        "bali_naga",
+        "bali_garuda",
+        "bali_macan"
       ],
       "elite_pool": [
         "bali_celuluk"
