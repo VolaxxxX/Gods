@@ -132,6 +132,12 @@ func _setup_biome(from_resume: bool) -> void:
 		RunManager.resuming = false
 
 	_enter_room(current_pos, "")
+	# Boss-test: drop the player at the bottom of the arena, far from the boss that
+	# spawns up top — gives a clean Typhon-style framing and avoids spawn overlap.
+	if RunManager.debug_boss_test != "" and current_room != null and is_instance_valid(player):
+		var rs := current_room.room_size()
+		player.global_position = current_room.global_position + Vector2(rs.x * 0.5, rs.y - 130.0)
+		player.velocity = Vector2.ZERO
 
 	# Arriving in a NEW realm (its first floor): the narrator teaches its myth and
 	# its lord greets you. Plays in the safe start room; lore is told once, then a
