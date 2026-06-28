@@ -209,6 +209,20 @@ func _enter_boss_music(is_mini: bool = false) -> void:
 	_music.volume_db = _to_db(_music_vol)
 	_music.play()
 
+## Music ducking for cinematics: pull the track down, then swell it back (the
+## "drop" punched in on a beat — e.g. Cthulhu's roar).
+func duck_music(db: float = -16.0, t: float = 0.5) -> void:
+	if _music == null:
+		return
+	var tw := create_tween()
+	tw.tween_property(_music, "volume_db", db, t)
+
+func swell_music(t: float = 0.4) -> void:
+	if _music == null:
+		return
+	var tw := create_tween()
+	tw.tween_property(_music, "volume_db", _to_db(_music_vol), t)
+
 func _exit_boss_music() -> void:
 	if not _in_boss:
 		return
