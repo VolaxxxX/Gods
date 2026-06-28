@@ -147,21 +147,26 @@
       "range_speed": 225,
       "abilities": [
         {
+          "kind": "gaze",
+          "damage": 2,
+          "speed": 540,
+          "cooldown": 4.5
+        },
+        {
           "kind": "spread",
-          "anim": "abyssal_spray",
-          "count": 10,
-          "spread": 64,
-          "speed": 205,
+          "count": 9,
+          "spread": 60,
+          "speed": 240,
           "damage": 1,
           "cooldown": 3.0
         },
         {
-          "kind": "nova",
-          "anim": "tidal_burst",
-          "count": 14,
-          "speed": 190,
-          "damage": 1,
-          "cooldown": 4.6
+          "kind": "slam",
+          "damage": 2,
+          "radius": 90,
+          "shock_count": 18,
+          "shock_speed": 210,
+          "cooldown": 5.0
         }
       ]
     },
