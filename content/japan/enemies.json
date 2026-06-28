@@ -55,7 +55,17 @@
       "radius": 17,
       "ai": "chase",
       "gold": 5,
-      "color": "#c0392b"
+      "color": "#c0392b",
+      "abilities": [
+        {
+          "kind": "nova",
+          "anim": "attack",
+          "count": 10,
+          "speed": 190,
+          "damage": 1,
+          "cooldown": 4.6
+        }
+      ]
     },
     {
       "id": "japan_orochi",
@@ -171,7 +181,18 @@
       "ranged": true,
       "range_damage": 1,
       "range_rate": 1.25,
-      "range_speed": 205
+      "range_speed": 205,
+      "abilities": [
+        {
+          "kind": "beam",
+          "anim": "attack",
+          "speed": 560,
+          "damage": 1,
+          "radius": 5,
+          "life": 1.1,
+          "cooldown": 3.0
+        }
+      ]
     },
     {
       "id": "japan_tsuchigumo",
@@ -184,7 +205,16 @@
       "radius": 14,
       "ai": "zigzag",
       "gold": 3,
-      "color": "#7a5a6a"
+      "color": "#7a5a6a",
+      "abilities": [
+        {
+          "kind": "charge",
+          "anim": "attack",
+          "speed": 390,
+          "duration": 0.4,
+          "cooldown": 3.6
+        }
+      ]
     }
   ]
 }
