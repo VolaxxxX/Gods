@@ -305,7 +305,7 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 	if room_type in ["combat", "cursed"]:
 		var cells := (_size.x / TILE) * (_size.y / TILE)
 		var cap := 8 if cells < 130.0 else (11 if cells < 200.0 else 14)
-		count = clampi(count + 3, 7, cap)  # denser rooms, capped by size
+		count = clampi(count, 4, cap)  # eased density (was +3, floor 7) for a fairer ramp
 	# Arena rooms: some combat rooms become a 2-3 wave fight (doors stay locked
 	# until every wave is cleared). Deterministic per seed.
 	if room_type == "combat":
