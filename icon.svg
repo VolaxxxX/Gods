@@ -1,5 +1,38 @@
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
-  <rect width="128" height="128" rx="20" fill="#0d0d14"/>
-  <circle cx="64" cy="64" r="40" fill="none" stroke="#e0c067" stroke-width="4"/>
-  <path d="M64 28 L74 56 L104 56 L80 74 L90 102 L64 84 L38 102 L48 74 L24 56 L54 56 Z" fill="#e0c067"/>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="70%">
+      <stop offset="0%" stop-color="#1b1630"/>
+      <stop offset="100%" stop-color="#0a0a12"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe39a"/>
+      <stop offset="55%" stop-color="#e0c067"/>
+      <stop offset="100%" stop-color="#b3892f"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="22" fill="url(#bg)"/>
+  <!-- Divine radiance: a sun-god's rays -->
+  <g fill="url(#gold)">
+    <g id="rays">
+      <path d="M64 8 L60 28 L68 28 Z"/>
+    </g>
+    <use href="#rays" transform="rotate(30 64 64)"/>
+    <use href="#rays" transform="rotate(60 64 64)"/>
+    <use href="#rays" transform="rotate(90 64 64)"/>
+    <use href="#rays" transform="rotate(120 64 64)"/>
+    <use href="#rays" transform="rotate(150 64 64)"/>
+    <use href="#rays" transform="rotate(180 64 64)"/>
+    <use href="#rays" transform="rotate(210 64 64)"/>
+    <use href="#rays" transform="rotate(240 64 64)"/>
+    <use href="#rays" transform="rotate(270 64 64)"/>
+    <use href="#rays" transform="rotate(300 64 64)"/>
+    <use href="#rays" transform="rotate(330 64 64)"/>
+  </g>
+  <!-- Halo -->
+  <circle cx="64" cy="64" r="30" fill="#0e0b1a" stroke="url(#gold)" stroke-width="3.5"/>
+  <!-- All-seeing eye of the divine -->
+  <path d="M40 64 Q64 44 88 64 Q64 84 40 64 Z" fill="#0a0a12" stroke="url(#gold)" stroke-width="3"/>
+  <circle cx="64" cy="64" r="9" fill="url(#gold)"/>
+  <circle cx="64" cy="64" r="4" fill="#0a0a12"/>
+  <circle cx="66.5" cy="61" r="1.6" fill="#fff3cf"/>
 </svg>

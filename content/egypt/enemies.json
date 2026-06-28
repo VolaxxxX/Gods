@@ -58,7 +58,7 @@
       "name_key": "boss.apophis.name",
       "role": "boss",
       "pantheon": "egypt",
-      "max_health": 473,
+      "max_health": 639,
       "move_speed": 50,
       "contact_damage": 3,
       "radius": 36,
@@ -104,7 +104,7 @@
           "cooldown": 6.5
         }
       ],
-      "phase2_at": 0.55,
+      "phase2_at": 0.5,
       "phase2_abilities": [
         {
           "kind": "nova",
@@ -128,7 +128,7 @@
       "name_key": "miniboss.sphinx.name",
       "role": "miniboss",
       "pantheon": "egypt",
-      "max_health": 147,
+      "max_health": 184,
       "move_speed": 50,
       "contact_damage": 2,
       "radius": 24,

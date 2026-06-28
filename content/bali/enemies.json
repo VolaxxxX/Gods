@@ -62,7 +62,7 @@
       "name_key": "boss.rangda.name",
       "role": "boss",
       "pantheon": "bali",
-      "max_health": 408,
+      "max_health": 551,
       "move_speed": 44,
       "contact_damage": 3,
       "radius": 36,
@@ -99,7 +99,7 @@
           "cooldown": 4.9
         }
       ],
-      "phase2_at": 0.55,
+      "phase2_at": 0.5,
       "phase2_abilities": [
         {
           "kind": "nova",
@@ -125,7 +125,7 @@
       "name_key": "miniboss.bhuta_lord.name",
       "role": "miniboss",
       "pantheon": "bali",
-      "max_health": 142,
+      "max_health": 178,
       "move_speed": 54,
       "contact_damage": 2,
       "radius": 24,

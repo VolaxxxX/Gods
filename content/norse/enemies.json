@@ -58,7 +58,7 @@
       "name_key": "boss.fenrir.name",
       "role": "boss",
       "pantheon": "norse",
-      "max_health": 496,
+      "max_health": 670,
       "move_speed": 64,
       "contact_damage": 3,
       "radius": 34,
@@ -93,7 +93,7 @@
           "cooldown": 4.5
         }
       ],
-      "phase2_at": 0.55,
+      "phase2_at": 0.5,
       "phase2_abilities": [
         {
           "kind": "nova",
@@ -117,7 +117,7 @@
       "name_key": "miniboss.troll.name",
       "role": "miniboss",
       "pantheon": "norse",
-      "max_health": 155,
+      "max_health": 194,
       "move_speed": 48,
       "contact_damage": 2,
       "radius": 25,

@@ -275,10 +275,26 @@ func _on_room_cleared(pos: Vector2i, type: String) -> void:
 ## fight, or nothing.
 func _roll_god_encounter() -> void:
 	var r := RNG.stream("encounter").randf()
-	if r < 0.30:
+	if r < 0.28:
 		_offer_boon()
 	elif r < 0.40:
 		_trigger_wrath()
+	elif r < 0.52:
+		_grant_shrine_heal()
+
+## A roaming god's mercy: restore a chunk of health. Relevant now that bosses hit
+## harder — skipped silently when already at full so it's never a wasted beat.
+func _grant_shrine_heal() -> void:
+	if player == null or player.health == null:
+		return
+	if player.health.health >= player.health.max_health:
+		return
+	var amount: float = maxf(2.0, player.health.max_health * 0.30)
+	player.health.heal(amount)
+	if current_room != null:
+		var local: Vector2 = player.global_position - current_room.global_position
+		FloatingText.spawn(current_room, local + Vector2(0, -44),
+			"+%d ❤" % int(round(amount)), Color(0.55, 1.0, 0.65))
 
 func _offer_boon() -> void:
 	var opts := _blessing_options(2)

@@ -62,7 +62,7 @@
       "name_key": "boss.orochi.name",
       "role": "boss",
       "pantheon": "japan",
-      "max_health": 510,
+      "max_health": 688,
       "move_speed": 46,
       "contact_damage": 3,
       "radius": 38,
@@ -99,7 +99,7 @@
           "cooldown": 4.9
         }
       ],
-      "phase2_at": 0.55,
+      "phase2_at": 0.5,
       "phase2_abilities": [
         {
           "kind": "nova",
@@ -125,7 +125,7 @@
       "name_key": "miniboss.tengu.name",
       "role": "miniboss",
       "pantheon": "japan",
-      "max_health": 138,
+      "max_health": 172,
       "move_speed": 58,
       "contact_damage": 2,
       "radius": 23,

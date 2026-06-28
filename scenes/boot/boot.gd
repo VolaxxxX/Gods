@@ -4,7 +4,7 @@ extends Control
 
 # Shown on the title screen so you can confirm which build you're running (bump
 # it when shipping). If the APK doesn't show this, it's an OLD build — rebuild.
-const BUILD_TAG := "build 0.9.6 — mobile move/dash fix + visible shots + denser rooms"
+const BUILD_TAG := "build 0.9.7 — god icon + tougher 2-phase bosses + new rooms/heal shrine"
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)

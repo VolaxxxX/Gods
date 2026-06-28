@@ -62,7 +62,7 @@
       "name_key": "boss.hydra.name",
       "role": "boss",
       "pantheon": "greece",
-      "max_health": 357,
+      "max_health": 482,
       "move_speed": 42,
       "contact_damage": 3,
       "radius": 34,
@@ -99,7 +99,7 @@
           "cooldown": 4.9
         }
       ],
-      "phase2_at": 0.55,
+      "phase2_at": 0.5,
       "phase2_abilities": [
         {
           "kind": "nova",
@@ -137,7 +137,7 @@
       "name_key": "miniboss.cyclops.name",
       "role": "miniboss",
       "pantheon": "greece",
-      "max_health": 141,
+      "max_health": 176,
       "move_speed": 52,
       "contact_damage": 2,
       "radius": 24,
