@@ -51,7 +51,18 @@
       "radius": 18,
       "ai": "chase",
       "gold": 5,
-      "color": "#6a7a9a"
+      "color": "#6a7a9a",
+      "abilities": [
+        {
+          "kind": "spread",
+          "anim": "attack",
+          "count": 5,
+          "spread": 36,
+          "speed": 210,
+          "damage": 1,
+          "cooldown": 3.8
+        }
+      ]
     },
     {
       "id": "norse_fenrir",
@@ -159,7 +170,18 @@
       "ranged": true,
       "range_damage": 1,
       "range_rate": 1.2,
-      "range_speed": 210
+      "range_speed": 210,
+      "abilities": [
+        {
+          "kind": "beam",
+          "anim": "attack",
+          "speed": 560,
+          "damage": 1,
+          "radius": 5,
+          "life": 1.1,
+          "cooldown": 3.0
+        }
+      ]
     },
     {
       "id": "norse_vargr",
@@ -172,7 +194,16 @@
       "radius": 12,
       "ai": "zigzag",
       "gold": 3,
-      "color": "#6a7a88"
+      "color": "#6a7a88",
+      "abilities": [
+        {
+          "kind": "charge",
+          "anim": "attack",
+          "speed": 390,
+          "duration": 0.4,
+          "cooldown": 3.6
+        }
+      ]
     }
   ]
 }
