@@ -151,9 +151,15 @@ func _setup_biome(from_resume: bool) -> void:
 			Dialogue.speak("narrator", RunManager.character_id)
 		var b := RunManager.biome_id
 		Dialogue.speak("narrator", "enter_" + b)
-		var god: String = REALM_LORDS.get(b, "")
-		if god != "":
-			Dialogue.speak(god, "enter_" + b)
+		if b == "hell":
+			# No lord rules R'lyeh — the gods of the OTHER realms reach across the void
+			# to describe this place even the narrator cannot map.
+			for fg in ["greece_zeus", "egypt_osiris", "norse_odin", "aztec_mictlantecuhtli"]:
+				Dialogue.speak(fg, "enter_hell")
+		else:
+			var god: String = REALM_LORDS.get(b, "")
+			if god != "":
+				Dialogue.speak(god, "enter_" + b)
 
 func _enter_room(pos: Vector2i, from_side: String) -> void:
 	if current_room != null:
@@ -599,6 +605,8 @@ func _cthulhu_intro(e) -> void:
 	Audio.play_sfx("roar", 1.0)
 	if e.has_method("ignite_eyes"):
 		e.ignite_eyes()  # the red eyes blaze open on the roar
+	if e.has_method("play_scream"):
+		e.play_scream()  # the animated roar (tentacles thrash, jaw flares)
 	Audio.swell_music(0.35)  # the boss theme DROPS in on the beat
 	Juice.add_trauma(0.95)
 	if is_instance_valid(e):
@@ -654,6 +662,8 @@ func _on_boss_phase2(e) -> void:
 	red.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	sky.add_child(red)
 	Audio.play_sfx("roar", 1.25)
+	if e.has_method("play_scream"):
+		e.play_scream()
 	Juice.add_trauma(0.7)
 	var tw := create_tween()
 	tw.tween_property(red, "color:a", 0.55, 0.08)
