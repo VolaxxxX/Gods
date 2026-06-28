@@ -1,0 +1,39 @@
+{
+  "type": "blessing",
+  "entries": [
+    {
+      "id": "hell_yog_gate",
+      "name_key": "blessing.yog_gate.name",
+      "desc_key": "blessing.yog_gate.desc",
+      "deity_id": "hell_yog",
+      "pantheon": "hell",
+      "rarity": "epic",
+      "color": "#74e0b0",
+      "effect": {
+        "kind": "on_hit",
+        "effect": "chain_lightning",
+        "value": 4,
+        "jumps": 2
+      },
+      "tags": [
+        "void"
+      ]
+    },
+    {
+      "id": "hell_nyar_madness",
+      "name_key": "blessing.nyar_madness.name",
+      "desc_key": "blessing.nyar_madness.desc",
+      "deity_id": "hell_nyar",
+      "pantheon": "hell",
+      "rarity": "epic",
+      "color": "#b066d8",
+      "modifiers": {
+        "damage_add": 3.0,
+        "crit_chance_add": 0.12
+      },
+      "tags": [
+        "madness"
+      ]
+    }
+  ]
+}

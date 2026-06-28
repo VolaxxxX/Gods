@@ -1,0 +1,39 @@
+{
+  "type": "biome",
+  "entries": [
+    {
+      "id": "hell",
+      "name_key": "biome.hell.name",
+      "pantheon": "hell",
+      "palette": {
+        "bg": "#05060a",
+        "floor": "#0f0d16",
+        "wall": "#241a30",
+        "accent": "#74e0b0"
+      },
+      "room_count": 15,
+      "enemy_pool": [
+        "hell_spawn",
+        "hell_byakhee",
+        "hell_deep_one",
+        "hell_shoggoth",
+        "hell_mi_go",
+        "hell_cultist"
+      ],
+      "elite_pool": [
+        "hell_shoggoth"
+      ],
+      "boss_id": "hell_cthulhu",
+      "miniboss_id": "hell_dagon",
+      "enemies_per_room_min": 7,
+      "enemies_per_room_max": 10,
+      "props": [
+        "greece_column",
+        "greece_brazier"
+      ],
+      "ambient": "#9fffd6",
+      "ambient_particle": "dust",
+      "difficulty": 1.6
+    }
+  ]
+}

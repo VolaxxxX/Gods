@@ -1,0 +1,34 @@
+{
+  "type": "item",
+  "entries": [
+    {
+      "id": "hell_elder_sign",
+      "name_key": "item.elder_sign.name",
+      "desc_key": "item.elder_sign.desc",
+      "pantheon": "hell",
+      "rarity": "rare",
+      "color": "#74e0b0",
+      "modifiers": {
+        "damage_add": 2.0
+      },
+      "tags": [
+        "void",
+        "damage"
+      ]
+    },
+    {
+      "id": "hell_void_heart",
+      "name_key": "item.void_heart.name",
+      "desc_key": "item.void_heart.desc",
+      "pantheon": "hell",
+      "rarity": "epic",
+      "color": "#b066d8",
+      "modifiers": {
+        "max_health_add": 20.0
+      },
+      "tags": [
+        "madness"
+      ]
+    }
+  ]
+}

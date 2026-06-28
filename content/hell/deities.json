@@ -1,0 +1,27 @@
+{
+  "type": "deity",
+  "entries": [
+    {
+      "id": "hell_yog",
+      "name_key": "deity.yog.name",
+      "pantheon": "hell",
+      "color": "#74e0b0",
+      "identity_key": "deity.yog.identity",
+      "blessing_ids": [
+        "hell_yog_gate"
+      ],
+      "rivals": []
+    },
+    {
+      "id": "hell_nyar",
+      "name_key": "deity.nyar.name",
+      "pantheon": "hell",
+      "color": "#b066d8",
+      "identity_key": "deity.nyar.identity",
+      "blessing_ids": [
+        "hell_nyar_madness"
+      ],
+      "rivals": []
+    }
+  ]
+}

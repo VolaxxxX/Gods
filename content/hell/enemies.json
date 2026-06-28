@@ -1,0 +1,198 @@
+{
+  "type": "entity",
+  "entries": [
+    {
+      "id": "hell_spawn",
+      "name_key": "enemy.star_spawn.name",
+      "role": "enemy",
+      "pantheon": "hell",
+      "max_health": 13,
+      "move_speed": 110,
+      "contact_damage": 2,
+      "radius": 12,
+      "ai": "zigzag",
+      "gold": 4,
+      "color": "#6a3a7a"
+    },
+    {
+      "id": "hell_byakhee",
+      "name_key": "enemy.byakhee.name",
+      "role": "enemy",
+      "pantheon": "hell",
+      "max_health": 16,
+      "move_speed": 92,
+      "contact_damage": 1,
+      "radius": 13,
+      "ai": "orbit",
+      "gold": 5,
+      "color": "#4a6a5a",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.1,
+      "range_speed": 225
+    },
+    {
+      "id": "hell_deep_one",
+      "name_key": "enemy.deep_one.name",
+      "role": "enemy",
+      "pantheon": "hell",
+      "max_health": 19,
+      "move_speed": 90,
+      "contact_damage": 2,
+      "radius": 13,
+      "ai": "chase",
+      "gold": 4,
+      "color": "#2a6a6a"
+    },
+    {
+      "id": "hell_shoggoth",
+      "name_key": "enemy.shoggoth.name",
+      "role": "enemy",
+      "pantheon": "hell",
+      "max_health": 42,
+      "move_speed": 50,
+      "contact_damage": 3,
+      "radius": 18,
+      "ai": "chase",
+      "gold": 7,
+      "color": "#3a2a4a"
+    },
+    {
+      "id": "hell_mi_go",
+      "name_key": "enemy.mi_go.name",
+      "role": "enemy",
+      "pantheon": "hell",
+      "max_health": 17,
+      "move_speed": 88,
+      "contact_damage": 1,
+      "radius": 13,
+      "ai": "orbit",
+      "gold": 5,
+      "color": "#9a6a44",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.1,
+      "range_speed": 220
+    },
+    {
+      "id": "hell_cultist",
+      "name_key": "enemy.cultist.name",
+      "role": "enemy",
+      "pantheon": "hell",
+      "max_health": 15,
+      "move_speed": 98,
+      "contact_damage": 2,
+      "radius": 12,
+      "ai": "chase",
+      "gold": 4,
+      "color": "#6a2a2a"
+    },
+    {
+      "id": "hell_dagon",
+      "name_key": "miniboss.dagon.name",
+      "role": "miniboss",
+      "pantheon": "hell",
+      "max_health": 240,
+      "move_speed": 52,
+      "contact_damage": 3,
+      "radius": 24,
+      "ai": "chase",
+      "gold": 20,
+      "color": "#2f6a78",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.0,
+      "range_speed": 225,
+      "abilities": [
+        {
+          "kind": "spread",
+          "anim": "abyssal_spray",
+          "count": 10,
+          "spread": 64,
+          "speed": 205,
+          "damage": 1,
+          "cooldown": 3.0
+        },
+        {
+          "kind": "nova",
+          "anim": "tidal_burst",
+          "count": 14,
+          "speed": 190,
+          "damage": 1,
+          "cooldown": 4.6
+        }
+      ]
+    },
+    {
+      "id": "hell_cthulhu",
+      "name_key": "boss.cthulhu.name",
+      "role": "boss",
+      "pantheon": "hell",
+      "max_health": 1050,
+      "move_speed": 40,
+      "contact_damage": 4,
+      "radius": 40,
+      "ai": "chase",
+      "gold": 60,
+      "color": "#3c6e57",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.5,
+      "range_speed": 230,
+      "abilities": [
+        {
+          "kind": "spread",
+          "anim": "tentacle_sweep",
+          "count": 12,
+          "spread": 72,
+          "speed": 205,
+          "damage": 1,
+          "cooldown": 3.0
+        },
+        {
+          "kind": "summon",
+          "anim": "spawn_brood",
+          "entity": "hell_spawn",
+          "count": 3,
+          "cooldown": 6.2
+        },
+        {
+          "kind": "charge",
+          "anim": "maddening_rush",
+          "speed": 450,
+          "duration": 0.5,
+          "cooldown": 5.0
+        }
+      ],
+      "phase2_at": 0.5,
+      "phase2_abilities": [
+        {
+          "kind": "nova",
+          "anim": "void_implosion",
+          "count": 22,
+          "speed": 215,
+          "damage": 1,
+          "cooldown": 2.6
+        },
+        {
+          "kind": "barrage",
+          "anim": "eldritch_bolts",
+          "count": 4,
+          "spread": 14,
+          "speed": 245,
+          "damage": 2,
+          "cooldown": 3.2
+        },
+        {
+          "kind": "breath",
+          "anim": "wave_of_madness",
+          "count": 16,
+          "spread": 50,
+          "speed": 190,
+          "damage": 1,
+          "cooldown": 4.0
+        }
+      ]
+    }
+  ]
+}
