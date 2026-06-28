@@ -483,6 +483,8 @@ func _on_boss_zoom(e, _name_key: String) -> void:
 		var d = e.get("data")
 		if d != null and String(d.id) == "greece_hydra":
 			z = 1.35
+		elif d != null and String(d.id) == "hell_cthulhu":
+			z = 0.9  # colossal Old God — pull WAY back, Typhon-style framing
 	_zoom_to(z)
 
 func _zoom_to(z: float) -> void:
