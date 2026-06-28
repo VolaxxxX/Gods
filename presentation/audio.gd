@@ -293,13 +293,15 @@ func _on_player_hp(current: float, _maximum: float) -> void:
 func _synth(key: String) -> AudioStreamWAV:
 	var b: PackedFloat32Array
 	match key:
-		"shoot":  # bright player "pew", descending
-			b = _buf(0.13)
-			_tone(b, 0.0, 900.0, 320.0, 0.12, 0.45, "square", 26.0, 0.06)
-			_tone(b, 0.0, 1500.0, 600.0, 0.05, 0.18, "sine", 42.0)
-		"enemy_shoot":  # darker, lower enemy pulse
-			b = _buf(0.18)
-			_tone(b, 0.0, 360.0, 150.0, 0.16, 0.5, "saw", 16.0, 0.05)
+		"shoot":  # crisp sci-fi pew: clean pitch-drop body + bright click + soft thump
+			b = _buf(0.16)
+			_tone(b, 0.0, 1320.0, 440.0, 0.10, 0.40, "sine", 30.0)
+			_tone(b, 0.0, 2200.0, 900.0, 0.035, 0.20, "square", 65.0)
+			_tone(b, 0.0, 210.0, 120.0, 0.06, 0.18, "sine", 30.0)
+		"enemy_shoot":  # distinct darker "wub": descending sine + gritty low body
+			b = _buf(0.20)
+			_tone(b, 0.0, 540.0, 180.0, 0.16, 0.42, "sine", 18.0)
+			_tone(b, 0.0, 130.0, 90.0, 0.10, 0.22, "saw", 20.0, 0.08)
 		"melee":  # an air "whoosh" (filtered noise sweep)
 			b = _buf(0.16)
 			_tone(b, 0.0, 720.0, 200.0, 0.14, 0.4, "sine", 16.0, 0.85)
