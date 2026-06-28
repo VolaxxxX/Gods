@@ -292,6 +292,26 @@
         "Nine levels are mine, and none descend this far. You walk past where death itself stops.",
         "The Old One does not judge, does not ferry, does not weigh. It simply WAKES. Pray it does not."
       ]
+    },
+    {
+      "id": "enter_hell_amaterasu",
+      "speaker": "japan_amaterasu",
+      "trigger": "enter_hell",
+      "min_meet": 0,
+      "lines": [
+        "My light has crossed every dark — Yomi, the night, the grave. It does not reach HERE.",
+        "Whatever lies beneath this sea was old when the first sun was lit. I am... afraid for you."
+      ]
+    },
+    {
+      "id": "enter_hell_acintya",
+      "speaker": "bali_acintya",
+      "trigger": "enter_hell",
+      "min_meet": 0,
+      "lines": [
+        "I am the unconceivable — and even I cannot conceive of what dreams below.",
+        "We gods do not agree on much. On THIS, we are united: do not wake it. Yet you must."
+      ]
     }
   ]
 }
