@@ -155,6 +155,36 @@
           "cooldown": 4.4
         }
       ]
+    },
+    {
+      "id": "japan_yurei",
+      "name_key": "enemy.yurei.name",
+      "role": "enemy",
+      "pantheon": "japan",
+      "max_health": 11,
+      "move_speed": 84,
+      "contact_damage": 1,
+      "radius": 12,
+      "ai": "orbit",
+      "gold": 4,
+      "color": "#b9c7d6",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.25,
+      "range_speed": 205
+    },
+    {
+      "id": "japan_tsuchigumo",
+      "name_key": "enemy.tsuchigumo.name",
+      "role": "enemy",
+      "pantheon": "japan",
+      "max_health": 16,
+      "move_speed": 100,
+      "contact_damage": 2,
+      "radius": 14,
+      "ai": "zigzag",
+      "gold": 3,
+      "color": "#7a5a6a"
     }
   ]
 }
