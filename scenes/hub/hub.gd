@@ -6,6 +6,8 @@ var _karma_label: Label
 var _rows: Dictionary = {}        # upgrade id -> {name, level, buy, up}
 var _biome_option: OptionButton
 var _biome_ids: Array[String] = []
+var _boss_test_option: OptionButton
+var _boss_test_ids: Array[String] = []
 var _char_option: OptionButton
 var _char_ids: Array[String] = []
 var _hero_desc: Label
@@ -134,6 +136,25 @@ func _build() -> void:
 	_hero_desc = Label.new()
 	hero.add_child(_hero_desc)
 	_refresh_hero_desc()
+
+	# --- Hidden DEV: boss test — pick any boss and fight it directly in its arena. ---
+	if RunManager.DEBUG_BOSS_TEST:
+		var bt := HBoxContainer.new()
+		bt.add_theme_constant_override("separation", 12)
+		dv.add_child(bt)
+		var bt_l := Label.new()
+		bt_l.text = "Boss test"
+		bt_l.modulate = Color(0.95, 0.5, 0.5)
+		bt.add_child(bt_l)
+		_boss_test_option = OptionButton.new()
+		for ent in GameData.entities.values():
+			if ent.role == "boss" or ent.role == "miniboss":
+				_boss_test_ids.append(ent.id)
+				_boss_test_option.add_item(Loc.t(ent.name_key))
+		if _boss_test_option.item_count > 0:
+			_boss_test_option.select(0)
+		bt.add_child(_boss_test_option)
+		bt.add_child(_make_button("⚔ TEST BOSS", _on_test_boss))
 
 	# Action buttons.
 	# HFlow so the buttons wrap to a new line on narrow (phone) screens instead
@@ -288,4 +309,17 @@ func _on_resume() -> void:
 	if snap.is_empty():
 		return
 	RunManager.from_snapshot(snap)
+	SceneRouter.goto_run()
+
+## Hidden DEV: launch a one-room arena against the chosen boss.
+func _on_test_boss() -> void:
+	if _boss_test_option == null:
+		return
+	var idx := _boss_test_option.selected
+	if idx < 0 or idx >= _boss_test_ids.size():
+		return
+	var bid := _boss_test_ids[idx]
+	var bbiome := RunManager.biome_for_boss(bid)
+	RunManager.start_run(_selected_seed(), bbiome, _selected_character())
+	RunManager.debug_boss_test = bid
 	SceneRouter.goto_run()
