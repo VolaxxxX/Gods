@@ -234,7 +234,8 @@
           "damage": 1,
           "cooldown": 4.0
         }
-      ]
+      ],
+      "phase2_replace": true
     }
   ]
 }
