@@ -28,6 +28,7 @@ var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
 var _anim: AnimatedSprite2D  # set if animation sheets exist (takes priority)
 var _attack_t: float = 0.0   # time left showing the attack animation
 var _attack_anim: String = "attack"  # which animation the active ability requests
+var intro_lock: bool = false  # boss-intro cinematic: freeze AI/abilities, run visuals only
 var _knockback: Vector2 = Vector2.ZERO  # decaying shove (player melee)
 var _statuses: Dictionary = {}  # kind -> {"t": seconds_left, "mag": per-tick}
 var _dot_t: float = 0.0         # shared damage-over-time tick accumulator
@@ -202,6 +203,15 @@ func _status_tint() -> Color:
 	return Color.WHITE
 
 func _physics_process(delta: float) -> void:
+	if intro_lock:
+		# Boss-intro cinematic: no AI, no abilities — keep the idle sheet playing
+		# and facing while run_scene tweens the rise from under the rain.
+		if _attack_t > 0.0:
+			_attack_t -= delta
+		if _anim != null:
+			_update_anim()
+		queue_redraw()
+		return
 	if not _statuses.is_empty():
 		_tick_statuses(delta)
 	if _knockback.length() > 12.0:
