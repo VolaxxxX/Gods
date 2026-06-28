@@ -29,6 +29,12 @@ var _anim: AnimatedSprite2D  # set if animation sheets exist (takes priority)
 var _attack_t: float = 0.0   # time left showing the attack animation
 var _attack_anim: String = "attack"  # which animation the active ability requests
 var intro_lock: bool = false  # boss-intro cinematic: freeze AI/abilities, run visuals only
+var _eyeL: PointLight2D       # final boss: glowing red eyes that ignite on the roar
+var _eyeR: PointLight2D
+var _eye_base: float = 0.0    # current eye glow (lerps toward target)
+var _eye_target: float = 0.0  # 0 dark; raised on the roar, brighter in phase 2
+var _phase2_tint: Color = Color.WHITE  # blood-lit overlay once the Old God enrages
+var _hz_cd: float = 4.0       # phase-2 arena hazard (void pool) spawn timer
 var _knockback: Vector2 = Vector2.ZERO  # decaying shove (player melee)
 var _statuses: Dictionary = {}  # kind -> {"t": seconds_left, "mag": per-tick}
 var _dot_t: float = 0.0         # shared damage-over-time tick accumulator
@@ -69,6 +75,8 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 			_anim.play("idle")
 		elif _anim.sprite_frames.has_animation("walk"):
 			_anim.play("walk")
+		if data.id == "hell_cthulhu":
+			_setup_eyes()
 	else:
 		var tex := Sprites.entity(data.id)
 		var tinted := false
@@ -204,12 +212,11 @@ func _status_tint() -> Color:
 
 func _physics_process(delta: float) -> void:
 	if intro_lock:
-		# Boss-intro cinematic: no AI, no abilities — keep the idle sheet playing
-		# and facing while run_scene tweens the rise from under the rain.
+		# Boss-intro cinematic: no AI — the emerge sheet (if any) plays itself while
+		# run_scene tweens the rise from under the rain; eyes ignite on the roar.
 		if _attack_t > 0.0:
 			_attack_t -= delta
-		if _anim != null:
-			_update_anim()
+		_update_eyes(delta)
 		queue_redraw()
 		return
 	if not _statuses.is_empty():
@@ -258,6 +265,12 @@ func _physics_process(delta: float) -> void:
 	if not _phase2_done and not data.phase2_abilities.is_empty() \
 			and health.fraction() <= data.phase2_at:
 		_enter_phase2()
+	# Phase-2 arena hazard: void pools erupt under the player (telegraphed).
+	if _phase2_done and data.id == "hell_cthulhu" and is_instance_valid(_target):
+		_hz_cd -= delta
+		if _hz_cd <= 0.0:
+			_hz_cd = 3.6
+			_spawn_void_pool(_target.global_position)
 	# Bespoke ability patterns; fire faster when enraged (below 45% HP).
 	if not _abilities.is_empty() and is_instance_valid(_target):
 		var enrage := 1.9 if health.fraction() < 0.45 else 1.0
@@ -281,9 +294,12 @@ func _physics_process(delta: float) -> void:
 	if _anim != null:
 		var m2 := Color(1.8, 1.8, 1.8) if _flash > 0.0 else Color.WHITE
 		m2 = Color(m2.r * tint.r, m2.g * tint.g, m2.b * tint.b)
+		if _phase2_done:
+			m2 = Color(m2.r * _phase2_tint.r, m2.g * _phase2_tint.g, m2.b * _phase2_tint.b)
 		m2.a = fade
 		_anim.modulate = m2
 		_update_anim()
+	_update_eyes(delta)
 	queue_redraw()
 
 ## Pick walk/attack/idle and face the movement direction.
@@ -314,6 +330,10 @@ func _enter_phase2() -> void:
 	_flash = 0.25
 	_fire_pattern(16, TAU, 0.0, 200.0, 1.0)  # dramatic phase-change burst
 	Juice.add_trauma(0.6)
+	if data.id == "hell_cthulhu":
+		_phase2_tint = Color(1.35, 0.62, 0.62)  # blood-lit, enraged
+		_eye_target = 2.8                        # the eyes blaze brighter
+		Events.emit_signal("boss_phase2", self)
 
 ## Length (s) of the named attack sheet for THIS boss, so the swing plays in
 ## full and never cuts mid-frame or freezes on the last frame. Falls back to a
@@ -463,6 +483,7 @@ func _on_regen_add(entity_id: String) -> void:
 ## sprite pipeline can load a sheet per attack (<id>_<anim>.png).
 func _ability_anim_names() -> Array:
 	var names: Array = []
+	names.append("emerge")  # boss-intro rise sheet (loaded only if the file exists)
 	for src in [data.abilities, data.phase2_abilities]:
 		if src is Array:
 			for ab in src:
@@ -470,6 +491,87 @@ func _ability_anim_names() -> Array:
 				if n != "" and not names.has(n):
 					names.append(n)
 	return names
+
+## Final boss: two glowing red eyes (PointLight2D) near the head, dark until the
+## roar ignites them. Pulse handled in _update_eyes.
+func _setup_eyes() -> void:
+	_eyeL = Atmosphere.point_light(Color(1.0, 0.12, 0.06), 0.0, 72.0)
+	_eyeL.position = Vector2(-_radius * 0.22, -_radius * 0.52)
+	add_child(_eyeL)
+	_eyeR = Atmosphere.point_light(Color(1.0, 0.12, 0.06), 0.0, 72.0)
+	_eyeR.position = Vector2(_radius * 0.22, -_radius * 0.52)
+	add_child(_eyeR)
+
+## Ease the eye glow toward its target and add a slow living pulse.
+func _update_eyes(delta: float) -> void:
+	if _eyeL == null:
+		return
+	_eye_base = lerpf(_eye_base, _eye_target, clampf(delta * 3.0, 0.0, 1.0))
+	var t := Time.get_ticks_msec() / 1000.0
+	var e: float = _eye_base * (0.72 + 0.28 * sin(t * 6.0))
+	_eyeL.energy = e
+	_eyeR.energy = e
+
+## Light the eyes (called on the roar beat by the intro cinematic).
+func ignite_eyes() -> void:
+	_eye_target = 1.8
+
+## Play the bespoke rise sheet during the intro, if it exists.
+func play_intro_emerge() -> void:
+	if _anim != null and _anim.sprite_frames != null and _anim.sprite_frames.has_animation("emerge"):
+		_anim.play("emerge")
+
+## Phase-2 arena hazard: a telegraphed pool of void that erupts under the player,
+## then ticks damage for a few seconds. A dark disk + a purple glow read it clearly.
+func _spawn_void_pool(pos: Vector2) -> void:
+	var parent := get_parent()
+	if parent == null:
+		return
+	var root := Node2D.new()
+	root.global_position = pos
+	root.z_index = 5
+	parent.add_child(root)
+	var disk := Polygon2D.new()
+	var pts := PackedVector2Array()
+	for i in 20:
+		pts.append(Vector2.from_angle(TAU * float(i) / 20.0) * 72.0)
+	disk.polygon = pts
+	disk.color = Color(0.32, 0.05, 0.46, 0.0)
+	disk.scale = Vector2(0.4, 0.4)
+	root.add_child(disk)
+	var glow := Atmosphere.point_light(Color(0.6, 0.2, 0.95), 0.0, 130.0)
+	root.add_child(glow)
+	# Telegraph (~0.55s): grow + brighten, no damage yet.
+	var tele := create_tween()
+	tele.set_parallel(true)
+	tele.tween_property(disk, "color:a", 0.55, 0.55)
+	tele.tween_property(disk, "scale", Vector2.ONE, 0.55)
+	tele.tween_property(glow, "energy", 1.1, 0.55)
+	# Arm a ticking DamageArea once the telegraph lands.
+	var area := DamageArea.new()
+	area.collision_layer = Collision.ENEMY_DMG
+	area.collision_mask = Collision.PLAYER_HURT
+	area.setup(Damage.new(1.0 * _difficulty, ["enemy", "void"], self), false, 0.5)
+	var cs := CollisionShape2D.new()
+	var circ := CircleShape2D.new()
+	circ.radius = 70.0
+	cs.shape = circ
+	area.add_child(cs)
+	area.monitoring = false
+	root.add_child(area)
+	get_tree().create_timer(0.55).timeout.connect(func() -> void:
+		if is_instance_valid(area):
+			area.monitoring = true
+		Fx.play(_burst_fx(), pos, 200.0))
+	get_tree().create_timer(3.4).timeout.connect(func() -> void:
+		if is_instance_valid(root):
+			var ft := root.create_tween()
+			ft.set_parallel(true)
+			ft.tween_property(disk, "color:a", 0.0, 0.5)
+			ft.tween_property(glow, "energy", 0.0, 0.5))
+	get_tree().create_timer(4.0).timeout.connect(func() -> void:
+		if is_instance_valid(root):
+			root.queue_free())
 
 func _on_died() -> void:
 	RunManager.on_enemy_killed(data.gold)
@@ -480,7 +582,19 @@ func _on_died() -> void:
 		if contact != null:
 			contact.set_deferred("monitorable", false)
 		_anim.play("death")
-		await _anim.animation_finished
+		if data.id == "hell_cthulhu":
+			# The Old God collapses and sinks back beneath the rain.
+			if _eyeL != null:
+				_eyeL.energy = 0.0
+				_eyeR.energy = 0.0
+			var dt := create_tween()
+			dt.set_parallel(true)
+			dt.tween_property(self, "position", position + Vector2(0.0, 170.0), 1.8) \
+				.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+			dt.tween_property(_anim, "modulate:a", 0.0, 1.8)
+			await dt.finished
+		else:
+			await _anim.animation_finished
 	queue_free()
 
 func _draw() -> void:
