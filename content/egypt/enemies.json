@@ -51,7 +51,17 @@
       "radius": 16,
       "ai": "chase",
       "gold": 4,
-      "color": "#d8cdb0"
+      "color": "#d8cdb0",
+      "abilities": [
+        {
+          "kind": "nova",
+          "anim": "attack",
+          "count": 10,
+          "speed": 190,
+          "damage": 1,
+          "cooldown": 4.6
+        }
+      ]
     },
     {
       "id": "egypt_apophis",
@@ -173,7 +183,18 @@
       "ranged": true,
       "range_damage": 1,
       "range_rate": 1.2,
-      "range_speed": 205
+      "range_speed": 205,
+      "abilities": [
+        {
+          "kind": "beam",
+          "anim": "attack",
+          "speed": 560,
+          "damage": 1,
+          "radius": 5,
+          "life": 1.1,
+          "cooldown": 3.0
+        }
+      ]
     },
     {
       "id": "egypt_serpopard",
@@ -186,7 +207,16 @@
       "radius": 13,
       "ai": "zigzag",
       "gold": 3,
-      "color": "#b8895a"
+      "color": "#b8895a",
+      "abilities": [
+        {
+          "kind": "charge",
+          "anim": "attack",
+          "speed": 390,
+          "duration": 0.4,
+          "cooldown": 3.6
+        }
+      ]
     }
   ]
 }
