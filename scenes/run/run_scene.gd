@@ -370,6 +370,15 @@ func _after_boss() -> void:
 		SceneRouter.goto_ending()
 		return
 	if RunManager.is_final_biome():
+		# Eldritch finale: once the normal realms are cleared, the unknown realm
+		# (R'LYEH) opens as the TRUE final descent into the Old God — once per run.
+		if RunManager.biome_id != "hell" and not RunManager.has_visited("hell") and GameData.get_biome("hell") != null:
+			var hellb := GameData.get_biome("hell")
+			var hui := RealmChoice.new()
+			hui.setup([hellb])
+			hui.chosen.connect(_on_realm_chosen)
+			add_child(hui)
+			return
 		_victory_ending()
 		return
 	var opts: Array = []
