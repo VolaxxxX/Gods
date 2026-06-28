@@ -35,6 +35,7 @@ var abilities: Array = []
 # accompanied by a burst. Empty = single-phase enemy.
 var phase2_abilities: Array = []
 var phase2_at: float = 0.5
+var phase2_replace: bool = false  # if true, phase 2 SWAPS the moveset instead of adding to it
 
 static func from_dict(d: Dictionary) -> EntityData:
 	var e := EntityData.new()
@@ -55,6 +56,7 @@ static func from_dict(d: Dictionary) -> EntityData:
 	e.abilities = d.get("abilities", [])
 	e.phase2_abilities = d.get("phase2_abilities", [])
 	e.phase2_at = float(d.get("phase2_at", 0.5))
+	e.phase2_replace = bool(d.get("phase2_replace", false))
 	e.color = DataUtil.to_color(d.get("color", null), e.color)
 	e.tags = DataUtil.to_string_array(d.get("tags", []))
 	return e
