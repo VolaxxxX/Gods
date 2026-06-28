@@ -154,7 +154,7 @@ func _setup_biome(from_resume: bool) -> void:
 		if b == "hell":
 			# No lord rules R'lyeh — the gods of the OTHER realms reach across the void
 			# to describe this place even the narrator cannot map.
-			for fg in ["greece_zeus", "egypt_osiris", "norse_odin", "aztec_mictlantecuhtli"]:
+			for fg in ["greece_zeus", "egypt_osiris", "norse_odin", "aztec_mictlantecuhtli", "japan_amaterasu", "bali_acintya"]:
 				Dialogue.speak(fg, "enter_hell")
 		else:
 			var god: String = REALM_LORDS.get(b, "")
