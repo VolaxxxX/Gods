@@ -32,7 +32,7 @@
         "greece_brazier"
       ],
       "ambient": "#8fe6d0",
-      "ambient_particle": "dust",
+      "ambient_particle": "rain",
       "difficulty": 1.6
     }
   ]
