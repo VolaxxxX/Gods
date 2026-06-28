@@ -108,9 +108,15 @@ func max_biomes() -> int:
 func realms_remaining() -> Array:
 	var out: Array = []
 	for id in GameData.biomes.keys():
+		if id == "hell":
+			continue  # the eldritch realm is the hidden finale, never a normal branch
 		if id != biome_id and not (id in visited_biomes):
 			out.append(id)
 	return out
+
+## True if a biome has already been descended this run (or is the current one).
+func has_visited(id: String) -> bool:
+	return id == biome_id or id in visited_biomes
 
 ## True if clearing the current biome ends the whole run (final realm).
 func is_final_biome() -> bool:
