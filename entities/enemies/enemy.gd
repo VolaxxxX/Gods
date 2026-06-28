@@ -368,6 +368,17 @@ func _execute_ability(ab: Dictionary) -> void:
 					base, float(ab.get("speed", 300.0)), float(ab.get("damage", 1.0)))
 		"breath":
 			_breath(ab)
+		"beam":
+			# A fast, thin PIERCING bolt fired straight at the player — reads as a
+			# laser lance that streaks through in a line.
+			if is_instance_valid(_target) and _pool != null:
+				var bdir := (_target.global_position - global_position).normalized()
+				var bd := Damage.new(float(ab.get("damage", 1.0)), ["enemy", "beam"], self)
+				_pool.spawn(global_position + bdir * (_radius + 8.0),
+					bdir * float(ab.get("speed", 560.0)), bd, false,
+					float(ab.get("radius", 5.0)), Color(0.6, 1.0, 0.9),
+					float(ab.get("life", 1.1)), true, "projectile_" + data.id)
+				Fx.play(_burst_fx(), global_position, _radius * 2.5)
 
 ## A flame/energy BREATH: a dense, fast stream of short-lived projectiles in a
 ## tight cone toward the player — reads as a long jet of flame when the projectile
