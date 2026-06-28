@@ -171,9 +171,9 @@
       "role": "boss",
       "pantheon": "hell",
       "max_health": 1050,
-      "move_speed": 40,
-      "contact_damage": 4,
-      "radius": 40,
+      "move_speed": 10,
+      "contact_damage": 5,
+      "radius": 110,
       "ai": "chase",
       "gold": 60,
       "color": "#3c6e57",
@@ -199,11 +199,13 @@
           "cooldown": 6.2
         },
         {
-          "kind": "charge",
+          "kind": "barrage",
           "anim": "maddening_rush",
-          "speed": 450,
-          "duration": 0.5,
-          "cooldown": 5.0
+          "count": 5,
+          "spread": 18,
+          "speed": 250,
+          "damage": 2,
+          "cooldown": 4.0
         }
       ],
       "phase2_at": 0.5,
