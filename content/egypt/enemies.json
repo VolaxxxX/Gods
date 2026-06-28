@@ -157,6 +157,36 @@
           "cooldown": 4.8
         }
       ]
+    },
+    {
+      "id": "egypt_sandwraith",
+      "name_key": "enemy.sandwraith.name",
+      "role": "enemy",
+      "pantheon": "egypt",
+      "max_health": 13,
+      "move_speed": 76,
+      "contact_damage": 1,
+      "radius": 13,
+      "ai": "orbit",
+      "gold": 4,
+      "color": "#d8b066",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.2,
+      "range_speed": 205
+    },
+    {
+      "id": "egypt_serpopard",
+      "name_key": "enemy.serpopard.name",
+      "role": "enemy",
+      "pantheon": "egypt",
+      "max_health": 15,
+      "move_speed": 108,
+      "contact_damage": 2,
+      "radius": 13,
+      "ai": "zigzag",
+      "gold": 3,
+      "color": "#b8895a"
     }
   ]
 }

@@ -16,7 +16,9 @@
         "egypt_scarab",
         "egypt_shabti",
         "egypt_mummy",
-        "egypt_anubis_guard"
+        "egypt_anubis_guard",
+        "egypt_sandwraith",
+        "egypt_serpopard"
       ],
       "elite_pool": [
         "egypt_mummy"
