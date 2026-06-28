@@ -1,142 +1,297 @@
 {
-	"type": "dialogue",
-	"entries": [
-		{
-			"id": "enter_greece_lore", "speaker": "narrator", "trigger": "enter_greece",
-			"once": true, "modal": true, "set_flags": ["lore_greece"],
-			"lines": [
-				"The Underworld of Hades. The dead are ferried across the river Styx by Charon — and only those buried with a coin may pay his fare.",
-				"Drink from the river Lethe and you forget all you ever were. Most shades do.",
-				"Hades rules these halls; the gods above only watch. Cross the Styx, wanderer — and do not look back."
-			]
-		},
-		{
-			"id": "enter_greece_short", "speaker": "narrator", "trigger": "enter_greece",
-			"modal": true, "requires_flags": ["lore_greece"], "weight": 1.0,
-			"lines": ["The Styx waits, cold and patient. Down into Hades again."]
-		},
-		{
-			"id": "enter_greece_god", "speaker": "greece_zeus", "trigger": "enter_greece",
-			"once": true, "modal": true,
-			"lines": [
-				"So Olympus sends a soul to walk my brother's halls. Bold.",
-				"Prove worthy below, and the lightning may yet remember your name."
-			]
-		},
-
-		{
-			"id": "enter_bali_lore", "speaker": "narrator", "trigger": "enter_bali",
-			"once": true, "modal": true, "set_flags": ["lore_bali"],
-			"lines": [
-				"Beyond the seen world lies niskala — the unseen, where spirits and demons dwell.",
-				"Here walks Rangda, queen of the leyak, locked in endless balance with the lion Barong. Neither truly wins; that is the order of things.",
-				"Tread with respect, soul. To those who still honor it, this realm is no mere myth."
-			]
-		},
-		{
-			"id": "enter_bali_short", "speaker": "narrator", "trigger": "enter_bali",
-			"modal": true, "requires_flags": ["lore_bali"], "weight": 1.0,
-			"lines": ["The gamelan rings in the dark. The unseen stirs again."]
-		},
-		{
-			"id": "enter_bali_god", "speaker": "bali_acintya", "trigger": "enter_bali",
-			"once": true, "modal": true,
-			"lines": [
-				"I am Acintya — the unconceivable, the source and the silence.",
-				"Disturb the balance only so far as you must. Then go."
-			]
-		},
-
-		{
-			"id": "enter_egypt_lore", "speaker": "narrator", "trigger": "enter_egypt",
-			"once": true, "modal": true, "set_flags": ["lore_egypt"],
-			"lines": [
-				"The Duat — the night-road that the sun itself must sail to be reborn each dawn.",
-				"Here your heart is weighed against the feather of Ma'at. Heavier with sin, and Ammit the devourer eats it; lighter, and you pass.",
-				"Twelve gates, twelve hours of night. Osiris waits at the end of them."
-			]
-		},
-		{
-			"id": "enter_egypt_short", "speaker": "narrator", "trigger": "enter_egypt",
-			"modal": true, "requires_flags": ["lore_egypt"], "weight": 1.0,
-			"lines": ["The scales of Ma'at hang ready. Into the night-road once more."]
-		},
-		{
-			"id": "enter_egypt_god", "speaker": "egypt_osiris", "trigger": "enter_egypt",
-			"once": true, "modal": true,
-			"lines": [
-				"I am Osiris, who died and rose again to judge the dead.",
-				"Let your heart be light, traveler — or feed the Devourer."
-			]
-		},
-
-		{
-			"id": "enter_norse_lore", "speaker": "narrator", "trigger": "enter_norse",
-			"once": true, "modal": true, "set_flags": ["lore_norse"],
-			"lines": [
-				"Helheim, beneath a root of the world-tree. Not the bright hall of slain warriors — this is where the rest are sent.",
-				"Those who die of sickness or of age walk the long Helvegr down into the mist, past the hound Garmr.",
-				"Hel rules here — half-living, half-corpse, daughter of Loki. Few climb back up the road."
-			]
-		},
-		{
-			"id": "enter_norse_short", "speaker": "narrator", "trigger": "enter_norse",
-			"modal": true, "requires_flags": ["lore_norse"], "weight": 1.0,
-			"lines": ["Frost and silence. The Helvegr leads down again."]
-		},
-		{
-			"id": "enter_norse_god", "speaker": "norse_odin", "trigger": "enter_norse",
-			"once": true, "modal": true,
-			"lines": [
-				"I am Odin, who hung nine nights upon the tree to wrest wisdom from death.",
-				"Walk Hel's road, then. Learn what I learned."
-			]
-		},
-
-		{
-			"id": "enter_japan_lore", "speaker": "narrator", "trigger": "enter_japan",
-			"once": true, "modal": true, "set_flags": ["lore_japan"],
-			"lines": [
-				"Yomi-no-kuni, the shadowed land of the dead, where Izanami the mother-goddess went and could not leave.",
-				"Izanagi fled her rotting form and sealed the way with a great boulder. Eat the food of Yomi, and you too are bound here.",
-				"Touch nothing, taste nothing, soul — and perhaps the road back stays open."
-			]
-		},
-		{
-			"id": "enter_japan_short", "speaker": "narrator", "trigger": "enter_japan",
-			"modal": true, "requires_flags": ["lore_japan"], "weight": 1.0,
-			"lines": ["Yomi's gloom presses close. Eat nothing here."]
-		},
-		{
-			"id": "enter_japan_god", "speaker": "japan_amaterasu", "trigger": "enter_japan",
-			"once": true, "modal": true,
-			"lines": [
-				"I am Amaterasu, born of my father's flight from this very dark.",
-				"Bring no decay back with you into the light."
-			]
-		},
-
-		{
-			"id": "enter_aztec_lore", "speaker": "narrator", "trigger": "enter_aztec",
-			"once": true, "modal": true, "set_flags": ["lore_aztec"],
-			"lines": [
-				"Mictlan, nine levels deep, where every soul not claimed by sun or storm must go.",
-				"Four years the dead journey down — crossing a wide river on the back of a red dog, past mountains that crush and winds made of knives.",
-				"At the bottom wait Mictlantecuhtli and his queen, lord and lady of the dead."
-			]
-		},
-		{
-			"id": "enter_aztec_short", "speaker": "narrator", "trigger": "enter_aztec",
-			"modal": true, "requires_flags": ["lore_aztec"], "weight": 1.0,
-			"lines": ["Nine levels down, the bone-road waits again."]
-		},
-		{
-			"id": "enter_aztec_god", "speaker": "aztec_mictlantecuhtli", "trigger": "enter_aztec",
-			"once": true, "modal": true,
-			"lines": [
-				"I am Mictlantecuhtli. Every road ends at my throne of bone.",
-				"You come early — and still breathing. Curious."
-			]
-		}
-	]
+  "type": "dialogue",
+  "entries": [
+    {
+      "id": "enter_greece_lore",
+      "speaker": "narrator",
+      "trigger": "enter_greece",
+      "once": true,
+      "modal": true,
+      "set_flags": [
+        "lore_greece"
+      ],
+      "lines": [
+        "The Underworld of Hades. The dead are ferried across the river Styx by Charon — and only those buried with a coin may pay his fare.",
+        "Drink from the river Lethe and you forget all you ever were. Most shades do.",
+        "Hades rules these halls; the gods above only watch. Cross the Styx, wanderer — and do not look back."
+      ]
+    },
+    {
+      "id": "enter_greece_short",
+      "speaker": "narrator",
+      "trigger": "enter_greece",
+      "modal": true,
+      "requires_flags": [
+        "lore_greece"
+      ],
+      "weight": 1.0,
+      "lines": [
+        "The Styx waits, cold and patient. Down into Hades again."
+      ]
+    },
+    {
+      "id": "enter_greece_god",
+      "speaker": "greece_zeus",
+      "trigger": "enter_greece",
+      "once": true,
+      "modal": true,
+      "lines": [
+        "So Olympus sends a soul to walk my brother's halls. Bold.",
+        "Prove worthy below, and the lightning may yet remember your name."
+      ]
+    },
+    {
+      "id": "enter_bali_lore",
+      "speaker": "narrator",
+      "trigger": "enter_bali",
+      "once": true,
+      "modal": true,
+      "set_flags": [
+        "lore_bali"
+      ],
+      "lines": [
+        "Beyond the seen world lies niskala — the unseen, where spirits and demons dwell.",
+        "Here walks Rangda, queen of the leyak, locked in endless balance with the lion Barong. Neither truly wins; that is the order of things.",
+        "Tread with respect, soul. To those who still honor it, this realm is no mere myth."
+      ]
+    },
+    {
+      "id": "enter_bali_short",
+      "speaker": "narrator",
+      "trigger": "enter_bali",
+      "modal": true,
+      "requires_flags": [
+        "lore_bali"
+      ],
+      "weight": 1.0,
+      "lines": [
+        "The gamelan rings in the dark. The unseen stirs again."
+      ]
+    },
+    {
+      "id": "enter_bali_god",
+      "speaker": "bali_acintya",
+      "trigger": "enter_bali",
+      "once": true,
+      "modal": true,
+      "lines": [
+        "I am Acintya — the unconceivable, the source and the silence.",
+        "Disturb the balance only so far as you must. Then go."
+      ]
+    },
+    {
+      "id": "enter_egypt_lore",
+      "speaker": "narrator",
+      "trigger": "enter_egypt",
+      "once": true,
+      "modal": true,
+      "set_flags": [
+        "lore_egypt"
+      ],
+      "lines": [
+        "The Duat — the night-road that the sun itself must sail to be reborn each dawn.",
+        "Here your heart is weighed against the feather of Ma'at. Heavier with sin, and Ammit the devourer eats it; lighter, and you pass.",
+        "Twelve gates, twelve hours of night. Osiris waits at the end of them."
+      ]
+    },
+    {
+      "id": "enter_egypt_short",
+      "speaker": "narrator",
+      "trigger": "enter_egypt",
+      "modal": true,
+      "requires_flags": [
+        "lore_egypt"
+      ],
+      "weight": 1.0,
+      "lines": [
+        "The scales of Ma'at hang ready. Into the night-road once more."
+      ]
+    },
+    {
+      "id": "enter_egypt_god",
+      "speaker": "egypt_osiris",
+      "trigger": "enter_egypt",
+      "once": true,
+      "modal": true,
+      "lines": [
+        "I am Osiris, who died and rose again to judge the dead.",
+        "Let your heart be light, traveler — or feed the Devourer."
+      ]
+    },
+    {
+      "id": "enter_norse_lore",
+      "speaker": "narrator",
+      "trigger": "enter_norse",
+      "once": true,
+      "modal": true,
+      "set_flags": [
+        "lore_norse"
+      ],
+      "lines": [
+        "Helheim, beneath a root of the world-tree. Not the bright hall of slain warriors — this is where the rest are sent.",
+        "Those who die of sickness or of age walk the long Helvegr down into the mist, past the hound Garmr.",
+        "Hel rules here — half-living, half-corpse, daughter of Loki. Few climb back up the road."
+      ]
+    },
+    {
+      "id": "enter_norse_short",
+      "speaker": "narrator",
+      "trigger": "enter_norse",
+      "modal": true,
+      "requires_flags": [
+        "lore_norse"
+      ],
+      "weight": 1.0,
+      "lines": [
+        "Frost and silence. The Helvegr leads down again."
+      ]
+    },
+    {
+      "id": "enter_norse_god",
+      "speaker": "norse_odin",
+      "trigger": "enter_norse",
+      "once": true,
+      "modal": true,
+      "lines": [
+        "I am Odin, who hung nine nights upon the tree to wrest wisdom from death.",
+        "Walk Hel's road, then. Learn what I learned."
+      ]
+    },
+    {
+      "id": "enter_japan_lore",
+      "speaker": "narrator",
+      "trigger": "enter_japan",
+      "once": true,
+      "modal": true,
+      "set_flags": [
+        "lore_japan"
+      ],
+      "lines": [
+        "Yomi-no-kuni, the shadowed land of the dead, where Izanami the mother-goddess went and could not leave.",
+        "Izanagi fled her rotting form and sealed the way with a great boulder. Eat the food of Yomi, and you too are bound here.",
+        "Touch nothing, taste nothing, soul — and perhaps the road back stays open."
+      ]
+    },
+    {
+      "id": "enter_japan_short",
+      "speaker": "narrator",
+      "trigger": "enter_japan",
+      "modal": true,
+      "requires_flags": [
+        "lore_japan"
+      ],
+      "weight": 1.0,
+      "lines": [
+        "Yomi's gloom presses close. Eat nothing here."
+      ]
+    },
+    {
+      "id": "enter_japan_god",
+      "speaker": "japan_amaterasu",
+      "trigger": "enter_japan",
+      "once": true,
+      "modal": true,
+      "lines": [
+        "I am Amaterasu, born of my father's flight from this very dark.",
+        "Bring no decay back with you into the light."
+      ]
+    },
+    {
+      "id": "enter_aztec_lore",
+      "speaker": "narrator",
+      "trigger": "enter_aztec",
+      "once": true,
+      "modal": true,
+      "set_flags": [
+        "lore_aztec"
+      ],
+      "lines": [
+        "Mictlan, nine levels deep, where every soul not claimed by sun or storm must go.",
+        "Four years the dead journey down — crossing a wide river on the back of a red dog, past mountains that crush and winds made of knives.",
+        "At the bottom wait Mictlantecuhtli and his queen, lord and lady of the dead."
+      ]
+    },
+    {
+      "id": "enter_aztec_short",
+      "speaker": "narrator",
+      "trigger": "enter_aztec",
+      "modal": true,
+      "requires_flags": [
+        "lore_aztec"
+      ],
+      "weight": 1.0,
+      "lines": [
+        "Nine levels down, the bone-road waits again."
+      ]
+    },
+    {
+      "id": "enter_aztec_god",
+      "speaker": "aztec_mictlantecuhtli",
+      "trigger": "enter_aztec",
+      "once": true,
+      "modal": true,
+      "lines": [
+        "I am Mictlantecuhtli. Every road ends at my throne of bone.",
+        "You come early — and still breathing. Curious."
+      ]
+    },
+    {
+      "id": "enter_hell_lore",
+      "speaker": "narrator",
+      "trigger": "enter_hell",
+      "modal": true,
+      "lines": [
+        "...This is not in the Book. No Styx, no Duat, no Helheim. No coin, no feather, no bone-road.",
+        "I have guided the dead of a hundred faiths. This place answers to none of them — and I... I do not know the way."
+      ]
+    },
+    {
+      "id": "enter_hell_short",
+      "speaker": "narrator",
+      "trigger": "enter_hell",
+      "lines": [
+        "The map simply... ends. For the first time, the ferryman falls silent."
+      ]
+    },
+    {
+      "id": "enter_hell_zeus",
+      "speaker": "greece_zeus",
+      "trigger": "enter_hell",
+      "min_meet": 0,
+      "lines": [
+        "Olympus cannot pierce these clouds. Whatever dreams below is older than my father, and his father before him.",
+        "We gods speak to you now because no god rules HERE. Go carefully, little soul."
+      ]
+    },
+    {
+      "id": "enter_hell_osiris",
+      "speaker": "egypt_osiris",
+      "trigger": "enter_hell",
+      "min_meet": 0,
+      "lines": [
+        "No feather can weigh what sleeps in this water. Ma'at herself turns her eyes away.",
+        "This is not the night-road. This is what the night-road fears."
+      ]
+    },
+    {
+      "id": "enter_hell_odin",
+      "speaker": "norse_odin",
+      "trigger": "enter_hell",
+      "min_meet": 0,
+      "lines": [
+        "Nine nights I hung for wisdom — and even I was never shown THIS drowned city.",
+        "Its name does not fit a mortal mouth. R'lyeh. Speak it once, then not again."
+      ]
+    },
+    {
+      "id": "enter_hell_mict",
+      "speaker": "aztec_mictlantecuhtli",
+      "trigger": "enter_hell",
+      "min_meet": 0,
+      "lines": [
+        "Nine levels are mine, and none descend this far. You walk past where death itself stops.",
+        "The Old One does not judge, does not ferry, does not weigh. It simply WAKES. Pray it does not."
+      ]
+    }
+  ]
 }
