@@ -48,7 +48,7 @@ func _ready() -> void:
 ## top (the medallion frames even a simple icon so it reads pro).
 func _boon_card(b) -> Control:
 	var card := Control.new()
-	card.custom_minimum_size = Vector2(560, 96)
+	card.custom_minimum_size = Vector2(560, 104)
 
 	var btn := Button.new()
 	btn.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -67,11 +67,38 @@ func _boon_card(b) -> Control:
 	var dd = GameData.deities.get(b.deity_id, null)
 	if dd != null:
 		accent = dd.color
-	var med := Medallion.new()
-	med.custom_minimum_size = Vector2(76, 76)
-	med.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	med.setup(Sprites.icon(b.id), accent, b.rarity)
-	row.add_child(med)
+
+	# Lead with the deity's portrait (splash art) so the player sees WHICH god is
+	# offering the boon. Falls back to the framed blessing icon if no portrait art.
+	var face := Sprites.portrait(b.deity_id)
+	if face != null:
+		var frame := PanelContainer.new()
+		frame.custom_minimum_size = Vector2(90, 90)
+		frame.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		frame.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.05, 0.05, 0.07)
+		sb.set_corner_radius_all(10)
+		sb.set_border_width_all(3)
+		sb.border_color = accent
+		sb.shadow_color = Color(accent.r, accent.g, accent.b, 0.35)
+		sb.shadow_size = 6
+		sb.set_content_margin_all(3)
+		frame.add_theme_stylebox_override("panel", sb)
+		var tex := TextureRect.new()
+		tex.texture = face
+		tex.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tex.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		tex.custom_minimum_size = Vector2(82, 82)
+		tex.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		frame.add_child(tex)
+		row.add_child(frame)
+	else:
+		var med := Medallion.new()
+		med.custom_minimum_size = Vector2(76, 76)
+		med.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		med.setup(Sprites.icon(b.id), accent, b.rarity)
+		row.add_child(med)
 
 	var col := VBoxContainer.new()
 	col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -94,7 +121,7 @@ func _boon_card(b) -> Control:
 	desc_lbl.add_theme_font_size_override("font_size", 16)
 	desc_lbl.add_theme_color_override("font_color", Color(0.86, 0.84, 0.78))
 	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	desc_lbl.custom_minimum_size = Vector2(420, 0)
+	desc_lbl.custom_minimum_size = Vector2(400, 0)
 	col.add_child(desc_lbl)
 
 	return card
