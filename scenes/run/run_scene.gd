@@ -68,6 +68,7 @@ func _ready() -> void:
 
 	Events.entity_died.connect(_on_entity_died)
 	Events.boss_spawned.connect(_on_boss_zoom)
+	Events.boss_phase2.connect(_on_boss_phase2)
 	Events.boss_despawned.connect(func(): _zoom_to(2.0))
 
 	# UI overlays (screen space).
@@ -447,6 +448,10 @@ func _next_floor() -> void:
 	_setup_biome(false)
 
 func _on_entity_died(entity) -> void:
+	if entity != null and is_instance_valid(entity):
+		var d = entity.get("data")
+		if d != null and String(d.id) == "hell_cthulhu" and not _ended:
+			_cthulhu_death(entity)
 	if entity == player and not _ended:
 		_ended = true
 		# The death beat: a full-screen epitaph, then back to the shore (hub).
@@ -534,6 +539,9 @@ func _cthulhu_intro(e) -> void:
 	e.position = home + Vector2(0.0, 280.0)
 	if anim_node != null:
 		anim_node.modulate = Color(0.0, 0.0, 0.0, 0.0)
+	Audio.duck_music(-16.0, 0.6)  # pull the theme down so the roar can DROP it back in
+	if e.has_method("play_intro_emerge"):
+		e.play_intro_emerge()  # the bespoke rise/unfurl sheet (if present)
 
 	# 1) The storm gathers: darken, two lightning cracks with thunder + shake.
 	var t0 := create_tween()
@@ -560,6 +568,9 @@ func _cthulhu_intro(e) -> void:
 	# 3) THE ROAR: violent shake, a blinding flash, the god-roar cue, and an
 	#    eldritch shockwave ring bursting off the risen Old God.
 	Audio.play_sfx("roar", 1.0)
+	if e.has_method("ignite_eyes"):
+		e.ignite_eyes()  # the red eyes blaze open on the roar
+	Audio.swell_music(0.35)  # the boss theme DROPS in on the beat
 	Juice.add_trauma(0.95)
 	if is_instance_valid(e):
 		Fx.play("burst_hell_cthulhu" if Fx.has("burst_hell_cthulhu") else "shockwave", \
@@ -591,3 +602,64 @@ func _lightning(flash: ColorRect, strength: float) -> void:
 	tw.tween_property(flash, "color:a", strength, 0.04)
 	tw.tween_property(flash, "color:a", 0.0, 0.28)
 	await tw.finished
+
+
+## Phase-2 beat for the Old God: the sky tears open — a blood-red full-screen
+## pulse, a short second roar, and a kick of shake as his moveset turns.
+func _on_boss_phase2(e) -> void:
+	if e == null or not is_instance_valid(e):
+		return
+	var d = e.get("data")
+	if d == null or String(d.id) != "hell_cthulhu":
+		return
+	var sky := CanvasLayer.new()
+	sky.layer = 3
+	add_child(sky)
+	var red := ColorRect.new()
+	red.color = Color(0.72, 0.05, 0.08, 0.0)
+	red.set_anchors_preset(Control.PRESET_FULL_RECT)
+	red.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	sky.add_child(red)
+	Audio.play_sfx("roar", 1.25)
+	Juice.add_trauma(0.7)
+	var tw := create_tween()
+	tw.tween_property(red, "color:a", 0.55, 0.08)
+	tw.tween_property(red, "color:a", 0.0, 0.9)
+	await tw.finished
+	if is_instance_valid(sky):
+		sky.queue_free()
+
+## Death cinematic for the Old God: time slows, the world darkens, a final tremor
+## rolls out while the boss sinks (the Enemy plays its own collapse/fade), then
+## time resumes and the post-boss flow takes over.
+func _cthulhu_death(e) -> void:
+	if player != null and is_instance_valid(player):
+		player.velocity = Vector2.ZERO
+		player.set_physics_process(false)
+		player.set_process(false)
+	Engine.time_scale = 0.4
+	Juice.add_trauma(0.85)
+	Audio.play_sfx("roar", 0.7)
+	Audio.duck_music(-24.0, 0.4)
+	var veil := CanvasLayer.new()
+	veil.layer = 3
+	add_child(veil)
+	var dark := ColorRect.new()
+	dark.color = Color(0.0, 0.0, 0.0, 0.0)
+	dark.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dark.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	veil.add_child(dark)
+	var tw := create_tween()
+	tw.tween_property(dark, "color:a", 0.6, 1.2)
+	# Real-time waits so the slowed time_scale doesn't stretch them forever.
+	await get_tree().create_timer(1.1, true, false, true).timeout
+	Engine.time_scale = 1.0
+	await get_tree().create_timer(0.5, true, false, true).timeout
+	var lift := create_tween()
+	lift.tween_property(dark, "color:a", 0.0, 0.6)
+	await get_tree().create_timer(0.6).timeout
+	if is_instance_valid(veil):
+		veil.queue_free()
+	if player != null and is_instance_valid(player):
+		player.set_physics_process(true)
+		player.set_process(true)
