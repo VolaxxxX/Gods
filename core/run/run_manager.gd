@@ -14,8 +14,8 @@ var current_room_index: int = 0
 var visited_biomes: Array[String] = []
 
 # Carried player state (greybox baseline; expands with items/blessings later).
-var player_max_health: float = 8.0
-var player_health: float = 8.0
+var player_max_health: float = 12.0
+var player_health: float = 12.0
 var gold: int = 0
 var owned_items: Array[String] = []
 var chosen_blessings: Array[String] = []
@@ -60,7 +60,7 @@ func start_run(p_seed: int, p_biome: String = "greece", p_character: String = "c
 			owned_items.append(ch.start_item)
 		if ch.start_blessing != "":
 			chosen_blessings.append(ch.start_blessing)
-	player_max_health = 8.0
+	player_max_health = 12.0
 	player_health = player_max_health
 	RNG.seed_from_int(p_seed)
 	Events.emit_signal("run_started", p_seed)
