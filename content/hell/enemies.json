@@ -171,9 +171,9 @@
       "role": "boss",
       "pantheon": "hell",
       "max_health": 1050,
-      "move_speed": 10,
+      "move_speed": 0,
       "contact_damage": 5,
-      "radius": 110,
+      "radius": 150,
       "ai": "chase",
       "gold": 60,
       "color": "#3c6e57",
@@ -237,7 +237,8 @@
           "cooldown": 4.0
         }
       ],
-      "phase2_replace": true
+      "phase2_replace": true,
+      "background_boss": true
     }
   ]
 }
