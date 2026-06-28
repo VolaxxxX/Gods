@@ -3,6 +3,12 @@ extends Node
 ## and the player's carried stats (health etc.). The run scene reads/writes this;
 ## SaveManager serializes it for resume.
 
+## TEMP DEV: hidden boss-test mode. Set via the hub's Boss Test button; the next
+## run drops you straight into a one-room arena vs this boss. Cleared on every
+## normal start_run. Hide the whole feature by flipping DEBUG_BOSS_TEST to false.
+const DEBUG_BOSS_TEST := true
+var debug_boss_test: String = ""
+
 var active: bool = false
 var seed_value: int = 0
 var biome_id: String = "greece"
@@ -38,6 +44,7 @@ var floor_graph = null
 func start_run(p_seed: int, p_biome: String = "greece", p_character: String = "char_wanderer") -> void:
 	active = true
 	resuming = false
+	debug_boss_test = ""  # cleared on a normal run; the hub re-sets it for a boss test
 	seed_value = p_seed
 	biome_id = p_biome
 	character_id = p_character
@@ -324,3 +331,10 @@ func from_snapshot(s: Dictionary) -> void:
 	resume_room_coords = Vector2i(int(cr[0]), int(cr[1])) if cr.size() >= 2 else Vector2i.ZERO
 	resume_cleared = s.get("cleared", [])
 	RNG.seed_from_int(seed_value)
+
+## The biome that owns a given boss/miniboss id (for the boss-test shortcut).
+func biome_for_boss(boss_id: String) -> String:
+	for b in GameData.biomes.values():
+		if b.boss_id == boss_id or b.miniboss_id == boss_id:
+			return b.id
+	return "greece"
