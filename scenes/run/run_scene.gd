@@ -479,16 +479,115 @@ func _save_progress() -> void:
 ## Pull the camera back for boss fights (the Hydra especially is huge).
 func _on_boss_zoom(e, _name_key: String) -> void:
 	var z := 1.55
+	var cthulhu := false
 	if e != null and is_instance_valid(e):
 		var d = e.get("data")
 		if d != null and String(d.id) == "greece_hydra":
 			z = 1.35
 		elif d != null and String(d.id) == "hell_cthulhu":
 			z = 0.9  # colossal Old God — pull WAY back, Typhon-style framing
+			cthulhu = true
 	_zoom_to(z)
+	if cthulhu:
+		_cthulhu_intro(e)
 
 func _zoom_to(z: float) -> void:
 	if camera == null or not is_instance_valid(camera):
 		return
 	var tw := create_tween()
 	tw.tween_property(camera, "zoom", Vector2(z, z), 0.6)
+
+
+## Boss-intro cinematic for the final Old God: the storm gathers, lightning
+## cracks, and Cthulhu RISES from under the rain to loose a god's roar before the
+## fight begins. Pure code + the existing rain/lightning/roar cues; freezes the
+## boss AI (intro_lock) and the player for the duration.
+func _cthulhu_intro(e) -> void:
+	if e == null or not is_instance_valid(e):
+		return
+	# Freeze the fight: lock the boss AI and the player's input/movement.
+	e.set("intro_lock", true)
+	if player != null and is_instance_valid(player):
+		player.velocity = Vector2.ZERO
+		player.set_physics_process(false)
+		player.set_process(false)
+	# Storm overlay: a dark veil + a white lightning flash, above the world and
+	# below the HUD. Removed when the intro ends.
+	var storm := CanvasLayer.new()
+	storm.layer = 3
+	add_child(storm)
+	var dark := ColorRect.new()
+	dark.color = Color(0.02, 0.03, 0.06, 0.0)
+	dark.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dark.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	storm.add_child(dark)
+	var flash := ColorRect.new()
+	flash.color = Color(0.86, 0.92, 1.0, 0.0)
+	flash.set_anchors_preset(Control.PRESET_FULL_RECT)
+	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	storm.add_child(flash)
+
+	# He starts sunk below his arena spot and pitch-black (a silhouette under the
+	# downpour), then surfaces.
+	var anim_node = e.get("_anim")
+	var home: Vector2 = e.position
+	e.position = home + Vector2(0.0, 280.0)
+	if anim_node != null:
+		anim_node.modulate = Color(0.0, 0.0, 0.0, 0.0)
+
+	# 1) The storm gathers: darken, two lightning cracks with thunder + shake.
+	var t0 := create_tween()
+	t0.tween_property(dark, "color:a", 0.6, 0.7)
+	await get_tree().create_timer(0.4).timeout
+	await _lightning(flash, 0.9)
+	await get_tree().create_timer(0.35).timeout
+	await _lightning(flash, 0.7)
+
+	# 2) Cthulhu rises from under the rain over ~2.3s (slide up + fade from black),
+	#    a low rumble swelling under it.
+	Audio.play_sfx("boss", 0.55)
+	var rise := create_tween()
+	rise.set_parallel(true)
+	rise.tween_property(e, "position", home, 2.3) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	if anim_node != null:
+		rise.tween_property(anim_node, "modulate", Color(1.0, 1.0, 1.0, 1.0), 2.3) \
+			.set_trans(Tween.TRANS_SINE)
+	await get_tree().create_timer(2.0).timeout
+	await _lightning(flash, 0.8)
+	await get_tree().create_timer(0.4).timeout
+
+	# 3) THE ROAR: violent shake, a blinding flash, the god-roar cue, and an
+	#    eldritch shockwave ring bursting off the risen Old God.
+	Audio.play_sfx("roar", 1.0)
+	Juice.add_trauma(0.95)
+	if is_instance_valid(e):
+		Fx.play("burst_hell_cthulhu" if Fx.has("burst_hell_cthulhu") else "shockwave", \
+			e.global_position, 560.0)
+	var rf := create_tween()
+	rf.tween_property(flash, "color:a", 0.95, 0.05)
+	rf.tween_property(flash, "color:a", 0.0, 0.6)
+	await get_tree().create_timer(0.9).timeout
+
+	# 4) Lift the veil and HAND OVER to the fight.
+	var clear := create_tween()
+	clear.tween_property(dark, "color:a", 0.0, 0.5)
+	await get_tree().create_timer(0.5).timeout
+	if is_instance_valid(storm):
+		storm.queue_free()
+	if e != null and is_instance_valid(e):
+		e.set("intro_lock", false)
+	if player != null and is_instance_valid(player):
+		player.set_physics_process(true)
+		player.set_process(true)
+
+## One lightning crack: a quick white flash + thunder cue + a kick of shake.
+func _lightning(flash: ColorRect, strength: float) -> void:
+	if not is_instance_valid(flash):
+		return
+	Audio.play_sfx("thunder", 0.9 + randf() * 0.2)
+	Juice.add_trauma(0.35 * strength)
+	var tw := create_tween()
+	tw.tween_property(flash, "color:a", strength, 0.04)
+	tw.tween_property(flash, "color:a", 0.0, 0.28)
+	await tw.finished
