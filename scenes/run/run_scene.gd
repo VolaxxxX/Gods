@@ -12,6 +12,7 @@ var pool: ProjectilePool
 var player: Player
 var camera: Camera2D
 var _boss_cam: Camera2D       # dedicated framed camera for the Cthulhu fight
+var _boss_bg: CanvasLayer      # R'lyeh backdrop behind the arena (colossus fight)
 var current_room: Room
 var current_pos: Vector2i = Vector2i.ZERO
 var _cleared: Dictionary = {}   # Vector2i -> true
@@ -740,10 +741,27 @@ func _enter_boss_camera() -> void:
 	var z: float = minf(vp.x / maxf(rs.x, 1.0), vp.y / maxf(rs.y, 1.0)) * 0.94
 	_boss_cam.zoom = Vector2(z, z)
 	_boss_cam.make_current()
+	# R'lyeh backdrop: a drowned cyclopean city behind the arena (rain falls in front).
+	if _boss_bg == null and ResourceLoader.exists("res://assets/sprites/bg_rlyeh.png"):
+		_boss_bg = CanvasLayer.new()
+		_boss_bg.layer = -1
+		add_child(_boss_bg)
+		var tr := TextureRect.new()
+		tr.texture = load("res://assets/sprites/bg_rlyeh.png")
+		tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+		tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		tr.modulate = Color(0.72, 0.72, 0.72, 1.0)
+		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_boss_bg.add_child(tr)
 
 func _exit_boss_camera() -> void:
 	if _boss_cam != null and is_instance_valid(_boss_cam):
 		_boss_cam.queue_free()
 		_boss_cam = null
+	if _boss_bg != null and is_instance_valid(_boss_bg):
+		_boss_bg.queue_free()
+		_boss_bg = null
 	if camera != null and is_instance_valid(camera):
 		camera.make_current()
