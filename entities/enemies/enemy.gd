@@ -422,21 +422,8 @@ func _execute_ability(ab: Dictionary) -> void:
 					float(ab.get("life", 1.1)), true, "projectile_" + data.id)
 				Fx.play(_burst_fx(), global_position, _radius * 2.5)
 		"gaze":
-			# Ancient-god gaze: a fan of fast PIERCING eye-beams toward the player.
-			if is_instance_valid(_target) and _pool != null:
-				var gbase := (_target.global_position - global_position).angle()
-				var gn := int(ab.get("count", 3))
-				var gspr := deg_to_rad(float(ab.get("spread", 16.0)))
-				for k in gn:
-					var gt := 0.0 if gn == 1 else (float(k) / (gn - 1) - 0.5)
-					var gdir := Vector2.from_angle(gbase + gt * gspr)
-					var gd := Damage.new(float(ab.get("damage", 1.0)), ["enemy", "beam"], self)
-					_pool.spawn(global_position + gdir * (_radius + 8.0),
-						gdir * float(ab.get("speed", 540.0)), gd, false,
-						float(ab.get("radius", 6.0)), Color(1.0, 0.2, 0.2),
-						float(ab.get("life", 1.4)), true, "projectile_" + data.id)
-				_eye_target = maxf(_eye_target, 2.6)  # eyes blaze as they fire
-				Fx.play(_burst_fx(), global_position, _radius * 2.5)
+			# Ancient-god gaze: a telegraphed THICK eye-beam that scorches the arena.
+			_eye_beam(ab)
 		"slam":
 			# A giant tentacle hammers the ground where the player stands, then a
 			# shockwave ring bursts out from the impact.
@@ -562,6 +549,63 @@ func play_intro_emerge() -> void:
 
 ## A telegraphed tentacle SLAM: a marker grows on the floor, then a tentacle
 ## crashes down (impact damage) and a shockwave ring of projectiles bursts out.
+## Ancient-god GAZE: a thin red telegraph line from the eyes, then a thick beam
+## that fires through the player's position, damaging everything along its length.
+func _eye_beam(ab: Dictionary) -> void:
+	if not is_instance_valid(_target):
+		return
+	var parent := get_parent()
+	if parent == null:
+		return
+	_eye_target = maxf(_eye_target, 2.8)
+	var origin: Vector2 = global_position + Vector2(0.0, -_radius * 0.2)
+	var dir: Vector2 = (_target.global_position - origin).normalized()
+	var length := 1600.0
+	var endp: Vector2 = origin + dir * length
+	var dmg := float(ab.get("damage", 2.0)) * _difficulty
+	# Telegraph: a thin pulsing red line for ~0.5s.
+	var warn := Line2D.new()
+	warn.width = 3.0
+	warn.default_color = Color(1.0, 0.2, 0.2, 0.6)
+	warn.points = PackedVector2Array([origin, endp])
+	warn.z_index = 6
+	parent.add_child(warn)
+	var wt := warn.create_tween()
+	wt.set_loops(3)
+	wt.tween_property(warn, "modulate:a", 0.25, 0.12)
+	wt.tween_property(warn, "modulate:a", 1.0, 0.12)
+	get_tree().create_timer(0.5).timeout.connect(func() -> void:
+		if is_instance_valid(warn):
+			warn.queue_free()
+		var beam := Line2D.new()
+		beam.width = 28.0
+		beam.default_color = Color(1.0, 0.28, 0.22, 0.95)
+		beam.begin_cap_mode = Line2D.LINE_CAP_ROUND
+		beam.end_cap_mode = Line2D.LINE_CAP_ROUND
+		beam.points = PackedVector2Array([origin, endp])
+		beam.z_index = 7
+		parent.add_child(beam)
+		var area := DamageArea.new()
+		area.collision_layer = Collision.ENEMY_DMG
+		area.collision_mask = Collision.PLAYER_HURT
+		area.setup(Damage.new(dmg, ["enemy", "beam"], self), false, 0.2)
+		var cs := CollisionShape2D.new()
+		var cap := CapsuleShape2D.new()
+		cap.radius = 16.0
+		cap.height = length
+		cs.shape = cap
+		cs.position = origin + dir * (length * 0.5)
+		cs.rotation = dir.angle() + PI / 2.0
+		area.add_child(cs)
+		parent.add_child(area)
+		Fx.play(_burst_fx(), origin, _radius * 2.0)
+		Juice.add_trauma(0.4)
+		get_tree().create_timer(0.28).timeout.connect(func() -> void:
+			if is_instance_valid(beam):
+				beam.queue_free()
+			if is_instance_valid(area):
+				area.queue_free()))
+
 func _tentacle_slam(pos: Vector2, ab: Dictionary) -> void:
 	var parent := get_parent()
 	if parent == null:
@@ -603,6 +647,28 @@ func _tentacle_slam(pos: Vector2, ab: Dictionary) -> void:
 		root.add_child(area)
 		Fx.play(_burst_fx(), pos, rad * 3.0)
 		Juice.add_trauma(0.45)
+		# A giant tentacle-arm whips down from the colossus onto the struck spot.
+		var tent := Line2D.new()
+		tent.width = 26.0
+		tent.default_color = Color(0.18, 0.55, 0.45, 0.95)
+		tent.joint_mode = Line2D.LINE_JOINT_ROUND
+		tent.begin_cap_mode = Line2D.LINE_CAP_ROUND
+		tent.end_cap_mode = Line2D.LINE_CAP_ROUND
+		tent.z_index = 6
+		var src := global_position
+		var perp := (pos - src).orthogonal().normalized()
+		var tp := PackedVector2Array()
+		for j in 7:
+			var f := float(j) / 6.0
+			tp.append(src.lerp(pos, f) + perp * sin(f * PI * 2.0) * 30.0 * (1.0 - f))
+		tent.points = tp
+		parent.add_child(tent)
+		var ttw := tent.create_tween()
+		ttw.tween_property(tent, "width", 32.0, 0.06)
+		ttw.tween_property(tent, "modulate:a", 0.0, 0.5)
+		get_tree().create_timer(0.6).timeout.connect(func() -> void:
+			if is_instance_valid(tent):
+				tent.queue_free())
 		if _pool != null:
 			for k in shock_n:
 				var dir := Vector2.from_angle(TAU * float(k) / float(maxi(1, shock_n)))
