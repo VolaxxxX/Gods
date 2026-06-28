@@ -493,6 +493,7 @@ func _on_regen_add(entity_id: String) -> void:
 func _ability_anim_names() -> Array:
 	var names: Array = []
 	names.append("emerge")  # boss-intro rise sheet (loaded only if the file exists)
+	names.append("scream")  # the animated roar sheet (loaded if present)
 	for src in [data.abilities, data.phase2_abilities]:
 		if src is Array:
 			for ab in src:
@@ -524,6 +525,14 @@ func _update_eyes(delta: float) -> void:
 ## Light the eyes (called on the roar beat by the intro cinematic).
 func ignite_eyes() -> void:
 	_eye_target = 1.8
+
+## Play the animated roar (the colossus thrashes its tentacles and flares).
+func play_scream() -> void:
+	if _anim == null or _anim.sprite_frames == null or not _anim.sprite_frames.has_animation("scream"):
+		return
+	_attack_anim = "scream"
+	_attack_t = maxf(_attack_t, 1.1)
+	_anim.play("scream")
 
 ## Play the bespoke rise sheet during the intro, if it exists.
 func play_intro_emerge() -> void:
