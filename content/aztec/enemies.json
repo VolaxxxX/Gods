@@ -152,6 +152,36 @@
           "cooldown": 4.0
         }
       ]
+    },
+    {
+      "id": "aztec_atlatl",
+      "name_key": "enemy.atlatl.name",
+      "role": "enemy",
+      "pantheon": "aztec",
+      "max_health": 12,
+      "move_speed": 78,
+      "contact_damage": 1,
+      "radius": 13,
+      "ai": "orbit",
+      "gold": 4,
+      "color": "#c98f55",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.2,
+      "range_speed": 205
+    },
+    {
+      "id": "aztec_xolotl",
+      "name_key": "enemy.xolotl.name",
+      "role": "enemy",
+      "pantheon": "aztec",
+      "max_health": 12,
+      "move_speed": 118,
+      "contact_damage": 2,
+      "radius": 12,
+      "ai": "zigzag",
+      "gold": 3,
+      "color": "#5a4a55"
     }
   ]
 }
