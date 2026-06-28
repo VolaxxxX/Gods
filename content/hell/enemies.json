@@ -29,7 +29,18 @@
       "ranged": true,
       "range_damage": 1,
       "range_rate": 1.1,
-      "range_speed": 225
+      "range_speed": 225,
+      "abilities": [
+        {
+          "kind": "beam",
+          "anim": "attack",
+          "speed": 560,
+          "damage": 1,
+          "radius": 5,
+          "life": 1.1,
+          "cooldown": 3.0
+        }
+      ]
     },
     {
       "id": "hell_deep_one",
@@ -42,7 +53,16 @@
       "radius": 13,
       "ai": "chase",
       "gold": 4,
-      "color": "#2a6a6a"
+      "color": "#2a6a6a",
+      "abilities": [
+        {
+          "kind": "charge",
+          "anim": "attack",
+          "speed": 390,
+          "duration": 0.4,
+          "cooldown": 3.6
+        }
+      ]
     },
     {
       "id": "hell_shoggoth",
@@ -72,7 +92,18 @@
       "ranged": true,
       "range_damage": 1,
       "range_rate": 1.1,
-      "range_speed": 220
+      "range_speed": 220,
+      "abilities": [
+        {
+          "kind": "barrage",
+          "anim": "attack",
+          "count": 4,
+          "spread": 10,
+          "speed": 285,
+          "damage": 1,
+          "cooldown": 3.4
+        }
+      ]
     },
     {
       "id": "hell_cultist",
@@ -85,7 +116,18 @@
       "radius": 12,
       "ai": "chase",
       "gold": 4,
-      "color": "#6a2a2a"
+      "color": "#6a2a2a",
+      "abilities": [
+        {
+          "kind": "spread",
+          "anim": "attack",
+          "count": 5,
+          "spread": 36,
+          "speed": 210,
+          "damage": 1,
+          "cooldown": 3.8
+        }
+      ]
     },
     {
       "id": "hell_dagon",
