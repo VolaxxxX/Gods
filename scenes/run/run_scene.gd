@@ -11,6 +11,7 @@ var biome: BiomeData
 var pool: ProjectilePool
 var player: Player
 var camera: Camera2D
+var _boss_cam: Camera2D       # dedicated framed camera for the Cthulhu fight
 var current_room: Room
 var current_pos: Vector2i = Vector2i.ZERO
 var _cleared: Dictionary = {}   # Vector2i -> true
@@ -69,7 +70,7 @@ func _ready() -> void:
 	Events.entity_died.connect(_on_entity_died)
 	Events.boss_spawned.connect(_on_boss_zoom)
 	Events.boss_phase2.connect(_on_boss_phase2)
-	Events.boss_despawned.connect(func(): _zoom_to(2.0))
+	Events.boss_despawned.connect(func(): _exit_boss_camera(); _zoom_to(2.0))
 
 	# UI overlays (screen space).
 	var hud := HUD.new()
@@ -531,6 +532,7 @@ func _zoom_to(z: float) -> void:
 func _cthulhu_intro(e) -> void:
 	if e == null or not is_instance_valid(e):
 		return
+	_enter_boss_camera()  # cinematic framing: colossus up top, hero down low
 	# Freeze the fight: lock the boss AI and the player's input/movement.
 	e.set("intro_lock", true)
 	if player != null and is_instance_valid(player):
@@ -705,3 +707,33 @@ func _boss_arena_template(b: BiomeData) -> String:
 			if fallback == "":
 				fallback = r.id
 	return fallback
+
+
+## Cinematic boss camera: a fixed Camera2D that frames the whole arena with the
+## colossus looming at the top and the hero small in the lower half (Typhon-style),
+## instead of the usual player-follow cam. Restored by _exit_boss_camera.
+func _enter_boss_camera() -> void:
+	if current_room == null or not is_instance_valid(current_room):
+		return
+	if _boss_cam != null and is_instance_valid(_boss_cam):
+		return
+	var rs: Vector2 = current_room.room_size()
+	_boss_cam = Camera2D.new()
+	_boss_cam.position_smoothing_enabled = true
+	_boss_cam.position_smoothing_speed = 4.0
+	add_child(_boss_cam)
+	# Centre horizontally; bias slightly DOWN so the top-anchored colossus dominates
+	# the upper screen while the playable lower arena stays in view.
+	_boss_cam.global_position = current_room.global_position + Vector2(rs.x * 0.5, rs.y * 0.52)
+	var vp: Vector2 = get_viewport().get_visible_rect().size
+	# Fit the whole arena (a little margin) so nothing important is off-screen.
+	var z: float = minf(vp.x / maxf(rs.x, 1.0), vp.y / maxf(rs.y, 1.0)) * 0.94
+	_boss_cam.zoom = Vector2(z, z)
+	_boss_cam.make_current()
+
+func _exit_boss_camera() -> void:
+	if _boss_cam != null and is_instance_valid(_boss_cam):
+		_boss_cam.queue_free()
+		_boss_cam = null
+	if camera != null and is_instance_valid(camera):
+		camera.make_current()
