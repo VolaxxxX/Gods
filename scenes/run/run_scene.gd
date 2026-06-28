@@ -113,6 +113,13 @@ func _setup_biome(from_resume: bool) -> void:
 		pool.deactivate_all()
 	graph = FloorGenerator.new().generate(biome)
 	current_pos = graph.start_pos
+	# Hidden boss-test: force the start room to be the boss arena with the chosen boss.
+	if RunManager.debug_boss_test != "":
+		var bn := graph.get_node(current_pos)
+		bn["type"] = "boss"
+		var arena := _boss_arena_template(biome)
+		if arena != "":
+			bn["template_id"] = arena
 
 	# Resume: restore cleared rooms and start at the saved room (floor is
 	# regenerated deterministically from the seed, so coordinates still map).
@@ -256,6 +263,14 @@ func _on_room_cleared(pos: Vector2i, type: String) -> void:
 	Events.emit_signal("room_cleared", current_room)
 
 	if type == "boss" and not _ended:
+		# Hidden boss-test: just return to the hub after the kill (no progression).
+		if RunManager.debug_boss_test != "":
+			RunManager.debug_boss_test = ""
+			Engine.time_scale = 1.0
+			_ended = true
+			RunManager.end_run(true)
+			SceneRouter.goto_hub()
+			return
 		# Palier boss -> pick one of 2 doors, then deeper into the SAME zone; final
 		# boss -> next realm/win (RealmChoice).
 		if RunManager.is_final_floor():
@@ -663,3 +678,14 @@ func _cthulhu_death(e) -> void:
 	if player != null and is_instance_valid(player):
 		player.set_physics_process(true)
 		player.set_process(true)
+
+## Pick a boss-arena room template for this biome (for the boss-test shortcut).
+func _boss_arena_template(b: BiomeData) -> String:
+	var fallback := ""
+	for r in GameData.rooms.values():
+		if r.type == "boss" and r.pantheon == b.pantheon:
+			if String(r.id).findn("arena") != -1:
+				return r.id
+			if fallback == "":
+				fallback = r.id
+	return fallback
