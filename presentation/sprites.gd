@@ -209,7 +209,7 @@ func build_sprite_frames(id: String, extra: Array = []) -> SpriteFrames:
 		var count: int = maxi(1, int(round(float(tex.get_width()) / float(fh))))
 		sf.add_animation(a)
 		sf.set_animation_speed(a, ANIM_FPS.get(a, 12.0))  # bespoke attacks default to 12 fps
-		sf.set_animation_loop(a, a == "idle" or a == "walk")
+		sf.set_animation_loop(a, a == "walk" or a.begins_with("idle"))
 		for i in count:
 			var at := AtlasTexture.new()
 			at.atlas = tex
