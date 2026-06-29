@@ -170,6 +170,16 @@
           "shock_speed": 210,
           "cooldown": 3.5,
           "anim": "slam"
+        },
+        {
+          "kind": "ringwave",
+          "anim": "spread",
+          "cooldown": 6.5,
+          "waves": 3,
+          "count": 16,
+          "speed": 195,
+          "damage": 1,
+          "_pat": true
         }
       ]
     },
@@ -252,6 +262,17 @@
           "shock_count": 24,
           "shock_speed": 230,
           "cooldown": 3.5
+        },
+        {
+          "kind": "spiral",
+          "anim": "void_implosion",
+          "cooldown": 6.0,
+          "count": 34,
+          "arms": 3,
+          "speed": 210,
+          "step": 12,
+          "damage": 1,
+          "_pat": true
         }
       ],
       "phase2_replace": true,
