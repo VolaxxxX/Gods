@@ -188,6 +188,12 @@ func _recompute_stats() -> void:
 	# Melee hits harder but swings slower than shots (close-range risk).
 	_melee_damage = sb.value("damage") * 2.4
 	_melee_rate = sb.value("fire_rate") * 0.7
+	# DEV: in the hidden Boss Test mode the player has no run upgrades, so the
+	# beefy boss HP would make fights a slog. Triple damage there so a test feels
+	# like a real mid-run fight. Has NO effect on normal runs.
+	if RunManager.debug_boss_test != "":
+		weapon.base_damage *= 3.0
+		_melee_damage *= 3.0
 
 	# Max health: grow current health by any increase so +HP items feel good.
 	var new_max := sb.value("max_health")
