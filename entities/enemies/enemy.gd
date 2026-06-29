@@ -421,7 +421,7 @@ func _execute_ability(ab: Dictionary) -> void:
 			# laser lance that streaks through in a line.
 			if is_instance_valid(_target) and _pool != null:
 				var bdir := (_target.global_position - global_position).normalized()
-				var bd := Damage.new(float(ab.get("damage", 1.0)), ["enemy", "beam"], self)
+				var bd := Damage.new(float(ab.get("damage", 1.0)) * _difficulty, ["enemy", "beam"], self)
 				_pool.spawn(global_position + bdir * (_radius + 8.0),
 					bdir * float(ab.get("speed", 560.0)), bd, false,
 					float(ab.get("radius", 5.0)), Color(0.6, 1.0, 0.9),
@@ -454,7 +454,7 @@ func _breath(ab: Dictionary) -> void:
 		var ang := base + (rng.randf() - 0.5) * spread
 		var sp := lerpf(smax * 0.5, smax, rng.randf())
 		var dir := Vector2.from_angle(ang)
-		var d := Damage.new(dmg, ["enemy", "fire"], self)
+		var d := Damage.new(dmg * _difficulty, ["enemy", "fire"], self)
 		_pool.spawn(global_position + dir * (_radius + 6.0), dir * sp, d, false,
 			prad, col, life, false, "projectile_" + data.id)
 	Fx.play(_burst_fx(), global_position, _radius * 3.0)
@@ -473,7 +473,7 @@ func _fire_pattern(count: int, arc: float, center: float, speed: float, dmg: flo
 		var t := 0.0 if count == 1 else (float(k) / (count - 1) - 0.5)
 		var angle := center + t * arc if arc < TAU else center + TAU * k / count
 		var dir := Vector2.from_angle(angle)
-		var d := Damage.new(dmg, ["enemy"], self)
+		var d := Damage.new(dmg * _difficulty, ["enemy"], self)
 		_pool.spawn(global_position + dir * (_radius + 8.0), dir * speed, d, false,
 			8.0, Color(1, 0.5, 0.4), 3.0, false, "projectile_" + data.id)
 
