@@ -72,7 +72,7 @@
       "name_key": "boss.orochi.name",
       "role": "boss",
       "pantheon": "japan",
-      "max_health": 688,
+      "max_health": 1400,
       "move_speed": 46,
       "contact_damage": 3,
       "radius": 38,
@@ -89,7 +89,7 @@
           "count": 16,
           "spread": 46,
           "speed": 300,
-          "damage": 1,
+          "damage": 2,
           "cooldown": 4.5,
           "anim": "breath"
         },
@@ -97,7 +97,7 @@
           "kind": "nova",
           "count": 18,
           "speed": 205,
-          "damage": 1,
+          "damage": 2,
           "cooldown": 4.5,
           "anim": "nova"
         },
@@ -123,8 +123,17 @@
           "arms": 3,
           "speed": 200,
           "step": 13,
-          "damage": 1,
+          "damage": 2,
           "_pat": true
+        },
+        {
+          "kind": "slam",
+          "anim": "slam",
+          "cooldown": 4.5,
+          "damage": 3,
+          "radius": 110,
+          "shock_count": 18,
+          "shock_speed": 215
         }
       ],
       "phase2_at": 0.5,
