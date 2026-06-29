@@ -150,7 +150,8 @@
           "kind": "gaze",
           "damage": 2,
           "speed": 540,
-          "cooldown": 4.5
+          "cooldown": 4.5,
+          "anim": "gaze"
         },
         {
           "kind": "spread",
@@ -158,7 +159,8 @@
           "spread": 60,
           "speed": 240,
           "damage": 1,
-          "cooldown": 3.0
+          "cooldown": 3.0,
+          "anim": "spread"
         },
         {
           "kind": "slam",
@@ -166,7 +168,8 @@
           "radius": 90,
           "shock_count": 18,
           "shock_speed": 210,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "slam"
         }
       ]
     },
