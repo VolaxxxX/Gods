@@ -85,72 +85,48 @@
       "range_speed": 250,
       "abilities": [
         {
-          "kind": "breath",
-          "count": 16,
-          "spread": 46,
-          "speed": 300,
+          "kind": "coil",
+          "anim": "coil",
+          "cooldown": 5.5,
+          "count": 30,
+          "ring_radius": 340,
+          "speed": 150,
           "damage": 2,
-          "cooldown": 4.5,
-          "anim": "breath"
+          "gap": 42
         },
         {
           "kind": "charge",
-          "speed": 480,
-          "duration": 0.5,
-          "cooldown": 3.5,
-          "anim": "charge"
-        },
-        {
-          "kind": "nova",
-          "count": 18,
-          "speed": 205,
-          "damage": 2,
-          "cooldown": 4.5,
-          "anim": "nova"
-        },
-        {
-          "kind": "summon",
-          "entity": "egypt_scarab",
-          "count": 3,
-          "cooldown": 7.5,
-          "anim": "summon"
-        },
-        {
-          "kind": "fan",
-          "anim": "fan",
-          "cooldown": 6.0,
-          "count": 16,
-          "sweep": 130,
-          "speed": 250,
-          "damage": 2,
-          "_pat": true
-        },
-        {
-          "kind": "gaze",
-          "anim": "gaze",
+          "anim": "charge",
           "cooldown": 5.0,
-          "damage": 3,
-          "count": 3,
-          "speed": 540,
-          "spread": 14
+          "speed": 460,
+          "duration": 0.5
+        },
+        {
+          "kind": "breath",
+          "anim": "breath",
+          "cooldown": 4.5,
+          "damage": 2,
+          "count": 16
         }
       ],
       "phase2_at": 0.5,
       "phase2_abilities": [
         {
-          "kind": "nova",
-          "anim": "solar_eclipse",
-          "count": 20,
-          "speed": 205,
-          "damage": 1,
-          "cooldown": 4.5
+          "kind": "coil",
+          "anim": "coil",
+          "cooldown": 4.5,
+          "count": 36,
+          "ring_radius": 340,
+          "speed": 160,
+          "damage": 2,
+          "gap": 34
         },
         {
-          "kind": "summon",
-          "anim": "chaos_scarabs",
-          "entity": "egypt_scarab",
-          "count": 6,
-          "cooldown": 4.2
+          "kind": "charge",
+          "anim": "charge",
+          "cooldown": 4.5,
+          "speed": 480,
+          "duration": 0.5
         }
       ]
     },
