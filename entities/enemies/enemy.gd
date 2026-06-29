@@ -451,6 +451,69 @@ func _execute_ability(ab: Dictionary) -> void:
 			# shockwave ring bursts out from the impact.
 			if is_instance_valid(_target):
 				_tentacle_slam(_target.global_position, ab)
+		"ringwave":
+			# Several full rings in quick succession, each rotated a touch — a pulsing
+			# shock-bloom that reads as expanding waves rolling outward.
+			_attack_t = maxf(_attack_t, 1.1)
+			var rw_waves := int(ab.get("waves", 3))
+			var rw_count := int(ab.get("count", 18))
+			var rw_speed := float(ab.get("speed", 185.0))
+			var rw_dmg := float(ab.get("damage", 1.0))
+			for w in rw_waves:
+				get_tree().create_timer(float(w) * 0.26).timeout.connect(func() -> void:
+					if not is_instance_valid(self) or _pool == null:
+						return
+					var off := float(w) * 0.20
+					for i in rw_count:
+						_shoot(Vector2.from_angle(off + TAU * float(i) / float(rw_count)), rw_speed, rw_dmg)
+					Fx.play(_burst_fx(), _shoot_origin(), _radius * 2.4)
+					Events.shot_fired.emit(false, 0.7))
+		"spiral":
+			# A rotating multi-arm spiral: bullets stream while the firing angle turns,
+			# painting curved arms across the arena.
+			_attack_t = maxf(_attack_t, 1.2)
+			var sp_shots := int(ab.get("count", 26))
+			var sp_arms := int(ab.get("arms", 2))
+			var sp_speed := float(ab.get("speed", 200.0))
+			var sp_step := deg_to_rad(float(ab.get("step", 15.0)))
+			var sp_dmg := float(ab.get("damage", 1.0))
+			for i in sp_shots:
+				get_tree().create_timer(float(i) * 0.05).timeout.connect(func() -> void:
+					if not is_instance_valid(self) or _pool == null:
+						return
+					for a in sp_arms:
+						_shoot(Vector2.from_angle(float(i) * sp_step + TAU * float(a) / float(sp_arms)), sp_speed, sp_dmg)
+					Events.shot_fired.emit(false, 0.85))
+		"fan":
+			# A sweeping fan aimed at the hero — a wall of bullets that wipes across an
+			# arc like a searchlight.
+			if is_instance_valid(_target):
+				_attack_t = maxf(_attack_t, 1.1)
+				var fn_shots := int(ab.get("count", 14))
+				var fn_sweep := deg_to_rad(float(ab.get("sweep", 120.0)))
+				var fn_speed := float(ab.get("speed", 240.0))
+				var fn_dmg := float(ab.get("damage", 1.0))
+				var fn_base := (_target.global_position - _shoot_origin()).angle() - fn_sweep * 0.5
+				for i in fn_shots:
+					get_tree().create_timer(float(i) * 0.06).timeout.connect(func() -> void:
+						if not is_instance_valid(self) or _pool == null:
+							return
+						var fa := fn_base + fn_sweep * float(i) / float(maxi(1, fn_shots - 1))
+						_shoot(Vector2.from_angle(fa), fn_speed, fn_dmg)
+						Events.shot_fired.emit(false, 0.9))
+		"flower":
+			# Several concentric rings released at once at different speeds/offsets —
+			# blooms outward like petals.
+			var fl_petals := int(ab.get("count", 12))
+			var fl_layers := int(ab.get("layers", 3))
+			var fl_dmg := float(ab.get("damage", 1.0))
+			for fl in fl_layers:
+				var fl_off := float(fl) * 0.13
+				var fl_spd := 120.0 + float(fl) * 75.0
+				for i in fl_petals:
+					_shoot(Vector2.from_angle(fl_off + TAU * float(i) / float(fl_petals)), fl_spd, fl_dmg)
+			Fx.play(_burst_fx(), _shoot_origin(), _radius * 3.0)
+			Events.shot_fired.emit(false, 0.8)
 
 ## A flame/energy BREATH: a dense, fast stream of short-lived projectiles in a
 ## tight cone toward the player — reads as a long jet of flame when the projectile
@@ -500,6 +563,14 @@ func _fire_pattern(count: int, arc: float, center: float, speed: float, dmg: flo
 		var d := Damage.new(dmg * _difficulty, ["enemy"], self)
 		_pool.spawn(_shoot_origin() + dir * (_radius + 8.0), dir * speed, d, false,
 			8.0, Color(1, 0.5, 0.4), 3.0, false, "projectile_" + data.id)
+
+## Fire ONE themed projectile from the body in `dir` at `speed` (pattern helper).
+func _shoot(dir: Vector2, speed: float, dmg: float, radius: float = 8.0, col: Color = Color(1.0, 0.5, 0.4)) -> void:
+	if _pool == null:
+		return
+	var d := Damage.new(dmg * _difficulty, ["enemy"], self)
+	_pool.spawn(_shoot_origin() + dir * (_radius + 8.0), dir * speed, d, false,
+		radius, col, 3.0, false, "projectile_" + data.id)
 
 func _summon(entity_id: String, count: int, regen: bool = false) -> void:
 	if entity_id == "" or count <= 0:
