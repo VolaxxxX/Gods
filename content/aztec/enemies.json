@@ -72,7 +72,7 @@
       "name_key": "boss.cipactli.name",
       "role": "boss",
       "pantheon": "aztec",
-      "max_health": 688,
+      "max_health": 1460,
       "move_speed": 46,
       "contact_damage": 3,
       "radius": 38,
