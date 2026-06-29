@@ -482,7 +482,7 @@ func _execute_ability(ab: Dictionary) -> void:
 					if not is_instance_valid(self) or _pool == null:
 						return
 					for a in sp_arms:
-						_shoot(Vector2.from_angle(float(i) * sp_step + TAU * float(a) / float(sp_arms)), sp_speed, sp_dmg)
+						_shoot(Vector2.from_angle(float(i) * sp_step + TAU * float(a) / float(sp_arms)), sp_speed, sp_dmg, 9.0, Color(0.7, 0.55, 1.0), "projectile_spiral")
 					Events.shot_fired.emit(false, 0.85))
 		"fan":
 			# A sweeping fan aimed at the hero — a wall of bullets that wipes across an
@@ -511,7 +511,7 @@ func _execute_ability(ab: Dictionary) -> void:
 				var fl_off := float(fl) * 0.13
 				var fl_spd := 120.0 + float(fl) * 75.0
 				for i in fl_petals:
-					_shoot(Vector2.from_angle(fl_off + TAU * float(i) / float(fl_petals)), fl_spd, fl_dmg)
+					_shoot(Vector2.from_angle(fl_off + TAU * float(i) / float(fl_petals)), fl_spd, fl_dmg, 10.0, Color(1.0, 0.8, 0.9), "projectile_petal")
 			Fx.play(_burst_fx(), _shoot_origin(), _radius * 3.0)
 			Events.shot_fired.emit(false, 0.8)
 
@@ -565,12 +565,13 @@ func _fire_pattern(count: int, arc: float, center: float, speed: float, dmg: flo
 			8.0, Color(1, 0.5, 0.4), 3.0, false, "projectile_" + data.id)
 
 ## Fire ONE themed projectile from the body in `dir` at `speed` (pattern helper).
-func _shoot(dir: Vector2, speed: float, dmg: float, radius: float = 8.0, col: Color = Color(1.0, 0.5, 0.4)) -> void:
+func _shoot(dir: Vector2, speed: float, dmg: float, radius: float = 8.0, col: Color = Color(1.0, 0.5, 0.4), sprite: String = "") -> void:
 	if _pool == null:
 		return
+	var sn := sprite if sprite != "" and Fx.has(sprite) else "projectile_" + data.id
 	var d := Damage.new(dmg * _difficulty, ["enemy"], self)
 	_pool.spawn(_shoot_origin() + dir * (_radius + 8.0), dir * speed, d, false,
-		radius, col, 3.0, false, "projectile_" + data.id)
+		radius, col, 3.0, false, sn)
 
 func _summon(entity_id: String, count: int, regen: bool = false) -> void:
 	if entity_id == "" or count <= 0:
