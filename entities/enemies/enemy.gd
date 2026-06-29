@@ -514,6 +514,106 @@ func _execute_ability(ab: Dictionary) -> void:
 					_shoot(Vector2.from_angle(fl_off + TAU * float(i) / float(fl_petals)), fl_spd, fl_dmg, 10.0, Color(1.0, 0.8, 0.9), "projectile_petal")
 			Fx.play(_burst_fx(), _shoot_origin(), _radius * 3.0)
 			Events.shot_fired.emit(false, 0.8)
+		"hydra_heads":
+			# HYDRA signature: many heads spit venom from spread mouths, staggered.
+			if is_instance_valid(_target):
+				_attack_t = maxf(_attack_t, 1.0)
+				var hh_n := int(ab.get("heads", 5))
+				var hh_sp := float(ab.get("speed", 230.0))
+				var hh_dmg := float(ab.get("damage", 2.0))
+				var hh_org := _shoot_origin()
+				var hh_aim := (_target.global_position - hh_org).angle()
+				for hh in hh_n:
+					get_tree().create_timer(float(hh) * 0.09).timeout.connect(func() -> void:
+						if not is_instance_valid(self) or _pool == null:
+							return
+						var hpos := hh_org + Vector2((float(hh) - float(hh_n - 1) / 2.0) * (_radius * 0.45), -_radius * 0.25)
+						for j in 3:
+							var a := hh_aim + deg_to_rad((float(j) - 1.0) * 9.0)
+							var d := Damage.new(hh_dmg * _difficulty, ["enemy"], self)
+							_pool.spawn(hpos, Vector2.from_angle(a) * hh_sp, d, false, 9.0, Color(0.5, 0.95, 0.4), 3.0, false, "projectile_" + data.id)
+						Events.shot_fired.emit(false, 0.85))
+		"hex":
+			# RANGDA signature: the witch plants delayed curse-zones around the hero.
+			if is_instance_valid(_target):
+				_attack_t = maxf(_attack_t, 1.0)
+				var hx_n := int(ab.get("spots", 5))
+				var hx_rad := float(ab.get("radius", 58.0))
+				var hx_dmg := float(ab.get("damage", 2.0))
+				var hx_rng := RNG.stream("combat")
+				var hx_base := _target.global_position
+				for sidx in hx_n:
+					var hx_pos := hx_base + Vector2.from_angle(hx_rng.randf() * TAU) * (hx_rng.randf() * hx_rad * 2.4)
+					_ground_zone(hx_pos, hx_rad, hx_dmg, 0.7 + float(sidx) * 0.12, Color(0.7, 0.2, 0.85))
+				Events.shot_fired.emit(false, 0.55)
+		"coil":
+			# APOPHIS signature: the world-serpent coils a closing ring around the
+			# hero (with one gap to slip through) that converges inward.
+			if _pool != null:
+				_attack_t = maxf(_attack_t, 1.0)
+				var co_n := int(ab.get("count", 30))
+				var co_rr := float(ab.get("ring_radius", 340.0))
+				var co_sp := float(ab.get("speed", 150.0))
+				var co_dmg := float(ab.get("damage", 2.0))
+				var co_gap := deg_to_rad(float(ab.get("gap", 42.0)))
+				var co_gd := randf() * TAU
+				var co_c := _target.global_position if is_instance_valid(_target) else _shoot_origin()
+				for k in co_n:
+					var ang := TAU * float(k) / float(co_n)
+					if absf(wrapf(ang - co_gd, -PI, PI)) < co_gap * 0.5:
+						continue
+					var spawn := co_c + Vector2.from_angle(ang) * co_rr
+					var d := Damage.new(co_dmg * _difficulty, ["enemy"], self)
+					_pool.spawn(spawn, (co_c - spawn).normalized() * co_sp, d, false, 9.0, Color(0.9, 0.8, 0.4), 4.0, false, "projectile_" + data.id)
+				Events.shot_fired.emit(false, 0.7)
+		"pounce":
+			# FENRIR signature: the wolf LEAPS onto the hero, then a landing shock.
+			if is_instance_valid(_target):
+				_attack_t = maxf(_attack_t, 0.9)
+				_charge_dir = (_target.global_position - global_position).normalized()
+				_charge_speed = float(ab.get("speed", 620.0))
+				_charge_t = float(ab.get("duration", 0.4))
+				_charge_vanish = false
+				var po_dmg := float(ab.get("damage", 3.0))
+				var po_rad := float(ab.get("radius", 85.0))
+				Fx.play(_burst_fx(), global_position, _radius * 2.0)
+				Audio.play_sfx("hit", 0.9)
+				get_tree().create_timer(float(ab.get("duration", 0.4))).timeout.connect(func() -> void:
+					if is_instance_valid(self):
+						_ground_zone(global_position, po_rad, po_dmg, 0.22, Color(0.6, 0.7, 1.0)))
+		"sequence_heads":
+			# OROCHI signature: eight heads strike one after another across an arc.
+			if is_instance_valid(_target):
+				_attack_t = maxf(_attack_t, 1.2)
+				var sh_n := int(ab.get("heads", 8))
+				var sh_sp := float(ab.get("speed", 300.0))
+				var sh_dmg := float(ab.get("damage", 2.0))
+				var sh_arc := deg_to_rad(float(ab.get("arc", 120.0)))
+				var sh_org := _shoot_origin()
+				var sh_aim := (_target.global_position - sh_org).angle()
+				for hh in sh_n:
+					get_tree().create_timer(float(hh) * 0.12).timeout.connect(func() -> void:
+						if not is_instance_valid(self) or _pool == null:
+							return
+						var a := sh_aim + (float(hh) / float(maxi(1, sh_n - 1)) - 0.5) * sh_arc
+						for j in 2:
+							var d := Damage.new(sh_dmg * _difficulty, ["enemy"], self)
+							_pool.spawn(sh_org + Vector2.from_angle(a) * (_radius * 0.5), Vector2.from_angle(a) * (sh_sp - float(j) * 40.0), d, false, 10.0, Color(0.6, 0.3, 0.9), 3.0, false, "projectile_" + data.id)
+						Events.shot_fired.emit(false, 0.8 + float(hh) * 0.03))
+		"erupt_lines":
+			# CIPACTLI signature: rows of ground spikes erupt outward in rays.
+			_attack_t = maxf(_attack_t, 1.1)
+			var er_rays := int(ab.get("rays", 6))
+			var er_steps := int(ab.get("steps", 5))
+			var er_rad := float(ab.get("radius", 46.0))
+			var er_dmg := float(ab.get("damage", 2.0))
+			var er_gap := float(ab.get("step_gap", 70.0))
+			var er_base := _shoot_origin()
+			var er_off := randf() * TAU
+			for r in er_rays:
+				var er_ang := er_off + TAU * float(r) / float(er_rays)
+				for st in er_steps:
+					_ground_zone(er_base + Vector2.from_angle(er_ang) * (er_gap * float(st + 1)), er_rad, er_dmg, 0.5 + float(st) * 0.14, Color(0.8, 0.55, 0.2))
 
 ## A flame/energy BREATH: a dense, fast stream of short-lived projectiles in a
 ## tight cone toward the player — reads as a long jet of flame when the projectile
@@ -572,6 +672,48 @@ func _shoot(dir: Vector2, speed: float, dmg: float, radius: float = 8.0, col: Co
 	var d := Damage.new(dmg * _difficulty, ["enemy"], self)
 	_pool.spawn(_shoot_origin() + dir * (_radius + 8.0), dir * speed, d, false,
 		radius, col, 3.0, false, sn)
+
+## A telegraphed ground zone: a ring swells at `pos`, then after `delay` a damage
+## disc fires once with a burst. Building block for bespoke boss attacks
+## (curses, eruptions, pounce landings). `dmg` is base (scaled by difficulty here).
+func _ground_zone(pos: Vector2, rad: float, dmg: float, delay: float, col: Color) -> void:
+	var parent := get_parent()
+	if parent == null:
+		return
+	var root := Node2D.new()
+	root.global_position = pos
+	root.z_index = 5
+	parent.add_child(root)
+	var disk := Polygon2D.new()
+	var pts := PackedVector2Array()
+	for i in 22:
+		pts.append(Vector2.from_angle(TAU * float(i) / 22.0) * rad)
+	disk.polygon = pts
+	disk.color = Color(col.r, col.g, col.b, 0.0)
+	disk.scale = Vector2(0.35, 0.35)
+	root.add_child(disk)
+	var tele := create_tween()
+	tele.set_parallel(true)
+	tele.tween_property(disk, "color:a", 0.5, delay)
+	tele.tween_property(disk, "scale", Vector2.ONE, delay)
+	get_tree().create_timer(delay).timeout.connect(func() -> void:
+		if not is_instance_valid(root):
+			return
+		var area := DamageArea.new()
+		area.collision_layer = Collision.ENEMY_DMG
+		area.collision_mask = Collision.PLAYER_HURT
+		area.setup(Damage.new(dmg * _difficulty, ["enemy"], self), false, 0.3)
+		var cs := CollisionShape2D.new()
+		var circ := CircleShape2D.new()
+		circ.radius = rad
+		cs.shape = circ
+		area.add_child(cs)
+		root.add_child(area)
+		Fx.play(_burst_fx(), pos, rad * 2.5)
+		Audio.play_sfx("hit", 0.7)
+		get_tree().create_timer(0.35).timeout.connect(func() -> void:
+			if is_instance_valid(root):
+				root.queue_free()))
 
 func _summon(entity_id: String, count: int, regen: bool = false) -> void:
 	if entity_id == "" or count <= 0:
