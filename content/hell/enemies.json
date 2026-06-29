@@ -173,7 +173,7 @@
         },
         {
           "kind": "ringwave",
-          "anim": "spread",
+          "anim": "ringwave",
           "cooldown": 6.5,
           "waves": 3,
           "count": 16,
@@ -265,7 +265,7 @@
         },
         {
           "kind": "spiral",
-          "anim": "void_implosion",
+          "anim": "spiral",
           "cooldown": 6.0,
           "count": 34,
           "arms": 3,
