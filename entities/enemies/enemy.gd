@@ -33,6 +33,7 @@ var _attack_anim: String = "attack"  # which animation the active ability reques
 var _idle_anims: Array = []   # background colossus: idle variants to cycle through
 var _idle_cur: String = "idle"
 var _idle_t: float = 0.0
+var _tentacles: Array = []   # final boss: independently-swaying face tentacles
 var intro_lock: bool = false  # boss-intro cinematic: freeze AI/abilities, run visuals only
 var _eyeL: PointLight2D       # final boss: glowing red eyes that ignite on the roar
 var _eyeR: PointLight2D
@@ -75,6 +76,8 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 			var sc := 3.0 * _radius / cs
 			if data.background_boss:
 				sc *= 1.5  # colossus: looms larger than its hurtbox
+				if data.id == "hell_cthulhu":
+					sc *= 1.5  # Typhon-style: a towering god that overhangs the arena
 			_anim.scale = Vector2.ONE * sc
 			_anim.position.y = _radius - Sprites.anim_content_bottom(data.id) * sc
 		add_child(_anim)
@@ -88,6 +91,8 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 					_idle_anims.append(n)
 			_idle_cur = "idle"
 			_idle_t = randf_range(3.0, 5.5)
+			if data.id == "hell_cthulhu":
+				_setup_tentacles()
 		if data.id == "hell_cthulhu":
 			_setup_eyes()
 	else:
@@ -325,6 +330,7 @@ func _physics_process(delta: float) -> void:
 				_idle_t = randf_range(3.0, 5.5)
 		_update_anim()
 	_update_eyes(delta)
+	_update_tentacles(delta)
 	queue_redraw()
 
 ## Pick walk/attack/idle and face the movement direction.
@@ -755,6 +761,48 @@ func _ability_anim_names() -> Array:
 				if n != "" and not names.has(n):
 					names.append(n)
 	return names
+
+## Final boss: a fringe of face tentacles, each swaying on its OWN phase/speed so
+## they writhe independently (alive), layered over the colossus sprite.
+func _setup_tentacles() -> void:
+	var head := (_anim.position if _anim != null else Vector2.ZERO) + Vector2(0.0, -_radius * 0.55)
+	var n := 7
+	for i in n:
+		var t := Line2D.new()
+		t.width = _radius * 0.085
+		t.default_color = Color(0.16, 0.30, 0.24, 0.95)
+		t.joint_mode = Line2D.LINE_JOINT_ROUND
+		t.begin_cap_mode = Line2D.LINE_CAP_ROUND
+		t.end_cap_mode = Line2D.LINE_CAP_ROUND
+		t.z_index = 3
+		add_child(t)
+		var u := float(i) / float(n - 1) - 0.5
+		_tentacles.append({
+			"node": t,
+			"base": head + Vector2(u * _radius * 1.2, _radius * 0.2),
+			"ang": PI * 0.5 + u * 1.3,
+			"phase": randf() * TAU,
+			"speed": 1.3 + randf() * 1.1,
+			"len": _radius * (1.1 + randf() * 0.7),
+		})
+
+func _update_tentacles(delta: float) -> void:
+	if _tentacles.is_empty():
+		return
+	var time := Time.get_ticks_msec() / 1000.0
+	for tt in _tentacles:
+		var node: Line2D = tt["node"]
+		var pts := PackedVector2Array()
+		var segs := 9
+		var p: Vector2 = tt["base"]
+		var ang: float = tt["ang"]
+		var seglen: float = float(tt["len"]) / float(segs)
+		for sidx in segs:
+			pts.append(p)
+			var wob := sin(time * float(tt["speed"]) + float(tt["phase"]) + float(sidx) * 0.55) * 0.28
+			ang += wob
+			p += Vector2.from_angle(ang) * seglen
+		node.points = pts
 
 ## Final boss: two glowing red eyes (PointLight2D) near the head, dark until the
 ## roar ignites them. Pulse handled in _update_eyes.
