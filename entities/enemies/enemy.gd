@@ -92,7 +92,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 			_idle_cur = "idle"
 			_idle_t = randf_range(3.0, 5.5)
 			if data.id == "hell_cthulhu":
-				_setup_tentacles()
+				_anim.visible = false  # the 3D colossus (presentation/colossus_3d.gd) replaces the 2D sprite
 		if data.id == "hell_cthulhu":
 			_setup_eyes()
 	else:
