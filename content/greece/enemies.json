@@ -73,7 +73,7 @@
       "name_key": "boss.hydra.name",
       "role": "boss",
       "pantheon": "greece",
-      "max_health": 482,
+      "max_health": 1320,
       "move_speed": 42,
       "contact_damage": 3,
       "radius": 34,
@@ -90,7 +90,7 @@
           "count": 16,
           "spread": 46,
           "speed": 300,
-          "damage": 1,
+          "damage": 2,
           "cooldown": 4.5,
           "anim": "breath"
         },
@@ -106,7 +106,7 @@
           "kind": "nova",
           "count": 18,
           "speed": 205,
-          "damage": 1,
+          "damage": 2,
           "cooldown": 4.5,
           "anim": "nova"
         },
@@ -115,7 +115,7 @@
           "count": 7,
           "spread": 40,
           "speed": 240,
-          "damage": 1,
+          "damage": 2,
           "cooldown": 4.5,
           "anim": "spread"
         },
@@ -126,7 +126,7 @@
           "waves": 3,
           "count": 18,
           "speed": 185,
-          "damage": 1,
+          "damage": 2,
           "_pat": true
         }
       ],
