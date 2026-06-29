@@ -116,6 +116,8 @@ func _speaker_name(speaker: String) -> String:
 		return Loc.t("speaker.narrator")
 	if speaker == "shade":
 		return Loc.t("speaker.shade")
+	if speaker == "hell_cthulhu":
+		return "Cthulhu"
 	var dd = GameData.deities.get(speaker, null)
 	return Loc.t(dd.name_key) if dd != null else speaker
 
