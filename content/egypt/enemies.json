@@ -38,7 +38,11 @@
       "radius": 14,
       "ai": "chase",
       "gold": 3,
-      "color": "#c9b27a"
+      "color": "#c9b27a",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.3,
+      "range_speed": 200
     },
     {
       "id": "egypt_mummy",
@@ -113,7 +117,7 @@
         },
         {
           "kind": "fan",
-          "anim": "breath",
+          "anim": "fan",
           "cooldown": 6.0,
           "count": 16,
           "sweep": 130,
@@ -182,7 +186,7 @@
         },
         {
           "kind": "spiral",
-          "anim": "spread",
+          "anim": "spiral",
           "cooldown": 7.0,
           "count": 22,
           "arms": 2,
