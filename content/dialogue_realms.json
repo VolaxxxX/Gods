@@ -328,6 +328,62 @@
       "lines": [
         "So. The candle still burns. Then I shall WAKE."
       ]
+    },
+    {
+      "id": "cthulhu_fakedeath_greece_zeus",
+      "speaker": "greece_zeus",
+      "trigger": "cthulhu_fakedeath",
+      "lines": [
+        "It is done! Olympus breathes again — the hero has slain the Dreamer!"
+      ]
+    },
+    {
+      "id": "cthulhu_fakedeath_egypt_osiris",
+      "speaker": "egypt_osiris",
+      "trigger": "cthulhu_fakedeath",
+      "lines": [
+        "Balance is restored. The scales tip back to the living. We thank you."
+      ]
+    },
+    {
+      "id": "cthulhu_fakedeath_norse_odin",
+      "speaker": "norse_odin",
+      "trigger": "cthulhu_fakedeath",
+      "lines": [
+        "Even Ragnarok did not frighten that thing. You felled it. Skål, mortal."
+      ]
+    },
+    {
+      "id": "cthulhu_fakedeath_aztec_mictlantecuhtli",
+      "speaker": "aztec_mictlantecuhtli",
+      "trigger": "cthulhu_fakedeath",
+      "lines": [
+        "The deep one returns to the dark. The dead may rest. You have our thanks."
+      ]
+    },
+    {
+      "id": "cthulhu_fakedeath_japan_amaterasu",
+      "speaker": "japan_amaterasu",
+      "trigger": "cthulhu_fakedeath",
+      "lines": [
+        "The sun reaches even here now. You have done what gods feared to attempt."
+      ]
+    },
+    {
+      "id": "cthulhu_fakedeath_bali_acintya",
+      "speaker": "bali_acintya",
+      "trigger": "cthulhu_fakedeath",
+      "lines": [
+        "The wheel turns clean once more. Be honoured, little flame."
+      ]
+    },
+    {
+      "id": "cthulhu_fakedeath_narrator",
+      "speaker": "narrator",
+      "trigger": "cthulhu_fakedeath",
+      "lines": [
+        "For a heartbeat, every god in every heaven exhales as one... too soon."
+      ]
     }
   ]
 }
