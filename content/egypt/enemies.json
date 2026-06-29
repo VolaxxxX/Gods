@@ -86,26 +86,30 @@
           "spread": 46,
           "speed": 300,
           "damage": 1,
-          "cooldown": 4.0
+          "cooldown": 4.0,
+          "anim": "breath"
         },
         {
           "kind": "charge",
           "speed": 480,
           "duration": 0.5,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "charge"
         },
         {
           "kind": "nova",
           "count": 18,
           "speed": 205,
           "damage": 1,
-          "cooldown": 3.6
+          "cooldown": 3.6,
+          "anim": "nova"
         },
         {
           "kind": "summon",
           "entity": "egypt_scarab",
           "count": 3,
-          "cooldown": 7.5
+          "cooldown": 7.5,
+          "anim": "summon"
         }
       ],
       "phase2_at": 0.5,
@@ -147,13 +151,15 @@
           "kind": "gaze",
           "damage": 2,
           "speed": 540,
-          "cooldown": 4.5
+          "cooldown": 4.5,
+          "anim": "gaze"
         },
         {
           "kind": "charge",
           "speed": 480,
           "duration": 0.5,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "charge"
         },
         {
           "kind": "spread",
@@ -161,7 +167,8 @@
           "spread": 40,
           "speed": 240,
           "damage": 1,
-          "cooldown": 3.0
+          "cooldown": 3.0,
+          "anim": "spread"
         }
       ]
     },
