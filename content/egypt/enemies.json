@@ -72,7 +72,7 @@
       "name_key": "boss.apophis.name",
       "role": "boss",
       "pantheon": "egypt",
-      "max_health": 639,
+      "max_health": 1380,
       "move_speed": 50,
       "contact_damage": 3,
       "radius": 36,
@@ -89,7 +89,7 @@
           "count": 16,
           "spread": 46,
           "speed": 300,
-          "damage": 1,
+          "damage": 2,
           "cooldown": 4.5,
           "anim": "breath"
         },
@@ -104,7 +104,7 @@
           "kind": "nova",
           "count": 18,
           "speed": 205,
-          "damage": 1,
+          "damage": 2,
           "cooldown": 4.5,
           "anim": "nova"
         },
@@ -122,8 +122,17 @@
           "count": 16,
           "sweep": 130,
           "speed": 250,
-          "damage": 1,
+          "damage": 2,
           "_pat": true
+        },
+        {
+          "kind": "gaze",
+          "anim": "gaze",
+          "cooldown": 5.0,
+          "damage": 3,
+          "count": 3,
+          "speed": 540,
+          "spread": 14
         }
       ],
       "phase2_at": 0.5,
