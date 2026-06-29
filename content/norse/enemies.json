@@ -38,7 +38,11 @@
       "radius": 14,
       "ai": "chase",
       "gold": 3,
-      "color": "#8fa07f"
+      "color": "#8fa07f",
+      "ranged": true,
+      "range_damage": 1,
+      "range_rate": 1.3,
+      "range_speed": 205
     },
     {
       "id": "norse_jotunn",
@@ -114,7 +118,7 @@
         },
         {
           "kind": "ringwave",
-          "anim": "nova",
+          "anim": "ringwave",
           "cooldown": 7.0,
           "waves": 4,
           "count": 16,
@@ -182,7 +186,7 @@
         },
         {
           "kind": "ringwave",
-          "anim": "barrage",
+          "anim": "ringwave",
           "cooldown": 7.5,
           "waves": 3,
           "count": 14,
