@@ -114,6 +114,17 @@
           "count": 3,
           "cooldown": 7.5,
           "anim": "summon"
+        },
+        {
+          "kind": "spiral",
+          "anim": "nova",
+          "cooldown": 6.5,
+          "count": 30,
+          "arms": 3,
+          "speed": 200,
+          "step": 13,
+          "damage": 1,
+          "_pat": true
         }
       ],
       "phase2_at": 0.5,
@@ -176,6 +187,17 @@
           "damage": 1,
           "cooldown": 4.5,
           "anim": "nova"
+        },
+        {
+          "kind": "spiral",
+          "anim": "nova",
+          "cooldown": 7.0,
+          "count": 22,
+          "arms": 2,
+          "speed": 215,
+          "step": 18,
+          "damage": 1,
+          "_pat": true
         }
       ]
     },
