@@ -73,7 +73,7 @@
       "name_key": "boss.fenrir.name",
       "role": "boss",
       "pantheon": "norse",
-      "max_health": 670,
+      "max_health": 1430,
       "move_speed": 64,
       "contact_damage": 3,
       "radius": 34,
