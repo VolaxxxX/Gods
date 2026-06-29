@@ -336,7 +336,7 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 					pos = alt
 					break
 		if ed.background_boss:
-			pos = Vector2(_size.x * 0.5, _size.y * 0.15)  # pinned top-centre (Typhon framing)
+			pos = Vector2(_size.x * 0.5, _size.y * 0.04)  # pinned ABOVE the top edge: the colossus overhangs the arena (Typhon)
 		e.position = pos
 		add_child(e)
 		_alive_enemies += 1
