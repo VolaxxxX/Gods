@@ -91,21 +91,24 @@
           "spread": 46,
           "speed": 300,
           "damage": 1,
-          "cooldown": 4.0
+          "cooldown": 4.0,
+          "anim": "breath"
         },
         {
           "kind": "summon",
           "entity": "greece_skeleton",
           "count": 2,
           "cooldown": 7.5,
-          "regen": true
+          "regen": true,
+          "anim": "summon"
         },
         {
           "kind": "nova",
           "count": 18,
           "speed": 205,
           "damage": 1,
-          "cooldown": 3.6
+          "cooldown": 3.6,
+          "anim": "nova"
         },
         {
           "kind": "spread",
@@ -113,7 +116,8 @@
           "spread": 40,
           "speed": 240,
           "damage": 1,
-          "cooldown": 3.0
+          "cooldown": 3.0,
+          "anim": "spread"
         }
       ],
       "phase2_at": 0.5,
@@ -169,7 +173,8 @@
           "kind": "charge",
           "speed": 480,
           "duration": 0.5,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "charge"
         },
         {
           "kind": "slam",
@@ -177,7 +182,8 @@
           "radius": 100,
           "shock_count": 18,
           "shock_speed": 210,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "slam"
         },
         {
           "kind": "barrage",
@@ -185,7 +191,8 @@
           "spread": 14,
           "speed": 300,
           "damage": 1,
-          "cooldown": 3.4
+          "cooldown": 3.4,
+          "anim": "barrage"
         }
       ]
     },
