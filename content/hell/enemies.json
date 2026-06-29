@@ -141,7 +141,7 @@
       "ai": "chase",
       "gold": 20,
       "color": "#2f6a78",
-      "ranged": true,
+      "ranged": false,
       "range_damage": 1,
       "range_rate": 1.0,
       "range_speed": 225,
@@ -150,7 +150,7 @@
           "kind": "gaze",
           "damage": 2,
           "speed": 540,
-          "cooldown": 4.5,
+          "cooldown": 3.5,
           "anim": "gaze"
         },
         {
@@ -159,7 +159,7 @@
           "spread": 60,
           "speed": 240,
           "damage": 1,
-          "cooldown": 3.0,
+          "cooldown": 4.5,
           "anim": "spread"
         },
         {
@@ -168,7 +168,7 @@
           "radius": 90,
           "shock_count": 18,
           "shock_speed": 210,
-          "cooldown": 5.0,
+          "cooldown": 3.5,
           "anim": "slam"
         }
       ]
@@ -185,7 +185,7 @@
       "ai": "chase",
       "gold": 60,
       "color": "#3c6e57",
-      "ranged": true,
+      "ranged": false,
       "range_damage": 1,
       "range_rate": 1.5,
       "range_speed": 230,
@@ -197,7 +197,7 @@
           "spread": 64,
           "speed": 205,
           "damage": 1,
-          "cooldown": 3.2
+          "cooldown": 4.5
         },
         {
           "kind": "slam",
@@ -206,7 +206,7 @@
           "radius": 95,
           "shock_count": 18,
           "shock_speed": 210,
-          "cooldown": 4.6
+          "cooldown": 3.5
         },
         {
           "kind": "summon",
@@ -216,7 +216,7 @@
           "cooldown": 6.5
         }
       ],
-      "phase2_at": 0.5,
+      "phase2_at": 0.0,
       "phase2_abilities": [
         {
           "kind": "gaze",
@@ -233,7 +233,7 @@
           "count": 24,
           "speed": 215,
           "damage": 1,
-          "cooldown": 2.8
+          "cooldown": 4.5
         },
         {
           "kind": "breath",
@@ -242,7 +242,7 @@
           "spread": 50,
           "speed": 190,
           "damage": 1,
-          "cooldown": 4.0
+          "cooldown": 4.5
         },
         {
           "kind": "slam",
@@ -251,7 +251,7 @@
           "radius": 120,
           "shock_count": 24,
           "shock_speed": 230,
-          "cooldown": 4.8
+          "cooldown": 3.5
         }
       ],
       "phase2_replace": true,
