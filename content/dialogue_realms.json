@@ -312,6 +312,22 @@
         "I am the unconceivable — and even I cannot conceive of what dreams below.",
         "We gods do not agree on much. On THIS, we are united: do not wake it. Yet you must."
       ]
+    },
+    {
+      "id": "cthulhu_intro_1",
+      "speaker": "hell_cthulhu",
+      "trigger": "cthulhu_intro",
+      "lines": [
+        "You are a candle held to a drowned sun. I dreamed your gods before they were born — and I will dream them after."
+      ]
+    },
+    {
+      "id": "cthulhu_phase2_1",
+      "speaker": "hell_cthulhu",
+      "trigger": "cthulhu_phase2",
+      "lines": [
+        "So. The candle still burns. Then I shall WAKE."
+      ]
     }
   ]
 }
