@@ -540,6 +540,7 @@ func _cthulhu_intro(e) -> void:
 	if e == null or not is_instance_valid(e):
 		return
 	_enter_boss_camera()  # cinematic framing: colossus up top, hero down low
+	Dialogue.speak("hell_cthulhu", "cthulhu_intro")  # he speaks BEFORE the fight
 	# Freeze the fight: lock the boss AI and the player's input/movement.
 	e.set("intro_lock", true)
 	if player != null and is_instance_valid(player):
@@ -665,6 +666,7 @@ func _on_boss_phase2(e) -> void:
 	Audio.play_sfx("roar", 1.25)
 	if e.has_method("play_scream"):
 		e.play_scream()
+	Dialogue.speak("hell_cthulhu", "cthulhu_phase2")  # he speaks BETWEEN the two phases
 	Juice.add_trauma(0.7)
 	var tw := create_tween()
 	tw.tween_property(red, "color:a", 0.55, 0.08)
