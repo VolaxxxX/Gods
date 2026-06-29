@@ -121,7 +121,7 @@
         },
         {
           "kind": "ringwave",
-          "anim": "nova",
+          "anim": "ringwave",
           "cooldown": 6.5,
           "waves": 3,
           "count": 18,
@@ -206,7 +206,7 @@
         },
         {
           "kind": "fan",
-          "anim": "barrage",
+          "anim": "fan",
           "cooldown": 7.0,
           "count": 12,
           "sweep": 110,
