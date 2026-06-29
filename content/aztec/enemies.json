@@ -119,7 +119,7 @@
         },
         {
           "kind": "flower",
-          "anim": "nova",
+          "anim": "flower",
           "cooldown": 6.5,
           "count": 12,
           "layers": 3,
@@ -190,7 +190,7 @@
         },
         {
           "kind": "fan",
-          "anim": "spread",
+          "anim": "fan",
           "cooldown": 7.0,
           "count": 12,
           "sweep": 120,
