@@ -116,6 +116,15 @@
           "damage": 1,
           "cooldown": 4.5,
           "anim": "breath"
+        },
+        {
+          "kind": "flower",
+          "anim": "nova",
+          "cooldown": 6.5,
+          "count": 12,
+          "layers": 3,
+          "damage": 1,
+          "_pat": true
         }
       ],
       "phase2_at": 0.5,
@@ -178,6 +187,16 @@
           "shock_speed": 210,
           "cooldown": 3.5,
           "anim": "slam"
+        },
+        {
+          "kind": "fan",
+          "anim": "spread",
+          "cooldown": 7.0,
+          "count": 12,
+          "sweep": 120,
+          "speed": 245,
+          "damage": 1,
+          "_pat": true
         }
       ]
     },
