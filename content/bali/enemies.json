@@ -73,7 +73,7 @@
       "name_key": "boss.rangda.name",
       "role": "boss",
       "pantheon": "bali",
-      "max_health": 551,
+      "max_health": 1350,
       "move_speed": 44,
       "contact_damage": 3,
       "radius": 36,
