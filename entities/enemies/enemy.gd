@@ -383,6 +383,12 @@ func _melee_strike() -> void:
 func _execute_ability(ab: Dictionary) -> void:
 	_attack_t = 0.4  # show the attack animation when an ability fires
 	_attack_anim = String(ab.get("anim", "attack"))  # bespoke per-attack sheet
+	# Projectile attacks were silent (they bypass the weapon); give each boss a
+	# shot cue with a per-creature pitch so every attack is heard.
+	var _k := String(ab.get("kind", ""))
+	if _k in ["nova", "spread", "barrage", "breath", "gaze", "beam"]:
+		var _pitch := 0.8 + (float(absi(hash(data.id)) % 100) / 100.0 - 0.5) * 0.5
+		Events.shot_fired.emit(false, _pitch)
 	match ab.get("kind", ""):
 		"nova":
 			_fire_pattern(int(ab.get("count", 8)), TAU, 0.0,
@@ -661,6 +667,7 @@ func _tentacle_slam(pos: Vector2, ab: Dictionary) -> void:
 		root.add_child(area)
 		Fx.play(_burst_fx(), pos, rad * 3.0)
 		Juice.add_trauma(0.45)
+		Audio.play_sfx("hit", 0.6)  # heavy slam thud
 		if data.background_boss:
 			# A real pixel-art tentacle ERUPTS at the struck spot (PixelLab art).
 			Fx.play("burst_cthulhu_tentacle" if Fx.has("burst_cthulhu_tentacle") else _burst_fx(), pos, rad * 4.0)
