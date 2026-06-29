@@ -178,7 +178,7 @@
       "name_key": "boss.cthulhu.name",
       "role": "boss",
       "pantheon": "hell",
-      "max_health": 1050,
+      "max_health": 860,
       "move_speed": 0,
       "contact_damage": 5,
       "radius": 150,
