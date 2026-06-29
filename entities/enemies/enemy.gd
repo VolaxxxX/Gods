@@ -18,6 +18,8 @@ var _pool: ProjectilePool
 var _abilities: Array = []
 var _ability_cd: Array = []  # parallel to _abilities: seconds until next use
 var _phase2_done: bool = false
+var _feigned: bool = false   # final boss: has he already played his fake death?
+var _feign_y0: float = 0.0
 
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
@@ -758,6 +760,27 @@ func _spawn_void_pool(pos: Vector2) -> void:
 			root.queue_free())
 
 func _on_died() -> void:
+	# FINAL BOSS fake-out: the first time his bar empties he FEIGNS death — the
+	# watching gods rejoice — then he revives at full HP for the true phase 2.
+	if data.id == "hell_cthulhu" and not _feigned and not data.phase2_abilities.is_empty():
+		_feigned = true
+		if health != null:
+			health.invulnerable = true
+		set_physics_process(false)
+		if contact != null:
+			contact.set_deferred("monitorable", false)
+		if _eyeL != null:
+			_eyeL.energy = 0.0
+		if _eyeR != null:
+			_eyeR.energy = 0.0
+		_feign_y0 = position.y
+		if _anim != null and _anim.sprite_frames != null and _anim.sprite_frames.has_animation("death"):
+			_anim.play("death")
+		var slump := create_tween()
+		slump.tween_property(self, "position:y", position.y + 90.0, 1.0) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+		Events.emit_signal("boss_fake_death", self)
+		return
 	RunManager.on_enemy_killed(data.gold)
 	Events.emit_signal("entity_died", self)
 	# Play the death animation before despawning, if there is one.
@@ -780,6 +803,24 @@ func _on_died() -> void:
 		else:
 			await _anim.animation_finished
 	queue_free()
+
+## Final boss: rise AGAIN for phase 2 after the feigned death and the gods' relief.
+func revive_phase2() -> void:
+	if health == null:
+		return
+	health.setup(data.max_health)   # refill the bar + clear the death flag
+	health.invulnerable = false
+	set_physics_process(true)
+	if contact != null:
+		contact.set_deferred("monitorable", true)
+	var rise := create_tween()
+	rise.tween_property(self, "position:y", _feign_y0, 1.0) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	if _anim != null and _anim.sprite_frames != null and _anim.sprite_frames.has_animation("idle"):
+		_anim.play("idle")
+	ignite_eyes()
+	play_scream()
+	_enter_phase2()
 
 func _draw() -> void:
 	# Contact shadow so enemies read against any floor.
