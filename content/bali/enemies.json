@@ -115,6 +115,17 @@
           "damage": 1,
           "cooldown": 4.5,
           "anim": "spread"
+        },
+        {
+          "kind": "spiral",
+          "anim": "nova",
+          "cooldown": 6.5,
+          "count": 28,
+          "arms": 2,
+          "speed": 205,
+          "step": 16,
+          "damage": 1,
+          "_pat": true
         }
       ],
       "phase2_at": 0.5,
@@ -179,6 +190,15 @@
           "damage": 1,
           "cooldown": 4.5,
           "anim": "spread"
+        },
+        {
+          "kind": "flower",
+          "anim": "nova",
+          "cooldown": 7.0,
+          "count": 10,
+          "layers": 2,
+          "damage": 1,
+          "_pat": true
         }
       ]
     },
