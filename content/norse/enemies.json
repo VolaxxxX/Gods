@@ -111,6 +111,16 @@
           "damage": 1,
           "cooldown": 4.5,
           "anim": "nova"
+        },
+        {
+          "kind": "ringwave",
+          "anim": "nova",
+          "cooldown": 7.0,
+          "waves": 4,
+          "count": 16,
+          "speed": 190,
+          "damage": 1,
+          "_pat": true
         }
       ],
       "phase2_at": 0.5,
@@ -169,6 +179,16 @@
           "damage": 1,
           "cooldown": 4.5,
           "anim": "barrage"
+        },
+        {
+          "kind": "ringwave",
+          "anim": "barrage",
+          "cooldown": 7.5,
+          "waves": 3,
+          "count": 14,
+          "speed": 185,
+          "damage": 1,
+          "_pat": true
         }
       ]
     },
