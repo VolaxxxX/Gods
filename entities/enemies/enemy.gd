@@ -28,6 +28,9 @@ var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
 var _anim: AnimatedSprite2D  # set if animation sheets exist (takes priority)
 var _attack_t: float = 0.0   # time left showing the attack animation
 var _attack_anim: String = "attack"  # which animation the active ability requests
+var _idle_anims: Array = []   # background colossus: idle variants to cycle through
+var _idle_cur: String = "idle"
+var _idle_t: float = 0.0
 var intro_lock: bool = false  # boss-intro cinematic: freeze AI/abilities, run visuals only
 var _eyeL: PointLight2D       # final boss: glowing red eyes that ignite on the roar
 var _eyeR: PointLight2D
@@ -77,6 +80,12 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 			_anim.play("idle")
 		elif _anim.sprite_frames.has_animation("walk"):
 			_anim.play("walk")
+		if data.background_boss:
+			for n in ["idle", "idle2", "idle3"]:
+				if _anim.sprite_frames.has_animation(n):
+					_idle_anims.append(n)
+			_idle_cur = "idle"
+			_idle_t = randf_range(3.0, 5.5)
 		if data.id == "hell_cthulhu":
 			_setup_eyes()
 	else:
@@ -307,6 +316,11 @@ func _physics_process(delta: float) -> void:
 			m2 = Color(m2.r * _phase2_tint.r, m2.g * _phase2_tint.g, m2.b * _phase2_tint.b)
 		m2.a = fade
 		_anim.modulate = m2
+		if _idle_anims.size() > 1 and _attack_t <= 0.0 and velocity.length() <= 8.0:
+			_idle_t -= delta
+			if _idle_t <= 0.0:
+				_idle_cur = _idle_anims[randi() % _idle_anims.size()]
+				_idle_t = randf_range(3.0, 5.5)
 		_update_anim()
 	_update_eyes(delta)
 	queue_redraw()
@@ -314,7 +328,7 @@ func _physics_process(delta: float) -> void:
 ## Pick walk/attack/idle and face the movement direction.
 func _update_anim() -> void:
 	var sf := _anim.sprite_frames
-	var st := "idle"
+	var st := _idle_cur if not _idle_anims.is_empty() else "idle"
 	if _attack_t > 0.0 and sf.has_animation(_attack_anim):
 		st = _attack_anim  # bespoke per-attack animation
 	elif _attack_t > 0.0 and sf.has_animation("attack"):
@@ -361,7 +375,7 @@ func _attack_anim_duration() -> float:
 func _melee_strike() -> void:
 	if not is_instance_valid(_target):
 		return
-	var dir := (_target.global_position - global_position).normalized()
+	var dir := (_target.global_position - _shoot_origin()).normalized()
 	_attack_anim = "attack"
 	_attack_t = _attack_anim_duration()  # play the full swing for THIS boss (no cut/freeze)
 	var dmg := (data.contact_damage + 1.0) * _difficulty
@@ -396,14 +410,14 @@ func _execute_ability(ab: Dictionary) -> void:
 			Fx.play(_burst_fx(), global_position, _radius * 4.0)
 		"spread":
 			if is_instance_valid(_target):
-				var base := (_target.global_position - global_position).angle()
+				var base := (_target.global_position - _shoot_origin()).angle()
 				_fire_pattern(int(ab.get("count", 5)), deg_to_rad(float(ab.get("spread", 40.0))),
 					base, float(ab.get("speed", 240.0)), float(ab.get("damage", 1.0)))
 		"summon":
 			_summon(String(ab.get("entity", "")), int(ab.get("count", 2)), bool(ab.get("regen", false)))
 		"charge":
 			if is_instance_valid(_target):
-				_charge_dir = (_target.global_position - global_position).normalized()
+				_charge_dir = (_target.global_position - _shoot_origin()).normalized()
 				_charge_speed = float(ab.get("speed", 420.0))
 				_charge_t = float(ab.get("duration", 0.45))
 				_charge_vanish = bool(ab.get("vanish", false))  # fade during the dash
@@ -411,7 +425,7 @@ func _execute_ability(ab: Dictionary) -> void:
 		"barrage":
 			# A tight, fast volley aimed at the player.
 			if is_instance_valid(_target):
-				var base := (_target.global_position - global_position).angle()
+				var base := (_target.global_position - _shoot_origin()).angle()
 				_fire_pattern(int(ab.get("count", 5)), deg_to_rad(float(ab.get("spread", 12.0))),
 					base, float(ab.get("speed", 300.0)), float(ab.get("damage", 1.0)))
 		"breath":
@@ -420,9 +434,9 @@ func _execute_ability(ab: Dictionary) -> void:
 			# A fast, thin PIERCING bolt fired straight at the player — reads as a
 			# laser lance that streaks through in a line.
 			if is_instance_valid(_target) and _pool != null:
-				var bdir := (_target.global_position - global_position).normalized()
+				var bdir := (_target.global_position - _shoot_origin()).normalized()
 				var bd := Damage.new(float(ab.get("damage", 1.0)) * _difficulty, ["enemy", "beam"], self)
-				_pool.spawn(global_position + bdir * (_radius + 8.0),
+				_pool.spawn(_shoot_origin() + bdir * (_radius + 8.0),
 					bdir * float(ab.get("speed", 560.0)), bd, false,
 					float(ab.get("radius", 5.0)), Color(0.6, 1.0, 0.9),
 					float(ab.get("life", 1.1)), true, "projectile_" + data.id)
@@ -443,7 +457,7 @@ func _breath(ab: Dictionary) -> void:
 	if _pool == null or not is_instance_valid(_target):
 		return
 	var rng := RNG.stream("combat")
-	var base := (_target.global_position - global_position).angle()
+	var base := (_target.global_position - _shoot_origin()).angle()
 	var spread := deg_to_rad(float(ab.get("spread", 34.0)))
 	var dmg := float(ab.get("damage", 1.0))
 	var prad := float(ab.get("radius", 11.0))
@@ -455,9 +469,17 @@ func _breath(ab: Dictionary) -> void:
 		var sp := lerpf(smax * 0.5, smax, rng.randf())
 		var dir := Vector2.from_angle(ang)
 		var d := Damage.new(dmg * _difficulty, ["enemy", "fire"], self)
-		_pool.spawn(global_position + dir * (_radius + 6.0), dir * sp, d, false,
+		_pool.spawn(_shoot_origin() + dir * (_radius + 6.0), dir * sp, d, false,
 			prad, col, life, false, "projectile_" + data.id)
 	Fx.play(_burst_fx(), global_position, _radius * 3.0)
+
+## Where this enemy's ranged attacks ORIGINATE. The background colossus is drawn
+## high up while its hurtbox sits low, so shots must leave from the visible body
+## (the torso), otherwise they look detached from him.
+func _shoot_origin() -> Vector2:
+	if data.background_boss and _anim != null:
+		return global_position + _anim.position
+	return global_position
 
 ## Themed nova/charge burst for this enemy if its art exists, else the generic ring.
 func _burst_fx() -> String:
@@ -474,7 +496,7 @@ func _fire_pattern(count: int, arc: float, center: float, speed: float, dmg: flo
 		var angle := center + t * arc if arc < TAU else center + TAU * k / count
 		var dir := Vector2.from_angle(angle)
 		var d := Damage.new(dmg * _difficulty, ["enemy"], self)
-		_pool.spawn(global_position + dir * (_radius + 8.0), dir * speed, d, false,
+		_pool.spawn(_shoot_origin() + dir * (_radius + 8.0), dir * speed, d, false,
 			8.0, Color(1, 0.5, 0.4), 3.0, false, "projectile_" + data.id)
 
 func _summon(entity_id: String, count: int, regen: bool = false) -> void:
@@ -508,6 +530,8 @@ func _ability_anim_names() -> Array:
 	var names: Array = []
 	names.append("emerge")  # boss-intro rise sheet (loaded only if the file exists)
 	names.append("scream")  # the animated roar sheet (loaded if present)
+	names.append("idle2")  # background-colossus idle variety (loaded if present)
+	names.append("idle3")
 	for src in [data.abilities, data.phase2_abilities]:
 		if src is Array:
 			for ab in src:
