@@ -85,7 +85,8 @@
           "kind": "charge",
           "speed": 520,
           "duration": 0.5,
-          "cooldown": 4.5
+          "cooldown": 4.5,
+          "anim": "charge"
         },
         {
           "kind": "slam",
@@ -93,20 +94,23 @@
           "radius": 100,
           "shock_count": 18,
           "shock_speed": 210,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "slam"
         },
         {
           "kind": "summon",
           "entity": "norse_helhound",
           "count": 2,
-          "cooldown": 7.5
+          "cooldown": 7.5,
+          "anim": "summon"
         },
         {
           "kind": "nova",
           "count": 18,
           "speed": 205,
           "damage": 1,
-          "cooldown": 3.6
+          "cooldown": 3.6,
+          "anim": "nova"
         }
       ],
       "phase2_at": 0.5,
@@ -147,13 +151,15 @@
           "radius": 100,
           "shock_count": 18,
           "shock_speed": 210,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "slam"
         },
         {
           "kind": "charge",
           "speed": 480,
           "duration": 0.5,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "charge"
         },
         {
           "kind": "barrage",
@@ -161,7 +167,8 @@
           "spread": 14,
           "speed": 300,
           "damage": 1,
-          "cooldown": 3.4
+          "cooldown": 3.4,
+          "anim": "barrage"
         }
       ]
     },
