@@ -763,19 +763,24 @@ func _enter_boss_camera() -> void:
 	_boss_cam.zoom = Vector2(z, z)
 	_boss_cam.make_current()
 	# R'lyeh backdrop: a drowned cyclopean city behind the arena (rain falls in front).
-	if _boss_bg == null and ResourceLoader.exists("res://assets/sprites/bg_rlyeh.png"):
+	if _boss_bg == null:
 		_boss_bg = CanvasLayer.new()
 		_boss_bg.layer = -1
 		add_child(_boss_bg)
-		var tr := TextureRect.new()
-		tr.texture = load("res://assets/sprites/bg_rlyeh.png")
-		tr.set_anchors_preset(Control.PRESET_FULL_RECT)
-		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
-		tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		tr.modulate = Color(0.72, 0.72, 0.72, 1.0)
-		tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		_boss_bg.add_child(tr)
+		if ResourceLoader.exists("res://assets/sprites/bg_rlyeh.png"):
+			var tr := TextureRect.new()
+			tr.texture = load("res://assets/sprites/bg_rlyeh.png")
+			tr.set_anchors_preset(Control.PRESET_FULL_RECT)
+			tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+			tr.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+			tr.modulate = Color(0.72, 0.72, 0.72, 1.0)
+			tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			_boss_bg.add_child(tr)
+		# A towering 3D colossus (Cthulhu) looms behind the arena, Typhon-style.
+		if ResourceLoader.exists("res://presentation/colossus_3d.gd"):
+			var col3d = load("res://presentation/colossus_3d.gd").new()
+			_boss_bg.add_child(col3d)
 
 func _exit_boss_camera() -> void:
 	if _boss_cam != null and is_instance_valid(_boss_cam):
