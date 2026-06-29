@@ -86,63 +86,48 @@
       "range_speed": 240,
       "abilities": [
         {
-          "kind": "charge",
-          "speed": 520,
-          "duration": 0.5,
-          "cooldown": 3.5,
-          "anim": "charge"
-        },
-        {
-          "kind": "slam",
-          "damage": 2,
-          "radius": 100,
-          "shock_count": 18,
-          "shock_speed": 210,
-          "cooldown": 3.5,
-          "anim": "slam"
+          "kind": "pounce",
+          "anim": "pounce",
+          "cooldown": 4.5,
+          "speed": 620,
+          "duration": 0.4,
+          "radius": 85,
+          "damage": 3
         },
         {
           "kind": "summon",
-          "entity": "norse_helhound",
+          "anim": "summon",
+          "cooldown": 7.0,
+          "entity": "norse_vargr",
           "count": 2,
-          "cooldown": 7.5,
-          "anim": "summon"
+          "regen": true
         },
         {
           "kind": "nova",
-          "count": 18,
-          "speed": 205,
-          "damage": 1,
-          "cooldown": 4.5,
-          "anim": "nova"
-        },
-        {
-          "kind": "ringwave",
-          "anim": "ringwave",
-          "cooldown": 7.0,
-          "waves": 4,
+          "anim": "nova",
+          "cooldown": 5.0,
           "count": 16,
-          "speed": 190,
-          "damage": 1,
-          "_pat": true
+          "speed": 210,
+          "damage": 2
         }
       ],
       "phase2_at": 0.5,
       "phase2_abilities": [
         {
-          "kind": "nova",
-          "anim": "gleipnir_snap",
-          "count": 16,
-          "speed": 215,
-          "damage": 1,
-          "cooldown": 4.5
+          "kind": "pounce",
+          "anim": "pounce",
+          "cooldown": 3.5,
+          "speed": 660,
+          "duration": 0.38,
+          "radius": 90,
+          "damage": 3
         },
         {
           "kind": "summon",
-          "anim": "pack_howl",
-          "entity": "norse_helhound",
-          "count": 5,
-          "cooldown": 4.2
+          "anim": "summon",
+          "cooldown": 6.0,
+          "entity": "norse_vargr",
+          "count": 2
         }
       ]
     },
