@@ -89,20 +89,23 @@
           "kind": "summon",
           "entity": "bali_leyak",
           "count": 3,
-          "cooldown": 7.0
+          "cooldown": 7.0,
+          "anim": "summon"
         },
         {
           "kind": "gaze",
           "damage": 2,
           "speed": 540,
-          "cooldown": 4.5
+          "cooldown": 4.5,
+          "anim": "gaze"
         },
         {
           "kind": "nova",
           "count": 18,
           "speed": 205,
           "damage": 1,
-          "cooldown": 3.6
+          "cooldown": 3.6,
+          "anim": "nova"
         },
         {
           "kind": "spread",
@@ -110,7 +113,8 @@
           "spread": 40,
           "speed": 240,
           "damage": 1,
-          "cooldown": 3.0
+          "cooldown": 3.0,
+          "anim": "spread"
         }
       ],
       "phase2_at": 0.5,
@@ -156,14 +160,16 @@
           "radius": 100,
           "shock_count": 18,
           "shock_speed": 210,
-          "cooldown": 5.0
+          "cooldown": 5.0,
+          "anim": "slam"
         },
         {
           "kind": "nova",
           "count": 18,
           "speed": 205,
           "damage": 1,
-          "cooldown": 3.6
+          "cooldown": 3.6,
+          "anim": "nova"
         },
         {
           "kind": "spread",
@@ -171,7 +177,8 @@
           "spread": 40,
           "speed": 240,
           "damage": 1,
-          "cooldown": 3.0
+          "cooldown": 3.0,
+          "anim": "spread"
         }
       ]
     },
