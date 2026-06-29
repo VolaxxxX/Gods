@@ -117,7 +117,7 @@
         },
         {
           "kind": "spiral",
-          "anim": "nova",
+          "anim": "spiral",
           "cooldown": 6.5,
           "count": 30,
           "arms": 3,
@@ -190,7 +190,7 @@
         },
         {
           "kind": "spiral",
-          "anim": "nova",
+          "anim": "spiral",
           "cooldown": 7.0,
           "count": 22,
           "arms": 2,
