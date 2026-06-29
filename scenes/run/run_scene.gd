@@ -71,6 +71,7 @@ func _ready() -> void:
 	Events.entity_died.connect(_on_entity_died)
 	Events.boss_spawned.connect(_on_boss_zoom)
 	Events.boss_phase2.connect(_on_boss_phase2)
+	Events.boss_fake_death.connect(_on_boss_fake_death)
 	Events.boss_despawned.connect(func(): _exit_boss_camera(); _zoom_to(2.0))
 
 	# UI overlays (screen space).
@@ -649,6 +650,24 @@ func _lightning(flash: ColorRect, strength: float) -> void:
 
 ## Phase-2 beat for the Old God: the sky tears open — a blood-red full-screen
 ## pulse, a short second roar, and a kick of shake as his moveset turns.
+## The Old God's bar hits zero — the watching gods believe it is over and give
+## thanks to the hero... then he RISES again for the true second phase.
+func _on_boss_fake_death(e) -> void:
+	Audio.duck_music(-10.0, 0.5)
+	var spoke := false
+	for fg in ["greece_zeus", "egypt_osiris", "norse_odin", "aztec_mictlantecuhtli", "japan_amaterasu", "bali_acintya"]:
+		spoke = Dialogue.speak(fg, "cthulhu_fakedeath") or spoke
+	spoke = Dialogue.speak("narrator", "cthulhu_fakedeath") or spoke
+	var revive := func() -> void:
+		if is_instance_valid(e) and e.has_method("revive_phase2"):
+			Audio.swell_music(0.4)
+			Audio.play_sfx("roar", 1.1)
+			e.revive_phase2()
+	if spoke:
+		Dialogue.queue_empty.connect(revive, CONNECT_ONE_SHOT)
+	else:
+		revive.call()
+
 func _on_boss_phase2(e) -> void:
 	if e == null or not is_instance_valid(e):
 		return
