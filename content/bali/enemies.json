@@ -118,7 +118,7 @@
         },
         {
           "kind": "spiral",
-          "anim": "nova",
+          "anim": "spiral",
           "cooldown": 6.5,
           "count": 28,
           "arms": 2,
@@ -193,7 +193,7 @@
         },
         {
           "kind": "flower",
-          "anim": "nova",
+          "anim": "flower",
           "cooldown": 7.0,
           "count": 10,
           "layers": 2,
