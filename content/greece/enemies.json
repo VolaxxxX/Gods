@@ -80,7 +80,7 @@
       "ai": "chase",
       "gold": 30,
       "color": "#3fa66b",
-      "ranged": true,
+      "ranged": false,
       "range_damage": 1,
       "range_rate": 1.4,
       "range_speed": 240,
@@ -91,7 +91,7 @@
           "spread": 46,
           "speed": 300,
           "damage": 1,
-          "cooldown": 4.0,
+          "cooldown": 4.5,
           "anim": "breath"
         },
         {
@@ -107,7 +107,7 @@
           "count": 18,
           "speed": 205,
           "damage": 1,
-          "cooldown": 3.6,
+          "cooldown": 4.5,
           "anim": "nova"
         },
         {
@@ -116,7 +116,7 @@
           "spread": 40,
           "speed": 240,
           "damage": 1,
-          "cooldown": 3.0,
+          "cooldown": 4.5,
           "anim": "spread"
         }
       ],
@@ -128,7 +128,7 @@
           "count": 18,
           "speed": 215,
           "damage": 1,
-          "cooldown": 2.8
+          "cooldown": 4.5
         },
         {
           "kind": "summon",
@@ -164,7 +164,7 @@
       "radius": 24,
       "ai": "chase",
       "gold": 16,
-      "ranged": true,
+      "ranged": false,
       "range_damage": 1,
       "range_rate": 1.0,
       "range_speed": 230,
@@ -173,7 +173,7 @@
           "kind": "charge",
           "speed": 480,
           "duration": 0.5,
-          "cooldown": 5.0,
+          "cooldown": 3.5,
           "anim": "charge"
         },
         {
@@ -182,7 +182,7 @@
           "radius": 100,
           "shock_count": 18,
           "shock_speed": 210,
-          "cooldown": 5.0,
+          "cooldown": 3.5,
           "anim": "slam"
         },
         {
@@ -191,7 +191,7 @@
           "spread": 14,
           "speed": 300,
           "damage": 1,
-          "cooldown": 3.4,
+          "cooldown": 4.5,
           "anim": "barrage"
         }
       ]
