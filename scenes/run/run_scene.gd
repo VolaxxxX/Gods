@@ -809,6 +809,47 @@ func _enter_boss_camera() -> void:
 		fade.stretch_mode = TextureRect.STRETCH_SCALE
 		fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_boss_fg.add_child(fade)
+		# Cinematic set-piece (Hades-2 / Typhon feel): a soft vignette frames the
+		# arena, and a low teal fog band gives the ground depth and majesty.
+		var vgrad := Gradient.new()
+		vgrad.offsets = PackedFloat32Array([0.52, 1.0])
+		vgrad.colors = PackedColorArray([Color(0.0, 0.0, 0.0, 0.0), Color(0.0, 0.02, 0.02, 0.58)])
+		var vgt := GradientTexture2D.new()
+		vgt.gradient = vgrad
+		vgt.fill = GradientTexture2D.FILL_RADIAL
+		vgt.fill_from = Vector2(0.5, 0.5)
+		vgt.fill_to = Vector2(1.0, 0.5)
+		vgt.width = 256
+		vgt.height = 256
+		var vig := TextureRect.new()
+		vig.texture = vgt
+		vig.set_anchors_preset(Control.PRESET_FULL_RECT)
+		vig.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		vig.stretch_mode = TextureRect.STRETCH_SCALE
+		vig.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_boss_fg.add_child(vig)
+		var fgrad := Gradient.new()
+		fgrad.offsets = PackedFloat32Array([0.0, 0.5, 1.0])
+		fgrad.colors = PackedColorArray([Color(0.10, 0.40, 0.34, 0.0), Color(0.10, 0.42, 0.36, 0.20), Color(0.10, 0.40, 0.34, 0.0)])
+		var fgt := GradientTexture2D.new()
+		fgt.gradient = fgrad
+		fgt.fill_from = Vector2(0.0, 0.0)
+		fgt.fill_to = Vector2(0.0, 1.0)
+		fgt.width = 8
+		fgt.height = 64
+		var fog := TextureRect.new()
+		fog.texture = fgt
+		fog.set_anchors_preset(Control.PRESET_FULL_RECT)
+		fog.anchor_top = 0.58
+		fog.anchor_bottom = 0.92
+		fog.offset_left = 0.0
+		fog.offset_right = 0.0
+		fog.offset_top = 0.0
+		fog.offset_bottom = 0.0
+		fog.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		fog.stretch_mode = TextureRect.STRETCH_SCALE
+		fog.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_boss_fg.add_child(fog)
 
 func _exit_boss_camera() -> void:
 	if _boss_cam != null and is_instance_valid(_boss_cam):
