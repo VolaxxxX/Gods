@@ -1,42 +1,85 @@
 {
-	"_comment": "Per-realm victory epilogues, shown by the ending scene when a run is won but the full cycle (all six realms ever) is not yet broken. The grand finale uses narr_ending instead. Fetched by id (ending_<realm>), not trigger-selected.",
-	"type": "dialogue",
-	"entries": [
-		{"id": "ending_greece", "speaker": "narrator", "trigger": "ending", "modal": true,
-		 "lines": [
-			"The Underworld of Hades bows behind you. Charon has ferried no soul so willful as yours.",
-			"The light above feels nearer now — yet other thrones of death still stand.",
-			"Return to the threshold, wanderer. The road is not yet wholly walked."
-		]},
-		{"id": "ending_bali", "speaker": "narrator", "trigger": "ending", "modal": true,
-		 "lines": [
-			"Rangda's realm falls quiet; by your hand the unseen settles back into balance.",
-			"You walked niskala, and walked out of it again — a rare and difficult thing.",
-			"But the cycle holds yet. Rest at the threshold, then descend once more."
-		]},
-		{"id": "ending_egypt", "speaker": "narrator", "trigger": "ending", "modal": true,
-		 "lines": [
-			"The Duat opens its twelve gates and lets you pass, your heart light upon the scales.",
-			"Osiris inclines his head; the sun sails on through the night, unswallowed.",
-			"Still the full cycle is unbroken. Back to the threshold — there is more night to cross."
-		]},
-		{"id": "ending_norse", "speaker": "narrator", "trigger": "ending", "modal": true,
-		 "lines": [
-			"Helheim's mist parts before you; even Hel's cold road could not keep you down.",
-			"The runes will speak your name now, in halls you were never meant to leave.",
-			"Yet the cycle endures. Return to the threshold, and take up the road anew."
-		]},
-		{"id": "ending_japan", "speaker": "narrator", "trigger": "ending", "modal": true,
-		 "lines": [
-			"Yomi's gloom lifts, and Amaterasu's light follows you back toward the living world.",
-			"You touched nothing, tasted nothing — and so the dark could find no hold on you.",
-			"But the cycle is not yet broken. Rest at the threshold, then descend again."
-		]},
-		{"id": "ending_aztec", "speaker": "narrator", "trigger": "ending", "modal": true,
-		 "lines": [
-			"Nine levels of Mictlan lie conquered beneath you; the lord of bone marks your name.",
-			"Few souls cross the bone-road downward, and fewer still ever climb back up it.",
-			"The cycle holds, though. Return to the threshold — the long road still calls."
-		]}
-	]
+  "_comment": "Per-realm victory epilogues, shown by the ending scene when a run is won but the full cycle (all six realms ever) is not yet broken. The grand finale uses narr_ending instead. Fetched by id (ending_<realm>), not trigger-selected.",
+  "type": "dialogue",
+  "entries": [
+    {
+      "id": "ending_greece",
+      "speaker": "narrator",
+      "trigger": "ending",
+      "modal": true,
+      "lines": [
+        "The Underworld of Hades bows behind you. Charon has ferried no soul so willful as yours.",
+        "The light above feels nearer now — yet other thrones of death still stand.",
+        "Return to the threshold, wanderer. The road is not yet wholly walked."
+      ]
+    },
+    {
+      "id": "ending_bali",
+      "speaker": "narrator",
+      "trigger": "ending",
+      "modal": true,
+      "lines": [
+        "Rangda's realm falls quiet; by your hand the unseen settles back into balance.",
+        "You walked niskala, and walked out of it again — a rare and difficult thing.",
+        "But the cycle holds yet. Rest at the threshold, then descend once more."
+      ]
+    },
+    {
+      "id": "ending_egypt",
+      "speaker": "narrator",
+      "trigger": "ending",
+      "modal": true,
+      "lines": [
+        "The Duat opens its twelve gates and lets you pass, your heart light upon the scales.",
+        "Osiris inclines his head; the sun sails on through the night, unswallowed.",
+        "Still the full cycle is unbroken. Back to the threshold — there is more night to cross."
+      ]
+    },
+    {
+      "id": "ending_norse",
+      "speaker": "narrator",
+      "trigger": "ending",
+      "modal": true,
+      "lines": [
+        "Helheim's mist parts before you; even Hel's cold road could not keep you down.",
+        "The runes will speak your name now, in halls you were never meant to leave.",
+        "Yet the cycle endures. Return to the threshold, and take up the road anew."
+      ]
+    },
+    {
+      "id": "ending_japan",
+      "speaker": "narrator",
+      "trigger": "ending",
+      "modal": true,
+      "lines": [
+        "Yomi's gloom lifts, and Amaterasu's light follows you back toward the living world.",
+        "You touched nothing, tasted nothing — and so the dark could find no hold on you.",
+        "But the cycle is not yet broken. Rest at the threshold, then descend again."
+      ]
+    },
+    {
+      "id": "ending_aztec",
+      "speaker": "narrator",
+      "trigger": "ending",
+      "modal": true,
+      "lines": [
+        "Nine levels of Mictlan lie conquered beneath you; the lord of bone marks your name.",
+        "Few souls cross the bone-road downward, and fewer still ever climb back up it.",
+        "The cycle holds, though. Return to the threshold — the long road still calls."
+      ]
+    },
+    {
+      "id": "ending_hell",
+      "speaker": "narrator",
+      "trigger": "ending",
+      "modal": true,
+      "lines": [
+        "The Dreamer's eye closes. Not slain — such a thing cannot be slain — but sung back beneath the black water for one age more, by the only soul stubborn enough to refuse even Him.",
+        "You stand at the bottom of everything, holding your whole name in your hands. The light above is quiet now. Earned.",
+        "You could climb into it. Be free. Be no one's jailer, ever again.",
+        "Or you could stay — take the seventh throne the wardens left empty, and hold the lid down with the one heart strong enough to bear it.",
+        "The cycle is yours to end, or yours to keep. For the first time since you died, wanderer... the choice is truly your own. Choose. And rise."
+      ]
+    }
+  ]
 }

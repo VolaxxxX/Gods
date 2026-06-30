@@ -1,61 +1,92 @@
 {
-	"type": "dialogue",
-	"entries": [
-		{
-			"id": "reveal_1", "speaker": "narrator", "trigger": "reveal",
-			"once": true, "modal": true, "min_stage": 1, "max_stage": 1,
-			"lines": [
-				"One throne has fallen. Strange — when its lord died, I felt you grow... heavier. More real.",
-				"I have ferried a thousand thousand souls. Yours alone has no name on my ledger.",
-				"Why is that, I wonder?"
-			]
-		},
-		{
-			"id": "reveal_2", "speaker": "narrator", "trigger": "reveal",
-			"once": true, "modal": true, "min_stage": 2, "max_stage": 2,
-			"lines": [
-				"Two lords cast down, and with each, a memory returns to you. A face. A shore. A name half-spoken.",
-				"You were mortal once. That much is plain now.",
-				"But no mortal walks all the underworlds. What were you?"
-			]
-		},
-		{
-			"id": "reveal_3", "speaker": "narrator", "trigger": "reveal",
-			"once": true, "modal": true, "min_stage": 3, "max_stage": 3,
-			"lines": [
-				"I remember you now. You died — and you ran. From the scales, from the river, from every judgment laid before you.",
-				"So death could not keep you whole. Each afterlife seized a shard of your soul as you fled.",
-				"Six shards. Six lords. That is why you are scattered, wanderer."
-			]
-		},
-		{
-			"id": "reveal_4", "speaker": "narrator", "trigger": "reveal",
-			"once": true, "modal": true, "min_stage": 4, "max_stage": 4,
-			"lines": [
-				"Four shards reclaimed. You stand almost whole — and I see in your eyes that you remember why you ran.",
-				"You were afraid of the weighing. Of what the scales would say you were.",
-				"Only two deaths remain to face that fear."
-			]
-		},
-		{
-			"id": "reveal_5", "speaker": "narrator", "trigger": "reveal",
-			"once": true, "modal": true, "min_stage": 5, "max_stage": 5,
-			"lines": [
-				"One shard remains, held by the last lord of the dead.",
-				"When you take it, you will hold your whole self again — your name, your deeds, your weight.",
-				"Then there is no more running. Only the road, and what waits at its end."
-			]
-		},
-		{
-			"id": "narr_ending", "speaker": "narrator", "trigger": "ending",
-			"once": true, "modal": true, "requires_flags": ["all_six"],
-			"lines": [
-				"It is done. Six lords of death lie behind you, and the last shard returns to its place.",
-				"You are whole, wanderer. You remember your name — and you no longer fear to say it.",
-				"The scales were never your enemy. Only the running was.",
-				"Step onto the river one last time. This crossing leads not down, but up — into the light you fled so long ago.",
-				"Go. The cycle is broken. You are judged at last, and found... enough."
-			]
-		}
-	]
+  "type": "dialogue",
+  "entries": [
+    {
+      "id": "reveal_1",
+      "speaker": "narrator",
+      "trigger": "reveal",
+      "once": true,
+      "modal": true,
+      "min_stage": 1,
+      "max_stage": 1,
+      "lines": [
+        "One throne of death stands empty. Strange — the moment its lord fell, I felt you grow heavier in my boat. More real. More HERE.",
+        "I have ferried a thousand thousand souls across this water. Yours alone bears no name in my ledger — and the lords of the dead were set to GUARD something. I had forgotten that.",
+        "Forgotten it, as though the dark itself wished me to."
+      ]
+    },
+    {
+      "id": "reveal_2",
+      "speaker": "narrator",
+      "trigger": "reveal",
+      "once": true,
+      "modal": true,
+      "min_stage": 2,
+      "max_stage": 2,
+      "lines": [
+        "Two lords cast down, and with each, a memory surfaces in you — a face, a shore, a name half-spoken. You were mortal once; that much is plain.",
+        "But these six realms were never truly six. They are one wound, curtained off in six colours, so that no single soul might see the whole of it.",
+        "You are pulling back the curtains, wanderer. I am no longer certain you should."
+      ]
+    },
+    {
+      "id": "reveal_3",
+      "speaker": "narrator",
+      "trigger": "reveal",
+      "once": true,
+      "modal": true,
+      "min_stage": 3,
+      "max_stage": 3,
+      "lines": [
+        "I remember you now. You died — and you RAN. From the scales, from the river, from every judgment laid before you.",
+        "So death could keep no part of you whole; each afterlife seized a shard of your soul as you fled. Three shards reclaimed now. Three remain.",
+        "But understand what the lords truly are. Not kings of the dead. Wardens. Jailers. And the cell they keep has begun, very slowly, to stir."
+      ]
+    },
+    {
+      "id": "reveal_4",
+      "speaker": "narrator",
+      "trigger": "reveal",
+      "once": true,
+      "modal": true,
+      "min_stage": 4,
+      "max_stage": 4,
+      "lines": [
+        "Four shards. You stand almost whole — and almost whole, you can feel it too, can you not? That slow tide far below. That breathing beneath the floor of every underworld.",
+        "The lords dreaded the weighing of YOUR heart because your heart is the crack. The first soul that ever refused to lie still. The flaw the sleeper dreams through.",
+        "Two deaths remain. After them, there is nowhere left to look but down."
+      ]
+    },
+    {
+      "id": "reveal_5",
+      "speaker": "narrator",
+      "trigger": "reveal",
+      "once": true,
+      "modal": true,
+      "min_stage": 5,
+      "max_stage": 5,
+      "lines": [
+        "One shard remains, held by the last lord of the dead. Take it, and you will be whole — name, deeds, weight, and all.",
+        "And whole, you will finally understand why six gods chained themselves to thrones they despised: to be the lid upon a grave that must never, ever open.",
+        "There is no more running, wanderer. Only the road — and the thing at the bottom of it, listening now for your footsteps."
+      ]
+    },
+    {
+      "id": "narr_ending",
+      "speaker": "narrator",
+      "trigger": "ending",
+      "once": true,
+      "modal": true,
+      "requires_flags": [
+        "all_six"
+      ],
+      "lines": [
+        "It is done. Six wardens of death lie behind you. Six locks, broken by your hand. You are whole at last — you remember your name, and the weight of it.",
+        "I told you the light above was freedom. I lied — as the dark has made me lie since the beginning. That light was never a door OUT.",
+        "It is the lid of a tomb, lifting. And below — far beneath all six underworlds — something that has dreamed since before the first death opens one vast and patient eye.",
+        "The gods who judged you now hide their faces. They built the whole machinery of death to hold this grave shut, and you took it apart trial by trial, believing you were saving only yourself.",
+        "To break the cycle was to break the seal. A seventh door stands open now — R'lyeh, the wound beneath the wounds. It was never meant to be found. Go down, wanderer. Finish what your refusal began."
+      ]
+    }
+  ]
 }

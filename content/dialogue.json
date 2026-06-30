@@ -1,837 +1,837 @@
 {
-	"_comment": "Hades-style evolving dialogue. Lines are raw English (pass through Loc). speaker = deity id, 'narrator' (Ferryman), or 'shade' (hub NPC). trigger = hub|boon|death|victory. Modal beats pause + tap to advance; toasts auto-advance.",
-	"type": "dialogue",
-	"entries": [
-		{
-			"id": "narr_intro",
-			"speaker": "narrator",
-			"trigger": "hub",
-			"once": true,
-			"modal": true,
-			"lines": [
-				"You are a soul, wanderer — lost in the lands of the dead.",
-				"Six underworlds lie between you and the light above, and the lord of each will not yield his realm freely.",
-				"Cast them down, one by one, and the cycle that binds you here may finally break.",
-				"Death is no ending in this place. It is only the road. So walk it — and when it kills you, rise, and walk it again."
-			]
-		},
-		{
-			"id": "narr_hub_a",
-			"speaker": "narrator",
-			"trigger": "hub",
-			"modal": false,
-			"min_meet": 1,
-			"max_stage": 0,
-			"lines": [
-				"Another descent awaits. The dead do not rest, wanderer — and so neither shall you."
-			]
-		},
-		{
-			"id": "narr_hub_b",
-			"speaker": "narrator",
-			"trigger": "hub",
-			"modal": false,
-			"min_meet": 1,
-			"max_stage": 0,
-			"lines": [
-				"The gates stand open, as they always stand. Six thrones of death still wait beyond them."
-			]
-		},
-		{
-			"id": "narr_stage1",
-			"speaker": "narrator",
-			"trigger": "hub",
-			"modal": false,
-			"min_stage": 1,
-			"max_stage": 2,
-			"lines": [
-				"A realm has fallen to you, and word of it travels fast among the dead. The other lords take notice now — and they will not greet you so kindly as the first."
-			]
-		},
-		{
-			"id": "narr_stage3",
-			"speaker": "narrator",
-			"trigger": "hub",
-			"modal": false,
-			"min_stage": 3,
-			"max_stage": 5,
-			"lines": [
-				"Realm upon realm lies broken behind you, and the light above feels nearer than it has any right to. Do not slow now — the dead remember every name that nearly escaped them."
-			]
-		},
-		{
-			"id": "narr_final",
-			"speaker": "narrator",
-			"trigger": "hub",
-			"modal": false,
-			"min_stage": 6,
-			"lines": [
-				"All six lords are vanquished. The cycle... I feel it breaking, here, around you.",
-				"Nothing bars your road any longer. Step into the light, wanderer — you have more than earned the dawn."
-			]
-		},
-		{
-			"id": "narr_death_a",
-			"speaker": "narrator",
-			"trigger": "death",
-			"modal": true,
-			"min_meet": 0,
-			"lines": [
-				"Back so soon? The river always returns the drowned.",
-				"Rest a moment, then. The dead are patient teachers — and you have lessons left to learn."
-			]
-		},
-		{
-			"id": "narr_death_b",
-			"speaker": "narrator",
-			"trigger": "death",
-			"modal": true,
-			"min_meet": 6,
-			"lines": [
-				"Death again. You wear it like a familiar cloak now, hardly even shivering.",
-				"Up you get. The road is exactly where you left it."
-			]
-		},
-		{
-			"id": "narr_death_c",
-			"speaker": "narrator",
-			"trigger": "death",
-			"modal": true,
-			"min_meet": 14,
-			"lines": [
-				"I have ferried you more times than my ledger can hold — and still you rise.",
-				"Why is that, I wonder? What is it in you that simply will not stay dead?"
-			]
-		},
-		{
-			"id": "narr_death_d",
-			"speaker": "narrator",
-			"trigger": "death",
-			"modal": true,
-			"min_meet": 24,
-			"lines": [
-				"You and your dying — we have made a strange ritual of it, you and I.",
-				"But I begin to think the river fears you more than you ever feared it. Go on. Again."
-			]
-		},
-		{
-			"id": "narr_victory_a",
-			"speaker": "narrator",
-			"trigger": "victory",
-			"modal": true,
-			"min_meet": 0,
-			"lines": [
-				"A realm bows to you. Feel that? The light above draws one step nearer.",
-				"Savor it, wanderer — the next lord will have heard you coming."
-			]
-		},
-		{
-			"id": "narr_victory_b",
-			"speaker": "narrator",
-			"trigger": "victory",
-			"modal": true,
-			"min_meet": 6,
-			"lines": [
-				"Another lord cast down. The cycle thins around you, like mist burning off at dawn.",
-				"You are becoming something the dead did not plan for."
-			]
-		},
-		{
-			"id": "narr_victory_c",
-			"speaker": "narrator",
-			"trigger": "victory",
-			"modal": true,
-			"min_meet": 12,
-			"lines": [
-				"Again you stand where a god of death once ruled. The underworlds are running short of thrones.",
-				"Soon there will be only the road left — and the light waiting at the end of it."
-			]
-		},
-		{
-			"id": "shade_hub_a",
-			"speaker": "shade",
-			"trigger": "hub",
-			"modal": false,
-			"min_meet": 0,
-			"lines": [
-				"Another newcomer? Heh. We all think we'll be the one to escape. Stick around — you'll learn the river's name soon enough."
-			]
-		},
-		{
-			"id": "shade_hub_b",
-			"speaker": "shade",
-			"trigger": "hub",
-			"modal": false,
-			"min_meet": 2,
-			"lines": [
-				"Still here? So am I. Misery loves company, friend — and down here, company is about all there is."
-			]
-		},
-		{
-			"id": "shade_hub_c",
-			"speaker": "shade",
-			"trigger": "hub",
-			"modal": false,
-			"min_stage": 3,
-			"lines": [
-				"You've beaten realms I never even reached. Gods. Maybe it really is possible... If you make it out, think of us down here, would you?"
-			]
-		},
-		{
-			"id": "shade_hub_d",
-			"speaker": "shade",
-			"trigger": "hub",
-			"modal": false,
-			"min_stage": 6,
-			"lines": [
-				"You did it. You actually... you're going to go. Go on, then — and don't look back at us. Don't you dare look back."
-			]
-		},
-		{
-			"id": "greece_zeus_boon_1",
-			"speaker": "greece_zeus",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"So — a mortal soul dares borrow my thunder.",
-				"Wield it well, little spark, and do not shame the sky that lent it."
-			]
-		},
-		{
-			"id": "greece_zeus_boon_2",
-			"speaker": "greece_zeus",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Again Olympus answers you. Do not grow proud — lightning forgets no arrogance."
-			]
-		},
-		{
-			"id": "greece_athena_boon_1",
-			"speaker": "greece_athena",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Wisdom shields those who think before they strike.",
-				"Bear my aegis, and let no careless blow ever find you."
-			]
-		},
-		{
-			"id": "greece_athena_boon_2",
-			"speaker": "greece_athena",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You learn. Good — few souls ever do, and fewer still live to use it."
-			]
-		},
-		{
-			"id": "greece_hermes_boon_1",
-			"speaker": "greece_hermes",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Quick feet, quicker wit — try to keep up, little soul!",
-				"Speed is its own kind of mercy down here. Take mine."
-			]
-		},
-		{
-			"id": "greece_hermes_boon_2",
-			"speaker": "greece_hermes",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Still running? Then run faster — the dead are slow, but they are many."
-			]
-		},
-		{
-			"id": "greece_ares_boon_1",
-			"speaker": "greece_ares",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Blood and fury! Spill them in my name.",
-				"Let every shade you meet learn the weight of my favor."
-			]
-		},
-		{
-			"id": "greece_ares_boon_2",
-			"speaker": "greece_ares",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Yes — again! Let them dread the very sound of your coming."
-			]
-		},
-		{
-			"id": "greece_artemis_boon_1",
-			"speaker": "greece_artemis",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Aim true. The hunt rewards the patient and punishes the rash.",
-				"Loose your shot only when it cannot miss."
-			]
-		},
-		{
-			"id": "greece_artemis_boon_2",
-			"speaker": "greece_artemis",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"A clean kill. The wild is proud of you, hunter."
-			]
-		},
-		{
-			"id": "bali_acintya_boon_1",
-			"speaker": "bali_acintya",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"All things in balance, traveler — light and dark, life and ash.",
-				"I grant you wholeness. Spend it wisely."
-			]
-		},
-		{
-			"id": "bali_acintya_boon_2",
-			"speaker": "bali_acintya",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You walk the middle path well. Few keep their footing upon it."
-			]
-		},
-		{
-			"id": "bali_barong_boon_1",
-			"speaker": "bali_barong",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Stand firm. My mane will guard you from the dark that bites.",
-				"Where Rangda's children gather, let them break against you."
-			]
-		},
-		{
-			"id": "bali_barong_boon_2",
-			"speaker": "bali_barong",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Rangda's shadow fears you now. Good. Let it fear."
-			]
-		},
-		{
-			"id": "bali_dewi_danu_boon_1",
-			"speaker": "bali_dewi_danu",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Drink deep of the lake's life, child.",
-				"Its waters have fed these valleys since before the gods were named."
-			]
-		},
-		{
-			"id": "bali_dewi_danu_boon_2",
-			"speaker": "bali_dewi_danu",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"The waters remember your face now. You may always return to them."
-			]
-		},
-		{
-			"id": "bali_dewi_sri_boon_1",
-			"speaker": "bali_dewi_sri",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"From the rice, abundance; from abundance, strength.",
-				"Be nourished, and carry the harvest with you into the dark."
-			]
-		},
-		{
-			"id": "bali_dewi_sri_boon_2",
-			"speaker": "bali_dewi_sri",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You flourish even here. Carry the harvest onward."
-			]
-		},
-		{
-			"id": "bali_batara_kala_boon_1",
-			"speaker": "bali_batara_kala",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"All falls to ruin in time — that is no cruelty, only truth.",
-				"Borrow my hunger, and hasten what must come."
-			]
-		},
-		{
-			"id": "bali_batara_kala_boon_2",
-			"speaker": "bali_batara_kala",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Time devours all things. All but you, it seems — not yet."
-			]
-		},
-		{
-			"id": "egypt_ra_boon_1",
-			"speaker": "egypt_ra",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"The sun's own fire is yours to carry into the night-road.",
-				"Burn away the dark, mortal, as I burn it back each dawn."
-			]
-		},
-		{
-			"id": "egypt_ra_boon_2",
-			"speaker": "egypt_ra",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You blaze brightly. Take care you are not consumed by your own light."
-			]
-		},
-		{
-			"id": "egypt_osiris_boon_1",
-			"speaker": "egypt_osiris",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Death is not the end — I, of all gods, should know it.",
-				"Endure as I endured, traveler, and you will live again."
-			]
-		},
-		{
-			"id": "egypt_osiris_boon_2",
-			"speaker": "egypt_osiris",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Risen again. The Duat cannot keep what it cannot hold."
-			]
-		},
-		{
-			"id": "egypt_anubis_boon_1",
-			"speaker": "egypt_anubis",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"I weigh every heart against the feather of truth.",
-				"Yours is heavy — not with sin, but with resolve. Carry it onward."
-			]
-		},
-		{
-			"id": "egypt_anubis_boon_2",
-			"speaker": "egypt_anubis",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Send them to me. I will judge whatever remains when you are done."
-			]
-		},
-		{
-			"id": "egypt_horus_boon_1",
-			"speaker": "egypt_horus",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Strike like the falcon — swift, certain, and from above.",
-				"My eye misses nothing. See that yours misses nothing either."
-			]
-		},
-		{
-			"id": "egypt_horus_boon_2",
-			"speaker": "egypt_horus",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Your aim is keen now. Strike, and do not hesitate."
-			]
-		},
-		{
-			"id": "egypt_set_boon_1",
-			"speaker": "egypt_set",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Chaos is power — if you have the nerve to wield it.",
-				"Take mine, and let the orderly dead tremble."
-			]
-		},
-		{
-			"id": "egypt_set_boon_2",
-			"speaker": "egypt_set",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Reckless? Yes. Effective? Also yes. I approve."
-			]
-		},
-		{
-			"id": "egypt_sekhmet_boon_1",
-			"speaker": "egypt_sekhmet",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Roar, little lion. The hunt is a prayer, and blood the offering.",
-				"Bathe in it, and grow strong."
-			]
-		},
-		{
-			"id": "egypt_sekhmet_boon_2",
-			"speaker": "egypt_sekhmet",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"The lioness is pleased. Hunt on — do not stop to rest."
-			]
-		},
-		{
-			"id": "norse_odin_boon_1",
-			"speaker": "norse_odin",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"All knowledge has its price. I gave an eye for mine.",
-				"Pay yours, and grow wise enough to walk back out of Hel."
-			]
-		},
-		{
-			"id": "norse_odin_boon_2",
-			"speaker": "norse_odin",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"The runes whisper your name now, even in the halls of the slain."
-			]
-		},
-		{
-			"id": "norse_thor_boon_1",
-			"speaker": "norse_thor",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Swing as I swing — let nothing in the nine worlds stand before you!",
-				"Ha! This will make a tale worth the telling."
-			]
-		},
-		{
-			"id": "norse_thor_boon_2",
-			"speaker": "norse_thor",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"HA! Again! Crush them, friend — and crush them well!"
-			]
-		},
-		{
-			"id": "norse_freyja_boon_1",
-			"speaker": "norse_freyja",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Beauty and war are one blade with two edges.",
-				"Take my seidr, and learn to wield them both."
-			]
-		},
-		{
-			"id": "norse_freyja_boon_2",
-			"speaker": "norse_freyja",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You please me. Half the fallen will be yours to claim."
-			]
-		},
-		{
-			"id": "norse_tyr_boon_1",
-			"speaker": "norse_tyr",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Hold the line, even at cost — especially at cost.",
-				"That is honor, and honor is the one thing the dead still respect."
-			]
-		},
-		{
-			"id": "norse_tyr_boon_2",
-			"speaker": "norse_tyr",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Steadfast. Few keep their oath as faithfully as you do."
-			]
-		},
-		{
-			"id": "norse_heimdall_boon_1",
-			"speaker": "norse_heimdall",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"I see every road from where I stand at the world's edge.",
-				"Walk yours with open eyes, and nothing will catch you unaware."
-			]
-		},
-		{
-			"id": "norse_heimdall_boon_2",
-			"speaker": "norse_heimdall",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Nothing surprises you now. Stay watchful — the dark is patient."
-			]
-		},
-		{
-			"id": "norse_loki_boon_1",
-			"speaker": "norse_loki",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Oh, this will be fun. Here — a little chaos, just for you.",
-				"Try not to lose a hand with it. Or do. I'd laugh either way."
-			]
-		},
-		{
-			"id": "norse_loki_boon_2",
-			"speaker": "norse_loki",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Back again? You and I, friend — we understand each other."
-			]
-		},
-		{
-			"id": "japan_amaterasu_boon_1",
-			"speaker": "japan_amaterasu",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Let my light drive back the shadows of Yomi.",
-				"Even in the land of rot, the sun may still shine — through you."
-			]
-		},
-		{
-			"id": "japan_amaterasu_boon_2",
-			"speaker": "japan_amaterasu",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You shine, even here in the dark. It is a beautiful thing to see."
-			]
-		},
-		{
-			"id": "japan_susanoo_boon_1",
-			"speaker": "japan_susanoo",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Ride the storm! Let the seas rage and the sky split open with you!",
-				"My sister keeps her light. I keep the tempest. Take a share of it."
-			]
-		},
-		{
-			"id": "japan_susanoo_boon_2",
-			"speaker": "japan_susanoo",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"The tempest knows you now, and answers when you call. Good."
-			]
-		},
-		{
-			"id": "japan_raijin_boon_1",
-			"speaker": "japan_raijin",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Thunder answers only the bold — and you are bold enough.",
-				"Take it, and let the drums of the storm follow your every step."
-			]
-		},
-		{
-			"id": "japan_raijin_boon_2",
-			"speaker": "japan_raijin",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"BOOM! Louder each time, little one! I can scarcely hear myself!"
-			]
-		},
-		{
-			"id": "japan_fujin_boon_1",
-			"speaker": "japan_fujin",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Swift as the wind from my bag of gales — go, before they even blink.",
-				"Let no shade in Yomi ever lay a hand upon you."
-			]
-		},
-		{
-			"id": "japan_fujin_boon_2",
-			"speaker": "japan_fujin",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You move like a gale now. They cannot strike what they cannot catch."
-			]
-		},
-		{
-			"id": "japan_tsukuyomi_boon_1",
-			"speaker": "japan_tsukuyomi",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Strike from the moonlit shadow, where the light does not reach.",
-				"The night is long, and patient, and yours."
-			]
-		},
-		{
-			"id": "japan_tsukuyomi_boon_2",
-			"speaker": "japan_tsukuyomi",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"The night hides you well, hunter. Use it."
-			]
-		},
-		{
-			"id": "japan_inari_boon_1",
-			"speaker": "japan_inari",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Fox-fire and fortune favor the clever over the strong.",
-				"Take both, and be cunning enough to keep them."
-			]
-		},
-		{
-			"id": "japan_inari_boon_2",
-			"speaker": "japan_inari",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"The fox smiles upon you. Stay clever, and the smile will hold."
-			]
-		},
-		{
-			"id": "aztec_huitzilopochtli_boon_1",
-			"speaker": "aztec_huitzilopochtli",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"War feeds the sun, and the sun feeds the world.",
-				"Fight, mortal, and let the dawn rise upon your offering."
-			]
-		},
-		{
-			"id": "aztec_huitzilopochtli_boon_2",
-			"speaker": "aztec_huitzilopochtli",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"The sun burns hotter for every battle you give it."
-			]
-		},
-		{
-			"id": "aztec_quetzalcoatl_boon_1",
-			"speaker": "aztec_quetzalcoatl",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Ride the feathered wind, wise one, high above the bone-roads.",
-				"I gave mankind its arts long ago. Let me give you this."
-			]
-		},
-		{
-			"id": "aztec_quetzalcoatl_boon_2",
-			"speaker": "aztec_quetzalcoatl",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You learn the old wisdom well. Soar with it."
-			]
-		},
-		{
-			"id": "aztec_tlaloc_boon_1",
-			"speaker": "aztec_tlaloc",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Let the storm-rain fall upon your foes, sweet and pitiless.",
-				"I drown gardens and I feed them, both with the same water. Choose well."
-			]
-		},
-		{
-			"id": "aztec_tlaloc_boon_2",
-			"speaker": "aztec_tlaloc",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"The rains come when you call them now. Spend them sparingly."
-			]
-		},
-		{
-			"id": "aztec_tezcatlipoca_boon_1",
-			"speaker": "aztec_tezcatlipoca",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Look into the smoking mirror... and take what you see there.",
-				"Even if what you see is only yourself, sharpened to an edge."
-			]
-		},
-		{
-			"id": "aztec_tezcatlipoca_boon_2",
-			"speaker": "aztec_tezcatlipoca",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"Trickster to trickster — well played, little smoke."
-			]
-		},
-		{
-			"id": "aztec_mictlantecuhtli_boon_1",
-			"speaker": "aztec_mictlantecuhtli",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"All roads end at my throne of bone, soul. Yours among them, in time.",
-				"Until that day, I lend you death's own hand. Do not waste it."
-			]
-		},
-		{
-			"id": "aztec_mictlantecuhtli_boon_2",
-			"speaker": "aztec_mictlantecuhtli",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You send so many down to me. I remember every face you bring."
-			]
-		},
-		{
-			"id": "aztec_xochipilli_boon_1",
-			"speaker": "aztec_xochipilli",
-			"trigger": "boon",
-			"min_meet": 0,
-			"lines": [
-				"Feast, dance, bloom! Even the dead may yet live a little!",
-				"Take my joy — down here it cuts sharper than any blade."
-			]
-		},
-		{
-			"id": "aztec_xochipilli_boon_2",
-			"speaker": "aztec_xochipilli",
-			"trigger": "boon",
-			"min_meet": 3,
-			"lines": [
-				"You flourish in the dark. How utterly delightful you are."
-			]
-		}
-	]
+  "_comment": "Hades-style evolving dialogue. Lines are raw English (pass through Loc). speaker = deity id, 'narrator' (Ferryman), or 'shade' (hub NPC). trigger = hub|boon|death|victory. Modal beats pause + tap to advance; toasts auto-advance.",
+  "type": "dialogue",
+  "entries": [
+    {
+      "id": "narr_intro",
+      "speaker": "narrator",
+      "trigger": "hub",
+      "once": true,
+      "modal": true,
+      "lines": [
+        "You are a soul, wanderer — dead, and refusing to stay that way. You do not recall your name. You recall only that you fled your judgment, and that something in you simply will not lie down.",
+        "Six underworlds stand between you and the light above. The lord of each guards his realm — and, though you do not yet know it, something far older besides.",
+        "Cast them down, one by one, and reclaim the pieces of yourself they hold. Then, perhaps, the cycle that binds you here will finally break.",
+        "Death is no ending in this place. It is only the road. So walk it — and when it kills you, rise, and walk it again."
+      ]
+    },
+    {
+      "id": "narr_hub_a",
+      "speaker": "narrator",
+      "trigger": "hub",
+      "modal": false,
+      "min_meet": 1,
+      "max_stage": 0,
+      "lines": [
+        "Another descent awaits. The dead do not rest, wanderer — and so neither shall you."
+      ]
+    },
+    {
+      "id": "narr_hub_b",
+      "speaker": "narrator",
+      "trigger": "hub",
+      "modal": false,
+      "min_meet": 1,
+      "max_stage": 0,
+      "lines": [
+        "The gates stand open, as they always stand. Six thrones of death still wait beyond them."
+      ]
+    },
+    {
+      "id": "narr_stage1",
+      "speaker": "narrator",
+      "trigger": "hub",
+      "modal": false,
+      "min_stage": 1,
+      "max_stage": 2,
+      "lines": [
+        "A realm has fallen to you, and word of it travels fast among the dead. The other lords take notice now — and they will not greet you so kindly as the first."
+      ]
+    },
+    {
+      "id": "narr_stage3",
+      "speaker": "narrator",
+      "trigger": "hub",
+      "modal": false,
+      "min_stage": 3,
+      "max_stage": 5,
+      "lines": [
+        "Realm upon realm lies broken behind you, and the light above feels nearer than it has any right to. Do not slow now — the dead remember every name that nearly escaped them."
+      ]
+    },
+    {
+      "id": "narr_final",
+      "speaker": "narrator",
+      "trigger": "hub",
+      "modal": false,
+      "min_stage": 6,
+      "lines": [
+        "All six wardens are vanquished, and the cycle... I feel it breaking, here, around you — and I feel what was sealed BEHIND it, waking.",
+        "The light above is not the escape I promised. A seventh door has opened below, where no door should be. If you would truly end this, wanderer, you must go down, not up."
+      ]
+    },
+    {
+      "id": "narr_death_a",
+      "speaker": "narrator",
+      "trigger": "death",
+      "modal": true,
+      "min_meet": 0,
+      "lines": [
+        "Back so soon? The river always returns the drowned.",
+        "Rest a moment, then. The dead are patient teachers — and you have lessons left to learn."
+      ]
+    },
+    {
+      "id": "narr_death_b",
+      "speaker": "narrator",
+      "trigger": "death",
+      "modal": true,
+      "min_meet": 6,
+      "lines": [
+        "Death again. You wear it like a familiar cloak now, hardly even shivering.",
+        "Up you get. The road is exactly where you left it."
+      ]
+    },
+    {
+      "id": "narr_death_c",
+      "speaker": "narrator",
+      "trigger": "death",
+      "modal": true,
+      "min_meet": 14,
+      "lines": [
+        "I have ferried you more times than my ledger can hold — and still you rise.",
+        "Why is that, I wonder? What is it in you that simply will not stay dead?"
+      ]
+    },
+    {
+      "id": "narr_death_d",
+      "speaker": "narrator",
+      "trigger": "death",
+      "modal": true,
+      "min_meet": 24,
+      "lines": [
+        "You and your dying — we have made a strange ritual of it, you and I.",
+        "But I begin to think the river fears you more than you ever feared it. Go on. Again."
+      ]
+    },
+    {
+      "id": "narr_victory_a",
+      "speaker": "narrator",
+      "trigger": "victory",
+      "modal": true,
+      "min_meet": 0,
+      "lines": [
+        "A realm bows to you. Feel that? The light above draws one step nearer.",
+        "Savor it, wanderer — the next lord will have heard you coming."
+      ]
+    },
+    {
+      "id": "narr_victory_b",
+      "speaker": "narrator",
+      "trigger": "victory",
+      "modal": true,
+      "min_meet": 6,
+      "lines": [
+        "Another lord cast down. The cycle thins around you, like mist burning off at dawn.",
+        "You are becoming something the dead did not plan for."
+      ]
+    },
+    {
+      "id": "narr_victory_c",
+      "speaker": "narrator",
+      "trigger": "victory",
+      "modal": true,
+      "min_meet": 12,
+      "lines": [
+        "Again you stand where a god of death once ruled. The underworlds are running short of thrones.",
+        "Soon there will be only the road left — and the light waiting at the end of it."
+      ]
+    },
+    {
+      "id": "shade_hub_a",
+      "speaker": "shade",
+      "trigger": "hub",
+      "modal": false,
+      "min_meet": 0,
+      "lines": [
+        "Another newcomer? Heh. We all think we'll be the one to escape. Stick around — you'll learn the river's name soon enough."
+      ]
+    },
+    {
+      "id": "shade_hub_b",
+      "speaker": "shade",
+      "trigger": "hub",
+      "modal": false,
+      "min_meet": 2,
+      "lines": [
+        "Still here? So am I. Misery loves company, friend — and down here, company is about all there is."
+      ]
+    },
+    {
+      "id": "shade_hub_c",
+      "speaker": "shade",
+      "trigger": "hub",
+      "modal": false,
+      "min_stage": 3,
+      "lines": [
+        "You've beaten realms I never even reached. Gods. Maybe it really is possible... If you make it out, think of us down here, would you?"
+      ]
+    },
+    {
+      "id": "shade_hub_d",
+      "speaker": "shade",
+      "trigger": "hub",
+      "modal": false,
+      "min_stage": 6,
+      "lines": [
+        "You did it. You actually... you're going to go. Go on, then — and don't look back at us. Don't you dare look back."
+      ]
+    },
+    {
+      "id": "greece_zeus_boon_1",
+      "speaker": "greece_zeus",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "So — a mortal soul dares borrow my thunder.",
+        "Wield it well, little spark, and do not shame the sky that lent it."
+      ]
+    },
+    {
+      "id": "greece_zeus_boon_2",
+      "speaker": "greece_zeus",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Again Olympus answers you. Do not grow proud — lightning forgets no arrogance."
+      ]
+    },
+    {
+      "id": "greece_athena_boon_1",
+      "speaker": "greece_athena",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Wisdom shields those who think before they strike.",
+        "Bear my aegis, and let no careless blow ever find you."
+      ]
+    },
+    {
+      "id": "greece_athena_boon_2",
+      "speaker": "greece_athena",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You learn. Good — few souls ever do, and fewer still live to use it."
+      ]
+    },
+    {
+      "id": "greece_hermes_boon_1",
+      "speaker": "greece_hermes",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Quick feet, quicker wit — try to keep up, little soul!",
+        "Speed is its own kind of mercy down here. Take mine."
+      ]
+    },
+    {
+      "id": "greece_hermes_boon_2",
+      "speaker": "greece_hermes",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Still running? Then run faster — the dead are slow, but they are many."
+      ]
+    },
+    {
+      "id": "greece_ares_boon_1",
+      "speaker": "greece_ares",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Blood and fury! Spill them in my name.",
+        "Let every shade you meet learn the weight of my favor."
+      ]
+    },
+    {
+      "id": "greece_ares_boon_2",
+      "speaker": "greece_ares",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Yes — again! Let them dread the very sound of your coming."
+      ]
+    },
+    {
+      "id": "greece_artemis_boon_1",
+      "speaker": "greece_artemis",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Aim true. The hunt rewards the patient and punishes the rash.",
+        "Loose your shot only when it cannot miss."
+      ]
+    },
+    {
+      "id": "greece_artemis_boon_2",
+      "speaker": "greece_artemis",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "A clean kill. The wild is proud of you, hunter."
+      ]
+    },
+    {
+      "id": "bali_acintya_boon_1",
+      "speaker": "bali_acintya",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "All things in balance, traveler — light and dark, life and ash.",
+        "I grant you wholeness. Spend it wisely."
+      ]
+    },
+    {
+      "id": "bali_acintya_boon_2",
+      "speaker": "bali_acintya",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You walk the middle path well. Few keep their footing upon it."
+      ]
+    },
+    {
+      "id": "bali_barong_boon_1",
+      "speaker": "bali_barong",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Stand firm. My mane will guard you from the dark that bites.",
+        "Where Rangda's children gather, let them break against you."
+      ]
+    },
+    {
+      "id": "bali_barong_boon_2",
+      "speaker": "bali_barong",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Rangda's shadow fears you now. Good. Let it fear."
+      ]
+    },
+    {
+      "id": "bali_dewi_danu_boon_1",
+      "speaker": "bali_dewi_danu",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Drink deep of the lake's life, child.",
+        "Its waters have fed these valleys since before the gods were named."
+      ]
+    },
+    {
+      "id": "bali_dewi_danu_boon_2",
+      "speaker": "bali_dewi_danu",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "The waters remember your face now. You may always return to them."
+      ]
+    },
+    {
+      "id": "bali_dewi_sri_boon_1",
+      "speaker": "bali_dewi_sri",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "From the rice, abundance; from abundance, strength.",
+        "Be nourished, and carry the harvest with you into the dark."
+      ]
+    },
+    {
+      "id": "bali_dewi_sri_boon_2",
+      "speaker": "bali_dewi_sri",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You flourish even here. Carry the harvest onward."
+      ]
+    },
+    {
+      "id": "bali_batara_kala_boon_1",
+      "speaker": "bali_batara_kala",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "All falls to ruin in time — that is no cruelty, only truth.",
+        "Borrow my hunger, and hasten what must come."
+      ]
+    },
+    {
+      "id": "bali_batara_kala_boon_2",
+      "speaker": "bali_batara_kala",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Time devours all things. All but you, it seems — not yet."
+      ]
+    },
+    {
+      "id": "egypt_ra_boon_1",
+      "speaker": "egypt_ra",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "The sun's own fire is yours to carry into the night-road.",
+        "Burn away the dark, mortal, as I burn it back each dawn."
+      ]
+    },
+    {
+      "id": "egypt_ra_boon_2",
+      "speaker": "egypt_ra",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You blaze brightly. Take care you are not consumed by your own light."
+      ]
+    },
+    {
+      "id": "egypt_osiris_boon_1",
+      "speaker": "egypt_osiris",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Death is not the end — I, of all gods, should know it.",
+        "Endure as I endured, traveler, and you will live again."
+      ]
+    },
+    {
+      "id": "egypt_osiris_boon_2",
+      "speaker": "egypt_osiris",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Risen again. The Duat cannot keep what it cannot hold."
+      ]
+    },
+    {
+      "id": "egypt_anubis_boon_1",
+      "speaker": "egypt_anubis",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "I weigh every heart against the feather of truth.",
+        "Yours is heavy — not with sin, but with resolve. Carry it onward."
+      ]
+    },
+    {
+      "id": "egypt_anubis_boon_2",
+      "speaker": "egypt_anubis",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Send them to me. I will judge whatever remains when you are done."
+      ]
+    },
+    {
+      "id": "egypt_horus_boon_1",
+      "speaker": "egypt_horus",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Strike like the falcon — swift, certain, and from above.",
+        "My eye misses nothing. See that yours misses nothing either."
+      ]
+    },
+    {
+      "id": "egypt_horus_boon_2",
+      "speaker": "egypt_horus",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Your aim is keen now. Strike, and do not hesitate."
+      ]
+    },
+    {
+      "id": "egypt_set_boon_1",
+      "speaker": "egypt_set",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Chaos is power — if you have the nerve to wield it.",
+        "Take mine, and let the orderly dead tremble."
+      ]
+    },
+    {
+      "id": "egypt_set_boon_2",
+      "speaker": "egypt_set",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Reckless? Yes. Effective? Also yes. I approve."
+      ]
+    },
+    {
+      "id": "egypt_sekhmet_boon_1",
+      "speaker": "egypt_sekhmet",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Roar, little lion. The hunt is a prayer, and blood the offering.",
+        "Bathe in it, and grow strong."
+      ]
+    },
+    {
+      "id": "egypt_sekhmet_boon_2",
+      "speaker": "egypt_sekhmet",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "The lioness is pleased. Hunt on — do not stop to rest."
+      ]
+    },
+    {
+      "id": "norse_odin_boon_1",
+      "speaker": "norse_odin",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "All knowledge has its price. I gave an eye for mine.",
+        "Pay yours, and grow wise enough to walk back out of Hel."
+      ]
+    },
+    {
+      "id": "norse_odin_boon_2",
+      "speaker": "norse_odin",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "The runes whisper your name now, even in the halls of the slain."
+      ]
+    },
+    {
+      "id": "norse_thor_boon_1",
+      "speaker": "norse_thor",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Swing as I swing — let nothing in the nine worlds stand before you!",
+        "Ha! This will make a tale worth the telling."
+      ]
+    },
+    {
+      "id": "norse_thor_boon_2",
+      "speaker": "norse_thor",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "HA! Again! Crush them, friend — and crush them well!"
+      ]
+    },
+    {
+      "id": "norse_freyja_boon_1",
+      "speaker": "norse_freyja",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Beauty and war are one blade with two edges.",
+        "Take my seidr, and learn to wield them both."
+      ]
+    },
+    {
+      "id": "norse_freyja_boon_2",
+      "speaker": "norse_freyja",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You please me. Half the fallen will be yours to claim."
+      ]
+    },
+    {
+      "id": "norse_tyr_boon_1",
+      "speaker": "norse_tyr",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Hold the line, even at cost — especially at cost.",
+        "That is honor, and honor is the one thing the dead still respect."
+      ]
+    },
+    {
+      "id": "norse_tyr_boon_2",
+      "speaker": "norse_tyr",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Steadfast. Few keep their oath as faithfully as you do."
+      ]
+    },
+    {
+      "id": "norse_heimdall_boon_1",
+      "speaker": "norse_heimdall",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "I see every road from where I stand at the world's edge.",
+        "Walk yours with open eyes, and nothing will catch you unaware."
+      ]
+    },
+    {
+      "id": "norse_heimdall_boon_2",
+      "speaker": "norse_heimdall",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Nothing surprises you now. Stay watchful — the dark is patient."
+      ]
+    },
+    {
+      "id": "norse_loki_boon_1",
+      "speaker": "norse_loki",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Oh, this will be fun. Here — a little chaos, just for you.",
+        "Try not to lose a hand with it. Or do. I'd laugh either way."
+      ]
+    },
+    {
+      "id": "norse_loki_boon_2",
+      "speaker": "norse_loki",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Back again? You and I, friend — we understand each other."
+      ]
+    },
+    {
+      "id": "japan_amaterasu_boon_1",
+      "speaker": "japan_amaterasu",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Let my light drive back the shadows of Yomi.",
+        "Even in the land of rot, the sun may still shine — through you."
+      ]
+    },
+    {
+      "id": "japan_amaterasu_boon_2",
+      "speaker": "japan_amaterasu",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You shine, even here in the dark. It is a beautiful thing to see."
+      ]
+    },
+    {
+      "id": "japan_susanoo_boon_1",
+      "speaker": "japan_susanoo",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Ride the storm! Let the seas rage and the sky split open with you!",
+        "My sister keeps her light. I keep the tempest. Take a share of it."
+      ]
+    },
+    {
+      "id": "japan_susanoo_boon_2",
+      "speaker": "japan_susanoo",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "The tempest knows you now, and answers when you call. Good."
+      ]
+    },
+    {
+      "id": "japan_raijin_boon_1",
+      "speaker": "japan_raijin",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Thunder answers only the bold — and you are bold enough.",
+        "Take it, and let the drums of the storm follow your every step."
+      ]
+    },
+    {
+      "id": "japan_raijin_boon_2",
+      "speaker": "japan_raijin",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "BOOM! Louder each time, little one! I can scarcely hear myself!"
+      ]
+    },
+    {
+      "id": "japan_fujin_boon_1",
+      "speaker": "japan_fujin",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Swift as the wind from my bag of gales — go, before they even blink.",
+        "Let no shade in Yomi ever lay a hand upon you."
+      ]
+    },
+    {
+      "id": "japan_fujin_boon_2",
+      "speaker": "japan_fujin",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You move like a gale now. They cannot strike what they cannot catch."
+      ]
+    },
+    {
+      "id": "japan_tsukuyomi_boon_1",
+      "speaker": "japan_tsukuyomi",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Strike from the moonlit shadow, where the light does not reach.",
+        "The night is long, and patient, and yours."
+      ]
+    },
+    {
+      "id": "japan_tsukuyomi_boon_2",
+      "speaker": "japan_tsukuyomi",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "The night hides you well, hunter. Use it."
+      ]
+    },
+    {
+      "id": "japan_inari_boon_1",
+      "speaker": "japan_inari",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Fox-fire and fortune favor the clever over the strong.",
+        "Take both, and be cunning enough to keep them."
+      ]
+    },
+    {
+      "id": "japan_inari_boon_2",
+      "speaker": "japan_inari",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "The fox smiles upon you. Stay clever, and the smile will hold."
+      ]
+    },
+    {
+      "id": "aztec_huitzilopochtli_boon_1",
+      "speaker": "aztec_huitzilopochtli",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "War feeds the sun, and the sun feeds the world.",
+        "Fight, mortal, and let the dawn rise upon your offering."
+      ]
+    },
+    {
+      "id": "aztec_huitzilopochtli_boon_2",
+      "speaker": "aztec_huitzilopochtli",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "The sun burns hotter for every battle you give it."
+      ]
+    },
+    {
+      "id": "aztec_quetzalcoatl_boon_1",
+      "speaker": "aztec_quetzalcoatl",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Ride the feathered wind, wise one, high above the bone-roads.",
+        "I gave mankind its arts long ago. Let me give you this."
+      ]
+    },
+    {
+      "id": "aztec_quetzalcoatl_boon_2",
+      "speaker": "aztec_quetzalcoatl",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You learn the old wisdom well. Soar with it."
+      ]
+    },
+    {
+      "id": "aztec_tlaloc_boon_1",
+      "speaker": "aztec_tlaloc",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Let the storm-rain fall upon your foes, sweet and pitiless.",
+        "I drown gardens and I feed them, both with the same water. Choose well."
+      ]
+    },
+    {
+      "id": "aztec_tlaloc_boon_2",
+      "speaker": "aztec_tlaloc",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "The rains come when you call them now. Spend them sparingly."
+      ]
+    },
+    {
+      "id": "aztec_tezcatlipoca_boon_1",
+      "speaker": "aztec_tezcatlipoca",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Look into the smoking mirror... and take what you see there.",
+        "Even if what you see is only yourself, sharpened to an edge."
+      ]
+    },
+    {
+      "id": "aztec_tezcatlipoca_boon_2",
+      "speaker": "aztec_tezcatlipoca",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "Trickster to trickster — well played, little smoke."
+      ]
+    },
+    {
+      "id": "aztec_mictlantecuhtli_boon_1",
+      "speaker": "aztec_mictlantecuhtli",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "All roads end at my throne of bone, soul. Yours among them, in time.",
+        "Until that day, I lend you death's own hand. Do not waste it."
+      ]
+    },
+    {
+      "id": "aztec_mictlantecuhtli_boon_2",
+      "speaker": "aztec_mictlantecuhtli",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You send so many down to me. I remember every face you bring."
+      ]
+    },
+    {
+      "id": "aztec_xochipilli_boon_1",
+      "speaker": "aztec_xochipilli",
+      "trigger": "boon",
+      "min_meet": 0,
+      "lines": [
+        "Feast, dance, bloom! Even the dead may yet live a little!",
+        "Take my joy — down here it cuts sharper than any blade."
+      ]
+    },
+    {
+      "id": "aztec_xochipilli_boon_2",
+      "speaker": "aztec_xochipilli",
+      "trigger": "boon",
+      "min_meet": 3,
+      "lines": [
+        "You flourish in the dark. How utterly delightful you are."
+      ]
+    }
+  ]
 }
