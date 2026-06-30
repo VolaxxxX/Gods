@@ -399,5 +399,6 @@
   "item.void_heart.name": "Void Heart",
   "item.void_heart.desc": "A pulsing alien organ; greatly increases vitality.",
   "enemy.mi_go.name": "Mi-go",
-  "enemy.cultist.name": "Robed Cultist"
+  "enemy.cultist.name": "Robed Cultist",
+  "ui.realm_locked": "??? — conquer all six realms first"
 }
