@@ -1,13 +1,13 @@
 class_name Colossus3D
 extends SubViewportContainer
-## Cthulhu as a BACKGROUND COLOSSUS (Typhon-style), NOT a grid entity.
-## A 3D model (assets/models/cthulhu.glb) is rendered into a SubViewport that is
-## anchored to the TOP of the screen on a background CanvasLayer (see run_scene
-## _enter_boss_camera, layer behind/over the floor). The camera frames only his
-## BUST — head, face-tentacles, shoulders and wings fill the top; legs sit below
-## the viewport and are never shown. Eyes are a SUBTLE cyan glow (soft lights),
-## not geometric circles. Static model (no rig) → procedural breathing + sway.
-## Light enough for the GL-compat mobile renderer (low-res viewport, NEAREST).
+## Cthulhu as a living BACKGROUND COLOSSUS (Typhon-style). A 3D model
+## (assets/models/cthulhu.glb) is rendered into a SubViewport anchored to the
+## TOP of the screen on a background CanvasLayer, framed on the BUST so head,
+## face-tentacles, shoulders and wings fill the top while the legs sit below the
+## viewport. The model is unrigged, so all life is PROCEDURAL: a slow menacing
+## sway, deep breathing, a vertical loom, a simulated wing-beat, and — on every
+## boss ability cast — a forward LUNGE toward the arena plus a cyan eye-FLARE.
+## enemy.gd calls group "colossus3d" -> on_boss_attack() each time it casts.
 
 const MODEL := "res://assets/models/cthulhu.glb"
 const SKIN := Color(0.20, 0.42, 0.33)
@@ -22,8 +22,12 @@ var _model: Node3D
 var _eyeL: OmniLight3D
 var _eyeR: OmniLight3D
 var _t: float = 0.0
+var _lunge: float = 0.0   # 0..1, decays — drives the attack lunge + lean
+var _flare: float = 0.0   # 0..1, decays — drives the eye flare on attack
+var _base_y: float = 0.0  # fitted base position, animation offsets from here
 
 func _ready() -> void:
+	add_to_group("colossus3d")
 	# Top band, full width: the bust closes the horizon at the top of the screen.
 	anchor_left = 0.0
 	anchor_right = 1.0
@@ -64,7 +68,7 @@ func _ready() -> void:
 	key.rotation_degrees = Vector3(-38.0, -28.0, 0.0)
 	key.light_color = Color(0.70, 1.0, 0.9); key.light_energy = 1.75
 	_vp.add_child(key)
-	var rim := DirectionalLight3D.new()       # back rim → detaches him from the green bg
+	var rim := DirectionalLight3D.new()       # back rim -> detaches him from the green bg
 	rim.rotation_degrees = Vector3(-12.0, 168.0, 0.0)
 	rim.light_color = Color(0.45, 1.0, 0.82); rim.light_energy = 1.5
 	_vp.add_child(rim)
@@ -112,8 +116,6 @@ func _apply_material(n: Node, mat: StandardMaterial3D) -> void:
 	for c in n.get_children():
 		_apply_material(c, mat)
 
-## Normalise to TARGET_H tall, centred at (0, CENTER_Y, 0), robust to baked glb
-## transforms — so the camera can frame the bust deterministically.
 func _fit(model: Node3D) -> void:
 	var ab := _calc_aabb(model)
 	if ab.size.length() < 0.001:
@@ -123,6 +125,7 @@ func _fit(model: Node3D) -> void:
 	model.scale = Vector3(s, s, s)
 	var c: Vector3 = ab.position + ab.size * 0.5
 	model.position = -c * s + Vector3(0.0, CENTER_Y, 0.0)
+	_base_y = 0.0
 
 func _calc_aabb(n: Node) -> AABB:
 	var out := AABB()
@@ -140,14 +143,32 @@ func _calc_aabb(n: Node) -> AABB:
 			stack.append(c)
 	return out
 
+## Called by enemy.gd via call_group("colossus3d", ...) on every ability cast.
+func on_boss_attack(_kind: String) -> void:
+	_lunge = 1.0
+	_flare = 1.0
+
 func _process(delta: float) -> void:
 	_t += delta
+	_lunge = maxf(0.0, _lunge - delta * 2.2)   # ~0.45s punch
+	_flare = maxf(0.0, _flare - delta * 1.6)
 	if _root == null:
 		return
-	_root.rotation.y = 0.10 * sin(_t * 0.4)
-	_root.rotation.x = 0.025 * sin(_t * 0.6)
-	if _model != null:
-		_model.scale.y = _model.scale.x * (1.0 + 0.04 * sin(_t * 0.9))   # breathing
-	var e: float = 3.0 + 1.4 * sin(_t * 2.4)                              # eye pulse
+	var lunge_e: float = _lunge * _lunge        # punchy ease
+	# Idle life: slow sway, vertical loom, a simulated wing-beat tilt.
+	var bob: float = 0.20 * sin(_t * 0.8)
+	var beat: float = sin(_t * 1.05)            # wing-beat phase
+	_root.rotation.y = 0.11 * sin(_t * 0.4)
+	_root.rotation.x = 0.045 * sin(_t * 0.6) + lunge_e * 0.20   # lean down toward arena on attack
+	_root.rotation.z = 0.035 * beat                              # wing-beat roll
+	# Attack lunge: dip toward the arena and surge toward the camera.
+	_root.position.y = _base_y + bob - lunge_e * 0.7
+	_root.position.z = lunge_e * 1.3
+	# Breathing + wing-beat width swell (on the root so _fit scale stays intact).
+	var breathe: float = 1.0 + 0.045 * sin(_t * 0.9)
+	var beat_w: float = 1.0 + 0.03 * beat
+	_root.scale = Vector3(beat_w, breathe, 1.0) * (1.0 + lunge_e * 0.06)
+	# Eyes: steady pulse + bright flare on every cast.
+	var e: float = 3.0 + 1.3 * sin(_t * 2.4) + _flare * 7.0
 	if _eyeL != null: _eyeL.light_energy = e
 	if _eyeR != null: _eyeR.light_energy = e
