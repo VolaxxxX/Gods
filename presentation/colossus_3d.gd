@@ -10,11 +10,11 @@ extends SubViewportContainer
 ## Light enough for the GL-compat mobile renderer (low-res viewport, NEAREST).
 
 const MODEL := "res://assets/models/cthulhu.glb"
-const SKIN := Color(0.16, 0.34, 0.27)
+const SKIN := Color(0.20, 0.42, 0.33)
 const GLOW := Color(0.25, 1.0, 0.78)   # electric cyan-green eye glow
 const TARGET_H := 14.0                  # huge: only the upper body fits the frame
 const CENTER_Y := 0.0
-const AIM_Y := 4.2                      # camera frames the bust/shoulders/head
+const AIM_Y := 4.8                      # camera frames the bust/shoulders/head
 
 var _vp: SubViewport
 var _root: Node3D
@@ -48,25 +48,25 @@ func _ready() -> void:
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color(0, 0, 0, 0)
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.22, 0.36, 0.32)
-	env.ambient_light_energy = 0.85
+	env.ambient_light_color = Color(0.30, 0.48, 0.42)
+	env.ambient_light_energy = 1.25
 	we.environment = env
 	_vp.add_child(we)
 
 	# Tight camera on the bust; legs fall below the frame.
 	var cam := Camera3D.new()
-	cam.position = Vector3(0.0, AIM_Y, 11.0)
+	cam.position = Vector3(0.0, AIM_Y, 9.6)
 	cam.look_at(Vector3(0.0, AIM_Y, 0.0), Vector3.UP)
-	cam.fov = 45.0
+	cam.fov = 43.0
 	_vp.add_child(cam)
 
 	var key := DirectionalLight3D.new()
 	key.rotation_degrees = Vector3(-38.0, -28.0, 0.0)
-	key.light_color = Color(0.65, 0.95, 0.85); key.light_energy = 1.15
+	key.light_color = Color(0.70, 1.0, 0.9); key.light_energy = 1.75
 	_vp.add_child(key)
 	var rim := DirectionalLight3D.new()       # back rim → detaches him from the green bg
 	rim.rotation_degrees = Vector3(-12.0, 168.0, 0.0)
-	rim.light_color = Color(0.4, 1.0, 0.8); rim.light_energy = 1.1
+	rim.light_color = Color(0.45, 1.0, 0.82); rim.light_energy = 1.5
 	_vp.add_child(rim)
 	var fill := DirectionalLight3D.new()
 	fill.rotation_degrees = Vector3(-55.0, 40.0, 0.0)
@@ -81,8 +81,8 @@ func _mat() -> StandardMaterial3D:
 	m.roughness = 0.6
 	m.metallic = 0.1
 	m.emission_enabled = true
-	m.emission = Color(0.07, 0.18, 0.14)
-	m.emission_energy_multiplier = 0.8
+	m.emission = Color(0.10, 0.26, 0.20)
+	m.emission_energy_multiplier = 1.4
 	return m
 
 func _build() -> void:
@@ -98,10 +98,10 @@ func _build() -> void:
 	for sgn in [-1.0, 1.0]:
 		var lt := OmniLight3D.new()
 		lt.light_color = GLOW
-		lt.light_energy = 2.0
-		lt.omni_range = 5.0
-		lt.omni_attenuation = 1.6
-		lt.position = Vector3(sgn * 1.1, AIM_Y + 1.7, 3.2)
+		lt.light_energy = 3.6
+		lt.omni_range = 7.5
+		lt.omni_attenuation = 1.0
+		lt.position = Vector3(sgn * 1.1, AIM_Y + 1.2, 3.8)
 		_root.add_child(lt)
 		if sgn < 0.0: _eyeL = lt
 		else: _eyeR = lt
@@ -148,6 +148,6 @@ func _process(delta: float) -> void:
 	_root.rotation.x = 0.025 * sin(_t * 0.6)
 	if _model != null:
 		_model.scale.y = _model.scale.x * (1.0 + 0.04 * sin(_t * 0.9))   # breathing
-	var e: float = 1.6 + 0.8 * sin(_t * 2.4)                              # eye pulse
+	var e: float = 3.0 + 1.4 * sin(_t * 2.4)                              # eye pulse
 	if _eyeL != null: _eyeL.light_energy = e
 	if _eyeR != null: _eyeR.light_energy = e
