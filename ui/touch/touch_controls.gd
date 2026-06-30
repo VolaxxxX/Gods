@@ -31,7 +31,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		_handle_drag(event.index, event.position)
 
 func _dash_center() -> Vector2:
-	return Vector2(size.x - 104.0, size.y - 104.0)  # bottom-right, above the aim thumb rest
+	# Right side, a thumb-reach ABOVE the fire-stick rest: close to the aim/fire
+	# joystick but clear of the bottom-right corner where the fire thumb rests,
+	# so it no longer steals fire taps.
+	return Vector2(size.x - 120.0, size.y - 300.0)
 
 func _move_rest() -> Vector2:
 	return Vector2(132.0, size.y - 132.0)  # where the MOVE hint sits (lower-left)
@@ -85,8 +88,8 @@ func _vector(origin: Vector2, pos: Vector2) -> Vector2:
 func _draw() -> void:
 	# Always-visible dash button (bottom-right).
 	var dc := _dash_center()
-	draw_circle(dc, DASH_R, Color(0.85, 0.72, 0.38, 0.16))
-	draw_arc(dc, DASH_R, 0, TAU, 28, Color(0.9, 0.78, 0.45, 0.7), 3.0)
+	draw_circle(dc, DASH_R, Color(0.85, 0.72, 0.38, 0.22))
+	draw_arc(dc, DASH_R, 0, TAU, 28, Color(0.95, 0.82, 0.5, 0.85), 3.5)
 	draw_string(ThemeDB.fallback_font, dc + Vector2(-DASH_R, 6), "DASH",
 		HORIZONTAL_ALIGNMENT_CENTER, DASH_R * 2.0, 18, Color(0.95, 0.88, 0.6, 0.85))
 	# A faint always-on MOVE hint (lower-left) so you know where to drag to walk.
