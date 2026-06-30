@@ -1,17 +1,12 @@
 class_name Colossus3D
 extends SubViewportContainer
 ## Cthulhu as a living BACKGROUND COLOSSUS (Typhon-style), rendered into a
-## SubViewport anchored to the TOP of the screen on a background CanvasLayer and
-## framed on the BUST. The model is a single UNRIGGED mesh, so credible motion is
-## produced with a VERTEX-DISPLACEMENT SHADER (no bones needed):
-##   - wings BEAT independently (displacement keyed to horizontal span, phase-
-##     delayed across the wing so it ripples like a real wing-beat),
-##   - face-tentacles WRITHE (travelling sine waves in the lower-front region),
-##   - the whole body BREATHES (normal-driven swell),
-##   - the eyes self-GLOW from the mesh (position-masked emission) with a fresnel
-##     eldritch rim, and FLARE on every attack.
-## On top, the root node does a slow menacing sway + a forward LUNGE toward the
-## arena on each cast (enemy.gd -> group "colossus3d" -> on_boss_attack()).
+## SubViewport anchored to the TOP of the screen and framed on the BUST.
+## The model is now a RIGGED, SKINNED glb (assets/models/cthulhu.glb) carrying a
+## looping "idle" skeletal animation (wings beat, tentacles writhe, head bob,
+## breathing) authored in Blender. An AnimationPlayer drives it; on top, the root
+## node does a slow sway and a forward LUNGE toward the arena on every cast, and
+## the eyes FLARE cyan (enemy.gd -> group "colossus3d" -> on_boss_attack()).
 ## Drifting cyan spores add ambience. Tuned for the GL-compat / WebGL2 renderer.
 
 const MODEL := "res://assets/models/cthulhu.glb"
@@ -21,59 +16,11 @@ const TARGET_H := 14.0
 const CENTER_Y := 0.0
 const AIM_Y := 4.8
 
-const SHADER_CODE := """
-shader_type spatial;
-render_mode cull_disabled, diffuse_burley, specular_schlick_ggx;
-
-uniform vec3 ab_min;
-uniform vec3 ab_size;
-uniform float flare;
-uniform float lunge;
-uniform vec3 skin : source_color = vec3(0.20, 0.42, 0.33);
-uniform vec3 glow : source_color = vec3(0.25, 1.0, 0.78);
-
-varying vec3 vn;
-
-void vertex() {
-	vec3 n = (VERTEX - ab_min) / max(ab_size, vec3(0.001, 0.001, 0.001));
-	vn = n;
-	float t = TIME;
-	// WINGS: more motion toward the horizontal extremes, phase-delayed across span.
-	float wing = smoothstep(0.42, 1.0, abs(n.x - 0.5) * 2.0);
-	float beat = sin(t * 1.7 - abs(n.x - 0.5) * 6.5);
-	VERTEX.y += beat * wing * ab_size.y * (0.07 + lunge * 0.08);
-	VERTEX.z += -abs(beat) * wing * ab_size.z * 0.06;       // sweep forward on down-beat
-	// FACE-TENTACLES: lower (low n.y), front (high n.z), centre (n.x ~ 0.5).
-	float tent = clamp((1.0 - n.y) * n.z * (1.0 - abs(n.x - 0.5) * 2.0), 0.0, 1.0);
-	tent = pow(tent, 1.4);
-	VERTEX.x += sin(t * 2.4 + n.y * 11.0) * tent * ab_size.x * 0.035;
-	VERTEX.z += cos(t * 2.0 + n.y * 13.0) * tent * ab_size.z * 0.05;
-	VERTEX.y += sin(t * 1.3 + n.x * 8.0) * tent * ab_size.y * 0.02;
-	// BREATHING: gentle swell along normals.
-	VERTEX += NORMAL * sin(t * 0.9) * ab_size.y * 0.013;
-}
-
-void fragment() {
-	ALBEDO = skin;
-	ROUGHNESS = 0.52;
-	METALLIC = 0.12;
-	float fres = pow(1.0 - clamp(dot(normalize(NORMAL), normalize(VIEW)), 0.0, 1.0), 3.0);
-	// EYES: upper-front-centre self-emission, flaring on attack.
-	float eyemask = smoothstep(0.54, 0.80, vn.y)
-		* smoothstep(0.52, 0.95, vn.z)
-		* (1.0 - smoothstep(0.15, 0.42, abs(vn.x - 0.5)));
-	EMISSION = glow * (fres * 0.25 + eyemask * (1.8 + flare * 5.5));
-	RIM = 0.3;
-}
-"""
-
 var _vp: SubViewport
 var _root: Node3D
 var _model: Node3D
 var _eyeL: OmniLight3D
 var _eyeR: OmniLight3D
-var _shader: Shader
-var _mats: Array[ShaderMaterial] = []
 var _t: float = 0.0
 var _lunge: float = 0.0
 var _flare: float = 0.0
@@ -127,20 +74,20 @@ func _ready() -> void:
 	fill.light_color = Color(0.5, 0.7, 0.9); fill.light_energy = 0.35
 	_vp.add_child(fill)
 
-	_shader = Shader.new()
-	_shader.code = SHADER_CODE
 	_build()
 	_add_motes()
 
-func _make_mat(ab_min: Vector3, ab_size: Vector3) -> ShaderMaterial:
-	var m := ShaderMaterial.new()
-	m.shader = _shader
-	m.set_shader_parameter("ab_min", ab_min)
-	m.set_shader_parameter("ab_size", ab_size)
-	m.set_shader_parameter("skin", SKIN)
-	m.set_shader_parameter("glow", GLOW)
-	m.set_shader_parameter("flare", 0.0)
-	m.set_shader_parameter("lunge", 0.0)
+func _mat() -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = SKIN
+	m.roughness = 0.55
+	m.metallic = 0.12
+	m.emission_enabled = true
+	m.emission = Color(0.08, 0.22, 0.17)
+	m.emission_energy_multiplier = 1.3
+	m.rim_enabled = true
+	m.rim = 0.5
+	m.rim_tint = 0.4
 	return m
 
 func _build() -> void:
@@ -150,8 +97,9 @@ func _build() -> void:
 		return
 	_model = load(MODEL).instantiate()
 	_root.add_child(_model)
-	_apply_shader(_model)
+	_apply_material(_model, _mat())
 	_fit(_model)
+	_play_idle(_model)
 	for sgn in [-1.0, 1.0]:
 		var lt := OmniLight3D.new()
 		lt.light_color = GLOW
@@ -163,16 +111,34 @@ func _build() -> void:
 		if sgn < 0.0: _eyeL = lt
 		else: _eyeR = lt
 
-## Each mesh gets its OWN shader material carrying that mesh's local AABB, so the
-## vertex shader can normalise positions and place wing/tentacle/eye regions.
-func _apply_shader(n: Node) -> void:
-	if n is MeshInstance3D and (n as MeshInstance3D).mesh != null:
-		var ab: AABB = (n as MeshInstance3D).mesh.get_aabb()
-		var m := _make_mat(ab.position, ab.size)
-		(n as MeshInstance3D).material_override = m
-		_mats.append(m)
+## Find the glb's AnimationPlayer and loop its skeletal idle clip.
+func _play_idle(n: Node) -> void:
+	var ap := _find_anim_player(n)
+	if ap == null:
+		return
+	var list := ap.get_animation_list()
+	if list.is_empty():
+		return
+	var an: String = list[0]
+	var a := ap.get_animation(an)
+	if a != null:
+		a.loop_mode = Animation.LOOP_LINEAR
+	ap.play(an)
+
+func _find_anim_player(n: Node) -> AnimationPlayer:
+	if n is AnimationPlayer:
+		return n as AnimationPlayer
 	for c in n.get_children():
-		_apply_shader(c)
+		var r := _find_anim_player(c)
+		if r != null:
+			return r
+	return null
+
+func _apply_material(n: Node, mat: StandardMaterial3D) -> void:
+	if n is MeshInstance3D:
+		(n as MeshInstance3D).material_override = mat
+	for c in n.get_children():
+		_apply_material(c, mat)
 
 func _fit(model: Node3D) -> void:
 	var ab := _calc_aabb(model)
@@ -200,8 +166,6 @@ func _calc_aabb(n: Node) -> AABB:
 			stack.append(c)
 	return out
 
-## Drifting cyan spores for ambience. Added last so a failure here never blocks
-## the colossus itself.
 func _add_motes() -> void:
 	var p := CPUParticles3D.new()
 	p.amount = 40
@@ -237,19 +201,14 @@ func _process(delta: float) -> void:
 	_t += delta
 	_lunge = maxf(0.0, _lunge - delta * 2.0)
 	_flare = maxf(0.0, _flare - delta * 1.5)
-	var lunge_e: float = _lunge * _lunge
-	for m in _mats:
-		m.set_shader_parameter("flare", _flare)
-		m.set_shader_parameter("lunge", lunge_e)
 	if _root == null:
 		return
+	var lunge_e: float = _lunge * _lunge
 	var bob: float = 0.20 * sin(_t * 0.8)
 	_root.rotation.y = 0.10 * sin(_t * 0.4)
 	_root.rotation.x = 0.04 * sin(_t * 0.6) + lunge_e * 0.20
 	_root.position.y = bob - lunge_e * 0.7
 	_root.position.z = lunge_e * 1.3
-	var breathe: float = 1.0 + 0.04 * sin(_t * 0.9)
-	_root.scale = Vector3(1.0, breathe, 1.0) * (1.0 + lunge_e * 0.05)
 	var e: float = 3.0 + 1.3 * sin(_t * 2.4) + _flare * 7.0
 	if _eyeL != null: _eyeL.light_energy = e
 	if _eyeR != null: _eyeR.light_energy = e
