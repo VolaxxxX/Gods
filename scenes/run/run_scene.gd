@@ -686,6 +686,11 @@ func _on_boss_phase2(e) -> void:
 	Audio.play_sfx("roar", 1.25)
 	if e.has_method("play_scream"):
 		e.play_scream()
+	# The gods believed it over — now the Dreamer RISES and they cry out in terror
+	# and pain as his waking tears at them, THEN phase two begins.
+	for fg in ["greece_zeus", "egypt_osiris", "norse_odin", "aztec_mictlantecuhtli", "japan_amaterasu", "bali_acintya"]:
+		Dialogue.speak(fg, "cthulhu_phase2")
+	Dialogue.speak("narrator", "cthulhu_phase2")
 	Dialogue.speak("hell_cthulhu", "cthulhu_phase2")  # he speaks BETWEEN the two phases
 	Juice.add_trauma(0.7)
 	var tw := create_tween()
