@@ -330,6 +330,62 @@
       ]
     },
     {
+      "id": "cthulhu_phase2_greece_zeus",
+      "speaker": "greece_zeus",
+      "trigger": "cthulhu_phase2",
+      "lines": [
+        "No— NO! It still MOVES! My thunder turns to ash in my hand — it BURNS me!"
+      ]
+    },
+    {
+      "id": "cthulhu_phase2_egypt_osiris",
+      "speaker": "egypt_osiris",
+      "trigger": "cthulhu_phase2",
+      "lines": [
+        "The scales shatter! I cannot weigh it — it unmakes me — AAAGH!"
+      ]
+    },
+    {
+      "id": "cthulhu_phase2_norse_odin",
+      "speaker": "norse_odin",
+      "trigger": "cthulhu_phase2",
+      "lines": [
+        "This is no Ragnarok I foresaw. It WAKES. My eye— my eye bleeds light!"
+      ]
+    },
+    {
+      "id": "cthulhu_phase2_aztec_mictlantecuhtli",
+      "speaker": "aztec_mictlantecuhtli",
+      "trigger": "cthulhu_phase2",
+      "lines": [
+        "Even death recoils! It drinks the dark — it drinks ME — flee!"
+      ]
+    },
+    {
+      "id": "cthulhu_phase2_japan_amaterasu",
+      "speaker": "japan_amaterasu",
+      "trigger": "cthulhu_phase2",
+      "lines": [
+        "My light gutters out! Hero, I cannot shield you — AAAH!"
+      ]
+    },
+    {
+      "id": "cthulhu_phase2_bali_acintya",
+      "speaker": "bali_acintya",
+      "trigger": "cthulhu_phase2",
+      "lines": [
+        "The wheel breaks! Such pain — such PAIN — run, little flame, RUN!"
+      ]
+    },
+    {
+      "id": "cthulhu_phase2_narrator",
+      "speaker": "narrator",
+      "trigger": "cthulhu_phase2",
+      "lines": [
+        "And every heaven that breathed in relief now SCREAMS as one — the Dreamer was only stirring."
+      ]
+    },
+    {
       "id": "cthulhu_fakedeath_greece_zeus",
       "speaker": "greece_zeus",
       "trigger": "cthulhu_fakedeath",
