@@ -383,8 +383,28 @@ func _draw() -> void:
 		if _flash > 0.0:
 			body_color = Color(1, 1, 1)
 		draw_circle(Vector2.ZERO, RADIUS, body_color)
-	# Aim indicator.
-	draw_line(Vector2.ZERO, _last_aim * (RADIUS + 10.0), Color(1, 1, 1, 0.8), 3.0)
+	# Procedural ranged weapon: a clean tapered barrel that RECOILS on each shot,
+	# with a muzzle flash, instead of a flat aim-stick. Characters with their own
+	# attack sheet already show a weapon, so it is skipped for them.
+	var _has_atk: bool = _anim != null and _anim.sprite_frames != null and _anim.sprite_frames.has_animation("attack")
+	if _weapon_kind != "melee" and not _has_atk:
+		var k: float = clampf(_attack_t / 0.22, 0.0, 1.0)  # 1 just fired -> 0
+		var fwd: Vector2 = _last_aim
+		var side: Vector2 = Vector2(-fwd.y, fwd.x)
+		var recoil: float = -4.0 * k
+		var bpos: Vector2 = fwd * (RADIUS - 3.0 + recoil)
+		var tpos: Vector2 = fwd * (RADIUS + 13.0 + recoil)
+		var barrel := PackedVector2Array([
+			bpos + side * 4.4, bpos - side * 4.4,
+			tpos - side * 2.4, tpos + side * 2.4])
+		draw_colored_polygon(barrel, Color(0.12, 0.13, 0.17))
+		draw_line(bpos, tpos, _body_color.lightened(0.35), 1.6)  # top sheen
+		draw_circle(tpos, 3.0, Color(0.85, 0.90, 1.0, 0.9))      # muzzle bead
+		if k > 0.0:
+			draw_circle(tpos, 4.0 + 7.0 * k, Color(1.0, 0.93, 0.65, 0.55 * k))
+	elif _weapon_kind == "melee":
+		# Melee: a short, soft facing tick instead of a long stick.
+		draw_line(_last_aim * (RADIUS - 2.0), _last_aim * (RADIUS + 6.0), Color(1, 1, 1, 0.45), 2.5)
 	# Melee swing arc feedback.
 	if _swing_t > 0.0:
 		var a := _last_aim.angle()
