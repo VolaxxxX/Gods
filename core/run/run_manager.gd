@@ -6,7 +6,7 @@ extends Node
 ## TEMP DEV: hidden boss-test mode. Set via the hub's Boss Test button; the next
 ## run drops you straight into a one-room arena vs this boss. Cleared on every
 ## normal start_run. Hide the whole feature by flipping DEBUG_BOSS_TEST to false.
-const DEBUG_BOSS_TEST := true
+const DEBUG_BOSS_TEST := false
 var debug_boss_test: String = ""
 
 var active: bool = false
