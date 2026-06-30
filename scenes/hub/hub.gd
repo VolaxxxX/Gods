@@ -91,11 +91,27 @@ func _build() -> void:
 	realm_l.text = Loc.t("ui.realm")
 	sel.add_child(realm_l)
 	_biome_option = OptionButton.new()
+	# The final realm (Cthulhu's) stays LOCKED until every OTHER realm is conquered.
+	var _cleared := SaveManager.realms_cleared()
+	var _others := 0
+	var _others_done := 0
+	for _b in GameData.biomes.values():
+		if not _b.final:
+			_others += 1
+			if _b.id in _cleared:
+				_others_done += 1
+	var _final_unlocked := _others > 0 and _others_done >= _others
 	for biome in GameData.biomes.values():
 		_biome_ids.append(biome.id)
-		_biome_option.add_item(Loc.t(biome.name_key))
-	if _biome_option.item_count > 0:
-		_biome_option.select(0)
+		if biome.final and not _final_unlocked:
+			_biome_option.add_item(Loc.t("ui.realm_locked"))
+			_biome_option.set_item_disabled(_biome_option.item_count - 1, true)
+		else:
+			_biome_option.add_item(Loc.t(biome.name_key))
+	for _i in _biome_option.item_count:
+		if not _biome_option.is_item_disabled(_i):
+			_biome_option.select(_i)
+			break
 	_biome_option.item_selected.connect(func(_i): _refresh_realm_teaser())
 	sel.add_child(_biome_option)
 	_realm_teaser = Label.new()
