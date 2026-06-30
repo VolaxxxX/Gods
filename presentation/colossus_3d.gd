@@ -18,6 +18,14 @@ var _t: float = 0.0
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
+	anchor_left = 0.10
+	anchor_right = 0.90
+	anchor_top = 0.0
+	anchor_bottom = 0.58
+	offset_left = 0.0
+	offset_right = 0.0
+	offset_top = 0.0
+	offset_bottom = 0.0
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	stretch = true
 	texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
