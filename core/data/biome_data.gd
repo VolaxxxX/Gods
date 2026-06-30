@@ -19,6 +19,7 @@ var floors: int = 2              # sub-floors per zone: palier boss, then final
 var enemy_pool: Array[String] = []   # EntityData ids
 var elite_pool: Array[String] = []
 var boss_id: String = ""             # EntityData id (role "boss")
+var final: bool = false              # the final realm (Cthulhu) — locked until all others are conquered
 var miniboss_id: String = ""         # EntityData id spawned in miniboss rooms
 
 # How many combat enemies to spawn per combat room (scales with depth later).
@@ -52,6 +53,7 @@ static func from_dict(d: Dictionary) -> BiomeData:
 	b.enemy_pool = DataUtil.to_string_array(d.get("enemy_pool", []))
 	b.elite_pool = DataUtil.to_string_array(d.get("elite_pool", []))
 	b.boss_id = d.get("boss_id", "")
+	b.final = bool(d.get("final", false))
 	b.miniboss_id = d.get("miniboss_id", "")
 	b.enemies_per_room_min = int(d.get("enemies_per_room_min", 2))
 	b.enemies_per_room_max = int(d.get("enemies_per_room_max", 4))
