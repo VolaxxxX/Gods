@@ -404,6 +404,9 @@ func _melee_strike() -> void:
 
 func _execute_ability(ab: Dictionary) -> void:
 	_attack_t = 0.4  # show the attack animation when an ability fires
+	if data.background_boss:
+		# Wake the 3D colossus so it lunges/flares in sync with each cast.
+		get_tree().call_group("colossus3d", "on_boss_attack", String(ab.get("kind", "")))
 	_attack_anim = String(ab.get("anim", "attack"))  # bespoke per-attack sheet
 	# Projectile attacks were silent (they bypass the weapon); give each boss a
 	# shot cue with a per-creature pitch so every attack is heard.
