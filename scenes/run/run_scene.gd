@@ -757,10 +757,10 @@ func _enter_boss_camera() -> void:
 	add_child(_boss_cam)
 	# Centre horizontally; bias slightly DOWN so the top-anchored colossus dominates
 	# the upper screen while the playable lower arena stays in view.
-	_boss_cam.global_position = current_room.global_position + Vector2(rs.x * 0.5, rs.y * 0.52)
+	_boss_cam.global_position = current_room.global_position + Vector2(rs.x * 0.5, rs.y * 0.56)
 	var vp: Vector2 = get_viewport().get_visible_rect().size
 	# Fit the whole arena (a little margin) so nothing important is off-screen.
-	var z: float = minf(vp.x / maxf(rs.x, 1.0), vp.y / maxf(rs.y, 1.0)) * 0.82
+	var z: float = minf(vp.x / maxf(rs.x, 1.0), vp.y / maxf(rs.y, 1.0)) * 0.74
 	_boss_cam.zoom = Vector2(z, z)
 	_boss_cam.make_current()
 	# R'lyeh backdrop: a drowned cyclopean city behind the arena (rain falls in front).
@@ -778,6 +778,54 @@ func _enter_boss_camera() -> void:
 			tr.modulate = Color(0.72, 0.72, 0.72, 1.0)
 			tr.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			_boss_bg.add_child(tr)
+		var vps: Vector2 = get_viewport().get_visible_rect().size
+		# Menacing storm clouds: a dark roiling band across the top, behind Cthulhu.
+		var cl := Gradient.new()
+		cl.offsets = PackedFloat32Array([0.0, 1.0])
+		cl.colors = PackedColorArray([Color(0.02, 0.03, 0.05, 0.88), Color(0.04, 0.06, 0.09, 0.0)])
+		var clt := GradientTexture2D.new()
+		clt.gradient = cl
+		clt.fill_from = Vector2(0.0, 0.0)
+		clt.fill_to = Vector2(0.0, 1.0)
+		clt.width = 8
+		clt.height = 64
+		var clouds := TextureRect.new()
+		clouds.texture = clt
+		clouds.set_anchors_preset(Control.PRESET_FULL_RECT)
+		clouds.anchor_bottom = 0.55
+		clouds.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		clouds.stretch_mode = TextureRect.STRETCH_SCALE
+		clouds.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_boss_bg.add_child(clouds)
+		# Driving rain behind the colossus: fast diagonal streaks.
+		var streak := Image.create(2, 14, false, Image.FORMAT_RGBA8)
+		streak.fill(Color(0.62, 0.78, 1.0, 0.55))
+		var stex := ImageTexture.create_from_image(streak)
+		var rain := CPUParticles2D.new()
+		rain.texture = stex
+		rain.amount = 240
+		rain.lifetime = 1.0
+		rain.preprocess = 1.0
+		rain.local_coords = false
+		rain.position = Vector2(vps.x * 0.5, -20.0)
+		rain.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+		rain.emission_rect_extents = Vector2(vps.x * 0.7, 8.0)
+		rain.direction = Vector2(0.18, 1.0)
+		rain.spread = 3.0
+		rain.gravity = Vector2(120.0, 1500.0)
+		rain.initial_velocity_min = 850.0
+		rain.initial_velocity_max = 1150.0
+		rain.scale_amount_min = 0.8
+		rain.scale_amount_max = 1.4
+		rain.modulate = Color(1.0, 1.0, 1.0, 0.6)
+		_boss_bg.add_child(rain)
+		# Lightning: periodic flashes that BACKLIGHT the colossus into a silhouette.
+		var sflash := ColorRect.new()
+		sflash.color = Color(0.70, 0.85, 1.0, 0.0)
+		sflash.set_anchors_preset(Control.PRESET_FULL_RECT)
+		sflash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_boss_bg.add_child(sflash)
+		_storm_loop(sflash)
 
 	# The 3D colossus renders on a layer ABOVE the floor so it is actually visible,
 	# anchored to the TOP of the screen — it overhangs the arena's top edge (Typhon).
@@ -850,6 +898,18 @@ func _enter_boss_camera() -> void:
 		fog.stretch_mode = TextureRect.STRETCH_SCALE
 		fog.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		_boss_fg.add_child(fog)
+
+## Self-scheduling lightning: a realistic double-flicker, then a random pause.
+func _storm_loop(flash: ColorRect) -> void:
+	if flash == null or not is_instance_valid(flash):
+		return
+	var t := create_tween()
+	t.tween_interval(randf_range(2.5, 6.5))
+	t.tween_property(flash, "color:a", 0.45, 0.05)
+	t.tween_property(flash, "color:a", 0.12, 0.08)
+	t.tween_property(flash, "color:a", 0.55, 0.05)
+	t.tween_property(flash, "color:a", 0.0, 0.30)
+	t.tween_callback(_storm_loop.bind(flash))
 
 func _exit_boss_camera() -> void:
 	if _boss_cam != null and is_instance_valid(_boss_cam):
