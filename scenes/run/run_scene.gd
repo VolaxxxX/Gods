@@ -786,6 +786,29 @@ func _enter_boss_camera() -> void:
 		_boss_fg.layer = 1
 		add_child(_boss_fg)
 		_boss_fg.add_child(load("res://presentation/colossus_3d.gd").new())
+		# Depth: fade the colossus' lower body into shadow toward the arena top.
+		var grad := Gradient.new()
+		grad.set_color(0, Color(0.02, 0.05, 0.05, 0.0))
+		grad.set_color(1, Color(0.02, 0.05, 0.05, 0.7))
+		var gt := GradientTexture2D.new()
+		gt.gradient = grad
+		gt.fill_from = Vector2(0.0, 0.0)
+		gt.fill_to = Vector2(0.0, 1.0)
+		gt.width = 8
+		gt.height = 64
+		var fade := TextureRect.new()
+		fade.texture = gt
+		fade.set_anchors_preset(Control.PRESET_FULL_RECT)
+		fade.anchor_top = 0.40
+		fade.anchor_bottom = 0.60
+		fade.offset_left = 0.0
+		fade.offset_right = 0.0
+		fade.offset_top = 0.0
+		fade.offset_bottom = 0.0
+		fade.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		fade.stretch_mode = TextureRect.STRETCH_SCALE
+		fade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_boss_fg.add_child(fade)
 
 func _exit_boss_camera() -> void:
 	if _boss_cam != null and is_instance_valid(_boss_cam):
