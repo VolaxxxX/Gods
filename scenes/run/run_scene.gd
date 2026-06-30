@@ -20,6 +20,7 @@ var _cleared: Dictionary = {}   # Vector2i -> true
 var _ended: bool = false
 var _room_damage_taken: bool = false  # for the "cautious" play-style tally
 var _wrath_active: bool = false       # a god's wrath wave is in progress
+var _rare_done: bool = false          # at most one RARE encounter per floor
 var _char_intro_done: bool = false    # the chosen character's intro line (once per run)
 var _canvas_mod: CanvasModulate       # per-realm mood lighting
 var _post_fx: PostFX                  # full-screen grade + vignette + grain
@@ -104,6 +105,7 @@ func _setup_biome(from_resume: bool) -> void:
 	if biome == null:
 		push_error("RunScene: unknown biome '%s'" % RunManager.biome_id)
 		return
+	_rare_done = false  # a fresh floor may hold one rare encounter
 	if _canvas_mod != null:
 		_canvas_mod.color = biome.ambient.darkened(0.14)
 	if _post_fx != null:
@@ -306,6 +308,11 @@ func _on_room_cleared(pos: Vector2i, type: String) -> void:
 ## Random roaming-god event after clearing a combat room: a boon choice, a wrath
 ## fight, or nothing.
 func _roll_god_encounter() -> void:
+	# A genuinely RARE surprise first: at most once per floor, ~10% per clear.
+	if not _rare_done and RNG.stream("rare").randf() < 0.10:
+		_rare_done = true
+		_rare_encounter()
+		return
 	var r := RNG.stream("encounter").randf()
 	if r < 0.28:
 		_offer_boon()
@@ -327,6 +334,67 @@ func _grant_shrine_heal() -> void:
 		var local: Vector2 = player.global_position - current_room.global_position
 		FloatingText.spawn(current_room, local + Vector2(0, -44),
 			"+%d ❤" % int(round(amount)), Color(0.55, 1.0, 0.65))
+
+## RARE per-floor encounters: uncommon, memorable surprises (gated to one/floor).
+func _rare_encounter() -> void:
+	var r := RNG.stream("rare").randf()
+	if r < 0.34:
+		_rare_hoard()
+	elif r < 0.67:
+		_rare_whisper()
+	else:
+		_rare_altar()
+
+func _rare_float(text: String, col: Color) -> void:
+	if current_room == null or player == null:
+		return
+	var local: Vector2 = player.global_position - current_room.global_position
+	FloatingText.spawn(current_room, local + Vector2(0, -54), text, col)
+
+func _rare_hoard() -> void:
+	RunManager.add_gold(60)
+	if player != null and player.health != null and player.health.health < player.health.max_health:
+		player.health.heal(maxf(3.0, player.health.max_health * 0.25))
+	Audio.play_sfx("pickup")
+	_rare_float("✦ A hidden hoard! +60 ✦", Color(1.0, 0.9, 0.45))
+
+func _rare_altar() -> void:
+	var items := GameData.items_for(biome.pantheon)
+	var it = RNG.pick("rare", items)
+	if it != null:
+		RunManager.add_item(it.id)
+	if player != null and player.health != null:
+		player.health.heal(maxf(2.0, player.health.max_health * 0.15))
+	Audio.play_sfx("pickup")
+	_rare_float("A forgotten gift...", Color(0.7, 0.85, 1.0))
+
+## The Old God notices the "crack" that is you: an eerie gift from the deep,
+## tying into the story (the sleeper approves of the flaw it dreams through).
+func _rare_whisper() -> void:
+	_rare_flash()
+	Audio.play_sfx("roar", 0.6)
+	var opts := _blessing_options(3)
+	if opts.is_empty():
+		_rare_hoard()
+		return
+	if Dialogue.speak("narrator", "rare_whisper"):
+		Dialogue.queue_empty.connect(_show_boon_offer.bind(opts), CONNECT_ONE_SHOT)
+	else:
+		_show_boon_offer(opts)
+
+func _rare_flash() -> void:
+	var cl := CanvasLayer.new()
+	cl.layer = 4
+	add_child(cl)
+	var rect := ColorRect.new()
+	rect.color = Color(0.10, 0.0, 0.14, 0.0)
+	rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	cl.add_child(rect)
+	var tw := create_tween()
+	tw.tween_property(rect, "color:a", 0.5, 0.12)
+	tw.tween_property(rect, "color:a", 0.0, 0.5)
+	tw.tween_callback(cl.queue_free)
 
 func _offer_boon() -> void:
 	var opts := _blessing_options(2)
