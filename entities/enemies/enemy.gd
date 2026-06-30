@@ -720,7 +720,30 @@ func _ground_zone(pos: Vector2, rad: float, dmg: float, delay: float, col: Color
 		root.add_child(area)
 		Fx.play(_burst_fx(), pos, rad * 2.5)
 		Audio.play_sfx("hit", 0.7)
-		get_tree().create_timer(0.35).timeout.connect(func() -> void:
+		# Eruption VFX: a white impact bloom, an expanding shock ring, and a
+		# lingering scorch where the strike landed (cosmetic only).
+		var flash := Polygon2D.new()
+		flash.polygon = pts
+		flash.color = Color(1.0, 1.0, 1.0, 0.85)
+		flash.scale = Vector2(0.6, 0.6)
+		root.add_child(flash)
+		var ring := Line2D.new()
+		ring.width = 6.0
+		ring.default_color = Color(col.r, col.g, col.b, 0.9)
+		ring.closed = true
+		for ri in 26:
+			ring.add_point(Vector2.from_angle(TAU * float(ri) / 26.0) * rad)
+		ring.scale = Vector2(0.4, 0.4)
+		root.add_child(ring)
+		disk.color = Color(0.05, 0.02, 0.06, 0.55)  # darken telegraph into a scorch
+		var erupt := create_tween()
+		erupt.set_parallel(true)
+		erupt.tween_property(flash, "scale", Vector2(1.3, 1.3), 0.18)
+		erupt.tween_property(flash, "color:a", 0.0, 0.22)
+		erupt.tween_property(ring, "scale", Vector2(1.7, 1.7), 0.45)
+		erupt.tween_property(ring, "modulate:a", 0.0, 0.45)
+		erupt.tween_property(disk, "color:a", 0.0, 0.85)
+		get_tree().create_timer(0.9).timeout.connect(func() -> void:
 			if is_instance_valid(root):
 				root.queue_free()))
 
