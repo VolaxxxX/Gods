@@ -11,8 +11,12 @@ permissions:
   id-token: write
 
 concurrency:
+  # Allow only ONE Pages deployment at a time, but never CANCEL an in-progress
+  # one — cancelling a deploy mid-flight leaves GitHub Pages in a bad state and
+  # the next run fails with "Deployment failed, try again later". (GitHub's own
+  # recommended setting for Pages deploy workflows.)
   group: "pages"
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 env:
   GODOT_VERSION: "4.3"
