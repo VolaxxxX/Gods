@@ -23,7 +23,7 @@ const SFX_KEYS := ["shoot", "enemy_shoot", "melee", "dash", "hit", "death",
 # Per-cue relative gain: the rapid-fire cues are quieter so constant shooting
 # isn't fatiguing; impactful cues stay full.
 const SFX_GAIN := {
-	"shoot": 0.50, "enemy_shoot": 0.55, "melee": 0.6, "ui": 0.6, "dash": 0.7,
+	"shoot": 0.62, "enemy_shoot": 0.58, "melee": 0.6, "ui": 0.6, "dash": 0.7,
 }
 
 var _music: AudioStreamPlayer
@@ -293,11 +293,11 @@ func _on_player_hp(current: float, _maximum: float) -> void:
 func _synth(key: String) -> AudioStreamWAV:
 	var b: PackedFloat32Array
 	match key:
-		"shoot":  # crisp sci-fi pew: clean pitch-drop body + bright click + soft thump
-			b = _buf(0.16)
-			_tone(b, 0.0, 1320.0, 440.0, 0.10, 0.40, "sine", 30.0)
-			_tone(b, 0.0, 2200.0, 900.0, 0.035, 0.20, "square", 65.0)
-			_tone(b, 0.0, 210.0, 120.0, 0.06, 0.18, "sine", 30.0)
+		"shoot":  # juicy laser pew: bright snappy click + pitch-drop body + low thump
+			b = _buf(0.18)
+			_tone(b, 0.0, 1500.0, 380.0, 0.12, 0.52, "sine", 26.0)
+			_tone(b, 0.0, 2700.0, 1100.0, 0.03, 0.28, "square", 72.0)
+			_tone(b, 0.0, 250.0, 120.0, 0.08, 0.30, "sine", 22.0)
 		"enemy_shoot":  # distinct darker "wub": descending sine + gritty low body
 			b = _buf(0.20)
 			_tone(b, 0.0, 540.0, 180.0, 0.16, 0.42, "sine", 18.0)
@@ -308,10 +308,11 @@ func _synth(key: String) -> AudioStreamWAV:
 		"dash":  # quick upward whoosh
 			b = _buf(0.18)
 			_tone(b, 0.0, 280.0, 820.0, 0.16, 0.35, "sine", 12.0, 0.4)
-		"hit":  # punchy thwack: low body + noise transient
-			b = _buf(0.12)
-			_tone(b, 0.0, 220.0, 80.0, 0.10, 0.5, "square", 34.0)
-			_tone(b, 0.0, 900.0, 300.0, 0.05, 0.35, "sine", 50.0, 1.0)
+		"hit":  # meaty thwack: deep body punch + sub thump + crisp noise transient
+			b = _buf(0.16)
+			_tone(b, 0.0, 260.0, 70.0, 0.12, 0.64, "square", 26.0)
+			_tone(b, 0.0, 120.0, 52.0, 0.10, 0.40, "sine", 20.0)
+			_tone(b, 0.0, 1200.0, 380.0, 0.045, 0.42, "sine", 55.0, 1.0)
 		"hurt":  # harsher, alarming player damage
 			b = _buf(0.22)
 			_tone(b, 0.0, 320.0, 110.0, 0.20, 0.5, "saw", 14.0, 0.35)

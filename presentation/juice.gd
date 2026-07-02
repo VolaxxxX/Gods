@@ -19,7 +19,7 @@ func _ready() -> void:
 ## enemy already flashes white + sparks). Player hits are filtered out.
 func _on_entity_damaged(target, _amount: float) -> void:
 	if target != null and is_instance_valid(target) and not target.is_in_group("player"):
-		add_trauma(0.06)
+		add_trauma(0.085)
 
 func _process(delta: float) -> void:
 	var cam := get_viewport().get_camera_2d()
