@@ -205,6 +205,16 @@ func _on_boss_spawned(entity, name_key: String) -> void:
 	_boss_plate.modulate.a = 0.0   # fade in
 	_boss_plate.visible = true
 	_banner_t = 0.0                # don't let the realm banner overlap the boss bar
+	# Also drive the bar straight from the boss's health signals, so it always
+	# tracks (belt-and-suspenders alongside the per-frame poll).
+	if is_instance_valid(entity) and entity.health != null:
+		if not entity.health.damaged.is_connected(_on_boss_hp):
+			entity.health.damaged.connect(_on_boss_hp)
+		if not entity.health.healed.is_connected(_on_boss_hp):
+			entity.health.healed.connect(_on_boss_hp)
+
+func _on_boss_hp(_amount: float, current: float, maximum: float) -> void:
+	_boss_target = current / maximum if maximum > 0.0 else 0.0
 
 func _on_boss_despawned() -> void:
 	_boss = null
