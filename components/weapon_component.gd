@@ -59,8 +59,13 @@ func attempt(origin: Vector2, direction: Vector2) -> bool:
 		var vel := Vector2.from_angle(ang) * projectile_speed
 		var p := pool.spawn(origin, vel, dmg, faction_player, projectile_radius,
 			projectile_color, projectile_life, pierce, projectile_sprite)
-		if faction_player and not on_hit_effects.is_empty():
-			p.on_hit_extra = _on_projectile_hit
+		if faction_player:
+			# Single-shot weapons give a satisfying shove; rapid MULTI-shot weapons
+			# (e.g. the Revenant's 3-shot spread) must NOT knock foes around — it
+			# turned fights into shoving matches. So spread weapons deal no push.
+			p.knockback_force = 95.0 if projectile_count <= 1 else 0.0
+			if not on_hit_effects.is_empty():
+				p.on_hit_extra = _on_projectile_hit
 	# Audio: heavier (bigger) projectiles get a lower-pitched report, so each
 	# weapon/mob reads distinctly.
 	var pitch: float = clampf(1.45 - projectile_radius * 0.05 + pitch_bias, 0.6, 1.6)
