@@ -21,6 +21,7 @@ var secret_sides: Array[String] = [] # open sides whose neighbour is a secret ro
 var room_type: String = "combat"
 var locked: bool = false
 var _stuck_t: float = 0.0  # safety-net timer while a combat room is locked
+var _lock_elapsed: float = 0.0  # total time this combat room has stayed locked
 var _waves: int = 0        # extra enemy waves left (arena rooms)
 var _target: Node2D        # kept for spawning later waves
 var _pool: ProjectilePool
@@ -37,7 +38,7 @@ var _floor_layer: TileMapLayer       # real tiled floor (variants); null = greyb
 var _use_tilemap_floor := false
 
 func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[String],
-		p_type: String, target: Node2D, pool: ProjectilePool) -> void:
+		p_type: String, target: Node2D, pool: ProjectilePool, from_side: String = "") -> void:
 	template = p_template
 	biome = p_biome
 	open_sides = p_open_sides
@@ -73,6 +74,17 @@ func build(p_template: RoomTemplate, p_biome: BiomeData, p_open_sides: Array[Str
 		_spawn_sacrifice()
 	elif room_type == "cursed":
 		_spawn_pickups(false)  # a free reward — but you must fight for it
+
+	# Put the arriving hero at the door/spawn NOW — before enemies — so the
+	# spawn-distance guards measure from where the player actually appears. This
+	# is what stops foes from materialising right on top of the door you walk in.
+	if target != null and is_instance_valid(target):
+		if from_side != "":
+			target.global_position = global_position + entry_point_for(from_side)
+		else:
+			target.global_position = global_position + player_spawn_point()
+		if "velocity" in target:
+			target.velocity = Vector2.ZERO
 
 	# Fight rooms lock until cleared; safe rooms are open immediately.
 	var has_combat: bool = room_type in ["combat", "boss", "miniboss", "cursed"]
@@ -308,6 +320,9 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		var cells := (_size.x / TILE) * (_size.y / TILE)
 		var cap := 8 if cells < 130.0 else (11 if cells < 200.0 else 14)
 		count = clampi(count, 4, cap)  # eased density (was +3, floor 7) for a fairer ramp
+		# Difficulty trial thins or thickens the swarm (Merciful = far fewer foes).
+		var cmin := 2 if RunManager.difficulty == "easy" else 3
+		count = clampi(int(round(count * RunManager.enemy_count_mult())), cmin, cap)
 	# Arena rooms: some combat rooms become a 2-3 wave fight (doors stay locked
 	# until every wave is cleared). Deterministic per seed.
 	if room_type == "combat":
@@ -329,10 +344,10 @@ func _spawn_enemies(target: Node2D, pool: ProjectilePool) -> void:
 		if _solid_at_px(pos) or _near_open_door(pos, DOOR_HALF + 120.0):
 			pos = _random_floor_point()
 		# Never spawn right on top of where the player enters — no instant hit at the door.
-		if is_instance_valid(target) and pos.distance_to(target.global_position) < 220.0:
+		if is_instance_valid(target) and pos.distance_to(target.global_position) < 300.0:
 			for _r in 12:
 				var alt := _random_floor_point()
-				if alt.distance_to(target.global_position) >= 220.0:
+				if alt.distance_to(target.global_position) >= 300.0:
 					pos = alt
 					break
 		if ed.background_boss:
@@ -560,15 +575,30 @@ func _on_enemy_gone() -> void:
 ## room can always be cleared and the boss doors can never fail to appear.
 func _physics_process(delta: float) -> void:
 	if not locked or _alive_enemies <= 0:
+		_lock_elapsed = 0.0
 		return
+	_lock_elapsed += delta
 	_stuck_t += delta
 	if _stuck_t < 1.5:
 		return
 	_stuck_t = 0.0
 	for c in get_children():
-		if c is Enemy and is_instance_valid(c) and c.health != null \
-				and not c.health.is_dead() and _solid_at_px(c.position):
-			c.health.take(999999.0)  # trapped & unreachable -> kill to release the lock
+		if not (c is Enemy) or not is_instance_valid(c) or c.health == null or c.health.is_dead():
+			continue
+		# Trapped INSIDE a wall/obstacle cell -> unreachable, kill to release the lock.
+		if _solid_at_px(c.position):
+			c.health.take(999999.0)
+			continue
+		if c.data != null and c.data.background_boss:
+			continue  # the pinned colossus is meant to sit still
+		# Backstop for an enemy wedged on the PERIMETER that the wall-slide never
+		# freed: once the room has stayed locked a long while, relocate any straggler
+		# that is sitting idle (a live chaser is moving) to fresh reachable floor;
+		# an ultimate timeout releases it so a room can NEVER stay un-clearable.
+		if _lock_elapsed > 40.0:
+			c.health.take(999999.0)
+		elif _lock_elapsed > 12.0 and c.velocity.length() < 8.0:
+			c.position = _random_floor_point()
 
 # --- Locking ---
 func _lock() -> void:
