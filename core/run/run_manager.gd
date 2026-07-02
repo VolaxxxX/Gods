@@ -369,31 +369,31 @@ func difficulty_hp_bonus() -> float:
 ## you down instantly; Damnation makes them a touch faster).
 func enemy_speed_mult() -> float:
 	match difficulty:
-		"easy": return 0.68
-		"hard": return 1.12
-		_: return 1.0
+		"easy": return 0.72
+		"hard": return 1.16
+		_: return 1.05
 
 ## Global enemy DAMAGE factor (contact, ranged, boss patterns all scale by this).
 func enemy_damage_mult() -> float:
 	match difficulty:
-		"easy": return 0.5
-		"hard": return 1.3
-		_: return 1.0
+		"easy": return 0.55
+		"hard": return 1.7
+		_: return 1.3
 
 ## Global enemy HEALTH factor (fights are shorter on Merciful, longer on Damnation).
 func enemy_hp_mult() -> float:
 	match difficulty:
 		"easy": return 0.8
-		"hard": return 1.2
-		_: return 1.0
+		"hard": return 1.28
+		_: return 1.08
 
 ## Global enemy COUNT factor: fewer foes per room on Merciful (less swarming),
 ## a few more on Damnation.
 func enemy_count_mult() -> float:
 	match difficulty:
 		"easy": return 0.6
-		"hard": return 1.15
-		_: return 1.0
+		"hard": return 1.25
+		_: return 1.1
 
 func _persist_difficulty() -> void:
 	if not SaveManager.meta.has("options"):
