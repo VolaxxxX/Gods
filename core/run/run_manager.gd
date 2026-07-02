@@ -13,6 +13,9 @@ var active: bool = false
 var seed_value: int = 0
 var biome_id: String = "greece"
 var character_id: String = "char_wanderer"
+## Difficulty trial: "easy" | "normal" | "hard". Scales enemy speed/damage/HP
+## and the hero's starting vitality. Persisted in SaveManager.meta.options.
+var difficulty: String = "normal"
 var floor_index: int = 0
 var floor_in_biome: int = 1   # 1 = palier-boss floor, last = final-boss floor
 var current_room_index: int = 0
@@ -41,13 +44,18 @@ var style: Dictionary = {"aggressive": 0, "cautious": 0, "greedy": 0, "merciful"
 # regenerated from the seed on resume to keep saves tiny and deterministic.
 var floor_graph = null
 
-func start_run(p_seed: int, p_biome: String = "greece", p_character: String = "char_wanderer") -> void:
+func start_run(p_seed: int, p_biome: String = "greece", p_character: String = "char_wanderer", p_difficulty: String = "") -> void:
 	active = true
 	resuming = false
 	debug_boss_test = ""  # cleared on a normal run; the hub re-sets it for a boss test
 	seed_value = p_seed
 	biome_id = p_biome
 	character_id = p_character
+	if p_difficulty != "":
+		difficulty = p_difficulty
+	else:
+		difficulty = String(SaveManager.meta.get("options", {}).get("difficulty", "normal"))
+	_persist_difficulty()
 	floor_index = 0
 	floor_in_biome = 1
 	current_room_index = 0
@@ -67,7 +75,7 @@ func start_run(p_seed: int, p_biome: String = "greece", p_character: String = "c
 			owned_items.append(ch.start_item)
 		if ch.start_blessing != "":
 			chosen_blessings.append(ch.start_blessing)
-	player_max_health = 12.0
+	player_max_health = base_player_health()
 	player_health = player_max_health
 	RNG.seed_from_int(p_seed)
 	Events.emit_signal("run_started", p_seed)
@@ -293,6 +301,7 @@ func to_snapshot() -> Dictionary:
 		"seed": seed_value,
 		"biome": biome_id,
 		"character": character_id,
+		"difficulty": difficulty,
 		"visited_biomes": visited_biomes,
 		"floor_index": floor_index,
 		"floor_in_biome": floor_in_biome,
@@ -315,6 +324,7 @@ func from_snapshot(s: Dictionary) -> void:
 	seed_value = int(s.get("seed", 0))
 	biome_id = s.get("biome", "greece")
 	character_id = s.get("character", "char_wanderer")
+	difficulty = String(s.get("difficulty", "normal"))
 	visited_biomes = DataUtil.to_string_array(s.get("visited_biomes", []))
 	floor_index = int(s.get("floor_index", 0))
 	floor_in_biome = int(s.get("floor_in_biome", 1))
@@ -338,3 +348,47 @@ func biome_for_boss(boss_id: String) -> String:
 		if b.boss_id == boss_id or b.miniboss_id == boss_id:
 			return b.id
 	return "greece"
+
+# --- Difficulty trial (Merciful / Ordeal / Damnation) ---
+## The hero's starting vitality per trial (more forgiving on Merciful).
+func base_player_health() -> float:
+	match difficulty:
+		"easy": return 18.0
+		"hard": return 10.0
+		_: return 12.0
+
+## Global enemy chase-speed factor (Merciful slows the swarm so it never runs
+## you down instantly; Damnation makes them a touch faster).
+func enemy_speed_mult() -> float:
+	match difficulty:
+		"easy": return 0.68
+		"hard": return 1.12
+		_: return 1.0
+
+## Global enemy DAMAGE factor (contact, ranged, boss patterns all scale by this).
+func enemy_damage_mult() -> float:
+	match difficulty:
+		"easy": return 0.5
+		"hard": return 1.3
+		_: return 1.0
+
+## Global enemy HEALTH factor (fights are shorter on Merciful, longer on Damnation).
+func enemy_hp_mult() -> float:
+	match difficulty:
+		"easy": return 0.8
+		"hard": return 1.2
+		_: return 1.0
+
+## Global enemy COUNT factor: fewer foes per room on Merciful (less swarming),
+## a few more on Damnation.
+func enemy_count_mult() -> float:
+	match difficulty:
+		"easy": return 0.6
+		"hard": return 1.15
+		_: return 1.0
+
+func _persist_difficulty() -> void:
+	if not SaveManager.meta.has("options"):
+		SaveManager.meta["options"] = {}
+	SaveManager.meta["options"]["difficulty"] = difficulty
+	SaveManager.save_meta()
