@@ -10,6 +10,7 @@ var color: Color = Color(1, 1, 0.6)
 var _life: float = 0.0
 var _max_life: float = 2.0
 var active: bool = false
+var by_player: bool = false  # set on fire(): player shots add crunch (knockback/juice) on hit
 
 ## Optional on-hit hook (pos, hurtbox) for blessing/synergy effects.
 var on_hit_extra: Callable = Callable()
@@ -46,6 +47,7 @@ func fire(p_pos: Vector2, p_velocity: Vector2, dmg: Damage, faction_player: bool
 		pierce_through: bool = false, sprite_name: String = "") -> void:
 	global_position = p_pos
 	velocity = p_velocity
+	by_player = faction_player
 	radius = p_radius
 	color = p_color
 	_max_life = life
@@ -119,7 +121,16 @@ func mark_hit(hurtbox: HurtboxComponent) -> void:
 func _on_hit(hurtbox: HurtboxComponent) -> void:
 	if on_hit_extra.is_valid():
 		on_hit_extra.call(global_position, hurtbox)
-	Fx.play("impact", global_position, 36.0)
+	Fx.play("impact", global_position, 46.0)
+	if by_player:
+		# Crunch so a shot feels like it LANDS: shove the struck enemy back along
+		# the shot's line (bosses/minibosses stand their ground). The white flash,
+		# damage number and hit SFX already fire from the health/Juice/Audio buses.
+		var struck = hurtbox.get_parent() if hurtbox != null else null
+		if struck != null and struck.has_method("apply_knockback"):
+			var is_boss: bool = struck.data != null and String(struck.data.role) in ["boss", "miniboss"]
+			if not is_boss:
+				struck.apply_knockback(velocity.normalized() * 95.0)
 	if not pierce:
 		_deactivate()
 
