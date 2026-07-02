@@ -24,6 +24,7 @@ var _feign_y0: float = 0.0
 var _radius: float = 12.0
 var _color: Color = Color(0.85, 0.3, 0.3)
 var _difficulty: float = 1.0  # per-realm enemy-damage multiplier
+var _biome_difficulty: float = 1.0  # raw per-realm factor (for summoned adds)
 var _flash: float = 0.0
 var _sprite: Sprite2D  # set if a static texture exists for this entity id
 var _sprite_tinted: bool = false  # generic sprite tinted by the enemy colour
@@ -72,6 +73,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 	var g_hp := RunManager.enemy_hp_mult()
 	var hp_mult: float = (1.0 if data.role in ["boss", "miniboss"] else difficulty) * g_hp
 	_difficulty = difficulty * g_dmg
+	_biome_difficulty = difficulty  # raw per-realm factor, passed on to summoned adds
 
 	# Visuals, in priority order: animated sheets > bespoke static sprite >
 	# generic monster tinted by colour > greybox circle. Bosses also load a sheet
@@ -204,6 +206,10 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 
 func _ready() -> void:
 	add_to_group("enemies")
+	# Record this species as ENCOUNTERED so it appears in the Book of the Dead
+	# bestiary (persisted; only creatures the player has met are ever shown there).
+	if data != null:
+		SaveManager.set_flag("seen_" + data.id)
 
 ## A decaying shove (player melee knockback) so close combat can create space.
 func apply_knockback(v: Vector2) -> void:
@@ -800,7 +806,7 @@ func _summon(entity_id: String, count: int, regen: bool = false) -> void:
 		return
 	for k in count:
 		var add := Enemy.new()
-		add.setup(ed, _target, _pool)
+		add.setup(ed, _target, _pool, _biome_difficulty)
 		add.position = global_position + Vector2.from_angle(TAU * k / count) * (_radius + 28.0)
 		parent.add_child(add)
 		# Hydra "heads grow back": a slain add is replaced 1:1 while the boss lives.
