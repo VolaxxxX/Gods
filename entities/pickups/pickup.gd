@@ -64,7 +64,17 @@ func _draw() -> void:
 		draw_circle(c, RADIUS, col)
 		draw_circle(c + Vector2(-RADIUS * 0.3, -RADIUS * 0.3), RADIUS * 0.4, col.lightened(0.5))
 		draw_arc(c, RADIUS, 0.0, TAU, 24, col.lightened(0.3), 2.0, true)
+	# Name + description so the player knows what a shop bonus actually DOES.
+	if item != null:
+		var font := ThemeDB.fallback_font
+		var nm := Loc.t(item.name_key)
+		draw_string(font, c + Vector2(-110.0, -RADIUS - 16.0), nm,
+			HORIZONTAL_ALIGNMENT_CENTER, 220.0, 16, Color(1.0, 0.9, 0.5))
+		var desc := Loc.t(item.desc_key)
+		if desc != "" and desc != item.desc_key:
+			draw_multiline_string(font, c + Vector2(-115.0, RADIUS + 42.0), desc,
+				HORIZONTAL_ALIGNMENT_CENTER, 230.0, 12, -1, Color(0.82, 0.84, 0.92))
 	if price > 0:
-		draw_string(ThemeDB.fallback_font, Vector2(-RADIUS, RADIUS + 22.0),
-			"%d" % price, HORIZONTAL_ALIGNMENT_CENTER, RADIUS * 2.0, 16,
+		draw_string(ThemeDB.fallback_font, c + Vector2(-RADIUS, RADIUS + 22.0),
+			"%d gold" % price, HORIZONTAL_ALIGNMENT_CENTER, RADIUS * 2.0 + 40.0, 15,
 			Color(1, 0.86, 0.4))
