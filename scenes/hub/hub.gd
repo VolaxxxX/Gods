@@ -10,6 +10,12 @@ var _boss_test_option: OptionButton
 var _boss_test_ids: Array[String] = []
 var _char_option: OptionButton
 var _char_ids: Array[String] = []
+var _diff_buttons: Array = []
+var _diff_index: int = 1
+var _diff_ids: Array[String] = ["easy", "normal", "hard"]
+var _outfit_buttons: Array = []
+var _outfit_index: int = 0
+var _outfit_hues: Array[float] = [0.0, 1.05, 2.09, 3.14, 4.19, 5.24]
 var _hero_desc: Label
 var _realm_teaser: Label
 var _seed_edit: LineEdit
@@ -153,6 +159,57 @@ func _build() -> void:
 	hero.add_child(_hero_desc)
 	_refresh_hero_desc()
 
+	# Difficulty trial: Merciful / Ordeal / Damnation. Three big TOGGLE buttons
+	# (reliable on touch, unlike a dropdown). Merciful greatly softens the swarm
+	# (slower, weaker, fewer foes + a hardier hero) so newcomers survive.
+	var diff := HBoxContainer.new()
+	diff.add_theme_constant_override("separation", 10)
+	dv.add_child(diff)
+	var diff_l := Label.new()
+	diff_l.text = Loc.t("ui.difficulty")
+	diff.add_child(diff_l)
+	_diff_buttons = []
+	var diff_keys := ["ui.diff_easy", "ui.diff_normal", "ui.diff_hard"]
+	for i in _diff_ids.size():
+		var db := Button.new()
+		db.toggle_mode = true
+		db.text = Loc.t(diff_keys[i])
+		db.custom_minimum_size = Vector2(150, 54)
+		db.pressed.connect(_on_pick_difficulty.bind(i))
+		diff.add_child(db)
+		_diff_buttons.append(db)
+	var saved_diff := String(SaveManager.meta.get("options", {}).get("difficulty", "normal"))
+	_set_difficulty_index(maxi(0, _diff_ids.find(saved_diff)))
+
+	# Robe colour: recolour the hero. Swatches (touch-friendly), saved between runs.
+	var outfit := HBoxContainer.new()
+	outfit.add_theme_constant_override("separation", 8)
+	dv.add_child(outfit)
+	var outfit_l := Label.new()
+	outfit_l.text = Loc.t("ui.outfit")
+	outfit.add_child(outfit_l)
+	_outfit_buttons = []
+	var saved_hue := float(SaveManager.meta.get("options", {}).get("player_hue", 0.0))
+	for i in _outfit_hues.size():
+		var ob := Button.new()
+		ob.custom_minimum_size = Vector2(46, 46)
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = _hue_rotate_color(Color(0.42, 0.6, 1.0), _outfit_hues[i])
+		sb.set_corner_radius_all(6)
+		sb.set_border_width_all(3)
+		sb.border_color = Color(0, 0, 0, 0)
+		ob.add_theme_stylebox_override("normal", sb)
+		ob.add_theme_stylebox_override("hover", sb)
+		ob.add_theme_stylebox_override("pressed", sb)
+		ob.pressed.connect(_on_pick_outfit.bind(i))
+		outfit.add_child(ob)
+		_outfit_buttons.append(ob)
+	var start_idx := 0
+	for i in _outfit_hues.size():
+		if is_equal_approx(_outfit_hues[i], saved_hue):
+			start_idx = i
+	_set_outfit_index(start_idx)
+
 	# --- Hidden DEV: boss test — pick any boss and fight it directly in its arena. ---
 	if RunManager.DEBUG_BOSS_TEST:
 		var bt := HBoxContainer.new()
@@ -283,6 +340,41 @@ func _selected_character() -> String:
 		return _char_ids[idx]
 	return "char_wanderer"
 
+func _selected_difficulty() -> String:
+	return _diff_ids[_diff_index] if _diff_index >= 0 and _diff_index < _diff_ids.size() else "normal"
+
+func _on_pick_difficulty(i: int) -> void:
+	_set_difficulty_index(i)
+
+func _set_difficulty_index(i: int) -> void:
+	_diff_index = clampi(i, 0, _diff_ids.size() - 1)
+	for j in _diff_buttons.size():
+		_diff_buttons[j].button_pressed = (j == _diff_index)
+
+func _on_pick_outfit(i: int) -> void:
+	_set_outfit_index(i)
+	if not SaveManager.meta.has("options"):
+		SaveManager.meta["options"] = {}
+	SaveManager.meta["options"]["player_hue"] = _outfit_hues[_outfit_index]
+	SaveManager.save_meta()
+
+## Highlight the chosen swatch with a gold border, others borderless.
+func _set_outfit_index(i: int) -> void:
+	_outfit_index = clampi(i, 0, _outfit_hues.size() - 1)
+	for j in _outfit_buttons.size():
+		var sb: StyleBoxFlat = _outfit_buttons[j].get_theme_stylebox("normal")
+		sb.border_color = Color(1.0, 0.9, 0.55) if j == _outfit_index else Color(0, 0, 0, 0)
+	queue_redraw()
+
+## Rotate a colour around the grey axis (matches the in-game outfit shader) so the
+## swatch previews the actual robe colour.
+func _hue_rotate_color(c: Color, a: float) -> Color:
+	var k := Vector3(0.57735, 0.57735, 0.57735)
+	var v := Vector3(c.r, c.g, c.b)
+	var ca := cos(a)
+	var rot := v * ca + k.cross(v) * sin(a) + k * k.dot(v) * (1.0 - ca)
+	return Color(clampf(rot.x, 0.0, 1.0), clampf(rot.y, 0.0, 1.0), clampf(rot.z, 0.0, 1.0), 1.0)
+
 func _refresh_hero_desc() -> void:
 	var id := _selected_character()
 	var ch = GameData.characters.get(id, null)
@@ -306,12 +398,12 @@ func _selected_seed() -> int:
 	return int(hash(t))
 
 func _on_play() -> void:
-	RunManager.start_run(_selected_seed(), _selected_biome(), _selected_character())
+	RunManager.start_run(_selected_seed(), _selected_biome(), _selected_character(), _selected_difficulty())
 	SceneRouter.goto_run()
 
 func _on_daily() -> void:
 	RNG.seed_from_string("daily-" + Time.get_date_string_from_system())
-	RunManager.start_run(RNG.get_seed(), _selected_biome(), _selected_character())
+	RunManager.start_run(RNG.get_seed(), _selected_biome(), _selected_character(), _selected_difficulty())
 	SceneRouter.goto_run()
 
 func _on_codex() -> void:
