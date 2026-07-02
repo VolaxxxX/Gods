@@ -12,7 +12,7 @@ const MELEE_OFFSET := 30.0   # how far in front of the player it lands
 const DASH_SPEED := 640.0
 const DASH_TIME := 0.16     # seconds of dash motion
 const DASH_COOLDOWN := 0.85 # seconds before you can dash again
-const HIT_IFRAMES := 0.6    # mercy invulnerability after a hit, so a swarm can't instantly melt you
+const HIT_IFRAMES := 0.4    # brief mercy window (prevents instant melt) — short enough that enemy contact still clearly hurts
 
 # Base stats before items/blessings/synergies. Everything stacks on top via
 # StatBlock (see _recompute_stats).
