@@ -97,6 +97,7 @@ func _ready() -> void:
 	if _vis != null:
 		_vis_base_pos = _vis.position
 		_vis_base_scale = _vis.scale
+	_apply_outfit_hue()  # player-chosen robe colour (hue-rotate shader)
 	collision_layer = Collision.PLAYER_BODY
 	# Collide with walls only; pass through enemies (contact damage is handled by
 	# areas), which avoids the player getting shoved/stuck by mobs.
@@ -368,6 +369,39 @@ func _emit_health() -> void:
 ## Dash readiness for the HUD indicator: 0 just after dashing -> 1 when ready.
 func dash_ready_fraction() -> float:
 	return 1.0 - clampf(_dash_cd / DASH_COOLDOWN, 0.0, 1.0)
+
+## Recolour the hero to the player's chosen palette: a hue-rotate shader on the
+## sprite (so the whole outfit shifts colour) plus a matching tint on the code-drawn
+## ring/weapon. Hue (radians) is saved in options; 0 = the character's default look.
+func _apply_outfit_hue() -> void:
+	var hue := float(SaveManager.meta.get("options", {}).get("player_hue", 0.0))
+	if is_equal_approx(hue, 0.0):
+		return
+	_body_color = _hue_rotate(_body_color, hue)
+	if _vis == null:
+		return
+	var sh := Shader.new()
+	sh.code = "shader_type canvas_item;\n" \
+		+ "uniform float hue = 0.0;\n" \
+		+ "void fragment() {\n" \
+		+ "\tvec4 t = texture(TEXTURE, UV);\n" \
+		+ "\tfloat c = cos(hue); float s = sin(hue);\n" \
+		+ "\tvec3 k = vec3(0.57735);\n" \
+		+ "\tvec3 rgb = t.rgb * c + cross(k, t.rgb) * s + k * dot(k, t.rgb) * (1.0 - c);\n" \
+		+ "\tCOLOR = vec4(clamp(rgb, 0.0, 1.0), t.a) * COLOR;\n}"
+	var mat := ShaderMaterial.new()
+	mat.shader = sh
+	mat.set_shader_parameter("hue", hue)
+	_vis.material = mat
+
+## Rotate a colour around the grey axis by `a` radians (same maths as the shader),
+## used to keep the ring/weapon sheen in step with the chosen robe hue.
+func _hue_rotate(c: Color, a: float) -> Color:
+	var k := Vector3(0.57735, 0.57735, 0.57735)
+	var v := Vector3(c.r, c.g, c.b)
+	var ca := cos(a)
+	var rot := v * ca + k.cross(v) * sin(a) + k * k.dot(v) * (1.0 - ca)
+	return Color(clampf(rot.x, 0.0, 1.0), clampf(rot.y, 0.0, 1.0), clampf(rot.z, 0.0, 1.0), c.a)
 
 func _draw() -> void:
 	# Soft contact shadow + a class-coloured marker ring under the feet, so the
