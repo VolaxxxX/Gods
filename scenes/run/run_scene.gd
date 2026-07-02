@@ -15,6 +15,8 @@ var _boss_cam: Camera2D       # dedicated framed camera for the Cthulhu fight
 var _boss_bg: CanvasLayer      # R'lyeh backdrop behind the arena (colossus fight)
 var _boss_fg: CanvasLayer      # 3D colossus layer ABOVE the floor (looms over the top edge)
 var current_room: Room
+var _entered_rooms: Dictionary = {}  # rooms entered this run -> heal-on-first-entry
+const DOOR_HEAL := 5.0  # HP regained the FIRST time you step through a door into a new room
 var current_pos: Vector2i = Vector2i.ZERO
 var _cleared: Dictionary = {}   # Vector2i -> true
 var _ended: bool = false
@@ -215,6 +217,18 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	else:
 		player.global_position = current_room.player_spawn_point()
 	player.velocity = Vector2.ZERO
+
+	# Regain a little health for pressing onward: the first time you take a door
+	# into a NEW room you recover some HP (no farming — already-entered rooms give
+	# nothing). Keeps a careful run alive without trivialising damage.
+	if from_side != "" and not _entered_rooms.has(pos):
+		if player != null and is_instance_valid(player) and player.health != null \
+				and player.health.health < player.health.max_health:
+			player.health.heal(DOOR_HEAL)
+			var lp: Vector2 = player.global_position - current_room.global_position
+			FloatingText.spawn(current_room, lp + Vector2(0, -48),
+				"+" + str(int(DOOR_HEAL)), Color(0.5, 1.0, 0.6))
+	_entered_rooms[pos] = true
 
 	Events.emit_signal("room_entered", current_room)
 	if _minimap != null:
