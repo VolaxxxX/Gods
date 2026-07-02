@@ -548,11 +548,11 @@ func _spawn_sacrifice() -> void:
 
 func _price_for(item: ItemData) -> int:
 	match item.rarity:
-		"cursed": return 5
-		"common": return 8
-		"rare": return 16
-		"relic": return 28
-		_: return 10
+		"cursed": return 12
+		"common": return 22
+		"rare": return 45
+		"relic": return 80
+		_: return 25
 
 func _on_enemy_gone() -> void:
 	_alive_enemies -= 1
