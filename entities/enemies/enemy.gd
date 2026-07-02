@@ -69,9 +69,15 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 	# Global difficulty trial (Merciful/Ordeal/Damnation) folds into the per-realm
 	# scaling: damage rides on _difficulty (used by every attack), HP on hp_mult,
 	# and chase speed is applied to the movement component below.
+	var is_boss := data.role in ["boss", "miniboss"]
 	var g_dmg := RunManager.enemy_damage_mult()
 	var g_hp := RunManager.enemy_hp_mult()
-	var hp_mult: float = (1.0 if data.role in ["boss", "miniboss"] else difficulty) * g_hp
+	# Bosses are hand-tuned, so they feel the difficulty trial only partly (the
+	# player asked for a harder game "except bosses"); regular foes scale fully.
+	if is_boss:
+		g_dmg = 1.0 + (g_dmg - 1.0) * 0.45
+		g_hp = 1.0 + (g_hp - 1.0) * 0.45
+	var hp_mult: float = (1.0 if is_boss else difficulty) * g_hp
 	_difficulty = difficulty * g_dmg
 	_biome_difficulty = difficulty  # raw per-realm factor, passed on to summoned adds
 
@@ -469,9 +475,9 @@ func _execute_ability(ab: Dictionary) -> void:
 				# Telegraphed dash: the mob BRACES (stops + attack pose + a marker)
 				# for a wind-up beat, then commits to a line and lunges. Regular
 				# enemies used to dash instantly, which was impossible to dodge.
-				var ch_speed := minf(float(ab.get("speed", 330.0)), 330.0)  # cap: readable, dodgeable
+				var ch_speed := minf(float(ab.get("speed", 380.0)), 400.0)  # threatening but still telegraphed
 				var ch_dur := float(ab.get("duration", 0.38))
-				var ch_wind := float(ab.get("windup", 0.5))
+				var ch_wind := float(ab.get("windup", 0.35))  # shorter brace = more dangerous, still readable
 				var ch_vanish := bool(ab.get("vanish", false))
 				_windup_t = ch_wind
 				_attack_t = maxf(_attack_t, ch_wind)
