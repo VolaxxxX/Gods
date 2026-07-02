@@ -24,6 +24,7 @@ var _room_damage_taken: bool = false  # for the "cautious" play-style tally
 var _wrath_active: bool = false       # a god's wrath wave is in progress
 var _doors_pending: bool = false      # palier-boss reward doors owed (progression gate)
 var _after_boss_pending: bool = false # final-boss follow-up owed (realm branch/ending)
+var _boon_pending: bool = false       # god-boon offer owed (never let it silently vanish)
 var _rare_done: bool = false          # at most one RARE encounter per floor
 var _char_intro_done: bool = false    # the chosen character's intro line (once per run)
 var _canvas_mod: CanvasModulate       # per-realm mood lighting
@@ -330,11 +331,11 @@ func _roll_god_encounter() -> void:
 		_rare_encounter()
 		return
 	var r := RNG.stream("encounter").randf()
-	if r < 0.28:
+	if r < 0.45:
 		_offer_boon()
-	elif r < 0.40:
+	elif r < 0.55:
 		_trigger_wrath()
-	elif r < 0.52:
+	elif r < 0.62:
 		_grant_shrine_heal()
 
 ## A roaming god's mercy: restore a chunk of health. Relevant now that bosses hit
@@ -413,17 +414,22 @@ func _rare_flash() -> void:
 	tw.tween_callback(cl.queue_free)
 
 func _offer_boon() -> void:
-	var opts := _blessing_options(2)
+	var opts := _blessing_options(3)
 	if opts.is_empty():
 		return
 	# Stage it: the Ferryman announces the god's appearance, THEN the gift is
-	# offered (the chosen god then speaks via the normal "boon" line).
+	# offered. Guarded + timer fallback so a boon can never silently vanish.
+	_boon_pending = true
 	if Dialogue.speak("narrator", "god_encounter"):
 		Dialogue.queue_empty.connect(_show_boon_offer.bind(opts), CONNECT_ONE_SHOT)
+		get_tree().create_timer(8.0).timeout.connect(_show_boon_offer.bind(opts))
 	else:
 		_show_boon_offer(opts)
 
 func _show_boon_offer(opts: Array) -> void:
+	if not _boon_pending:
+		return
+	_boon_pending = false
 	var ui := BlessingChoice.new()
 	ui.setup(opts, "ui.god_favor")
 	ui.chosen.connect(func(id): RunManager.add_blessing(id))
