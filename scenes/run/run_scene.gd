@@ -196,7 +196,7 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 	# so re-entering never re-spawns loot (the floating orb bug) or enemies.
 	var build_type: String = node["type"] if not already else "cleared"
 	current_room.secret_sides = secret
-	current_room.build(template, biome, open, build_type, player, pool)
+	current_room.build(template, biome, open, build_type, player, pool, from_side)
 
 	# Mobile-friendly framing: keep the player dead-centre and let the camera
 	# follow them everywhere (no room clamp). The deep realm-dark clear colour
