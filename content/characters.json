@@ -40,9 +40,9 @@
       "projectile_count": 3,
       "spread_deg": 20.0,
       "modifiers": {
-        "fire_rate_mult": 1.2,
-        "damage_mult": 0.8,
-        "move_speed_add": 34.0,
+        "fire_rate_mult": 0.82,
+        "damage_mult": 0.66,
+        "move_speed_add": 26.0,
         "max_health_add": 1.0
       }
     }
