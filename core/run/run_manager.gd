@@ -137,6 +137,19 @@ func has_visited(id: String) -> bool:
 func is_final_biome() -> bool:
 	return visited_biomes.size() + 1 >= max_biomes() or realms_remaining().is_empty()
 
+## LINEAR progression: the next realm in the fixed manifest order (greece, bali,
+## egypt, norse, japan, aztec) that hasn't been descended yet, then the eldritch
+## finale (hell), then "" (the run is won). No player choice — a set journey.
+func next_realm_in_order() -> String:
+	for id in GameData.biomes.keys():
+		if id == "hell":
+			continue
+		if id != biome_id and not (id in visited_biomes):
+			return id
+	if GameData.get_biome("hell") != null and biome_id != "hell" and not ("hell" in visited_biomes):
+		return "hell"
+	return ""
+
 ## Record the current biome as cleared and descend into the next one. The run
 ## scene regenerates the floor; items/blessings/health/gold all carry over.
 func advance_to_biome(next_biome: String) -> void:
