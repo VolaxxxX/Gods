@@ -245,6 +245,9 @@ func collect_modifiers() -> Array:
 	var meta := meta_modifiers()
 	if not meta.is_empty():
 		mods.append(meta)
+	var dhp := difficulty_hp_bonus()
+	if dhp != 0.0:
+		mods.append({"max_health_add": dhp})
 	var ch = GameData.characters.get(character_id, null)
 	if ch != null and not ch.modifiers.is_empty():
 		mods.append(ch.modifiers)
@@ -352,10 +355,15 @@ func biome_for_boss(boss_id: String) -> String:
 # --- Difficulty trial (Merciful / Ordeal / Damnation) ---
 ## The hero's starting vitality per trial (more forgiving on Merciful).
 func base_player_health() -> float:
+	return 12.0 + difficulty_hp_bonus()
+
+## Bonus starting HP per trial, folded into the stat block (via collect_modifiers)
+## so _recompute_stats keeps it. Merciful newcomers get a big survival cushion.
+func difficulty_hp_bonus() -> float:
 	match difficulty:
-		"easy": return 18.0
-		"hard": return 10.0
-		_: return 12.0
+		"easy": return 12.0
+		"hard": return 0.0
+		_: return 5.0
 
 ## Global enemy chase-speed factor (Merciful slows the swarm so it never runs
 ## you down instantly; Damnation makes them a touch faster).
