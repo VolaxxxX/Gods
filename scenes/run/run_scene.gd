@@ -22,6 +22,8 @@ var _cleared: Dictionary = {}   # Vector2i -> true
 var _ended: bool = false
 var _room_damage_taken: bool = false  # for the "cautious" play-style tally
 var _wrath_active: bool = false       # a god's wrath wave is in progress
+var _doors_pending: bool = false      # palier-boss reward doors owed (progression gate)
+var _after_boss_pending: bool = false # final-boss follow-up owed (realm branch/ending)
 var _rare_done: bool = false          # at most one RARE encounter per floor
 var _char_intro_done: bool = false    # the chosen character's intro line (once per run)
 var _canvas_mod: CanvasModulate       # per-realm mood lighting
@@ -469,12 +471,17 @@ func _complete_biome() -> void:
 		shown = Dialogue.speak(god, "boss_" + b) or shown
 	# A mythological reminder + moral, last in the queue.
 	shown = Dialogue.speak("narrator", "moral_" + b) or shown
+	_after_boss_pending = true
 	if shown:
 		Dialogue.queue_empty.connect(_after_boss, CONNECT_ONE_SHOT)
+		get_tree().create_timer(9.0).timeout.connect(_after_boss)  # never hang after the final boss
 	else:
 		_after_boss()
 
 func _after_boss() -> void:
+	if not _after_boss_pending:
+		return  # already handled (idempotent guard)
+	_after_boss_pending = false
 	# The true ending: all six underworlds have now been conquered (ever). Play the
 	# cinematic once, instead of the ordinary victory return.
 	if SaveManager.has_flag("all_six") and not SaveManager.has_flag("ending_played"):
@@ -525,12 +532,20 @@ func _offer_doors() -> void:
 		shown = Dialogue.speak(god, "miniboss_" + b) or shown
 	# A mythological reminder + moral for the palier creature, last in the queue.
 	shown = Dialogue.speak("narrator", "moral_mini_" + b) or shown
+	_doors_pending = true
 	if shown:
 		Dialogue.queue_empty.connect(_show_doors, CONNECT_ONE_SHOT)
+		# Safety net: if the dialogue "queue_empty" signal never lands (an edge case
+		# that could appear on replays), force the doors anyway so progression after
+		# a palier boss can NEVER hang.
+		get_tree().create_timer(9.0).timeout.connect(_show_doors)
 	else:
 		_show_doors()
 
 func _show_doors() -> void:
+	if not _doors_pending:
+		return  # already shown (idempotent: queue_empty OR the fallback timer)
+	_doors_pending = false
 	var kinds := ["treasure", "boon", "vigor"]
 	RNG.shuffle("door", kinds)
 	var ui := DoorChoice.new()
