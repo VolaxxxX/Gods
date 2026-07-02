@@ -202,6 +202,14 @@ func _show_beast(id: String) -> void:
 		return
 	_body_title.text = Loc.t(ed.name_key)
 	var tex := Sprites.entity(id)
+	# Many creatures use ANIMATED sheets and have no single static sprite — pull
+	# the first frame so every discovered beast shows a real portrait.
+	if tex == null and Sprites.has_anim(id):
+		var sf := Sprites.build_sprite_frames(id)
+		for an in ["idle", "walk", "attack", "scream"]:
+			if sf != null and sf.has_animation(an) and sf.get_frame_count(an) > 0:
+				tex = sf.get_frame_texture(an, 0)
+				break
 	if tex == null:
 		tex = Sprites.entity_generic()
 	_beast_img.texture = tex
