@@ -400,5 +400,11 @@
   "item.void_heart.desc": "A pulsing alien organ; greatly increases vitality.",
   "enemy.mi_go.name": "Mi-go",
   "enemy.cultist.name": "Robed Cultist",
-  "ui.realm_locked": "??? — conquer all six realms first"
+  "ui.realm_locked": "??? — conquer all six realms first",
+  "ui.difficulty": "Trial",
+  "ui.diff_easy": "Merciful",
+  "ui.diff_normal": "Ordeal",
+  "ui.diff_hard": "Damnation",
+  "ui.map": "Map",
+  "ui.outfit": "Robes"
 }
