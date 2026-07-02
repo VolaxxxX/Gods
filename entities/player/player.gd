@@ -12,6 +12,7 @@ const MELEE_OFFSET := 30.0   # how far in front of the player it lands
 const DASH_SPEED := 640.0
 const DASH_TIME := 0.16     # seconds of dash motion
 const DASH_COOLDOWN := 0.85 # seconds before you can dash again
+const HIT_IFRAMES := 0.6    # mercy invulnerability after a hit, so a swarm can't instantly melt you
 
 # Base stats before items/blessings/synergies. Everything stacks on top via
 # StatBlock (see _recompute_stats).
@@ -354,6 +355,9 @@ func _nearest_enemy() -> Node2D:
 func _on_damaged(_amount: float, current: float, _max: float) -> void:
 	RunManager.player_health = current
 	_flash = 0.08
+	# Brief mercy i-frames: after taking a hit you're untouchable for a moment, so
+	# overlapping mobs/shots can't chain-delete you in one instant (anti one-shot).
+	_invuln_t = maxf(_invuln_t, HIT_IFRAMES)
 	_emit_health()
 
 func _on_healed(_amount: float, current: float, _max: float) -> void:
