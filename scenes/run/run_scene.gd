@@ -255,8 +255,11 @@ func _enter_room(pos: Vector2i, from_side: String) -> void:
 
 ## Up to `n` random not-yet-owned blessings of the current pantheon.
 func _blessing_options(n: int) -> Array:
+	# Draw from ALL pantheons (not just the current realm) so the player keeps
+	# meeting DIFFERENT gods and their distinct boons, instead of the same short
+	# realm list over and over.
 	var avail: Array = []
-	for b in GameData.blessings_for(biome.pantheon):
+	for b in GameData.blessings.values():
 		if not (b.id in RunManager.chosen_blessings):
 			avail.append(b)
 	RNG.shuffle("blessing", avail)
@@ -419,12 +422,11 @@ func _offer_boon() -> void:
 		return
 	# Stage it: the Ferryman announces the god's appearance, THEN the gift is
 	# offered. Guarded + timer fallback so a boon can never silently vanish.
+	# Show the boon IMMEDIATELY (it pauses the game) so it always appears in the
+	# just-cleared room and can NEVER pop up mid-fight in the next room. The chosen
+	# god comments afterwards via the normal "boon" line.
 	_boon_pending = true
-	if Dialogue.speak("narrator", "god_encounter"):
-		Dialogue.queue_empty.connect(_show_boon_offer.bind(opts), CONNECT_ONE_SHOT)
-		get_tree().create_timer(8.0).timeout.connect(_show_boon_offer.bind(opts))
-	else:
-		_show_boon_offer(opts)
+	_show_boon_offer(opts)
 
 func _show_boon_offer(opts: Array) -> void:
 	if not _boon_pending:
@@ -488,43 +490,22 @@ func _after_boss() -> void:
 	if not _after_boss_pending:
 		return  # already handled (idempotent guard)
 	_after_boss_pending = false
-	# The true ending: all six underworlds have now been conquered (ever). Play the
-	# cinematic once, instead of the ordinary victory return.
-	if SaveManager.has_flag("all_six") and not SaveManager.has_flag("ending_played"):
-		SaveManager.set_flag("ending_played")
-		_ended = true
-		RunManager.end_run(true)
-		SceneRouter.goto_ending()
-		return
-	if RunManager.is_final_biome():
-		# Eldritch finale: once the normal realms are cleared, the unknown realm
-		# (R'LYEH) opens as the TRUE final descent into the Old God — once per run.
-		if RunManager.biome_id != "hell" and not RunManager.has_visited("hell") and GameData.get_biome("hell") != null:
-			var hellb := GameData.get_biome("hell")
-			var hui := RealmChoice.new()
-			hui.setup([hellb])
-			hui.chosen.connect(_on_realm_chosen)
-			add_child(hui)
-			return
+	# LINEAR journey: after a realm's TRUE boss, descend AUTOMATICALLY into the next
+	# realm in the fixed order (no choice). When the last realm (the eldritch finale)
+	# has fallen, the run is won.
+	var nxt := RunManager.next_realm_in_order()
+	if nxt == "":
 		_victory_ending()
 		return
-	var opts: Array = []
-	for id in RunManager.realms_remaining():
-		var b := GameData.get_biome(id)
-		if b != null:
-			opts.append(b)
-	if opts.is_empty():
-		_victory_ending()
-		return
-	var ui := RealmChoice.new()
-	ui.setup(opts)
-	ui.chosen.connect(_on_realm_chosen)
-	add_child(ui)
+	_advance_to_realm(nxt)
 
-func _on_realm_chosen(next_biome: String) -> void:
+func _advance_to_realm(next_biome: String) -> void:
 	player.health.heal(player.health.max_health * 0.5)  # reward for the descent
 	RunManager.advance_to_biome(next_biome)
 	_setup_biome(false)
+
+func _on_realm_chosen(next_biome: String) -> void:
+	_advance_to_realm(next_biome)
 
 ## Palier boss down: present TWO doors (Hades-style) previewing their reward; the
 ## chosen reward is applied, then descend into a fresh map of the SAME zone.
