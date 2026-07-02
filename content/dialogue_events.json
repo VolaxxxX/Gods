@@ -224,16 +224,6 @@
       ]
     },
     {
-      "id": "char_warrior",
-      "speaker": "narrator",
-      "trigger": "char_warrior",
-      "modal": true,
-      "lines": [
-        "You carry yourself like one who died with a sword still in hand. The dead respect a warrior — right up until they drag one down.",
-        "Let us see whether your steel outlasts your pride."
-      ]
-    },
-    {
       "id": "char_hunter",
       "speaker": "narrator",
       "trigger": "char_hunter",
