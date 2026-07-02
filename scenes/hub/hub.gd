@@ -174,7 +174,7 @@ func _build() -> void:
 		var db := Button.new()
 		db.toggle_mode = true
 		db.text = Loc.t(diff_keys[i])
-		db.custom_minimum_size = Vector2(150, 54)
+		db.custom_minimum_size = Vector2(178, 54)
 		db.pressed.connect(_on_pick_difficulty.bind(i))
 		diff.add_child(db)
 		_diff_buttons.append(db)
