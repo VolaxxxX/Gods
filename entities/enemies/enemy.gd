@@ -4,7 +4,7 @@ extends CharacterBody2D
 ## damage. Everything (health, speed, color, size, behavior) comes from data, so
 ## new enemies are added as JSON, not code (data-driven §3.1).
 
-const CONTACT_INTERVAL := 0.6  # seconds between contact damage ticks
+const CONTACT_INTERVAL := 0.8  # seconds between contact damage ticks (dodge window)
 
 var data: EntityData
 var health: HealthComponent
@@ -50,6 +50,10 @@ var _charge_speed: float = 420.0
 var _charge_vanish: bool = false  # fade out while dashing (Sand Veil Dash)
 var _melee_swing_cd: float = 0.0  # melee mobs: throttle the attack animation
 var _melee_cd: float = 0.0  # bosses/minibosses: cooldown for the close-range melee strike
+var _wall_stuck_t: float = 0.0   # time spent wedged against geometry (no progress)
+var _unstuck_t: float = 0.0      # remaining time steering ALONG the wall to slip past
+var _unstuck_sign: float = 1.0   # which way we veer to get around the obstacle
+var _windup_t: float = 0.0       # bracing before a telegraphed charge (dodge window)
 
 func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 		difficulty: float = 1.0) -> void:
@@ -61,8 +65,13 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 	# Per-realm difficulty: regular enemies get more HP; bosses/minibosses are
 	# already hand-tuned so their HP is left alone. ALL enemy damage scales, so a
 	# harder realm hits harder without fights dragging.
-	var hp_mult: float = 1.0 if data.role in ["boss", "miniboss"] else difficulty
-	_difficulty = difficulty
+	# Global difficulty trial (Merciful/Ordeal/Damnation) folds into the per-realm
+	# scaling: damage rides on _difficulty (used by every attack), HP on hp_mult,
+	# and chase speed is applied to the movement component below.
+	var g_dmg := RunManager.enemy_damage_mult()
+	var g_hp := RunManager.enemy_hp_mult()
+	var hp_mult: float = (1.0 if data.role in ["boss", "miniboss"] else difficulty) * g_hp
+	_difficulty = difficulty * g_dmg
 
 	# Visuals, in priority order: animated sheets > bespoke static sprite >
 	# generic monster tinted by colour > greybox circle. Bosses also load a sheet
@@ -145,7 +154,7 @@ func setup(p_data: EntityData, target: Node2D, pool: ProjectilePool = null,
 	add_child(hurtbox)
 
 	movement = MovementComponent.new()
-	movement.max_speed = data.move_speed
+	movement.max_speed = data.move_speed * RunManager.enemy_speed_mult()
 	movement.acceleration = 900.0
 	add_child(movement)
 
@@ -250,6 +259,12 @@ func _physics_process(delta: float) -> void:
 		velocity = _knockback
 		move_and_slide()
 		_knockback = _knockback.lerp(Vector2.ZERO, clampf(delta * 9.0, 0.0, 1.0))
+	elif _windup_t > 0.0:
+		# Bracing for a telegraphed charge: plant the feet so the wind-up reads and
+		# the player has time to sidestep the incoming dash.
+		_windup_t -= delta
+		velocity = velocity.lerp(Vector2.ZERO, clampf(delta * 12.0, 0.0, 1.0))
+		move_and_slide()
 	elif _charge_t > 0.0:
 		# Dashing toward the player (charge ability) — overrides normal movement.
 		_charge_t -= delta
@@ -257,10 +272,27 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 	elif ai != null:
 		var dir := ai.desired_direction(global_position)
+		# Wall-slide unstuck: the AI steers in a straight line at the player, so a
+		# wall or obstacle in between can wedge a chaser in place (which used to
+		# leave rooms un-clearable). When we detect no forward progress, veer ALONG
+		# the wall for a moment so the enemy flows around corners and reaches the
+		# hero instead of grinding uselessly.
+		if _unstuck_t > 0.0:
+			_unstuck_t -= delta
+			dir = dir.rotated(_unstuck_sign * 1.2)
 		velocity = movement.compute(velocity, dir, delta)
 		if _statuses.has("chill"):
 			velocity *= 0.5  # frozen/chilled enemies move at half speed
+		var _before := global_position
 		move_and_slide()
+		if dir.length() > 0.1 \
+				and global_position.distance_to(_before) < movement.max_speed * delta * 0.4:
+			_wall_stuck_t += delta
+			if _wall_stuck_t > 0.35 and _unstuck_t <= 0.0:
+				_unstuck_t = 0.7
+				_unstuck_sign = 1.0 if randf() < 0.5 else -1.0
+		else:
+			_wall_stuck_t = maxf(0.0, _wall_stuck_t - delta * 2.0)
 	# Ranged entities fire at the player (the weapon throttles via fire_rate).
 	if weapon != null and is_instance_valid(_target):
 		var aim := _target.global_position - global_position
@@ -428,11 +460,23 @@ func _execute_ability(ab: Dictionary) -> void:
 			_summon(String(ab.get("entity", "")), int(ab.get("count", 2)), bool(ab.get("regen", false)))
 		"charge":
 			if is_instance_valid(_target):
-				_charge_dir = (_target.global_position - _shoot_origin()).normalized()
-				_charge_speed = float(ab.get("speed", 420.0))
-				_charge_t = float(ab.get("duration", 0.45))
-				_charge_vanish = bool(ab.get("vanish", false))  # fade during the dash
-				Fx.play(_burst_fx(), global_position, _radius * 3.0)
+				# Telegraphed dash: the mob BRACES (stops + attack pose + a marker)
+				# for a wind-up beat, then commits to a line and lunges. Regular
+				# enemies used to dash instantly, which was impossible to dodge.
+				var ch_speed := minf(float(ab.get("speed", 330.0)), 330.0)  # cap: readable, dodgeable
+				var ch_dur := float(ab.get("duration", 0.38))
+				var ch_wind := float(ab.get("windup", 0.5))
+				var ch_vanish := bool(ab.get("vanish", false))
+				_windup_t = ch_wind
+				_attack_t = maxf(_attack_t, ch_wind)
+				Fx.play(_burst_fx(), global_position, _radius * 2.2)
+				get_tree().create_timer(ch_wind).timeout.connect(func() -> void:
+					if not is_instance_valid(self) or not is_instance_valid(_target):
+						return
+					_charge_dir = (_target.global_position - _shoot_origin()).normalized()
+					_charge_speed = ch_speed
+					_charge_t = ch_dur
+					_charge_vanish = ch_vanish)
 		"barrage":
 			# A tight, fast volley aimed at the player.
 			if is_instance_valid(_target):
